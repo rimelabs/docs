@@ -4,8 +4,23 @@ api: 'POST http://fake.stvs.tv/audio'
 authMethod: "bearer"
 ---
 
-<ParamField body="speaker" type="string">
+<ParamField body="speaker" type="string" required>
   The speaker
+</ParamField>
+<ParamField body="text" type="string" required>
+  Text
+</ParamField>
+
+<ParamField body="samplingRate" type="int">
+  Sampling Rate
+</ParamField>
+
+<ParamField body="speedAlpha" type="float">
+  Speed Alpha
+</ParamField>
+
+<ParamField body="reduceLatency" type="bool" default="false">
+  Reduce Latency
 </ParamField>
 
 

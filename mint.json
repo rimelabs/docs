@@ -64,9 +64,9 @@
     {
       "group": "Endpoint",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/endpoint/streaming-pcm",
+        "api-reference/endpoint/streaming-mp3",
+        "api-reference/endpoint/json-mp3"
       ]
     }
   ],
@@ -74,5 +74,10 @@
     "twitter": "https://twitter.com/mintlify",
     "github": "https://github.com/mintlify",
     "linkedin": "https://www.linkedin.com/company/mintsearch"
+  },
+  "api": {
+    "playground": {
+      "mode": "hide"
+    }
   }
 }

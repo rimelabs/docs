@@ -1,16 +1,19 @@
 ---
-title: 'Streaming PCM'
+title: 'MP3 over JSON'
 api: 'POST http://fake.stvs.tv/audio'
 authMethod: "bearer"
 ---
 
-<ParamField header="Accept" type="constant: 'audio/pcm'" required initialValue="audio/pcm">
-  Accept: audio/pcm
-</ParamField>
+## Fixed Parameters
+
+<ParamField body="audioFormat" type="mp3" required></ParamField>
+
+## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
   The speaker
 </ParamField>
+
 <ParamField body="text" type="string" required>
   Text
 </ParamField>
@@ -26,5 +29,3 @@ authMethod: "bearer"
 <ParamField body="reduceLatency" type="bool" default="false">
   Reduce Latency
 </ParamField>
-
-

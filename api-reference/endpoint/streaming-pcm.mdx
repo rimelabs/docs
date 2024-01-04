@@ -11,20 +11,152 @@ authMethod: "bearer"
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  The speaker
+  Must be the lowercase spelling of one of the voices <a href="https://rime.ai/docs/voices">listed in our documentation</a>.
 </ParamField>
 <ParamField body="text" type="string" required>
-  Text
+  The text you'd like spoken
 </ParamField>
 
 <ParamField body="samplingRate" type="int">
-  Sampling Rate
+  The value, if provided, must be between 4000 and 44100
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1.0">
-  Speed Alpha
+  Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher than 1.0 is slower than default.
 </ParamField>
 
 <ParamField body="reduceLatency" type="bool" default="false">
-  Reduce Latency
+  Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
+
+<RequestExample>
+```bash cURL
+curl --request POST \
+  --url http://fake.stvs.tv/audio \
+  --header 'Accept: audio/pcm' \
+  --header 'Authorization: Bearer <authorization>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "speaker": "<string>",
+  "text": "<string>",
+  "samplingRate": 22050,
+  "speedAlpha": 1.0,
+  "reduceLatency": false
+}'
+```
+
+```python Python
+import requests
+
+url = "http://fake.stvs.tv/audio"
+
+payload = {
+    "speaker": "<string>",
+    "text": "<string>",
+    "samplingRate": 22050,
+    "speedAlpha": 1.0,
+    "reduceLatency": False
+}
+headers = {
+    "Accept": "audio/pcm",
+    "Authorization": "Bearer <authorization>",
+    "Content-Type": "application/json"
+}
+
+response = requests.request("POST", url, json=payload, headers=headers)
+
+print(response.text)
+```
+
+```javascript JavaScript
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'audio/pcm',
+    Authorization: 'Bearer <authorization>',
+    'Content-Type': 'application/json'
+  },
+  body: '{"speaker":"<string>","text":"<string>","samplingRate":22050,"speedAlpha":1.0,"reduceLatency":false}'
+};
+
+fetch('http://fake.stvs.tv/audio', options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+```
+
+```php PHP
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "http://fake.stvs.tv/audio",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
+  CURLOPT_HTTPHEADER => [
+    "Accept: audio/pcm",
+    "Authorization: Bearer <authorization>",
+    "Content-Type: application/json"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+```
+
+```go Go
+package main
+
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+
+  url := "http://fake.stvs.tv/audio"
+
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Accept", "audio/pcm")
+  req.Header.Add("Authorization", "Bearer <authorization>")
+  req.Header.Add("Content-Type", "application/json")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(res)
+  fmt.Println(string(body))
+
+}
+```
+
+```java Java
+HttpResponse<String> response = Unirest.post("http://fake.stvs.tv/audio")
+  .header("Accept", "audio/pcm")
+  .header("Authorization", "Bearer <authorization>")
+  .header("Content-Type", "application/json")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  .asString();
+```
+</RequestExample>

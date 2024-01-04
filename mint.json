@@ -2,28 +2,22 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Starter Kit",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "https://rime.ai/_nuxt/RimeSpeechTech_Logo.2582e20f.svg",
+    "light": "https://rime.ai/_nuxt/RimeSpeechTech_Logo.2582e20f.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#B2321A",
+    "light": "#E68732",
+    "dark": "#B2321A",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#E68732",
+      "to": "#B2321A"
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
-    }
-  ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://rime.ai/dashboard"
   },
   "tabs": [
     {
@@ -31,42 +25,15 @@
       "url": "api-reference"
     }
   ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
-    },
-    {
-      "group": "Essentials",
-      "pages": ["essentials/markdown", "essentials/code", "essentials/images", "essentials/settings", "essentials/navigation"]
-    },
-    {
-      "group": "API Documentation",
-      "pages": ["api-reference/introduction"]
-    },
-    {
-      "group": "Endpoint",
+      "group": "Text-to-speech API",
       "pages": [
         "api-reference/endpoint/streaming-pcm",
         "api-reference/endpoint/streaming-mp3",
-        "api-reference/endpoint/json-mp3"
+        "api-reference/endpoint/json-mp3",
+        "api-reference/endpoint/json-wav",
+        "api-reference/endpoint/json-ogg"
       ]
     }
   ],

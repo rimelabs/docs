@@ -1,12 +1,12 @@
 ---
-title: 'MP3 over JSON'
+title: 'WAV over JSON'
 api: 'POST http://fake.stvs.tv/audio'
 authMethod: "bearer"
 ---
 
 ## Fixed Parameters
 
-<ParamField body="audioFormat" type="mp3" required></ParamField>
+<ParamField body="audioFormat" type="wav" required></ParamField>
 
 ## Variable Parameters
 
@@ -42,7 +42,7 @@ curl --request POST \
   "text": "<string>",
   "samplingRate": 22050,
   "speedAlpha": 1.0,
-  "audioFormat": "mp3",
+  "audioFormat": "wav",
   "reduceLatency": false
 }'
 ```
@@ -55,7 +55,7 @@ url = "http://fake.stvs.tv/audio"
 payload = {
     "speaker": "<string>",
     "text": "<string>",
-    "audioFormat": "mp3",
+    "audioFormat": "wav",
     "samplingRate": 22050,
     "speedAlpha": 1.0,
     "reduceLatency": False
@@ -79,7 +79,7 @@ const options = {
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","audioFormat": "mp3","samplingRate":22050,"speedAlpha":1.0,"reduceLatency":false}'
+  body: '{"speaker":"<string>","text":"<string>","audioFormat": "wav","samplingRate":22050,"speedAlpha":1.0,"reduceLatency":false}'
 };
 
 fetch('http://fake.stvs.tv/audio', options)
@@ -101,7 +101,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
   CURLOPT_HTTPHEADER => [
     "Accept: application/json",
     "Authorization: Bearer <authorization>",
@@ -135,7 +135,7 @@ func main() {
 
   url := "http://fake.stvs.tv/audio"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
@@ -159,7 +159,7 @@ HttpResponse<String> response = Unirest.post("http://fake.stvs.tv/audio")
   .header("Accept", "application/json")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
   .asString();
 ```
 </RequestExample>

@@ -1,0 +1,58 @@
+---
+title: Quickstart
+icon: book-open-cover
+---
+
+Getting started with Rime's TTS API is super simple. All you have to do is:
+
+1. Generate an [API key](https://rime.ai/dashboard/tokens).
+2. Pick a speaker code for the voice you want. For this example let's pick: `rose`
+3. Make an API call with the tool of your choosing. Let's use python's _requests_ library here:
+
+```python
+import requests
+
+url = 'https://users.rime.ai/v1/rime-tts'
+
+headers = {
+    'Authorization': 'Bearer YOUR_RIME_KEY',
+    'Content-Type': 'application/json'}
+
+data = {
+    'text': 'I would love to have a conversation with you.',
+    'speaker': 'rose',
+    'audioFormat': 'mp3', # Optional - default value is 'wav', permitted values: 'ogg', 'mp3', 'wav'
+    'samplingRate': 8000, # Optional - processes resampling server-side
+    'speedAlpha': 1.3,     # Optional - controls speed 🎚️ 1.0 = default, higher is slower
+    }
+
+response = requests.post(url, headers=headers, json=data)
+```
+
+Here's a curl example for `rime-tts`:
+
+```bash
+curl -X POST http://users.rime.ai/v1/rime-tts \
+  -H 'Authorization: Bearer YOUR_RIME_KEY' \
+  -d '{"text": "Yes, that is true. But that'\''s okay with me. And you better never forget it.", "speaker": "young_female_latina-4"}'
+```
+
+If the request is successful, the response body contains data with the following structure:
+
+```json
+{
+  "audioContent": string
+}
+```
+
+This field contains the audio data bytes encoded in base-64 representing audio with WAV header.
+
+We can decode the base-64 encoded string using the python _base64_ library.
+
+```python
+import base64
+
+with open('output.wav', 'wb') as fp:
+    fp.write(base64.b64decode(response.json()['audioContent']))
+
+```

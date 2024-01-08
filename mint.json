@@ -25,10 +25,23 @@
       "url": "api-reference"
     }
   ],
+  "anchors": [
+    {
+      "name": "Voices",
+      "icon": "microphone-lines",
+      "url": "https://rime.ai/docs/voices"
+    },
+    {
+      "name": "Appendix",
+      "icon": "books-medical",
+      "url": "https://rime.ai/docs/appendix"
+    }
+  ],
   "navigation": [
     {
       "group": "Text-to-speech API",
       "pages": [
+        "api-reference/quickstart",
         "api-reference/endpoint/streaming-pcm",
         "api-reference/endpoint/streaming-mp3",
         "api-reference/endpoint/json-mp3",

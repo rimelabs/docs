@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Starter Kit",
   "logo": {
-    "dark": "https://rime.ai/_nuxt/RimeSpeechTech_Logo.2582e20f.svg",
-    "light": "https://rime.ai/_nuxt/RimeSpeechTech_Logo.2582e20f.svg"
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.png"
   },
   "favicon": "/favicon.svg",
   "colors": {

@@ -23,6 +23,7 @@
     {
       "group": "Documentation",
       "pages": [
+        "api-reference/quickstart"
         {
           "group": "Voices",
           "icon": "microphone-lines",

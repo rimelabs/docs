@@ -5,7 +5,7 @@
     "dark": "/logo/dark.png",
     "light": "/logo/light.png"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon-rime.svg",
   "colors": {
     "primary": "#B2321A",
     "light": "#E68732",
@@ -32,6 +32,13 @@
           ]
         },
         {
+          "group": "Customization",
+          "icon": "language",
+          "pages": [
+            "api-reference/linguistics"
+          ]
+        },
+        {
           "group": "Appendix",
           "icon": "books-medical",
           "pages": [
@@ -41,7 +48,7 @@
       ]
     },
     {
-      "group": "Text-to-speech API",
+      "group": "TTS API reference",
       "pages": [
         "api-reference/endpoint/streaming-pcm",
         "api-reference/endpoint/streaming-mp3",

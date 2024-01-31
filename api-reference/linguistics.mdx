@@ -1,0 +1,27 @@
+---
+title: 'Linguistics and TTS'
+description: 'Information on Linguistics and TTS'
+---
+
+## Intro
+### Why solving TTS is difficult
+
+One very over-arching reason why text-to-speech is a difficult task is because of the one-to-many problem: one text string corresponds to a infinity of possible acoustic realizations!
+
+Rime has remained fairly opinionated when it comes to the defaults for acoustic realization, but the API also allows you to make extremely low-level adjustments for your particular use case.
+
+### Homographs
+
+English's written form, like many languages', contains homographs. A homograph is a word that shares the same written form as a word but has one or both of: a different meaning, or a different pronunciation. For the purpose of the Rime TTS API, we are only concerned with the latter. For example, the words _sow_ (verb, to plant seed) and _sow_ (noun, a female pig) are spelled identically but pronounced differently. This poses a problem for any speech synthesis technology, but Rime leverages both contextual syntactic analysis and frequency information to generate likely predictions.
+
+We also provide a straightforward way of overriding these predicted pronunciations:
+
+
+```python Homograph Specification Example
+# Fruits and vegetables?
+text = "I like fresh produce_noun."
+# Making things?
+text = "They produce_verb a wide array of home goods for decorations."
+```
+
+A complete table of the homographs for which you can specify a disambiguated variant can be found in the [Appendix](/api-reference/homographs).

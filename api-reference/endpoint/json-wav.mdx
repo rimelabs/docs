@@ -18,6 +18,10 @@ authMethod: "bearer"
   The text you'd like spoken
 </ParamField>
 
+<ParamField body="modelId" type="string">
+  Choose `mist` for hyper-realistic conversational voices or `v1` for Rime's first-gen model (default: v1)
+</ParamField>
+
 <ParamField body="samplingRate" type="int">
   The value, if provided, must be between 4000 and 44100
 </ParamField>
@@ -40,6 +44,7 @@ curl --request POST \
   --data '{
   "speaker": "<string>",
   "text": "<string>",
+  "modelId": "<string>",
   "samplingRate": 22050,
   "speedAlpha": 1.0,
   "audioFormat": "wav",
@@ -55,6 +60,7 @@ url = "https://users.rime.ai/v1/rime-tts"
 payload = {
     "speaker": "<string>",
     "text": "<string>",
+    "modelId": "<string>"
     "audioFormat": "wav",
     "samplingRate": 22050,
     "speedAlpha": 1.0,
@@ -79,7 +85,7 @@ const options = {
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","audioFormat": "wav","samplingRate":22050,"speedAlpha":1.0,"reduceLatency":false}'
+  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>","audioFormat": "wav","samplingRate":22050,"speedAlpha":1.0,"reduceLatency":false}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
@@ -101,7 +107,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n \"modelId\": \"<string>\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
   CURLOPT_HTTPHEADER => [
     "Accept: application/json",
     "Authorization: Bearer <authorization>",
@@ -135,7 +141,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\", \n \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
@@ -159,7 +165,7 @@ HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts"
   .header("Accept", "application/json")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\", \n  \"modelId\": \"<string>\", \n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
   .asString();
 ```
 </RequestExample>

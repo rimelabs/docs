@@ -38,6 +38,10 @@
             "api-reference/linguistics"
           ]
         },
+
+
+            "api-reference/latency",
+
         {
           "group": "Appendix",
           "icon": "books-medical",

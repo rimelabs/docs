@@ -60,6 +60,12 @@
         "api-reference/endpoint/json-wav",
         "api-reference/endpoint/json-ogg"
       ]
+    },
+    {
+      "group": "API Metadata",
+      "pages": [
+        "api-reference/data/voices"
+      ]
     }
   ],
   "api": {

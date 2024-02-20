@@ -1,0 +1,33 @@
+---
+title: 'List All Voices'
+api: 'GET https://users.rime.ai/data/voices/all.json'
+---
+
+## View In Browser
+
+https://users.rime.ai/data/voices/all.json
+
+## Example structure
+
+```json
+{
+  "v1": [
+    "agnes",
+    "alexa",
+    "alonzo"
+    // ...and more...
+  ],
+  "mist": [
+    "amber",
+    "ana",
+    "antoine"
+    // ...and more ...
+  ]
+}
+```
+
+## Explanation
+
+The response object is keyed by the applicable `modelId`. This is the same `modelId` used as an argument to our [TTS APIs](http://localhost:3000/api-reference/endpoint/streaming-pcm).
+
+For example: if calling the TTS API with `modelId` of `"v1"`, `"agnes"` is a valid `speaker`, but `"amber"` wouldn't be.

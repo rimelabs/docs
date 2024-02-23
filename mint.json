@@ -56,9 +56,11 @@
       "pages": [
         "api-reference/endpoint/streaming-pcm",
         "api-reference/endpoint/streaming-mp3",
+        "api-reference/endpoint/streaming-mulaw",
         "api-reference/endpoint/json-mp3",
         "api-reference/endpoint/json-wav",
-        "api-reference/endpoint/json-ogg"
+        "api-reference/endpoint/json-ogg",
+        "api-reference/endpoint/json-mulaw"
       ]
     }
   ],

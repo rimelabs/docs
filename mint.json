@@ -38,10 +38,8 @@
             "api-reference/linguistics"
           ]
         },
-
             "api-reference/models",
             "api-reference/latency",
-
         {
           "group": "Appendix",
           "icon": "books-medical",
@@ -52,11 +50,16 @@
       ]
     },
     {
-      "group": "TTS API reference",
+      "group": "Streaming API reference",
       "pages": [
         "api-reference/endpoint/streaming-pcm",
         "api-reference/endpoint/streaming-mp3",
-        "api-reference/endpoint/streaming-mulaw",
+        "api-reference/endpoint/streaming-mulaw"
+      ]
+    },
+    {
+      "group": "Non-Streaming API reference",
+      "pages": [
         "api-reference/endpoint/json-mp3",
         "api-reference/endpoint/json-wav",
         "api-reference/endpoint/json-ogg",

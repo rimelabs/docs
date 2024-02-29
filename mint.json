@@ -65,6 +65,12 @@
         "api-reference/endpoint/json-ogg",
         "api-reference/endpoint/json-mulaw"
       ]
+    },
+    {
+      "group": "API Metadata",
+      "pages": [
+        "api-reference/data/voices"
+      ]
     }
   ],
   "api": {

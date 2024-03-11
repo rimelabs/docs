@@ -6,7 +6,7 @@ authMethod: "bearer"
 
 ## Fixed Headers
 
-<ParamField header="Accept" type="audio/mulaw" required></ParamField>
+<ParamField header="Accept" type="audio/x-mulaw" required></ParamField>
 
 ## Variable Parameters
 
@@ -33,7 +33,7 @@ authMethod: "bearer"
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
-  --header 'Accept: audio/mulaw' \
+  --header 'Accept: audio/x-mulaw' \
   --header 'Authorization: Bearer <authorization>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -58,7 +58,7 @@ payload = {
     "reduceLatency": False
 }
 headers = {
-    "Accept": "audio/mulaw",
+    "Accept": "audio/x-mulaw",
     "Authorization": "Bearer <authorization>",
     "Content-Type": "application/json"
 }
@@ -72,7 +72,7 @@ print(response.text)
 const options = {
   method: 'POST',
   headers: {
-    Accept: 'audio/mulaw',
+    Accept: 'audio/x-mulaw',
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
@@ -100,7 +100,7 @@ curl_setopt_array($curl, [
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
   CURLOPT_HTTPHEADER => [
-    "Accept: audio/mulaw",
+    "Accept: audio/x-mulaw",
     "Authorization: Bearer <authorization>",
     "Content-Type: application/json"
   ],
@@ -136,7 +136,7 @@ func main() {
 
   req, _ := http.NewRequest("POST", url, payload)
 
-  req.Header.Add("Accept", "audio/mulaw")
+  req.Header.Add("Accept", "audio/x-mulaw")
   req.Header.Add("Authorization", "Bearer <authorization>")
   req.Header.Add("Content-Type", "application/json")
 
@@ -153,7 +153,7 @@ func main() {
 
 ```java Java
 HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
-  .header("Accept", "audio/mulaw")
+  .header("Accept", "audio/x-mulaw")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
   .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")

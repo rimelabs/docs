@@ -69,7 +69,8 @@
     {
       "group": "API Metadata",
       "pages": [
-        "api-reference/data/voices"
+        "api-reference/data/voices",
+        "api-reference/data/voice-details"
       ]
     }
   ],

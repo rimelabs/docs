@@ -19,6 +19,16 @@ Streaming MULAW returns headerless files.
   The text you'd like spoken
 </ParamField>
 
+<ParamField body="pauseBetweenBrackets" type="bool" default="false">
+  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
+  Example: "Hello \<200> World" adds a 200ms pause between "Hello" and "World"
+</ParamField>
+
+<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
+  When set to true, you can specify the phonemes for a word enclosed in angle brackets. <br/>
+  Example: "Hello \<\<phoneme ph='HH AH0 L OW1'>> World" will pronounce "Hello" as "HH AH0 L OW1"
+</ParamField>
+
 <ParamField body="modelId" type="string">
   Choose `mist` for hyper-realistic conversational voices or `v1` for Rime's first-gen model (default: `v1`)
 </ParamField>
@@ -44,7 +54,9 @@ curl --request POST \
   "text": "<string>",
   "modelId": "<string>",
   "speedAlpha": 1.0,
-  "reduceLatency": false
+  "reduceLatency": false,
+  "pauseBetweenBrackets": false,
+  "phonemizeBetweenBrackets": false
 }'
 ```
 
@@ -58,7 +70,9 @@ payload = {
     "text": "<string>",
     "modelId": "<string>",
     "speedAlpha": 1.0,
-    "reduceLatency": False
+    "reduceLatency": False,
+    "pauseBetweenBrackets": False
+    "phonemizeBetweenBrackets": False
 }
 headers = {
     "Accept": "audio/x-mulaw",

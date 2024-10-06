@@ -22,6 +22,16 @@ authMethod: "bearer"
   Choose `mist` for hyper-realistic conversational voices or `v1` for Rime's first-gen model (default: `v1`)
 </ParamField>
 
+<ParamField body="pauseBetweenBrackets" type="bool" default="false">
+  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
+  Example: "Hello \<200> World" adds a 200ms pause between "Hello" and "World"
+</ParamField>
+
+<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
+  When set to true, you can specify the phonemes for a word enclosed in angle brackets. <br/>
+  Example: "Hello \<\<phoneme ph='HH AH0 L OW1'>> World" will pronounce "Hello" as "HH AH0 L OW1"
+</ParamField>
+
 <ParamField body="speedAlpha" type="float" default="1.0">
   Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher than 1.0 is slower than default.
 </ParamField>
@@ -43,7 +53,9 @@ curl --request POST \
   "modelId": "mist",
   "speedAlpha": 1.0,
   "audioFormat": "mulaw",
-  "reduceLatency": false
+  "reduceLatency": false,
+  "pauseBetweenBrackets": false
+  "phonemizeBetweenBrackets": false
 }'
 ```
 
@@ -59,6 +71,8 @@ payload = {
     "audioFormat": "mulaw",
     "speedAlpha": 1.0,
     "reduceLatency": False
+    "pauseBetweenBrackets": false,
+    "phonemizeBetweenBrackets": false
 }
 headers = {
     "Accept": "application/json",

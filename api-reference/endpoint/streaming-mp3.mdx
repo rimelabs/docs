@@ -21,6 +21,16 @@ authMethod: "bearer"
   Choose `mist` for hyper-realistic conversational voices or `v1` for Rime's first-gen model (default: `v1`)
 </ParamField>
 
+<ParamField body="pauseBetweenBrackets" type="bool" default="false">
+  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
+  Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences. 
+</ParamField>
+
+<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
+  When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
+  Example: "\{h'El.o} World" will pronounce "Hello" as expected. More details on this feature are incoming!
+</ParamField>
+
 <ParamField body="samplingRate" type="int">
   The value, if provided, must be between 4000 and 44100. Default: 22050
 </ParamField>
@@ -46,7 +56,9 @@ curl --request POST \
   "modelId": "<string>",
   "samplingRate": 22050,
   "speedAlpha": 1.0,
-  "reduceLatency": false
+  "reduceLatency": false,
+  "pauseBetweenBrackets": false,
+  "phonemizeBetweenBrackets": false
 }'
 ```
 
@@ -61,7 +73,9 @@ payload = {
     "modelId": "<string>",
     "samplingRate": 22050,
     "speedAlpha": 1.0,
-    "reduceLatency": False
+    "reduceLatency": False,
+    "pauseBetweenBrackets": false,
+    "phonemizeBetweenBrackets": false
 }
 headers = {
     "Accept": "audio/mp3",

@@ -35,7 +35,8 @@
           "group": "Customization",
           "icon": "language",
           "pages": [
-            "api-reference/linguistics"
+            "api-reference/linguistics",
+            "api-reference/input-tools"
           ]
         },
 

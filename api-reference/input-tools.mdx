@@ -21,6 +21,17 @@ input:    `"text": "wait, <750> are you actually serious.",`
 
 <audio controls src="https://rime.ai/sounds/docs/wait_750.wav"></audio>  
 
+The API request would look like this:
+
+```
+{
+	"text": "wait, <750> are you actually serious.",
+    "speaker": "cove_rf",
+    "modelId": "mist",
+    "pauseBetweenBrackets": true
+}
+```
+
 
 
 ## Custom Pronunciation
@@ -31,7 +42,18 @@ For example the word `custom` would be represented as `{k1Ast0xm}`.
 
 This works for even made-up words, like `gorbulets` as `{g1orby0ul2Ets}`
 
-<audio controls src="https://rime.ai/sounds/docs/wait_no_pause.wav"></audio>  
+<audio controls src="https://rime.ai/sounds/docs/gorbulets.wav"></audio>  
+
+The API request would look like this:
+
+```
+{
+	"text": "actually, {g1orby0ul2Ets} is a word i just made up.",
+    "speaker": "peak_rf",
+    "modelId": "mist",
+    "phonemizeBetweenBrackets": true
+}
+```
 
 
 

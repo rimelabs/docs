@@ -32,6 +32,11 @@ authMethod: "bearer"
   Example: "\{h'El.o} World" will pronounce "Hello" as expected. More details on this feature are incoming!
 </ParamField>
 
+<ParamField body="inlineSpeedAlpha" type="string">
+  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
+  Example: "This sentence is [really] [fast]" with inlineSpeedAlpha "0.5, 3" will make "really" slow and "fast" fast.
+</ParamField>
+
 <ParamField body="samplingRate" type="int">
   The value, if provided, must be between 4000 and 44100. Default: 22050
 </ParamField>
@@ -59,8 +64,9 @@ curl --request POST \
   "speedAlpha": 1.0,
   "audioFormat": "wav",
   "reduceLatency": false,
-  "phonemizeBetweenBrackets": false
-  "pauseBetweenBrackets": false
+  "phonemizeBetweenBrackets": false,
+  "pauseBetweenBrackets": false,
+  "inlineSpeedAlpha": "3, 0.5"
 }'
 ```
 

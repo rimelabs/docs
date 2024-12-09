@@ -15,6 +15,12 @@
       "to": "#B2321A"
     }
   },
+  "topbarLinks": [
+    {
+      "name": "Homepage",
+      "url": "https://rime.ai/dashboard"
+    }
+  ],
   "topbarCtaButton": {
     "name": "Dashboard",
     "url": "https://rime.ai/dashboard"

@@ -1,59 +1,11 @@
 ---
 title: 'Linguistics and TTS'
-description: 'Information on Linguistics and TTS'
 ---
 
-## Intro
-### Why solving TTS is difficult
+Why is solving TTS and synthesizing realistic speech so difficult?
 
-One very over-arching reason why text-to-speech is a difficult task is because of the one-to-many problem: one text string corresponds to a infinity of possible acoustic realizations!
+One over-arching reason is the **one-to-many problem** in linguistics: one text string corresponds to infinite possible acoustic realizations! And strings of words can be pronounced differently for special effect.
 
-Rime has remained fairly opinionated when it comes to the defaults for acoustic realization, but the API also allows you to make extremely low-level adjustments for your particular use case.
+While Rime remains opinionated on default accoustic realization, and the voices will speak fluently and correctly out-of-the-box, Rime is unique among next-gen TTS offerings in allowing users to customize their output. 
 
-### Homographs
-
-English's written form, like many languages', contains homographs. A homograph is a word that shares the same written form as a word but has one or both of: a different meaning, or a different pronunciation. For the purpose of the Rime TTS API, we are only concerned with the latter. For example, the words _sow_ (verb, to plant seed) and _sow_ (noun, a female pig) are spelled identically but pronounced differently. This poses a problem for any speech synthesis technology, but Rime leverages both contextual syntactic analysis and frequency information to generate likely predictions.
-
-We also provide a straightforward way of overriding these predicted pronunciations:
-
-
-```python Homograph Specification Example
-# Fruits and vegetables?
-text = "I like fresh produce_noun."
-# Making things?
-text = "They produce_verb a wide array of home goods for decorations."
-```
-
-A complete table of the homographs for which you can specify a disambiguated variant can be found in the [Appendix](/api-reference/homographs).
-
-### Punctuation
-
-Punctuation serves many purposes in normal writing, it indicates sentence structural things like sentence breaks and questions, but it also serves to indicate pronunciation cues, such as commas for pauses and exclamation points for excitement. 
-
-For Rime text-to-speech, these various uses are even more flexible. Not only can users employ punctuation for traditional structural purposes, users can modulate the prosody by using differing punctuation. Below we show some basic ways our powerful engine can alter the prosody using punctuation. These are just a few examples, feel free to play around and see what you can create!
-
-#### Questions
-
-|    Audio Clip     |      Sentence             | Notes  |
-|-----------------|--------------------------|---|
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanperiod.wav"></audio>     |    what do you mean.      |  a simple period at the end of the sentence renders it a non-question  |
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanquestion.wav"></audio>    |      what do you mean?        |  a simple question mark indicates an unmarked question |
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeaninterrobang.wav"></audio>    |       what do you mean?!       |  adding an exclamation point makes the question more excited |
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanexclamq.wav"></audio>    |          what do you mean!?      |  changing the order of the exclamation point and question mark makes a different sort of question |
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanqq.wav"></audio>     |     what do you mean??         |  multiple question marks can also change the type of question prosody |
-
-#### False Starts
-
-|    Audio Clip     |      Sentence             | Notes  |
-|-----------------|--------------------------|---|
-|   <audio controls src="https://rime.ai/sounds/docs/iithinkitsprettycool.wav"></audio>     |    i i think it's pretty cool     |  putting a word twice in a row can create more realistic, flawed human speech  |
-|   <audio controls src="https://rime.ai/sounds/docs/iithinkitsprettycooldash.wav"></audio>    |      i- i think it's pretty cool       |  adding a dash immediately after some words can give a cut-off, false start sort of realism |
-
-#### Pauses
-
-|    Audio Clip     |      Sentence             | Notes  |
-|-----------------|--------------------------|---|
-|   <audio controls src="https://rime.ai/sounds/docs/soitskindafunny.wav"></audio>     |    so it's kind of funny.     |  without any comma, there will be no pause |
-|   <audio controls src="https://rime.ai/sounds/docs/soitskindafunnycomma.wav"></audio>    |      so, it's kind of funny.     |  adding a comma creates a slight pause |
-|   <audio controls src="https://rime.ai/sounds/docs/soitskindafunnyperiod.wav"></audio>    |      so. it's kind of funny       |  adding a period creates a longer pause |
-
+The API also allows you to make extremely low-level adjustments for your particular use case, such as custom pauses and custom pronunciations. To see all the available customization options, check the pages in the **Customization** folder in the menu.

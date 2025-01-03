@@ -37,17 +37,14 @@
           "icon": "language",
           "pages": [
             "api-reference/linguistics",
+            "api-reference/homographs",
+            "api-reference/punctuation",
+            "api-reference/custom-pauses",
+            "api-reference/custom-pronunciation",
             "api-reference/input-tools"
           ]
         },
-        "api-reference/latency",
-        {
-          "group": "Appendix",
-          "icon": "circle-info",
-          "pages": [
-            "api-reference/homographs"
-          ]
-        }
+        "api-reference/latency"
       ]
     },
     {

@@ -40,8 +40,7 @@
             "api-reference/homographs",
             "api-reference/punctuation",
             "api-reference/custom-pauses",
-            "api-reference/custom-pronunciation",
-            "api-reference/input-tools"
+            "api-reference/custom-pronunciation"
           ]
         },
         "api-reference/latency"
@@ -70,6 +69,24 @@
         "api-reference/data/voices",
         "api-reference/data/voice-details"
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/api-reference/input-tools",
+      "destination": "/api-reference/quickstart"
+    },
+    {
+      "source": "/api-reference/how-to-use-api",
+      "destination": "/api-reference/quickstart"
+    },
+    {
+      "source": "/api-reference/female-voices",
+      "destination": "/api-reference/voices"
+    },
+    {
+      "source": "/api-reference/male-voices",
+      "destination": "/api-reference/voices"
     }
   ],
   "api": {

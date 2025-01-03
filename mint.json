@@ -33,8 +33,20 @@
         "api-reference/voices",
         "api-reference/models",
         {
-          "group": "Customization",
+          "group": "Recommendations",
           "icon": "language",
+          "pages": [
+            "api-reference/text-normalization",
+            "api-reference/numbers",
+            "api-reference/dates",
+            "api-reference/abbreviations",
+            "api-reference/symbols",
+            "api-reference/addresses"
+          ]
+        },
+        {
+          "group": "Customization",
+          "icon": "wrench",
           "pages": [
             "api-reference/linguistics",
             "api-reference/homographs",

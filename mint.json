@@ -30,13 +30,8 @@
       "group": "Documentation",
       "pages": [
         "api-reference/quickstart",
-        {
-          "group": "Voices",
-          "icon": "microphone-lines",
-          "pages": [
-            "api-reference/voices"
-          ]
-        },
+        "api-reference/voices",
+        "api-reference/models",
         {
           "group": "Customization",
           "icon": "language",
@@ -45,11 +40,10 @@
             "api-reference/input-tools"
           ]
         },
-            "api-reference/models",
-            "api-reference/latency",
+        "api-reference/latency",
         {
           "group": "Appendix",
-          "icon": "books-medical",
+          "icon": "circle-info",
           "pages": [
             "api-reference/homographs"
           ]

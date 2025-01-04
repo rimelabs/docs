@@ -55,7 +55,8 @@
             "api-reference/custom-pronunciation"
           ]
         },
-        "api-reference/latency"
+        "api-reference/latency",
+        "api-reference/on-prem"
       ]
     },
     {

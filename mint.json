@@ -33,7 +33,7 @@
         "api-reference/voices",
         "api-reference/models",
         {
-          "group": "Recommendations",
+          "group": "Formatting Text",
           "icon": "language",
           "pages": [
             "api-reference/text-normalization",
@@ -45,7 +45,7 @@
           ]
         },
         {
-          "group": "Customization",
+          "group": "Customizing Speech",
           "icon": "wrench",
           "pages": [
             "api-reference/linguistics",

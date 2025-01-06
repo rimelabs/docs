@@ -189,7 +189,7 @@ sudo docker compose up -d
 
 Rime API instance will listen on port `8000`.
 
-You'll need to permit outbound network traffic to `<address-will-be-added>` to verify with our servers that you have an active on-prem licensing agreement and to register usage. Additionally, you'll need access to [DockerHub](https://hub.docker.com/), a container image repository platform, so you'll need to allow outbound traffic to their servers on port `443`.
+You'll need to permit outbound network traffic to `http://optimize-api-55fd43d0f53d69ee.elb.us-west-1.amazonaws.com/usage` and `http://optimize-api-55fd43d0f53d69ee.elb.us-west-1.amazonaws.com/license` to verify with our servers that you have an active on-prem licensing agreement and to register usage. Additionally, you'll need access to [DockerHub](https://hub.docker.com/), a container image repository platform, so you'll need to allow outbound traffic to their servers on port `443`.
 
 ### Deployment Steps
 

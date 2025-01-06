@@ -1,0 +1,262 @@
+---
+title: On-Prem
+icon: server
+---
+
+# Customer Documentation for Self-Hosting Rime On-Premise
+
+## 1. Introduction
+
+### Why On-Premises?
+
+Deploying on-premises offers several advantages over using cloud APIs over a public network. One of the main benefits is speed; by hosting the services locally, you can significantly reduce network latency, resulting in faster system responses and data processing.
+
+### Performance
+
+Our tests have shown median latency of around `80ms` with randomly generated sentences between 40 and 50 characters.
+
+### Security
+
+With an on-premises deployment, all data remains within your corporate network, ensuring enhanced security as it is not transmitted over the Internet. This setup helps in complying with strict data privacy and protection regulations.
+
+### Components
+
+![On-Premise Components](/images/on-prem-components.png)
+
+### Prerequisites
+
+**NVIDIA Drivers**: Ensure that NVIDIA drivers are installed and properly configured on your systems to support necessary computations and operations.
+
+```bash NVIDIA Driver Installation
+# Ubuntu
+# update packages
+sudo apt update
+sudo apt upgrade -y
+
+# install gnu toolchain
+sudo apt install -y gcc make wget
+
+# remove Nouveau drivers
+sudo sh -c 'printf "blacklist nouveau\noptions nouveau modeset=0\n" > /etc/modprobe.d/blacklist-nouveau.conf'
+
+# regenarate kernel
+sudo update-initramfs -u
+
+# unload Nouveau drivers
+sudo rmmod nouveau
+
+# install kernel dev tools
+sudo apt-get install -y linux-headers-`uname -r`
+
+# download latest NVIDIA driver (https://www.nvidia.com/download/index.aspx)
+wget LINK_TO_LATEST_NVIDIA_GPU_DRIVER
+
+# install the driver
+chmod +x ./ {DOWNLOADED_FILE_NAME}
+sudo ./{DOWNLOADED_FILE_NAME} --silent
+
+# verify driver is running
+nvidia-smi
+```
+
+**Docker**: Install Docker on your system to manage the containerized application.
+
+```bash Docker Installation
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# install the latest version
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# verify docker running
+sudo docker run hello-world
+
+# install docker compose 
+sudo apt install -y docker-compose-plugin
+
+# verify docker compose version
+docker compose version
+```
+
+**NVIDIA Container Toolkit**: Install the NVIDIA Container Toolkit to enable GPU support within Docker containers.
+
+```bash NVIDIA Container Toolkit Installation
+# Configure the production repository
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+# Update the packages list from the repository: 
+sudo apt-get update
+
+# Install the NVIDIA Container Toolkit packages:
+sudo apt-get install -y nvidia-container-toolkit
+
+# Configure the container runtime 
+sudo nvidia-ctk runtime configure --runtime=docker
+
+# Restart Docker
+sudo systemctl restart docker
+```
+
+**Other Prerequisites**:
+- `g5g.xlarge` or larger EC2 machine for on-prem rime-tts GPU
+  - 50 GB storage
+- In general, rime-tts and and api instance containers can be run on the same machine. For more complex setups, where each container needs to run on separate machine, we recommend `t2.micro` or larger EC2 machine with 10 GB storage for on-prem API instance.
+- Recommended Linux Distribution:
+  - Ubuntu Server 22.04
+  - Before shipping docker images, we will do our tests with `Ubuntu Server 22.04`. If there is a limitation on your side not to use this distribution, please let us know. For reference, below are other Linux distributions supported by NVIDIA:
+    ![NVIDIA Supported Linux Distributions](/images/on-prem-nvidia-linux.png)
+
+## 2. Deployment Environments
+
+This documentation will cover specific instructions and considerations for deploying the services within an AWS environment, ensuring optimal configuration and performance.
+
+## 3. Self-Service Licensing & Credentials
+
+**API Key Generation**: Refer to our [user interface dashboard](https://rime.ai/dashboard) to generate the necessary keys and credentials for authenticating and authorizing the deployment and use of our services.
+
+## 4. Deploy Our Services
+
+### Pull Images from DockerHub
+
+```bash Login to DockerHub
+sudo docker login --username username
+```
+
+**Text-to-Speech (TTS) Image**: Pull the latest TTS service image from DockerHub using the provided Docker command.
+
+```bash Pull TTS Image
+sudo docker pull rimelabs/onprem:onprem_v4
+```
+
+**API Image**: Similarly, pull the latest API service image from DockerHub to be used in conjunction with the TTS service.
+
+```bash Pull API Image
+sudo sudo docker pull rimelabs/onprem:api_v10
+```
+
+**Docker Compose File**: Create a `docker-compose.yml` file with your editor of choice to define the services and their configurations.
+
+```bash Create Docker Compose File
+vim docker-compose.yml
+```
+
+```yaml docker-compose.yml
+version: '3.8'
+services:
+  api:
+    image: c3057973caf4
+    depends_on:
+      - model
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  model:
+    image: 03943a61fc9d
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+              count: all
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+```
+
+**Start docker compose**:
+
+```bash Start Docker Compose
+sudo docker compose up -d
+```
+
+### Networking
+
+Rime API instance will listen on port `8000`.
+
+You'll need to permit outbound network traffic to `http://optimize-api-55fd43d0f53d69ee.elb.us-west-1.amazonaws.com/usage` and `http://optimize-api-55fd43d0f53d69ee.elb.us-west-1.amazonaws.com/license` to verify with our servers that you have an active on-prem licensing agreement and to register usage. Additionally, you'll need access to [DockerHub](https://hub.docker.com/), a container image repository platform, so you'll need to allow outbound traffic to their servers on port `443`.
+
+### Deployment Steps
+
+<iframe src="https://drive.google.com/file/d/1zzrPCVIDsiTMNY_pyb4Z2TezgCTl4Qc1/preview" width="560" height="315" allow="autoplay" allowfullscreen></iframe>
+
+1. **Environment Setup**: Prepare your AWS environment according to the specifications required for optimal deployment.
+2. **Service Deployment**: Using Docker, deploy the images on your server.
+3. **Networking Setup**: Configure the network settings, including the Internet Gateway and port settings, to ensure connectivity and security.
+4. **Licensing and Authentication**: Generate and apply the necessary API key via our dashboard to start using the services.
+
+> **Note**: Once the containers are started, expect 5 minutes delay for warm up before sending first tts requests.
+
+### Additional Information
+
+- **Troubleshooting Guide**: A troubleshooting guide will be provided to help resolve common issues during deployment.
+- **Available voices/models**: all voices are currently available.
+
+## 5. Requests and Response Formats
+
+### Sending a simple curl request
+
+**Request**:
+
+```bash Request Example
+curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY> -H "Content-Type: application/json" -d '{
+  "text": "I would love to have a conversation with you. The new model is out.",
+  "speaker": "joy",
+  "modelId": "mist"
+}' -o result_mist.txt
+```
+
+**Response**:
+
+```json Response Format
+{"audioContent":{"model_output":"<base64>"}}
+```
+
+Sample response file: [result.txt](https://drive.google.com/file/d/1GW2D8pm5witYMQdKQrPvp_OW5PM0TxNj/view?usp=drive_link)
+
+### Receiving a response in mp3 format
+
+**Request**:
+
+```bash Request Example
+curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Content-Type: application/json" -H "Accept: audio/mp3" -d '{
+  "text": "I would love to have a conversation with you.",
+  "speaker": "joy",
+  "modelId": "mist"
+}' -o result.mp3
+```
+
+**Response**:
+
+Sample response file: [result.mp3](https://drive.google.com/file/d/1iwmWB1byBXknmNvNmvB_SgBpvnU4bChJ/view?usp=sharing)
+
+### Receiving a response in pcm (raw) format
+
+**Request**:
+
+```bash Request Example
+curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Content-Type: application/json" -H "Accept: audio/pcm" -d '{
+  "text": "I would love to have a conversation with you.",
+  "speaker": "joy",
+  "modelId": "mist"
+}' -o result.pcm
+```
+
+**Response**:
+
+Sample response file: [result.pcm](https://drive.google.com/file/d/1pwkGW9jCe1TN9GF5yQa6j619vc8WfjGu/view?usp=drive_link)

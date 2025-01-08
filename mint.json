@@ -37,6 +37,7 @@
           "icon": "language",
           "pages": [
             "api-reference/text-normalization",
+            "api-reference/punctuation",
             "api-reference/numbers",
             "api-reference/dates",
             "api-reference/abbreviations",
@@ -50,7 +51,6 @@
           "pages": [
             "api-reference/linguistics",
             "api-reference/homographs",
-            "api-reference/punctuation",
             "api-reference/custom-pauses",
             "api-reference/custom-pronunciation"
           ]

@@ -64,7 +64,8 @@
       "pages": [
         "api-reference/endpoint/streaming-pcm",
         "api-reference/endpoint/streaming-mp3",
-        "api-reference/endpoint/streaming-mulaw"
+        "api-reference/endpoint/streaming-mulaw",
+        "api-reference/endpoint/sse"
       ]
     },
     {

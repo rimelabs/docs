@@ -1,0 +1,216 @@
+---
+title: 'Server-sent Events'
+api: 'POST https://users.rime.ai/v1/rime-tts'
+authMethod: "bearer"
+---
+
+## Fixed Headers
+
+<ParamField header="Accept" type="text/eventstream" required></ParamField>
+
+## Variable Parameters
+
+<ParamField body="speaker" type="string" required>
+  Must be one of the voices <a href="https://rime.ai/docs/voices">listed in our documentation</a>.
+</ParamField>
+<ParamField body="text" type="string" required>
+  The text you'd like spoken
+</ParamField>
+
+<ParamField body="modelId" type="string">
+  Choose `mist` for hyper-realistic conversational voices or `v1` for Rime's first-gen model (default: `v1`)
+</ParamField>
+
+<ParamField body="pauseBetweenBrackets" type="bool" default="false">
+  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
+  Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences.
+</ParamField>
+
+<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
+  When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
+  Example: "\{h'El.o} World" will pronounce "Hello" as expected. More details on this feature are incoming!
+</ParamField>
+
+<ParamField body="inlineSpeedAlpha" type="string">
+  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
+  Example: "This sentence is [really] [fast]" with inlineSpeedAlpha "0.5, 3" will make "really" slow and "fast" fast.
+</ParamField>
+
+<ParamField body="samplingRate" type="int">
+  The value, if provided, must be between 4000 and 44100. Default: 22050
+</ParamField>
+
+<ParamField body="speedAlpha" type="float" default="1.0">
+  Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher than 1.0 is slower than default.
+</ParamField>
+
+<ParamField body="reduceLatency" type="bool" default="false">
+  Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
+</ParamField>
+
+## Example Output
+
+```
+event: chunk
+data: {"data": "vv+t/7j/sv+8/8j/zv/U/9T/z//P/87/yv/J/8n/0//X/9r/5f/p/+//8f/y//b/8f/x//P/9v/+/wAAAAD3/+3/7v/v//X/+P/0//r/8v/r//D/8P/x/+v/7P/1//D/7//0//b/9//7//r/8//5//7/9//8/wYABwAHAAgADAAKAAEA///8//n/9P/w/+//7P/p/+L/5f/l/+D/6v/s/+//9f/r/+z/8P/u/+//8//t/+j/7//t/9//3//f/97/4P/f/+D/4P/k/+P/3v/f/9//4//p/+b/5f/l/9z/4f/p/+H/5//m/+H/8P/x/+7/9f/9//z/8//2//r/9v/w/+//8f/p/+P/4f/d/9z/2//Z/9r/3P/e/9z/4P/k/+L/4//f/9z/2f/a/9v/0v/N/8n/yf/J/8D/tv+z/7f/s/+x/7f/sv+x/8D/xP/C/8b/yv/S/9H/xf/D/8n/zv/S/8//0P/X/9D/z//X/9T/0P/L/8X/yP/S/9X/0f/L/83/1f/b/+D/2//W/9X/0P/U/9j/0P/U/9n/2v/i/+v/8v/s/9z/2f/U/8f/yP/M/8n/yf/P/9D/yf/Q/8r/xP/Q/8v/zf/T/9L/2v/Z/9z/5v/o/+j/6f/o/+b/5//o//H/+P/z//L/7//o/+T/5P/m/+3/7//v//P/6//p//P/8P/p/+X/4//j/+X/6P/l/+X/7P/o/9//5P/h/9n/2//b/93/5f/g/9r/0//L/8//yf++/7//vP+8/8H/wf/C/8H/v/+6/7T/sf+u/63/qv+t/6//q/+t/6v/p/+l/6T/pf+t/7L/r/+u/7f/vf+7/7r/vf+6/7v/u//A/83/yf/I/w=="}
+
+event: chunk
+data: {"data": "zP/J/8P/uP+8/7r/tf+//7j/tP+3/7X/uv+//8H/x//F/8L/yf/J/8n/y//H/8P/vf+7/73/xv/J/8r/z//N/8//yf/D/8P/xf/M/8z/yP/G/8H/vP+//8X/xf/J/8//0P/P/9T/2P/Y/9v/2f/Z/9//2v/d/+H/3f/d/9v/0//U/9j/1v/Z/+L/6v/s/+7/6v/g/9v/1//P/8n/x//I/8f/v/+3/7X/uP+7/7T/tP+6/7T/sP+6/8P/zP/Q/8z/z//T/9j/4f/c/+D/5v/d/+X/7v/o/+n/6v/o/+j/6P/i/9z/2//f/9z/3P/e/9j/2f/g/+z/7v/q/+n/5v/r//L/8v/n/9z/5P/u/+3/6f/p/+//7//o/+r/9P/v//H/+P/t/+//9f/2//T/8P/1//X/9f/+/wcABAAIABIAFAAYABcAEwAYABgAGwAlACgAKAAoACQAJAAnACYAJwAoACAAGwAiACYAKQArACsALwAuACkAKwAqACkAJQAXABcAGAAQABIAGAAaABgAHgAlACIAJAAjACUAKwAkACEAJAAjACYAKwAzADUAMAAyADgAMwArAC8AMgA0ADgAOAA6ADYAPABCAEEARABHAEQAQwBDAD8APQBDAEUARgBDADsAPgBBADgAPABDAD4ARQBMAEkARwBCAEIAQwBFAEcAQABCAEcAPgBBAEYAQwA7ADYAPQBDAEcARABEAEgARwBOAE0ARwBOAE0ASABEADgANQA2ADoAQAA5ADIANQA0ADUAOQA5ADwAQgBDAEIARQBGAEIAPgA9AD4AOwA7ADsAQwBJAEYAVQBaAFUAUwBNAFIAVgBQAE8AUgBYAFQATQBQAA=="}
+
+event: timestamps
+data: {"word_timestamps": {"words": ["over", "the", "last", "six", "months", ",", "there", "has", "been", "a", "lot", "of", "talk", "about", "the", "future", "of", "theatrical", "exhibition"], "start": [0, 0.624, 0.816, 1.12, 1.52, 2.08, 2.3, 2.496, 2.7, 2.896, 3.024, 3.232, 3.408, 3.664, 4.0, 4.192, 4.608, 4.768, 5.456], "end": [0.624, 0.816, 1.12, 1.52, 2.08, 2.304, 2.496, 2.704, 2.896, 3.024, 3.232, 3.408, 3.664, 4.0, 4.192, 4.608, 4.768, 5.456, 6.672]}}
+
+event: done
+data: {"done": true}
+
+```
+
+
+<RequestExample>
+```bash cURL
+curl --request POST \
+  --url https://users.rime.ai/v1/rime-tts \
+  --header 'Accept: text/eventstream' \
+  --header 'Authorization: Bearer <authorization>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "speaker": "<string>",
+  "text": "<string>",
+  "modelId": "<string>",
+  "samplingRate": 22050,
+  "speedAlpha": 1.0,
+  "reduceLatency": false,
+  "pauseBetweenBrackets": false,
+  "phonemizeBetweenBrackets": false,
+  "inlineSpeedAlpha": "3, 0.5"
+}'
+```
+
+```python Python
+import requests
+
+url = "https://users.rime.ai/v1/rime-tts"
+
+payload = {
+    "speaker": "<string>",
+    "text": "<string>",
+    "modelId": "<string>",
+    "samplingRate": 22050,
+    "speedAlpha": 1.0,
+    "reduceLatency": False,
+    "pauseBetweenBrackets": false,
+    "phonemizeBetweenBrackets": false
+}
+headers = {
+    "Accept": "text/eventstream",
+    "Authorization": "Bearer <authorization>",
+    "Content-Type": "application/json"
+}
+
+# Use stream=True to handle streaming response
+response = requests.request("POST", url, json=payload, headers=headers, stream=True)
+
+# Check if the request was successful
+if response.status_code == 200:
+    with open("audio_output.mp3", "wb") as f:
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+else:
+    print("Error:", response.status_code)
+
+print(response.text)
+```
+
+```javascript JavaScript
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'text/eventstream',
+    Authorization: 'Bearer <authorization>',
+    'Content-Type': 'application/json'
+  },
+  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>","samplingRate":22050,"speedAlpha":1.0,"reduceLatency":false}'
+};
+
+fetch('https://users.rime.ai/v1/rime-tts', options)
+  .then(response => response.text())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+```
+
+```php PHP
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://users.rime.ai/v1/rime-tts",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
+  CURLOPT_HTTPHEADER => [
+    "Accept: text/eventstream",
+    "Authorization: Bearer <authorization>",
+    "Content-Type: application/json"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+```
+
+```go Go
+package main
+
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+
+  url := "https://users.rime.ai/v1/rime-tts"
+
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Accept", "text/eventstream")
+  req.Header.Add("Authorization", "Bearer <authorization>")
+  req.Header.Add("Content-Type", "application/json")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(res)
+  fmt.Println(string(body))
+
+}
+```
+
+```java Java
+HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
+  .header("Accept", "text/eventstream")
+  .header("Authorization", "Bearer <authorization>")
+  .header("Content-Type", "application/json")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  .asString();
+```
+</RequestExample>

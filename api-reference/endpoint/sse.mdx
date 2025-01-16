@@ -13,12 +13,17 @@ authMethod: "bearer"
 <ParamField body="speaker" type="string" required>
   Must be one of the voices <a href="https://rime.ai/docs/voices">listed in our documentation</a>.
 </ParamField>
+
 <ParamField body="text" type="string" required>
   The text you'd like spoken
 </ParamField>
 
 <ParamField body="modelId" type="string">
   Choose `mist` for hyper-realistic conversational voices or `v1` for Rime's first-gen model (default: `v1`)
+</ParamField>
+
+<ParamField body="audioFormat" type="string">
+  One of `mp3`, `mulaw`, or `pcm`
 </ParamField>
 
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">

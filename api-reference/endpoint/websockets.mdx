@@ -1,0 +1,151 @@
+---
+title: 'Websockets'
+api: 'GET wss://users-ws.rime.ai/ws'
+authMethod: "bearer"
+---
+
+## Overview
+
+Rime's websocket implementation accepts bare text, and responds with audio bytes of the selected format. All synthesis arguments are provided as query parameters when establishing the connection.
+
+The websocket API buffers inputs up to on of the following punctuation characters: `.`, `,`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
+
+## Messages
+
+### Send
+
+The messages your client will send to the websocket API will be bare (non-serialized) text.
+
+```example
+This will be converted to audio via websockets
+```
+
+### Receive
+
+The messages your client will receive will be raw audio bytes in the audio format specified at connection time.
+
+```example
+<FF>^@^@^@9LAME3.100^AP^@^@^@^@^@^@^@^@^T<A0>$^D>"^@^@<A0>^@^@<A8><C0><BA><9D>G^N^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@
+^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@
+^@^@^@^@^@^@^@^@^@^@
+```
+
+## Commands
+
+There will be times when you want to interact with the API and manipute the stored buffer. These are the current supported commands.
+
+### `<CLEAR>`
+
+This clears the current buffer. Used in the event of interruptions.
+
+### `<EOS>`
+
+This forces whatever buffer exists, if any, to be synthesized, and for the server to close the connection after sending the generated audio.
+
+## Variable Parameters
+
+<ParamField body="speaker" type="string" required>
+  Must be one of the voices <a href="https://rime.ai/docs/voices">listed in our documentation</a>.
+</ParamField>
+
+<ParamField body="text" type="string" required>
+  The text you'd like spoken
+</ParamField>
+
+<ParamField body="modelId" type="string">
+  Choose `mist` for hyper-realistic conversational voices or `v1` for Rime's first-gen model (default: `v1`)
+</ParamField>
+
+<ParamField body="audioFormat" type="string">
+  One of `mp3`, `mulaw`, or `pcm`
+</ParamField>
+
+<ParamField body="pauseBetweenBrackets" type="bool" default="false">
+  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
+  Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences.
+</ParamField>
+
+<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
+  When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
+  Example: "\{h'El.o} World" will pronounce "Hello" as expected. More details on this feature are incoming!
+</ParamField>
+
+<ParamField body="inlineSpeedAlpha" type="string">
+  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
+  Example: "This sentence is [really] [fast]" with inlineSpeedAlpha "0.5, 3" will make "really" slow and "fast" fast.
+</ParamField>
+
+<ParamField body="samplingRate" type="int">
+  The value, if provided, must be between 4000 and 44100. Default: 22050
+</ParamField>
+
+<ParamField body="speedAlpha" type="float" default="1.0">
+  Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher than 1.0 is slower than default.
+</ParamField>
+
+<ParamField body="reduceLatency" type="bool" default="false">
+  Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
+</ParamField>
+
+
+<RequestExample>
+
+```python Python
+class RimeClient:
+    def __init__(self, speaker, api_key):
+        self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=mist&audioFormat=mp3"
+        self.auth_headers = {
+            "Authorization": f"Bearer {api_key}"
+        }
+        self.audio_data = b''
+
+    async def send_tokens(self, websocket, message):
+        for token in message:
+            await websocket.send(token)
+
+    async def handle_audio(self, websocket):
+        while True:
+            try:
+                audio = await websocket.recv()
+            except websockets.exceptions.ConnectionClosedOK:
+                break
+            self.audio_data += audio
+
+    async def run(self, message):
+        async with websockets.connect(self.url, extra_headers=self.auth_headers) as websocket:
+            await asyncio.gather(
+                self.send_tokens(websocket, message),
+                self.handle_audio(websocket),
+            )
+
+    def save_audio(self, file_path):
+        with open(file_path, 'wb') as f:
+            f.write(self.audio_data)
+
+  message = [
+    "This ",
+    "is ",
+    "a ",
+    "test ",
+    "<CLEAR>",
+    "This ",
+    "is ",
+    "a ",
+    "sentence, ",
+    "that ",
+    "will ",
+    "produce ",
+    "audio ",
+    "across ",
+    "two ",
+    "messages.",
+    "<EOS>",
+  ]
+
+  client = RimeClient("cove", api_key="xxx")
+  asyncio.run(client.run(message))
+
+  client.save_audio("output.mp3")
+```
+
+</RequestExample>

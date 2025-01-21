@@ -68,6 +68,12 @@
       ]
     },
     {
+      "group": "Websocket API reference",
+      "pages": [
+        "api-reference/endpoint/websockets"
+      ]
+    },
+    {
       "group": "Non-Streaming API reference",
       "pages": [
         "api-reference/endpoint/json-mp3",

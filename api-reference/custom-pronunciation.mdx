@@ -2,11 +2,11 @@
 title: 'Custom Pronunciation'
 ---
 
-Rime can add new words to the dictionary within about 24 hours, but if you want to set pronunciation yourself, you can input a specific pronunciation within curly brackets. 
+For uncommon words, such as unique brand names or product names, Rime's speech synthesis model may not pronounce them correctly out of the box. While the Rime team can add new words to the dictionary within about 24 hours, if you want to specify the pronunciation yourself, you can input a custom pronunciation string within curly brackets.
 
-Custom pronunciations use Rime's phonetic alphabet (detailed [below](#rimes-phonetic-alphabet)), which is inspired by the International Phonetic Alphabet (IPA).
+Tools exist both to [check the dictionary coverage](#check-coverage) and to [generate a custom pronunciation string](#get-pronunciation).
 
-For example the word `custom` would be represented as `{k1Ast0xm}`. This even works for made-up words, like `gorbulets`, which would be `{g1orby0ul2Ets}`.
+Custom pronunciations use Rime's phonetic alphabet (detailed [below](#rimes-phonetic-alphabet)), which is inspired by the International Phonetic Alphabet (IPA). For example the word `custom` would be represented as `{k1Ast0xm}`. This even works for made-up words, like `gorbulets`, which would be `{g1orby0ul2Ets}`.
 
 |    Audio Clip     |      Sentence             |
 |-----------------|--------------------------|
@@ -22,6 +22,28 @@ For example the word `custom` would be represented as `{k1Ast0xm}`. This even wo
     "phonemizeBetweenBrackets": true
 }
 ```
+
+## Check Coverage
+
+The Coverage tool is available in the Rime dashboard: [rime.ai/dashboard/coverage](https://rime.ai/dashboard/coverage). 
+
+You can check to see if any word or list of words is included in the Rime dictionary before generating a custom pronunciation.
+
+![coverage tool](https://drive.google.com/file/d/10S4YzaIbklJJBa5DIanMnj3ljVhXrUcI/view?usp=sharing)
+
+## Get Pronunciation
+
+The Pronunciation tool is available in the Rime dashboard: [rime.ai/dashboard/pronunciation](https://rime.ai/dashboard/pronunciation).
+
+<iframe src="https://drive.google.com/file/d/1WRmVnxWs4Qt593uPUztHv7VhrwCWwivP/preview" width="560" height="315" allow="autoplay" allowfullscreen></iframe>
+
+To generate a custom pronunciation, all you have to do is spell and record yourself speaking the word, then click GENERATE.
+
+![pronunciation tool inputs](https://drive.google.com/file/d/1JdRUdbrpqfw1yBFUKin0V--_cfn4gdu5/view?usp=drive_link)
+
+When you click GENERATE, you'll send your recording to Rime's proprietary pronunciation model, which will return a pronunciation string using Rime's phonetic alphabet. You can then listen to the word spoken by any of Rime's voices and make any edits to the generated pronunciation.
+
+![pronunciation tool outputs](https://drive.google.com/file/d/1Dl_jDa90kasL4zdU_YWdlkzKzeaIAnzz/view?usp=sharing)
 
 ## Rime's Phonetic Alphabet
 

@@ -8,7 +8,7 @@ authMethod: "bearer"
 
 Rime's websocket implementation accepts bare text, and responds with audio bytes of the selected format. All synthesis arguments are provided as query parameters when establishing the connection.
 
-The websocket API buffers inputs up to on of the following punctuation characters: `.`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
+The websocket API buffers inputs up to on of the following punctuation characters: `.`, `,`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
 
 ## Messages
 

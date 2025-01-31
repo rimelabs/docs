@@ -72,7 +72,8 @@
     {
       "group": "Websocket API reference",
       "pages": [
-        "api-reference/endpoint/websockets"
+        "api-reference/endpoint/websockets",
+        "api-reference/endpoint/websockets-json"
       ]
     },
     {

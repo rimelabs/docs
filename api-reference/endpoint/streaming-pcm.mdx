@@ -21,6 +21,10 @@ authMethod: "bearer"
   Choose `mist` for hyper-realistic conversational voices or `v1` for Rime's first-gen model (default: `v1`)
 </ParamField>
 
+<ParamField body="lang" type="string" default="eng">
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="https://rime.ai/docs/voices">our voices documentation</a>.
+</ParamField>
+
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">
   When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
   Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences. 
@@ -49,6 +53,7 @@ authMethod: "bearer"
 </ParamField>
 
 <RequestExample>
+
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
@@ -59,6 +64,7 @@ curl --request POST \
   "speaker": "<string>",
   "text": "<string>",
   "modelId": "<string>",
+  "lang": "eng",
   "samplingRate": 16000,
   "speedAlpha": 1.0,
   "reduceLatency": false,
@@ -77,6 +83,7 @@ payload = {
     "speaker": "<string>",
     "text": "<string>",
     "modelId": "<string>",
+    "lang": "eng",
     "samplingRate": 16000,
     "speedAlpha": 1.0,
     "reduceLatency": False,
@@ -112,7 +119,7 @@ const options = {
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>","samplingRate":16000,"speedAlpha":1.0,"reduceLatency":false}'
+  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>", "lang": "eng", "samplingRate":16000,"speedAlpha":1.0,"reduceLatency":false}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
@@ -134,7 +141,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"samplingRate\": 16000,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\":\"eng\",\n  \"samplingRate\": 16000,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
   CURLOPT_HTTPHEADER => [
     "Accept: audio/pcm",
     "Authorization: Bearer <authorization>",
@@ -168,7 +175,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"samplingRate\": 16000,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n \"lang\": \"eng\",\n  \"samplingRate\": 16000,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
@@ -192,7 +199,7 @@ HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts"
   .header("Accept", "audio/pcm")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"samplingRate\": 16000,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n \"lang\": \"eng\",\n  \"samplingRate\": 16000,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
   .asString();
 ```
 </RequestExample>

@@ -1,0 +1,40 @@
+---
+title: 'List All Voices'
+api: 'GET https://users.rime.ai/data/voices/all-v2.json'
+---
+
+## View In Browser
+
+https://users.rime.ai/data/voices/all-v2.json
+
+## Example structure
+
+```json
+{
+  "mist": {
+    "eng": [
+      "abbie",
+      "allison",
+      // ...and more...
+    ]
+  },
+  "mistv2": {
+    "eng": [
+      "abbie",
+      "allison",
+      // ...and more ...
+    ],
+    "spa": [
+      "isa",
+      "mari",
+      // ...and more ...
+    ]
+  }
+}
+```
+
+## Explanation
+
+The response object is keyed by the applicable `modelId`. This is the same `modelId` used as an argument to our [TTS APIs](https://rimelabs.mintlify.app/api-reference/endpoint/streaming-pcm).
+
+It is then further keyed by an ISO 639-2 language code. Currently, only `eng` and `spa` are supported.

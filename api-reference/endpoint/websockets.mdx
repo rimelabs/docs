@@ -60,6 +60,10 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
   One of `mp3`, `mulaw`, or `pcm`
 </ParamField>
 
+<ParamField body="lang" type="string" default="eng">
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="https://rime.ai/docs/voices">our voices documentation</a>.
+</ParamField>
+
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">
   When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
   Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences.
@@ -93,7 +97,7 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 ```python Python
 class RimeClient:
     def __init__(self, speaker, api_key):
-        self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=mist&audioFormat=mp3"
+        self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=mistv2&audioFormat=mp3"
         self.auth_headers = {
             "Authorization": f"Bearer {api_key}"
         }

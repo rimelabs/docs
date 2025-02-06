@@ -19,27 +19,29 @@ https://users.rime.ai/data/voices/voice_details.json
         "region": "Generic",
         "demographic": "Latinx",
         "genre": [
-        "Conversational"
-        ]
+            "Conversational"
+        ],
+        "model_id": "mist",
+        "language": "eng"
     },
     {
-        "name": "Ana",
+        "name": "Abbie",
         "gender": "Female",
-        "age": "Middle",
+        "age": "Young",
         "country": "US",
-        "region": "Generic",
-        "demographic": "Latinx",
+        "region": "California",
+        "demographic": "White",
         "genre": [
-        "Conversational"
-        ]
+            "Conversational"
+        ],
+        "model_id": "mistv2",
+        "language": "eng"
     },
     // and more...
 ]
 ```
 
 ## Explanation
-This list is only relevant for modelID: `mist`
-
 These details are based on subjective assessment and are meant to serve as a general guide. Please see [Finding a Voice](https://rimelabs.mintlify.app/api-reference/voices) for more information.
 
 The response object is an array of objects, each representing a voice. Each object contains the following fields:
@@ -50,3 +52,5 @@ The response object is an array of objects, each representing a voice. Each obje
 - `region`: More specific than country, this field can indicate a particular area within a country.
 - `demographic`: Describes the demographic group the voice represents.
 - `genre`: An array of genres that the voice is suitable for, such as 'Conversational'.
+- `language`: The spoken language that the model is usable for
+- `model_id`: THe model id that the speaker is available under

@@ -58,6 +58,13 @@
         },
         "api-reference/latency",
         "api-reference/on-prem",
+        {
+          "group": "Integrations",
+          "icon": "puzzle-piece",
+          "pages": [
+            "api-reference/livekit"
+          ]
+        },
         "api-reference/privacy-compliance"
       ]
     },

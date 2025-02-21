@@ -15,12 +15,15 @@ The same holds for spelling sequences, like long words, being broken up as follo
 
 > P E N `<pause>` E L O `<pause>` P E
 
+
 We also introduce helpful pauses when transitioning between numbers and letters in mixed alphanumeric sequences, as follows:
 
 > P R M `<pause>` 4 2 3 `<pause>` G D D `<pause>` M L `<pause>` 2 3 `<pause>` 5 4
 
 
-This holds for any number, letter, or alphanumeric string. It will be spelled out in full if included in the parentheses of `spell()`. Let’s see how this works:
+This holds for any number, letter, or alphanumeric string. They will be spelled out in full if included in the parentheses of `spell()`. Spell also works with common symbols like @ (at) or - (dash).
+
+Let’s see how this works:
 
 ## `spell()` Applied to Words
 
@@ -73,3 +76,28 @@ The same goes for mixed alphanumerics. If I want the sentence to be read:
    "text": "the account is spell(rf543dc2)."
 }
 ```
+
+## `spell()` Applied to Typographical Symbols
+
+| Symbol | Pronunciation |
+|--------|---------------|
+| `@` | at |
+| `_` | underscore |
+| `-` | dash |
+| `.` | dot |
+
+Spell also works with common symbols. For example:
+> the email address is h e l p, at, r i m e, dot, c o m
+
+**Input:**
+`the email address is spell(help@rime.com).`
+
+```json
+{
+   "speaker": "tibur",
+   "modelId": "mistv2",
+   "text": "the email address is spell(help@rime.com)."
+}
+```
+
+

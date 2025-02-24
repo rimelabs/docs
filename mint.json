@@ -62,7 +62,8 @@
           "group": "Integrations",
           "icon": "puzzle-piece",
           "pages": [
-            "api-reference/livekit"
+            "api-reference/livekit",
+            "api-reference/vapi"
           ]
         },
         "api-reference/privacy-compliance"

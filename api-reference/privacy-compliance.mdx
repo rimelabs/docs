@@ -9,4 +9,6 @@ As of January 2025, we are undergoing our SOC II audit.
 
 As of February 2024, we are [HIPPA compliant](https://rime.ai/blog/hipaa-compliance). 
 
-As a general practice, we don’t collect customer data beyond character count unless requested. If you have concerns, we are happy to sign an MSA or BAA to outline specific terms.
+As a general practice, we don't collect customer data beyond character count unless requested. If you have concerns, we are happy to sign an MSA or BAA to outline specific terms.
+
+Rime does not use customer data to train our models, unless specifically asked. We also provide an API parameter `trainableUtterance=true` to explicitly allow us to use data for training. If this parameter is not included in an API call, the default is `false` and data will not be used for training.

@@ -1,0 +1,161 @@
+---
+title: 'Coverage'
+api: 'POST  https://beta.rime.ai/oov'
+authMethod: "bearer"
+---
+
+## Overview
+
+This API endpoint allows you to determine which words are included in the Rime dictionary out of the box. 
+
+We can add new words to our dictionary as needed within around 24 hours. Or you can immediately [generate a custom pronunciation](//api-reference/custom-pronunciation), which uses the [Rime phonetic alphabet](//api-reference/custom-pronunciation#rimes-phonetic-alphabet).
+
+In addition to the API, you can also check coverage in [the Rime dashboard](/api-reference/custom-pronunciation#check-coverage).
+
+## Example
+
+A request takes only the string `text`, for example:
+
+```bash
+curl -X POST https://beta.rime.ai/oov \
+     -H 'Authorization: Bearer <authorization>' \
+     -d '{"text": "This is just a testt. This, is, also, a, testtt"}';
+```
+
+The response will include an array with any strings not covered by the current Rime dictionary:
+
+```bash
+["testt","testtt"]
+```
+
+## Variable Parameters
+
+<ParamField body="text" type="string" required>
+  A string one or more words you'd like to check for coverage in our dictionary. Words can be separated by spaces, commas, or newlines. 
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://beta.rime.ai/oov \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer <authorization>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "text": "<string>"
+}'
+```
+
+```python Python
+import requests
+
+url = "https://beta.rime.ai/oov"
+
+payload = {
+    "text": "<string>"
+}
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <authorization>",
+    "Content-Type": "application/json"
+}
+
+response = requests.request("POST", url, json=payload, headers=headers)
+
+print(response.text)
+```
+
+```javascript JavaScript
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <authorization>',
+    'Content-Type': 'application/json'
+  },
+  body: '{"text":"<string>"}'
+};
+
+fetch('https://beta.rime.ai/oov', options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+```
+
+```php PHP
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://beta.rime.ai/oov",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\n  \"text\": \"<string>\"\n}",
+  CURLOPT_HTTPHEADER => [
+    "Accept: application/json",
+    "Authorization: Bearer <authorization>",
+    "Content-Type: application/json"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+```
+
+```go Go
+package main
+
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+
+  url := "https://beta.rime.ai/oov"
+
+  payload := strings.NewReader("{\n  \"text\": \"<string>\"\n}")
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Accept", "application/json")
+  req.Header.Add("Authorization", "Bearer <authorization>")
+  req.Header.Add("Content-Type", "application/json")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(res)
+  fmt.Println(string(body))
+
+}
+```
+
+```java Java
+HttpResponse<String> response = Unirest.post("https://beta.rime.ai/oov")
+  .header("Accept", "application/json")
+  .header("Authorization", "Bearer <authorization>")
+  .header("Content-Type", "application/json")
+  .body("{\n  \"text\": \"<string>\"\n}")
+  .asString();
+```
+
+</RequestExample>

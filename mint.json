@@ -99,6 +99,12 @@
         "api-reference/data/voices-v2",
         "api-reference/data/voice-details"
       ]
+    },
+    {
+      "group": "Other APIs",
+      "pages": [
+        "api-reference/endpoint/oov"
+      ]
     }
   ],
   "redirects": [

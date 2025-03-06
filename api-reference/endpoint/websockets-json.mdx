@@ -180,12 +180,17 @@ class RimeClient:
             except websockets.exceptions.ConnectionClosedOK:
                 break
             message = json.loads(audio)
-            print(message)
+            
             if message['type'] == 'chunk':
               self.audio_data += base64.b64decode(message['data'])
 
+            if message['type'] == 'timestamps':
+                print("Rime model pronounced the words...\n")
+                for w, t in zip(message['word_timestamps']['words'], message['word_timestamps']['start']):
+                    print(f"'{w}' at time {t}")
+
     async def run(self, messages):
-        async with websockets.connect(self.url, extra_headers=self.auth_headers) as websocket:
+        async with websockets.connect(self.url, additional_headers=self.auth_headers) as websocket:
             await asyncio.gather(
                 self.send_messages(websocket, messages),
                 self.handle_audio(websocket),
@@ -194,6 +199,8 @@ class RimeClient:
     def save_audio(self, file_path):
         with open(file_path, 'wb') as f:
             f.write(self.audio_data)
+        print(f"\n Audio saved at {file_path}")
+
 
 message = [
     {"text": "This "},

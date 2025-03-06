@@ -185,7 +185,7 @@ class RimeClient:
               self.audio_data += base64.b64decode(message['data'])
 
     async def run(self, messages):
-        async with websockets.connect(self.url, extra_headers=self.auth_headers) as websocket:
+        async with websockets.connect(self.url, additional_headers=self.auth_headers) as websocket:
             await asyncio.gather(
                 self.send_messages(websocket, messages),
                 self.handle_audio(websocket),

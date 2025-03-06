@@ -95,6 +95,9 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 <RequestExample>
 
 ```python Python
+import asyncio
+import websockets
+
 class RimeClient:
     def __init__(self, speaker, api_key):
         self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=mistv2&audioFormat=mp3"
@@ -126,7 +129,7 @@ class RimeClient:
         with open(file_path, 'wb') as f:
             f.write(self.audio_data)
 
-  message = [
+message = [
     "This ",
     "is ",
     "a ",
@@ -144,12 +147,12 @@ class RimeClient:
     "two ",
     "messages.",
     "<EOS>",
-  ]
+]
 
-  client = RimeClient("cove", api_key="xxx")
-  asyncio.run(client.run(message))
+client = RimeClient("cove", api_key="xxx")
+asyncio.run(client.run(message))
 
-  client.save_audio("output.mp3")
+client.save_audio("output.mp3")
 ```
 
 </RequestExample>

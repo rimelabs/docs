@@ -37,7 +37,7 @@ authMethod: "bearer"
 
 <ParamField body="inlineSpeedAlpha" type="string">
   Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
-  Example: "This sentence is [really] [fast]" with inlineSpeedAlpha "0.5, 3" will make "really" slow and "fast" fast.
+  Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
 </ParamField>
 
 <ParamField body="samplingRate" type="int">
@@ -69,7 +69,7 @@ curl --request POST \
   "reduceLatency": false,
   "pauseBetweenBrackets": false,
   "phonemizeBetweenBrackets": false,
-  "inlineSpeedAlpha": "3, 0.5"
+  "inlineSpeedAlpha": "0.5, 3"
 }'
 ```
 

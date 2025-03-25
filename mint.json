@@ -50,6 +50,7 @@
           "icon": "wrench",
           "pages": [
             "api-reference/linguistics",
+            "api-reference/speed",
             "api-reference/homographs",
             "api-reference/custom-pauses",
             "api-reference/custom-pronunciation",

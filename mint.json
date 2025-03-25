@@ -30,6 +30,7 @@
       "group": "Documentation",
       "pages": [
         "api-reference/quickstart",
+        "api-reference/changelog",
         "api-reference/voices",
         "api-reference/models",
         {

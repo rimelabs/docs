@@ -59,7 +59,17 @@
           ]
         },
         "api-reference/latency",
-        "api-reference/on-prem",
+        {
+          "group": "On-prem",
+          "icon": "server",
+          "pages": [
+            "api-reference/on-prem-quickstart",
+            "api-reference/on-prem-metrics",
+            "api-reference/on-prem-prometheus",
+            "api-reference/on-prem-helmcharts",
+            "api-reference/on-prem-gpu-estimator-tool"
+          ]
+        },
         {
           "group": "Integrations",
           "icon": "puzzle-piece",

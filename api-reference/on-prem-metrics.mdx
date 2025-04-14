@@ -1,0 +1,63 @@
+---
+title: Metrics
+---
+Keeping track of system metrics is crucial for maintaining a stable Rime self-hosted deployment. These insights help guide decisions about scaling and performance. To support this, Rime services expose multiple endpoints that let you monitor system health.
+
+### Rime API
+
+A `/health` route is available on port 8000 to give you a quick snapshot of overall status. You can check it with the following command:
+
+```bash
+curl -X GET "http://localhost:8000/health"
+```
+
+A typical response looks like this:
+```json
+{
+  "apiStatus": "ok",
+  "timestamp": "2025-04-03T13:59:58.902Z",
+  "licenseStatus": "valid",
+  "modelReachable": true
+}
+```
+This provides a simple health check mechanism to verify that both api and model services are up and responding.
+
+### Rime Model
+To check if the model is running properly, you can perform a liveness probe using the `/ping` endpoint:
+
+```bash
+curl -X GET "http://localhost:8080/ping"
+```
+
+A typical response looks like this:
+```json
+pong
+```
+
+### Prometheus Metrics
+⚠️ More metrics to be added in future releases.
+
+For more detailed operational insights, the model service exposes Prometheus-compatible metrics at the /metrics endpoint:
+
+```bash
+curl -X GET "http://localhost:8080/metrics"
+```
+
+This endpoint provides telemetry data including:
+* HTTP Request Counters: Detailed breakdown of requests by endpoint, status code, and HTTP method
+* Error Tracking: Counts of HTTP errors by type and status code
+
+Example metrics include:
+```json
+# HELP http_requests_total Total number of HTTP requests
+# TYPE http_requests_total counter
+http_requests_total{endpoint="/invocations",http_status="200",method="POST"} 102018.0
+http_requests_total{endpoint="/metrics",http_status="200",method="GET"} 69908.0
+http_requests_total{endpoint="/invocations",http_status="500",method="POST"} 38.0
+
+# HELP http_errors_total Total number of HTTP errors
+# TYPE http_errors_total counter
+http_errors_total{endpoint="/invocations",error_message="cannot access local variable '_var_var_6' where it is not associated with a value",http_status="500",method="POST"} 38.0
+```
+
+These metrics can be integrated with Prometheus monitoring systems to create dashboards and alerts for your Rime deployment. Read integration setup in the next page.

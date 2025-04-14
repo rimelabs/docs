@@ -1,6 +1,5 @@
 ---
-title: On-Prem
-icon: server
+title: Quickstart
 ---
 
 # Customer Documentation for Self-Hosting Rime On-Premise
@@ -23,7 +22,7 @@ With an on-premises deployment, all data remains within your corporate network, 
 
 ### Components
 
-![On-Premise Components](/images/on-prem-components.png)
+![On-Premise Components](/images/on-prem-components_update.png)
 
 ### Prerequisites
 
@@ -132,22 +131,22 @@ This documentation will cover specific instructions and considerations for deplo
 
 ## 4. Deploy Our Services
 
-### Pull Images from DockerHub
+### Pull Images from quay.io
 
-```bash Login to DockerHub
-sudo docker login --username username
+```bash Login to quay.io
+sudo docker login -u=<login details to be provided>
 ```
 
-**Text-to-Speech (TTS) Image**: Pull the latest TTS service image from DockerHub using the provided Docker command.
+**Text-to-Speech (TTS) Image**: Pull the latest TTS service image from quay.io using the provided Docker command.
 
 ```bash Pull TTS Image
-sudo docker pull rimelabs/onprem:onprem_v4
+sudo docker pull quay.io/rimelabs/mistv2:<tag>
 ```
 
-**API Image**: Similarly, pull the latest API service image from DockerHub to be used in conjunction with the TTS service.
+**API Image**: Similarly, pull the latest API service image from quay.io to be used in conjunction with the TTS service.
 
 ```bash Pull API Image
-sudo sudo docker pull rimelabs/onprem:api_v10
+sudo sudo docker pull quay.io/rimelabs/api:<tag>
 ```
 
 **Docker Compose File**: Create a `docker-compose.yml` file with your editor of choice to define the services and their configurations.
@@ -191,7 +190,7 @@ sudo docker compose up -d
 
 Rime API instance will listen on port `8000`.
 
-You'll need to permit outbound network traffic to `http://optimize-api-55fd43d0f53d69ee.elb.us-west-1.amazonaws.com/usage` and `http://optimize-api-55fd43d0f53d69ee.elb.us-west-1.amazonaws.com/license` to verify with our servers that you have an active on-prem licensing agreement and to register usage. Additionally, you'll need access to [DockerHub](https://hub.docker.com/), a container image repository platform, so you'll need to allow outbound traffic to their servers on port `443`.
+You'll need to permit outbound network traffic to `http://optimize.rime.ai/usage` and `http://optimize.rime.ai/license` to verify with our servers that you have an active on-prem licensing agreement and to register usage. Additionally, you'll need access to [quay.io](https://hub.docker.com/), a container image repository platform, so you'll need to allow outbound traffic to their servers on port `443`.
 
 ### Deployment Steps
 

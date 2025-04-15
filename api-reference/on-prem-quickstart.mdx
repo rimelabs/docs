@@ -159,15 +159,17 @@ vim docker-compose.yml
 version: '3.8'
 services:
   api:
-    image: c3057973caf4
+    image: <image_id>
     depends_on:
       - model
     ports:
       - "8000:8000"
     restart: unless-stopped
+    environment:
+      - MODEL_URL=http://model:8080/invocations
 
   model:
-    image: 03943a61fc9d
+    image: <image_id>
     deploy:
       resources:
         reservations:
@@ -179,6 +181,8 @@ services:
       - "8080:8080"
     restart: unless-stopped
 ```
+
+> When running on Kubernetes, ensure that `MODEL_URL` points to `http://0.0.0.0:8080/invocations` instead of the Docker Compose service name.
 
 **Start docker compose**:
 

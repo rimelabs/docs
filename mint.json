@@ -66,6 +66,7 @@
           "pages": [
             "api-reference/daily",
             "api-reference/livekit",
+            "api-reference/signalwire",
             "api-reference/vapi"
           ]
         },

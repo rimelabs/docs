@@ -47,7 +47,7 @@
           ]
         },
         {
-          "group": "Customizing Speech",
+          "group": "Customizing Mist v2",
           "icon": "wrench",
           "pages": [
             "api-reference/linguistics",

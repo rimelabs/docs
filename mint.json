@@ -82,29 +82,40 @@
       ]
     },
     {
-      "group": "Streaming API reference",
+      "group": "Arcana API reference",
       "pages": [
-        "api-reference/endpoint/streaming-pcm",
-        "api-reference/endpoint/streaming-mp3",
-        "api-reference/endpoint/streaming-mulaw",
-        "api-reference/endpoint/sse"
+        "api-reference/arcana/streaming-mp3"
       ]
     },
     {
-      "group": "Websocket API reference",
-      "pages": [
-        "api-reference/endpoint/websockets",
-        "api-reference/endpoint/websockets-json"
-      ]
-    },
-    {
-      "group": "Non-Streaming API reference",
-      "pages": [
-        "api-reference/endpoint/json-mp3",
-        "api-reference/endpoint/json-wav",
-        "api-reference/endpoint/json-ogg",
-        "api-reference/endpoint/json-mulaw"
-      ]
+    "group": "Mist v2 API reference",
+    "pages": [
+      {
+        "group": "Streaming",
+        "pages": [
+          "api-reference/endpoint/streaming-pcm",
+          "api-reference/endpoint/streaming-mp3",
+          "api-reference/endpoint/streaming-mulaw",
+          "api-reference/endpoint/sse"
+        ]
+      },
+      {
+        "group": "Websocket",
+        "pages": [
+          "api-reference/endpoint/websockets",
+          "api-reference/endpoint/websockets-json"
+        ]
+      },
+      {
+        "group": "Non-Streaming",
+        "pages": [
+          "api-reference/endpoint/json-mp3",
+          "api-reference/endpoint/json-wav",
+          "api-reference/endpoint/json-ogg",
+          "api-reference/endpoint/json-mulaw"
+        ]
+      }
+    ]
     },
     {
       "group": "API Metadata",

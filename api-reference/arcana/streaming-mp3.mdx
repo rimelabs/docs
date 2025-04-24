@@ -1,0 +1,172 @@
+---
+title: 'Streaming MP3'
+api: 'POST https://users.rime.ai/v1/rime-tts'
+authMethod: "bearer"
+---
+
+## Fixed Headers
+
+<ParamField header="Accept" type="audio/mp3" required></ParamField>
+
+## Variable Parameters
+
+<ParamField body="speaker" type="string" required>
+  Must be one of the Arcana voices <a href="https://docs.rime.ai/api-reference/voices">listed in our documentation</a>.
+</ParamField>
+<ParamField body="text" type="string" required>
+  The text you'd like spoken. Character limit per request is 500 via the API and 1,000 in the dashboard UI.
+</ParamField>
+
+<ParamField body="modelId" type="string">
+  Choose `arcana` for hyper-realistic conversational voices.
+</ParamField>
+
+<ParamField body="repetition_penalty" type="float" default="1.5">
+  The repetition penalty.
+</ParamField>
+
+<ParamField body="temperature" type="float" default="0.5">
+  The temperature.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl --request POST \
+  --url https://users.rime.ai/v1/rime-tts \
+  --header 'Accept: audio/mp3' \
+  --header 'Authorization: Bearer <authorization>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "speaker": "<string>",
+  "text": "<string>",
+  "modelId": "arcana",
+  "repetition_penalty": 1.5,
+  "temperature": 0.5,
+}'
+```
+
+```python Python
+import requests
+
+url = "https://users.rime.ai/v1/rime-tts"
+
+payload = {
+    "speaker": "<string>",
+    "text": "<string>",
+    "modelId": "arcana",
+    "repetition_penalty": 1.5,
+    "temperature": 0.5,
+}
+headers = {
+    "Accept": "audio/mp3",
+    "Authorization": "Bearer <authorization>",
+    "Content-Type": "application/json"
+}
+
+# Use stream=True to handle streaming response
+response = requests.request("POST", url, json=payload, headers=headers, stream=True)
+
+# Check if the request was successful
+if response.status_code == 200:
+    with open("audio_output.mp3", "wb") as f:
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+else:
+    print("Error:", response.status_code)
+
+print(response.text)
+```
+
+```javascript JavaScript
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'audio/mp3',
+    Authorization: 'Bearer <authorization>',
+    'Content-Type': 'application/json'
+  },
+  body: '{"speaker":"<string>","text":"<string>","modelId":"arcana>","repetition_penalty":1.5,"temperature":0.5}'
+};
+
+fetch('https://users.rime.ai/v1/rime-tts', options)
+  .then(response => response.text())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+```
+
+```php PHP
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://users.rime.ai/v1/rime-tts",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5\n}",
+  CURLOPT_HTTPHEADER => [
+    "Accept: audio/mp3",
+    "Authorization: Bearer <authorization>",
+    "Content-Type: application/json"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+```
+
+```go Go
+package main
+
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+
+  url := "https://users.rime.ai/v1/rime-tts"
+
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5\n}")
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Accept", "audio/mp3")
+  req.Header.Add("Authorization", "Bearer <authorization>")
+  req.Header.Add("Content-Type", "application/json")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(res)
+  fmt.Println(string(body))
+
+}
+```
+
+```java Java
+HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
+  .header("Accept", "audio/mp3")
+  .header("Authorization", "Bearer <authorization>")
+  .header("Content-Type", "application/json")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5\n}")
+  .asString();
+```
+</RequestExample>

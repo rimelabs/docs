@@ -85,7 +85,9 @@
     {
       "group": "Arcana API reference",
       "pages": [
-        "api-reference/arcana/streaming-mp3"
+        "api-reference/arcana/streaming-pcm",
+        "api-reference/arcana/streaming-mp3",
+        "api-reference/arcana/streaming-wav"
       ]
     },
     {

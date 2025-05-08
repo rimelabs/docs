@@ -36,13 +36,13 @@ There are currently 3 models that Rime has in production, `arcana`, `mistv2` and
 Arcana also supports several additional controls due to its LLM backbone. We recommend leaving these on the default values.
 
 * `temperature`: Controls the randomness of the generated speech.
-  * **Low**: Produces more predictable and focused speech.
-  * **High**: Introduces variability in prosody and expression, potentially leading to more dynamic speech patterns.
+  * **Low** (0): Produces more predictable and focused speech.
+  * **High** (1+): Introduces variability in prosody and expression, potentially leading to more dynamic speech patterns.
 * `repetition_penalty`: Discourages the model from repeating the same sounds.
-  * **Low**: May result in repetitive speech patterns.
-  * **High**: Encourages variation, leading to more natural-sounding speech and realistic laughter.
+  * **Low** (&lt;1): May result in repetitive speech patterns.
+  * **High** (&gt;1): Encourages variation, leading to more natural-sounding speech and realistic laughter.
 * `top_p`: Determines the diversity of choices by limiting the selection to a subset of probable sounds.
-  * **Low**: Restricts the model to the most probable sounds, resulting in more monotonic speech.
-  * **High**: Allows for a broader range of sound choices, enhancing the naturalness and variability of speech.
+  * **Low** (0): Restricts the model to the most probable sounds, resulting in more monotonic speech.
+  * **High** (1): Allows for a broader range of sound choices, enhancing the naturalness and variability of speech.
 
-
+See the [Arcana API reference pages](/api-reference/arcana/streaming-mp3) for more details.

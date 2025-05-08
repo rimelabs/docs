@@ -22,15 +22,21 @@ authMethod: "bearer"
 </ParamField>
 
 <ParamField body="repetition_penalty" type="float" default="1.5">
-  The repetition penalty. Range is 1 to 2.
+  The repetition penalty. We do not recommend changing this from the default value. Typical range is 1 to 2.
+
+  Float that penalizes new tokens based on whether they appear in the prompt and the generated text so far. Values > 1 encourage the model to use new tokens, while values < 1 encourage the model to repeat tokens.
 </ParamField>
 
 <ParamField body="temperature" type="float" default="0.5">
-  The temperature. Range is 0 to 1.
+  The temperature. We do not recommend changing this from the default value. Typical range is 0 to 1.
+
+  Float that controls the randomness of the sampling. Lower values make the model more deterministic, while higher values make the model more random. Zero means greedy sampling.
 </ParamField>
 
 <ParamField body="top_p" type="float" default="0.5">
-  The top p. Range is 0 to 1.
+  The top p. We do not recommend changing this from the default value. Typical range is 0 to 1.
+
+  Float that controls the cumulative probability of the top tokens to consider. Must be in (0, 1]. Set to 1 to consider all tokens.
 </ParamField>
 
 <ParamField body="max_tokens" type="int" default="1200">

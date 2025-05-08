@@ -7,6 +7,8 @@ Models are constantly being trained and finetuned based on user and customer fee
 
 There are currently 3 models that Rime has in production, `arcana`, `mistv2` and `mist`.
 
+## Arcana
+
 **Arcana**, released April 2025, is Rime’s most expressive and lifelike TTS model to date. It pushes the boundary of naturalness and emotional depth in synthesized speech.
 
 * Highly expressive, natural-sounding speech with emotional nuance  
@@ -14,6 +16,8 @@ There are currently 3 models that Rime has in production, `arcana`, `mistv2` and
 * Supports a wide range of vocal demographics, including different ages, accents, and cultural backgrounds  
 * Enhanced realism for dynamic, conversational, and character-driven use cases  
 * Available via `modelId: arcana` through Rime’s API endpoints
+
+## Mist
 
 **Mistv2**, released February 2025 has the following features:
 
@@ -26,4 +30,19 @@ There are currently 3 models that Rime has in production, `arcana`, `mistv2` and
 **Mist** is Rime’s next generation TTS engine, released April 2023, capable of synthesizing conversational speech. Using the `modelId` parameter for Rime’s TTS endpoints, specifying `mistv2` or `mist`, will allow you to synthesize speech using this newer family of models. As of February 2025, the default value for `modelId` when unspecified is `mist`.
 
 **Model v1 was released in April 2022 and has been deprecated.**
+
+## Additional Controls
+
+Arcana also supports several additional controls due to its LLM backbone. We recommend leaving these on the default values.
+
+* `temperature`: Controls the randomness of the generated speech.
+  * **Low**: Produces more predictable and focused speech.
+  * **High**: Introduces variability in prosody and expression, potentially leading to more dynamic speech patterns.
+* `repetition_penalty`: Discourages the model from repeating the same sounds.
+  * **Low**: May result in repetitive speech patterns.
+  * **High**: Encourages variation, leading to more natural-sounding speech and realistic laughter.
+* `top_p`: Determines the diversity of choices by limiting the selection to a subset of probable sounds.
+  * **Low**: Restricts the model to the most probable sounds, resulting in more monotonic speech.
+  * **High**: Allows for a broader range of sound choices, enhancing the naturalness and variability of speech.
+
 

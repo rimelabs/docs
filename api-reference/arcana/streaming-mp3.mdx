@@ -39,6 +39,10 @@ authMethod: "bearer"
   Float that controls the cumulative probability of the top tokens to consider. Must be in (0, 1]. Set to 1 to consider all tokens.
 </ParamField>
 
+<ParamField body="sampling_rate" type="int" default="24000">
+  The sampling rate (Hz). Range is 8000 to 48000.
+</ParamField>
+
 <ParamField body="max_tokens" type="int" default="1200">
   The max tokens. Range is 200 to 5000.
 </ParamField>
@@ -57,6 +61,7 @@ curl --request POST \
   "repetition_penalty": 1.5,
   "temperature": 0.5,
   "top_p": 0.5,
+  "sampling_rate": 24000,
   "max_tokens": 1200
 }'
 ```
@@ -73,6 +78,7 @@ payload = {
     "repetition_penalty": 1.5,
     "temperature": 0.5,
     "top_p": 0.5,
+    "sampling_rate": 24000,
     "max_tokens": 1200
 }
 headers = {
@@ -104,7 +110,7 @@ const options = {
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","modelId":"arcana","repetition_penalty":1.5,"temperature":0.5,"top_p":0.5,"max_tokens":1200}'
+  body: '{"speaker":"<string>","text":"<string>","modelId":"arcana","repetition_penalty":1.5,"temperature":0.5,"top_p":0.5,"sampling_rate":24000,"max_tokens":1200}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
@@ -126,7 +132,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"max_tokens\": 1200\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"sampling_rate\": 24000,\n  \"max_tokens\": 1200\n}",
   CURLOPT_HTTPHEADER => [
     "Accept: audio/mp3",
     "Authorization: Bearer <authorization>",
@@ -160,7 +166,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"max_tokens\": 1200\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"sampling_rate\": 24000,\n  \"max_tokens\": 1200\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
@@ -184,7 +190,7 @@ HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts"
   .header("Accept", "audio/mp3")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"max_tokens\": 1200\n}")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"sampling_rate\": 24000,\n  \"max_tokens\": 1200\n}")
   .asString();
 ```
 </RequestExample>

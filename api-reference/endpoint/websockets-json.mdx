@@ -51,6 +51,14 @@ Your client can clear out the accumulated buffer, which is useful in the case of
 { "operation": "clear" }
 ```
 
+#### Flush
+
+This forces whatever buffer exists, if any, to be synthesized, and the generated audio to be sent over.
+
+```json
+{ "operation": "flush" }
+```
+
 #### EOS
 
 At times, your client would like to generate audio for whatever remains in the buffer, and then have the connection immediately closed.

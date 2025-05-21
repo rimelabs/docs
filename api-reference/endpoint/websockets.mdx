@@ -38,9 +38,14 @@ There will be times when you want to interact with the API and manipute the stor
 
 This clears the current buffer. Used in the event of interruptions.
 
+### `<FLUSH>`
+
+This forces whatever buffer exists, if any, to be synthesized, and the generated audio to be sent over.
+
 ### `<EOS>`
 
 This forces whatever buffer exists, if any, to be synthesized, and for the server to close the connection after sending the generated audio.
+
 
 ## Variable Parameters
 

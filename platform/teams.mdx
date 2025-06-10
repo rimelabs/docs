@@ -1,0 +1,30 @@
+---
+title: Teams
+icon: people-group
+---
+
+## Creating a Team on Rime
+Navigate to the "Team" tab in the dashboard. Give your new team a name.
+Once you create a team, there is currently no way to undo this action.
+
+## Sending an invite
+Once you have created a team, and are the owner of that team, you can invite new members.
+Navigate to the "Invite" tab in the dashboard. Enter the email address and desired role for the new team member.
+
+NOTE: Rime users can only be a member of one team at a time.
+
+## Team Billing
+⚠️ The Stripe account associated with the Rime user who created the team shall be the billing account for the entire team's api usage.
+Any owner can access and update the billing information.
+Any api key belonging to a member of the team shall have it's usage rolled up into the team's metered usage.
+
+
+## Team Roles
+There are two roles on Rime teams: **Owner** and **Member**.
+
+| Role  | Can Invite New Members | Can Access and Edit Billing Info | Can See All Member's API Keys | Can Create API Keys | Can Delete Any Member's API Keys | Can Remove Members |
+|-------|------------------------|---------------------------------|-------------------------------|---------------------|----------------------------------|--------------------|
+| Owner | ✅                     | ✅                               | ✅                            | ✅                  | ✅                               | ❌                 |
+| Member| ❌                     | ❌                               | ❌                            | ✅                  | ❌                               | ❌                 |
+
+

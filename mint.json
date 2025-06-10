@@ -33,7 +33,6 @@
         "api-reference/changelog",
         "api-reference/voices",
         "api-reference/models",
-        "platform/teams",
         {
           "group": "Formatting Text",
           "icon": "language",
@@ -80,7 +79,8 @@
             "api-reference/vapi"
           ]
         },
-        "api-reference/privacy-compliance"
+        "api-reference/privacy-compliance",
+        "platform/teams"
       ]
     },
     {

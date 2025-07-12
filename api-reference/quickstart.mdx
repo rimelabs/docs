@@ -30,3 +30,8 @@ Every user gets a generous amount of free characters every month. To kick off yo
 ## How to use the API
 
 The left navigation of this docs page will have reference code examples for using Rime's TTS API. We have organized them so you can easily see how different audio formats and different response formats, i.e. streaming vs. non-streaming are accessed.
+
+#### ⚠️ Using API keys in query parameters (not recommended)
+
+For environments where setting HTTP headers is not possible (e.g., when using Cloudflare Workers with WebSocket APIs), you may pass the `rime_apikey` via a query parameter.
+We continue to recommend using Bearer tokens in the `Authorization` header whenever possible.

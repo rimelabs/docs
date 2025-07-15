@@ -23,7 +23,7 @@ authMethod: "bearer"
 
 <ParamField body="repetition_penalty" type="float" default="1.5">
   The repetition penalty. We do not recommend changing this from the default value. Typical range is 1 to 2.
-  
+
   Float that penalizes new tokens based on whether they appear in the prompt and the generated text so far. Values > 1 encourage the model to use new tokens, while values < 1 encourage the model to repeat tokens.
 </ParamField>
 
@@ -33,7 +33,7 @@ authMethod: "bearer"
   Float that controls the randomness of the sampling. Lower values make the model more deterministic, while higher values make the model more random. Zero means greedy sampling.
 </ParamField>
 
-<ParamField body="top_p" type="float" default="0.5">
+<ParamField body="top_p" type="float" default="1">
   The top p. We do not recommend changing this from the default value. Typical range is 0 to 1.
 
   Float that controls the cumulative probability of the top tokens to consider. Must be in (0, 1]. Set to 1 to consider all tokens.
@@ -61,7 +61,7 @@ curl --request POST \
   "modelId": "arcana",
   "repetition_penalty": 1.5,
   "temperature": 0.5,
-  "top_p": 0.5,
+  "top_p": 1,
   "samplingRate": 24000,
   "max_tokens": 1200
 }'
@@ -78,7 +78,7 @@ payload = {
     "modelId": "arcana",
     "repetition_penalty": 1.5,
     "temperature": 0.5,
-    "top_p": 0.5,
+    "top_p": 1,
     "samplingRate": 24000,
     "max_tokens": 1200
 }
@@ -111,7 +111,7 @@ const options = {
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","modelId":"arcana","repetition_penalty":1.5,"temperature":0.5,"top_p":0.5,"samplingRate":24000,"max_tokens":1200}'
+  body: '{"speaker":"<string>","text":"<string>","modelId":"arcana","repetition_penalty":1.5,"temperature":0.5,"top_p":1,"samplingRate":24000,"max_tokens":1200}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
@@ -133,7 +133,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}",
   CURLOPT_HTTPHEADER => [
     "Accept: audio/mp3",
     "Authorization: Bearer <authorization>",
@@ -167,7 +167,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
@@ -191,7 +191,7 @@ HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts"
   .header("Accept", "audio/mp3")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 0.5,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}")
   .asString();
 ```
 </RequestExample>

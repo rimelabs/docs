@@ -219,6 +219,19 @@ You'll need to permit outbound network traffic to `http://optimize.rime.ai/usage
 
 **Request**:
 
+```bash Health Check
+curl http://localhost:8000/health
+```
+which should return
+```json
+{
+    "apiStatus":"ok",
+    "timestamp":timestamp,
+    "licenseStatus":"valid"/"expired-or-not-set",
+    "modelReachable":true/false
+}
+```
+
 ```bash Request Example
 curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY> -H "Content-Type: application/json" -d '{
   "text": "I would love to have a conversation with you. The new model is out.",
@@ -269,6 +282,4 @@ Sample response file: [result.pcm](https://drive.google.com/file/d/1pwkGW9jCe1TN
 
 ### Websockets Endpoints
 
-The non-json websockets endpoint will be served at `8001/ws` and the json websockets endpoint will be served at `8001/ws2`. For example
-`ws://localhost:8000/ws` and `ws://localhost:8000/ws2` respectively. See the
-[websockets api documentation](/api-reference/endpoint/websockets) for details.
+The json websockets endpoint will be served at port `8001`.  For example `ws://localhost:8001` which will be eqivalent to our [cloud websockets-json api ](/api-reference/endpoint/websockets-json).

@@ -83,7 +83,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 # verify docker running
 sudo docker run hello-world
 
-# install docker compose 
+# install docker compose
 sudo apt install -y docker-compose-plugin
 
 # verify docker compose version
@@ -99,13 +99,13 @@ curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dear
     sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
     sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 
-# Update the packages list from the repository: 
+# Update the packages list from the repository:
 sudo apt-get update
 
 # Install the NVIDIA Container Toolkit packages:
 sudo apt-get install -y nvidia-container-toolkit
 
-# Configure the container runtime 
+# Configure the container runtime
 sudo nvidia-ctk runtime configure --runtime=docker
 
 # Restart Docker
@@ -164,6 +164,7 @@ services:
       - model
     ports:
       - "8000:8000"
+      - "8001:8001"
     restart: unless-stopped
     environment:
       - MODEL_URL=http://model:8080/invocations
@@ -192,7 +193,7 @@ sudo docker compose up -d
 
 ### Networking
 
-Rime API instance will listen on port `8000`.
+The Rime API instance will listen on port `8000` for http traffic, and port `8001` for websockets traffic.
 
 You'll need to permit outbound network traffic to `http://optimize.rime.ai/usage` and `http://optimize.rime.ai/license` to verify with our servers that you have an active on-prem licensing agreement and to register usage. Additionally, you'll need access to [quay.io](https://quay.io/), a container image repository platform, so you'll need to allow outbound traffic to their servers on port `443`.
 
@@ -214,9 +215,22 @@ You'll need to permit outbound network traffic to `http://optimize.rime.ai/usage
 
 ## 5. Requests and Response Formats
 
-### Sending a simple curl request
+### HTTP Requests
 
 **Request**:
+
+```bash Health Check
+curl http://localhost:8000/health
+```
+which should return
+```json
+{
+    "apiStatus":"ok",
+    "timestamp":timestamp,
+    "licenseStatus":"valid"/"expired-or-not-set",
+    "modelReachable":true/false
+}
+```
 
 ```bash Request Example
 curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY> -H "Content-Type: application/json" -d '{
@@ -265,3 +279,7 @@ curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Co
 **Response**:
 
 Sample response file: [result.pcm](https://drive.google.com/file/d/1pwkGW9jCe1TN9GF5yQa6j619vc8WfjGu/view?usp=drive_link)
+
+### Websockets Endpoints
+
+The json websockets endpoint will be served at port `8001`.  For example `ws://localhost:8001` which will be eqivalent to our [cloud websockets-json api ](/api-reference/endpoint/websockets-json).

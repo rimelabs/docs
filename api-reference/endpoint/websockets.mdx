@@ -96,6 +96,11 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
   Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
 
+<ParamField body="immedate" type="bool" default="false">
+  When set to true, the websockets api will _not_ wait for complete sentences to synthesize audio. Audio will be synthesized as tokens are sent.
+  Note that this may result in unnatural prosidy if tokens are not grouped into meaningful chunks.
+</ParamField>
+
 
 <RequestExample>
 

@@ -113,6 +113,9 @@ sudo systemctl restart docker
 ```
 
 **Other Prerequisites**:
+- GPU requirements: 
+  - For Mist: NVIDIA T4, L4, A10G, or any equivalent or higher-performing GPU
+  - For Arcana: NVIDIA H100, or any equivalent or higher-performing GPU
 - `g5g.xlarge` or larger EC2 machine for on-prem rime-tts GPU
   - 50 GB storage
 - In general, rime-tts and and api instance containers can be run on the same machine. For more complex setups, where each container needs to run on separate machine, we recommend `t2.micro` or larger EC2 machine with 10 GB storage for on-prem API instance.

@@ -1,6 +1,6 @@
 ---
-title: 'Websockets JSON'
-api: 'GET wss://users.rime.ai/ws2'
+title: "Websockets JSON"
+api: "GET wss://users.rime.ai/ws2"
 authMethod: "bearer"
 ---
 
@@ -22,9 +22,9 @@ schema:
 
 ```typescript
 type TextMessage = {
-  text: string,
-  contextId?: string,
-}
+  text: string;
+  contextId?: string;
+};
 ```
 
 examples:
@@ -41,7 +41,6 @@ examples:
 ```
 
 Context IDs can be provided, which will be attached to subsequent messages that the server sends back to the client. Rime will not maintain multiple simultaneous context ids. The events will contain the most recent context ID at the time that audio was requested. In the above examples, even if both messages are received by the server before it sends any audio, the audio response for the first sentence will be tagged with `contextId: null`, and the audio for the second will be tagged with its UUID.
-
 
 #### Clear
 
@@ -64,7 +63,7 @@ This forces whatever buffer exists, if any, to be synthesized, and the generated
 At times, your client would like to generate audio for whatever remains in the buffer, and then have the connection immediately closed.
 
 ```json
-{ "operation" : "eos" }
+{ "operation": "eos" }
 ```
 
 ### Receive
@@ -74,13 +73,13 @@ At times, your client would like to generate audio for whatever remains in the b
 The most common event will be the audio chunk.
 
 ```typescript
-type Base64String = string
+type Base64String = string;
 
 type AudioChunkEvent = {
-  type: "chunk",
-  data: Base64String,
-  contextId: string | null,
-}
+  type: "chunk";
+  data: Base64String;
+  contextId: string | null;
+};
 ```
 
 The audio will be a base64 encoded chunk of audio bytes in the audio format specified when the connection was established. If you provided any context id when sending the relevant text, it'll be included here.
@@ -91,13 +90,13 @@ Word timestamps are provided to better understand what precisely has been alread
 
 ```typescript
 type TimestampsEvent = {
-  type: "timestamps",
+  type: "timestamps";
   word_timestamps: {
-    words: string[],
-    start: number[],
-    end: number[],
-  },
-}
+    words: string[];
+    start: number[];
+    end: number[];
+  };
+};
 ```
 
 #### Error
@@ -106,23 +105,26 @@ In the event of a malformed or unexpected input, the server will immediately res
 
 ```typescript
 type ErrorEvent = {
-  type: "error",
-  message: string,
-}
+  type: "error";
+  message: string;
+};
 ```
 
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/api-reference/voices">listed in our documentation</a>.
+  Must be one of the voices{" "}
+  <a href="/api-reference/voices">listed in our documentation</a>.
 </ParamField>
 
 <ParamField body="text" type="string" required>
-  The text you'd like spoken. Character limit per request is 500 via the API and 1,000 in the dashboard UI.
+  The text you'd like spoken. Character limit per request is 500 via the API and
+  1,000 in the dashboard UI.
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  Choose `mistv2` for Rime's fastest, most accurate, and most customizable model, or `mist` for Rime's earlier model (default: `mist`)
+  Choose `mistv2` for Rime's fastest, most accurate, and most customizable
+  model, or `mist` for Rime's earlier model (default: `mist`)
 </ParamField>
 
 <ParamField body="audioFormat" type="string">
@@ -130,7 +132,8 @@ type ErrorEvent = {
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+  If provided, the language must match the language spoken by the provided
+  speaker. Available languages: `eng`, `spa`
 </ParamField>
 
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">
@@ -153,18 +156,21 @@ type ErrorEvent = {
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher than 1.0 is slower than default.
+  Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher
+  than 1.0 is slower than default.
 </ParamField>
 
 <ParamField body="reduceLatency" type="bool" default="false">
-  Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
+  Reduces the latency of response, at the cost of some possible mispronunciation
+  of digits and abbreviations.
 </ParamField>
 
 <ParamField body="immedate" type="bool" default="false">
-  When set to true, the websockets api will _not_ wait for complete sentences to synthesize audio. Audio will be synthesized as tokens are sent.
-  Note that this may result in unnatural prosidy if tokens are not grouped into meaningful chunks.
+  When set to true, the websockets api will _not_ wait for complete sentences to
+  synthesize audio. Audio will be synthesized as tokens are sent. Note that this
+  may result in unnatural prosidy if tokens are not grouped into meaningful
+  chunks.
 </ParamField>
-
 
 <RequestExample>
 

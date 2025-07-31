@@ -5,6 +5,14 @@ icon: list
 
 ## Rime API Changelog
 
+<Update label="2025-07-31">
+ * Added Spanish language support via the `lang: spa` parameter in WebSocket JSON APIs.
+ * Enhanced text segmentation with new `segment` parameter:
+   - Added `segment` query parameter with three modes: "immediate", "never", and "bySentence" (default)
+   - Deprecated `immediate` boolean parameter (still supported for backward compatibility)
+   - Improved control over text processing and synthesis timing
+</Update>
+
 <Update label="2025-05-27">
  * The `<FLUSH>` command is now available on both the the websockets and websockets-json apis, allowing for immediate audio synthesis of all tokens in the buffer.
 </Update>

@@ -130,7 +130,7 @@ type ErrorEvent = {
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+  Specifies the language spoken by the provided speaker. Must be one of: `eng` (English) or `spa` (Spanish). If provided, it must match the speaker's language.
 </ParamField>
 
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">
@@ -160,9 +160,14 @@ type ErrorEvent = {
   Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
 
-<ParamField body="immedate" type="bool" default="false">
-  When set to true, the websockets api will _not_ wait for complete sentences to synthesize audio. Audio will be synthesized as tokens are sent.
-  Note that this may result in unnatural prosidy if tokens are not grouped into meaningful chunks.
+<ParamField body="segment" type="string" default="bySentence">
+  Controls how text is segmented for synthesis. Available options:
+  - "immediate" - Synthesizes text immediately without waiting for complete sentences
+  - "never" - Never segments the text, waits for explicit flush or EOS
+  - "bySentence" (default) - Waits for complete sentences before synthesis
+
+Note: For backward compatibility, setting `immediate=true` in query params is equivalent to `segment=immediate`. If a null value is provided, it will default to "bySentence".
+
 </ParamField>
 
 

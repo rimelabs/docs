@@ -76,7 +76,8 @@
             "api-reference/daily",
             "api-reference/livekit",
             "api-reference/signalwire",
-            "api-reference/vapi"
+            "api-reference/vapi",
+            "api-reference/cerebrium"
           ]
         },
         "api-reference/privacy-compliance",

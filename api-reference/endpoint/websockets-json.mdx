@@ -166,7 +166,8 @@ type ErrorEvent = {
   - "never" - Never segments the text, waits for explicit flush or EOS
   - "bySentence" (default) - Waits for complete sentences before synthesis
 
-  Note: For backward compatibility, setting `immediate=true` in query params is equivalent to `segment=immediate`
+Note: For backward compatibility, setting `immediate=true` in query params is equivalent to `segment=immediate`. If a null value is provided, it will default to "bySentence".
+
 </ParamField>
 
 

@@ -113,7 +113,7 @@ sudo systemctl restart docker
 ```
 
 **Other Prerequisites**:
-- GPU requirements: 
+- GPU requirements:
   - For Mist: NVIDIA T4, L4, A10G, or any equivalent or higher-performing GPU
   - For Arcana: NVIDIA H100, or any equivalent or higher-performing GPU
 - `g5g.xlarge` or larger EC2 machine for on-prem rime-tts GPU
@@ -143,13 +143,13 @@ sudo docker login -u=<login details to be provided>
 **Text-to-Speech (TTS) Image**: Pull the latest TTS service image from quay.io using the provided Docker command.
 
 ```bash Pull TTS Image
-sudo docker pull quay.io/rimelabs/mistv2:<tag>
+sudo docker pull quay.io/rimelabs/mistv2:latest
 ```
 
 **API Image**: Similarly, pull the latest API service image from quay.io to be used in conjunction with the TTS service.
 
 ```bash Pull API Image
-sudo sudo docker pull quay.io/rimelabs/api:<tag>
+sudo sudo docker pull quay.io/rimelabs/api:latest
 ```
 
 **Docker Compose File**: Create a `docker-compose.yml` file with your editor of choice to define the services and their configurations.

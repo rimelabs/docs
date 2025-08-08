@@ -88,19 +88,15 @@ headers = {
     "Content-Type": "application/json"
 }
 
-# Use stream=True to handle streaming response
-response = requests.request("POST", url, json=payload, headers=headers, stream=True)
+with requests.post(url, headers=headers, json=payload, stream=True) as response:
+    response.raise_for_status()
+    audio_bytes = b''
+    for chunk in response.iter_content(chunk_size=4096):
+        if chunk:
+            audio_bytes += chunk
 
-# Check if the request was successful
-if response.status_code == 200:
-    with open("audio_output.mp3", "wb") as f:
-        for chunk in response.iter_content(chunk_size=1024):
-            if chunk:
-                f.write(chunk)
-else:
-    print("Error:", response.status_code)
-
-print(response.text)
+with open("audio_output.mp3", "wb") as f:
+    f.write(audio_bytes)
 ```
 
 ```javascript JavaScript

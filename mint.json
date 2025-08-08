@@ -89,7 +89,8 @@
       "pages": [
         "api-reference/arcana/streaming-mp3",
         "api-reference/arcana/streaming-pcm",
-        "api-reference/arcana/streaming-wav"
+        "api-reference/arcana/streaming-wav",
+        "api-reference/arcana/streaming-mulaw"
       ]
     },
     {

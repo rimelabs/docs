@@ -1,12 +1,12 @@
 ---
-title: 'Streaming MP3'
+title: 'Streaming MULAW'
 api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
 ## Fixed Headers
 
-<ParamField header="Accept" type="audio/mp3" required></ParamField>
+<ParamField header="Accept" type="audio/x-mulaw" required></ParamField>
 
 ## Variable Parameters
 
@@ -50,13 +50,12 @@ authMethod: "bearer"
 <ParamField body="max_tokens" type="int" default="1200">
   The max tokens. Range is 200 to 5000.
 </ParamField>
-
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
-  --header 'Accept: audio/mp3' \
+  --header 'Accept: audio/x-mulaw' \
   --header 'Authorization: Bearer <authorization>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -87,7 +86,7 @@ payload = {
     "max_tokens": 1200
 }
 headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/x-mulaw",
     "Authorization": "Bearer <authorization>",
     "Content-Type": "application/json"
 }
@@ -99,7 +98,7 @@ with requests.post(url, headers=headers, json=payload, stream=True) as response:
         if chunk:
             audio_bytes += chunk
 
-with open("audio_output.mp3", "wb") as f:
+with open("audio_output.mulaw", "wb") as f:
     f.write(audio_bytes)
 ```
 
@@ -107,7 +106,7 @@ with open("audio_output.mp3", "wb") as f:
 const options = {
   method: 'POST',
   headers: {
-    Accept: 'audio/mp3',
+    Accept: 'audio/x-mulaw',
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
@@ -135,7 +134,7 @@ curl_setopt_array($curl, [
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}",
   CURLOPT_HTTPHEADER => [
-    "Accept: audio/mp3",
+    "Accept: audio/x-mulaw",
     "Authorization: Bearer <authorization>",
     "Content-Type: application/json"
   ],
@@ -171,7 +170,7 @@ func main() {
 
   req, _ := http.NewRequest("POST", url, payload)
 
-  req.Header.Add("Accept", "audio/mp3")
+  req.Header.Add("Accept", "audio/x-mulaw")
   req.Header.Add("Authorization", "Bearer <authorization>")
   req.Header.Add("Content-Type", "application/json")
 
@@ -188,7 +187,7 @@ func main() {
 
 ```java Java
 HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
-  .header("Accept", "audio/mp3")
+  .header("Accept", "audio/x-mulaw")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
   .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}")

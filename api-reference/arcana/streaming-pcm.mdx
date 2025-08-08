@@ -21,6 +21,10 @@ authMethod: "bearer"
   Choose `arcana` for Rime's most realistic conversational voices.
 </ParamField>
 
+<ParamField body="lang" type="string" default="eng">
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+</ParamField>
+
 <ParamField body="repetition_penalty" type="float" default="1.5">
   The repetition penalty. We do not recommend changing this from the default value. Typical range is 1 to 2.
 

@@ -1,12 +1,12 @@
 ---
-title: 'Streaming PCM'
+title: 'Streaming MULAW'
 api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
 ## Fixed Headers
 
-<ParamField header="Accept" type="audio/pcm" required></ParamField>
+<ParamField header="Accept" type="audio/x-mulaw" required></ParamField>
 
 ## Variable Parameters
 
@@ -51,7 +51,7 @@ authMethod: "bearer"
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
-  --header 'Accept: audio/pcm' \
+  --header 'Accept: audio/x-mulaw' \
   --header 'Authorization: Bearer <authorization>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -82,7 +82,7 @@ payload = {
     "max_tokens": 1200
 }
 headers = {
-    "Accept": "audio/pcm",
+    "Accept": "audio/x-mulaw",
     "Authorization": "Bearer <authorization>",
     "Content-Type": "application/json"
 }
@@ -94,7 +94,7 @@ with requests.post(url, headers=headers, json=payload, stream=True) as response:
         if chunk:
             audio_bytes += chunk
 
-with open("audio_output.pcm", "wb") as f:
+with open("audio_output.mulaw", "wb") as f:
     f.write(audio_bytes)
 ```
 
@@ -102,7 +102,7 @@ with open("audio_output.pcm", "wb") as f:
 const options = {
   method: 'POST',
   headers: {
-    Accept: 'audio/pcm',
+    Accept: 'audio/x-mulaw',
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
@@ -130,7 +130,7 @@ curl_setopt_array($curl, [
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}",
   CURLOPT_HTTPHEADER => [
-    "Accept: audio/pcm",
+    "Accept: audio/x-mulaw",
     "Authorization: Bearer <authorization>",
     "Content-Type: application/json"
   ],
@@ -166,7 +166,7 @@ func main() {
 
   req, _ := http.NewRequest("POST", url, payload)
 
-  req.Header.Add("Accept", "audio/pcm")
+  req.Header.Add("Accept", "audio/x-mulaw")
   req.Header.Add("Authorization", "Bearer <authorization>")
   req.Header.Add("Content-Type", "application/json")
 
@@ -183,7 +183,7 @@ func main() {
 
 ```java Java
 HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
-  .header("Accept", "audio/pcm")
+  .header("Accept", "audio/x-mulaw")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
   .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}")

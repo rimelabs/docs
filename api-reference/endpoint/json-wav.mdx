@@ -50,7 +50,7 @@ authMethod: "bearer"
   Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster..
 </ParamField>
 
-<ParamField body="reduceLatency" type="bool" default="false">
+<ParamField body="noTextNormalization" type="bool" default="false">
   Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
 
@@ -69,7 +69,7 @@ curl --request POST \
   "samplingRate": 22050,
   "speedAlpha": 1.0,
   "audioFormat": "wav",
-  "reduceLatency": false,
+  "noTextNormalization": false,
   "phonemizeBetweenBrackets": false,
   "pauseBetweenBrackets": false,
   "inlineSpeedAlpha": "0.5, 3"
@@ -89,7 +89,7 @@ payload = {
     "audioFormat": "wav",
     "samplingRate": 22050,
     "speedAlpha": 1.0,
-    "reduceLatency": False,
+    "noTextNormalization": False,
     "phonemizeBetweenBrackets": false,
     "pauseBetweenBrackets": false
 }
@@ -112,7 +112,7 @@ const options = {
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>", "lang": "eng", "audioFormat": "wav","samplingRate":22050,"speedAlpha":1.0,"reduceLatency":false}'
+  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>", "lang": "eng", "audioFormat": "wav","samplingRate":22050,"speedAlpha":1.0,"noTextNormalization":false}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
@@ -134,7 +134,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n \"modelId\": \"<string>\",\n  \"lang\":\"eng\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n \"modelId\": \"<string>\",\n  \"lang\":\"eng\",\n  \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}",
   CURLOPT_HTTPHEADER => [
     "Accept: application/json",
     "Authorization: Bearer <authorization>",
@@ -168,7 +168,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n \"audioFormat\": \"wav\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
@@ -192,7 +192,7 @@ HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts"
   .header("Accept", "application/json")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\", \n  \"modelId\": \"<string>\", \n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"reduceLatency\": false\n}")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"audioFormat\": \"wav\", \n  \"modelId\": \"<string>\", \n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
   .asString();
 ```
 </RequestExample>

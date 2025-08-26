@@ -14,7 +14,13 @@ Deploying on-premises offers several advantages over using cloud APIs over a pub
 
 ### Performance
 
+#### Mist
+
 Our tests have shown median latency of around `80ms` with randomly generated sentences between 40 and 50 characters.
+
+#### Arcana
+
+You should be getting a time-to-first-frame of ~400ms on H100.
 
 ### Security
 
@@ -80,11 +86,12 @@ sudo apt-get update
 # install the latest version
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# verify docker running
-sudo docker run hello-world
+# Add current user to the docker group
+sudo usermod -aG docker $USER
+newgrp docker
 
-# install docker compose
-sudo apt install -y docker-compose-plugin
+# verify docker running
+docker run hello-world
 
 # verify docker compose version
 docker compose version
@@ -134,22 +141,34 @@ This documentation will cover specific instructions and considerations for deplo
 
 ## 4. Deploy Our Services
 
-### Pull Images from quay.io
+### Artifact Registry Login
 
-```bash Login to quay.io
-sudo docker login -u=<login details to be provided>
+Key file to be provided by Rime.
+
+```bash Login to Artifact Registry
+cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
 ```
 
-**Text-to-Speech (TTS) Image**: Pull the latest TTS service image from quay.io using the provided Docker command.
+### Artifact Registry Image Pulling
+
+**Text-to-Speech (TTS) Image**: Pull the TTS service image.
+
+Currently the latest image versions are:
+
+* `us-docker.pkg.dev/rime-labs/arcana/v2/de:20250823`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/en:20250823`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/es:20250823`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20250823`
+* `us-docker.pkg.dev/rime-labs/mist/v2/en:20250814`
 
 ```bash Pull TTS Image
-sudo docker pull quay.io/rimelabs/mistv2:latest
+docker pull <image>
 ```
 
-**API Image**: Similarly, pull the latest API service image from quay.io to be used in conjunction with the TTS service.
+**API Image**: Similarly, pull the latest API service image to be used in conjunction with the TTS service.
 
 ```bash Pull API Image
-sudo docker pull quay.io/rimelabs/api:latest
+docker pull us-docker.pkg.dev/rime-labs/api/service:20250731
 ```
 
 **Docker Compose File**: Create a `docker-compose.yml` file with your editor of choice to define the services and their configurations.
@@ -191,7 +210,7 @@ services:
 **Start docker compose**:
 
 ```bash Start Docker Compose
-sudo docker compose up -d
+docker compose up -d
 ```
 
 ### Networking

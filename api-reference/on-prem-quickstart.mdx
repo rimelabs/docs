@@ -2,144 +2,121 @@
 title: Quickstart
 ---
 
-# Customer Documentation for Self-Hosting Rime On-Premise
+# Rime On-Premises Deployment Quickstart
 
 <Tip>On-prem is in *public beta*. For more information regarding access to Docker images and pricing info, reach out to help@rime.ai.</Tip>
 
-## 1. Introduction
+## Introduction
 
 ### Why On-Premises?
 
 Deploying on-premises offers several advantages over using cloud APIs over a public network. One of the main benefits is speed; by hosting the services locally, you can significantly reduce network latency, resulting in faster system responses and data processing.
 
-### Performance
-
-#### Mist
-
-Our tests have shown median latency of around `80ms` with randomly generated sentences between 40 and 50 characters.
-
-#### Arcana
-
-You should be getting a time-to-first-frame of ~400ms on H100.
-
 ### Security
 
-With an on-premises deployment, all data remains within your corporate network, ensuring enhanced security as it is not transmitted over the Internet. This setup helps in complying with strict data privacy and protection regulations.
+With an on-premises deployment, all sensitive data remains within your corporate network, ensuring enhanced security as it is not transmitted over the Internet. This setup helps in complying with strict data privacy and protection regulations.
+
+### Performance
+
+#### Latency
+
+- Mist: Our tests have shown median latency of around **80ms** with randomly generated sentences between 40 and 50 characters.
+- Arcana: You should be getting a time-to-first-frame latency around **400ms** on H100, and a real-time-factor (RTF) lower than 1.
 
 ### Components
 
 ![On-Premise Components](/images/on-prem-components_update.png)
 
-### Prerequisites
+## Prerequisites
 
-**NVIDIA Drivers**: Ensure that NVIDIA drivers are installed and properly configured on your systems to support necessary computations and operations.
+### Hardware Requirements
 
-```bash NVIDIA Driver Installation
-# Ubuntu
-# update packages
-sudo apt update
-sudo apt upgrade -y
-
-# install gnu toolchain
-sudo apt install -y gcc make wget
-
-# remove Nouveau drivers
-sudo sh -c 'printf "blacklist nouveau\noptions nouveau modeset=0\n" > /etc/modprobe.d/blacklist-nouveau.conf'
-
-# regenarate kernel
-sudo update-initramfs -u
-
-# unload Nouveau drivers
-sudo rmmod nouveau
-
-# install kernel dev tools
-sudo apt-get install -y linux-headers-`uname -r`
-
-# download latest NVIDIA driver (https://www.nvidia.com/download/index.aspx)
-wget LINK_TO_LATEST_NVIDIA_GPU_DRIVER
-
-# install the driver
-chmod +x ./ {DOWNLOADED_FILE_NAME}
-sudo ./{DOWNLOADED_FILE_NAME} --silent
-
-# verify driver is running
-nvidia-smi
-```
-
-**Docker**: Install Docker on your system to manage the containerized application.
-
-```bash Docker Installation
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-# Add the repository to Apt sources:
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
-
-# install the latest version
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-# Add current user to the docker group
-sudo usermod -aG docker $USER
-newgrp docker
-
-# verify docker running
-docker run hello-world
-
-# verify docker compose version
-docker compose version
-```
-
-**NVIDIA Container Toolkit**: Install the NVIDIA Container Toolkit to enable GPU support within Docker containers.
-
-```bash NVIDIA Container Toolkit Installation
-# Configure the production repository
-curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
-  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
-    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-
-# Update the packages list from the repository:
-sudo apt-get update
-
-# Install the NVIDIA Container Toolkit packages:
-sudo apt-get install -y nvidia-container-toolkit
-
-# Configure the container runtime
-sudo nvidia-ctk runtime configure --runtime=docker
-
-# Restart Docker
-sudo systemctl restart docker
-```
-
-**Other Prerequisites**:
-- GPU requirements:
-  - For Mist: NVIDIA T4, L4, A10G, or any equivalent or higher-performing GPU
-  - For Arcana: NVIDIA H100, or any equivalent or higher-performing GPU
-- `g5g.xlarge` or larger EC2 machine for on-prem rime-tts GPU
+- GPU
+  - For Mist
+    - NVIDIA T4, L4, A10G, or any equivalent or higher-performing GPU
+  - For Arcana
+    - NVIDIA H100, or any equivalent or higher-performing GPU
+- Storage
   - 50 GB storage
-- In general, rime-tts and and api instance containers can be run on the same machine. For more complex setups, where each container needs to run on separate machine, we recommend `t2.micro` or larger EC2 machine with 10 GB storage for on-prem API instance.
-- Recommended Linux Distribution:
-  - Ubuntu Server 22.04
-  - Before shipping docker images, we will do our tests with `Ubuntu Server 22.04`. If there is a limitation on your side not to use this distribution, please let us know. For reference, below are other Linux distributions supported by NVIDIA:
-    ![NVIDIA Supported Linux Distributions](/images/on-prem-nvidia-linux.png)
+- CPU
+  - 8 vCPUs
+- Memory requirements
+  - 32 GiB
 
-## 2. Deployment Environments
+### Software Requirements
 
-This documentation will cover specific instructions and considerations for deploying the services within an AWS environment, ensuring optimal configuration and performance.
+- Supported Linux Distributions
+  - Debian 12 (`bookworm`), x86_64
+  - Ubuntu Server 24.04 (`jammy`), x86_64
+- NVIDIA drivers
+  - 570 or higher (for CUDA 12.8)
+- Docker
+- NVIDIA Container Toolkit
 
-## 3. Self-Service Licensing & Credentials
+#### Installations
 
-**API Key Generation**: Refer to our [user interface dashboard](https://rime.ai/dashboard) to generate the necessary keys and credentials for authenticating and authorizing the deployment and use of our services.
+##### NVIDIA Drivers
 
-## 4. Deploy Our Services
+Follow https://www.nvidia.com/en-us/drivers to install the latest NVIDIA drivers, or use the following instructions on Debian-based systems:
+
+```bash NVIDIA Driver Installation (Debian-based)
+# Update packages
+sudo apt-get update
+
+# Install basic toolchain and kernel headers
+sudo apt-get install -y gcc make wget linux-headers-$(uname -r)
+
+# Download and install the NVIDIA driver.
+NVIDIA_DRIVER_VERSION=570.103.01
+NVIDIA_DRIVER_PATH=/opt/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER_VERSION}.run
+sudo rm -f "${NVIDIA_DRIVER_PATH}"
+sudo wget "https://us.download.nvidia.com/tesla/${NVIDIA_DRIVER_VERSION}/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER_VERSION}.run" -O "${NVIDIA_DRIVER_PATH}"
+sudo chmod +x "${NVIDIA_DRIVER_PATH}"
+sudo "${NVIDIA_DRIVER_PATH}" --silent --no-questions
+```
+
+##### Docker
+
+Follow https://docs.docker.com/engine/install to install Docker on your system.
+
+##### NVIDIA Container Toolkit
+
+Follow https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html to install the NVIDIA Container Toolkit.
+
+##### Verification
+
+To verify that you have all the prerequisites installed, run the following command:
+
+```bash Verify Prerequisites
+docker run --rm --gpus all nvidia/cuda:12.8.1-base-ubi9 nvidia-smi
+```
+
+You should see your GPU listed in the output, alongside the driver version and CUDA version.
+
+### Firewall Requirements
+
+The Rime API instance will listen on port `8000` for http traffic, and port `8001` for websockets traffic.
+
+You will also need to allow the following outbound traffic in your firewall rules:
+
+- `http://optimize.rime.ai/usage`: registers on-prem usage with our servers.
+- `http://optimize.rime.ai/license`: verifies that your on-prem license is active.
+- `us-docker.pkg.dev` on port `443`: container image registry.
+
+## Self-Service Licensing & Credentials
+
+### API Key Generation
+
+Refer to our [user interface dashboard](https://rime.ai/dashboard) to generate the necessary keys and credentials for authenticating and authorizing the deployment and use of our services.
+
+## Deployment
+
+The deployment consists of two services, each powered by a container image:
+
+- **API service**: responsible for handling the HTTP and WebSocket requests, and for verifying the license. It serves as a proxy to the TTS service.
+- **TTS service**: responsible for model inference.
+
+There is a 1:1 relationship between the API service and the TTS service: for each TTS model, you will need a corresponding API service. Multiple pairs of API and TTS services can be deployed on the same machine.
 
 ### Artifact Registry Login
 
@@ -149,9 +126,9 @@ Key file to be provided by Rime.
 cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
 ```
 
-### Artifact Registry Image Pulling
+### Container Images
 
-**Text-to-Speech (TTS) Image**: Pull the TTS service image.
+#### TTS Service
 
 Currently the latest image versions are:
 
@@ -161,21 +138,17 @@ Currently the latest image versions are:
 * `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20250823`
 * `us-docker.pkg.dev/rime-labs/mist/v2/en:20250814`
 
-```bash Pull TTS Image
-docker pull <image>
-```
+#### API Service
 
-**API Image**: Similarly, pull the latest API service image to be used in conjunction with the TTS service.
+The latest image version is:
 
-```bash Pull API Image
-docker pull us-docker.pkg.dev/rime-labs/api/service:20250731
-```
+* `us-docker.pkg.dev/rime-labs/api/service:20250731`
 
-**Docker Compose File**: Create a `docker-compose.yml` file with your editor of choice to define the services and their configurations.
+### Docker Compose Configuration
 
-```bash Create Docker Compose File
-vim docker-compose.yml
-```
+A simple way of deploying on a machine is to use Docker Compose.
+
+Create a `docker-compose.yml` file with your editor of choice to define the services and their configurations:
 
 ```yaml docker-compose.yml
 version: '3.8'
@@ -185,8 +158,8 @@ services:
     depends_on:
       - model
     ports:
-      - "8000:8000"
-      - "8001:8001"
+      - "8000:8000"  # HTTP API
+      - "8001:8001"  # WebSocket API
     restart: unless-stopped
     environment:
       - MODEL_URL=http://model:8080/invocations
@@ -207,17 +180,11 @@ services:
 
 > When running on Kubernetes, ensure that `MODEL_URL` points to `http://0.0.0.0:8080/invocations` instead of the Docker Compose service name.
 
-**Start docker compose**:
+#### Start Docker Compose
 
 ```bash Start Docker Compose
 docker compose up -d
 ```
-
-### Networking
-
-The Rime API instance will listen on port `8000` for http traffic, and port `8001` for websockets traffic.
-
-You'll need to permit outbound network traffic to `http://optimize.rime.ai/usage` and `http://optimize.rime.ai/license` to verify with our servers that you have an active on-prem licensing agreement and to register usage. Additionally, you'll need access to [quay.io](https://quay.io/), a container image repository platform, so you'll need to allow outbound traffic to their servers on port `443`.
 
 ### Deployment Steps
 
@@ -235,7 +202,7 @@ You'll need to permit outbound network traffic to `http://optimize.rime.ai/usage
 - **Troubleshooting Guide**: A troubleshooting guide will be provided to help resolve common issues during deployment.
 - **Available voices/models**: all voices are currently available.
 
-## 5. Requests and Response Formats
+## Requests and Response Formats
 
 ### HTTP Requests
 

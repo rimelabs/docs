@@ -52,6 +52,11 @@ authMethod: "bearer"
   Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
 
+<ParamField body="saveOovs" type="bool" default="false">
+  If set to `true`, Rime shall save any currently OOV (out-of-vocabulary) words encounterd in `text`, and save them for the User or Team to review on the
+  <a href="https://app.rime.ai/oov/">Speech QA dashboard</a>
+</ParamField>
+
 <RequestExample>
 
 ```bash cURL

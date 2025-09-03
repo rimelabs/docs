@@ -156,8 +156,8 @@ type ErrorEvent = {
   Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher than 1.0 is slower than default.
 </ParamField>
 
-<ParamField body="reduceLatency" type="bool" default="false">
-  Reduces the latency of response, at the cost of some possible mispronunciation of digits and abbreviations.
+<ParamField body="noTextNormalization" type="bool" default="false">
+  Skips text normalization of the input text prior to synthesizing audio. This will reduce latency at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
 
 <ParamField body="segment" type="string" default="bySentence">

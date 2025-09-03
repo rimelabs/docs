@@ -1,0 +1,75 @@
+---
+title: Speech QA
+icon: magnifying-glass-chart
+---
+
+Think of this as your **spell-check for speech**.
+Rime’s models power the voice of your product, and the **Speech QA Dashboard** makes sure everything sounds right before it reaches your users.
+
+---
+
+## Why this matters
+
+- Audit and correct those tricky **out-of-vocabulary words** (brand names, technical jargon, product terms).
+- Catch **mismatches between your LLM and our speech engine** so you don’t ship weird pronunciations.
+- Approve the good ones, fix the bad ones, and keep your audio experience seamless.
+
+---
+
+## Getting started
+
+Turn it on with a single parameter:
+
+```json
+{
+  "saveOov": true
+}
+```
+For example, sending the request
+```bash
+curl -X POST "http://users.rime.ai/v1/rime-tts" \
+   -H "Authorization: Bearer $RIME_API_KEY" \
+   -H "Accept: audio/mp3" \
+  -H "Content-Type: application/json" \
+  -d '{"modelId": "mistv2", "text": "we found something in the interphalangeal joint.", "speaker": "cove", "saveOovs": true}' \
+  -o speech_with_oov.mp3
+```
+will save any out-of-vocabulary words found in `text` to your QA dashboard.
+
+Once there:
+
+1. Any words we can’t confidently pronounce get surfaced in your Speech QA dashboard.
+2. You can listen to how they sound right now.
+3. Approve if it’s fine, or Submit if it needs fixing.
+4. Our linguists update the dictionary, and once it’s live, you’ll see it under Added to Dictionary.
+
+## What you can do
+
+### Listen & decide
+Hear the current pronunciation and approve or submit with one click.
+
+### Stay organized
+Hide words that don’t need attention.
+Sort by frequency to knock out the biggest offenders first.
+Search to find exactly what you’re looking for.
+
+### Collaborate as a team
+Works with Team Accounts.
+Everyone on your team sees the same OOV list, so you stay aligned.
+
+### Built-in trust
+Zero data retention — this is opt-in by design.
+Fully compliant with BAA, HIPAA, and SOC II.
+
+### Quick turnaround
+Corrections are usually live within a week or less, depending on volume.
+
+
+
+## Next steps
+
+Head to the [Speech QA Dashboard](https://app.rime.ai/oov/) to review flagged words.
+
+Invite teammates via Team Accounts.
+Keep your speech output crisp, consistent, and customer-ready.
+Be proactive when onboarding new customer and process your lexicon through our [**Check Coverage page**](https://app.rime.ai/coverage/)

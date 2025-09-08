@@ -17,7 +17,8 @@ Rime’s models power the voice of your product, and the **Speech QA Dashboard**
 ---
 
 <Note>
-  This feature is available for Mist Cloud users. We're starting out with English but will expand to Arcana, On=Prem, and full language coverage soon!
+  This feature is available for Mist Cloud users. We're starting out with
+  English but will expand to Arcana, On=Prem, and full language coverage soon!
 </Note>
 
 ## Getting started
@@ -29,7 +30,9 @@ Turn it on with a single parameter:
   "saveOov": true
 }
 ```
+
 For example, sending the request
+
 ```bash
 curl -X POST "http://users.rime.ai/v1/rime-tts" \
    -H "Authorization: Bearer $RIME_API_KEY" \
@@ -38,6 +41,7 @@ curl -X POST "http://users.rime.ai/v1/rime-tts" \
   -d '{"modelId": "mistv2", "text": "we found something in the interphalangeal joint.", "speaker": "cove", "saveOovs": true}' \
   -o speech_with_oov.mp3
 ```
+
 will save any out-of-vocabulary words found in `text` to your QA dashboard.
 
 Once there:
@@ -50,25 +54,28 @@ Once there:
 ## What you can do
 
 ### Listen & decide
+
 Hear the current pronunciation and approve or submit with one click.
 
 ### Stay organized
+
 Hide words that don’t need attention.
 Sort by frequency to knock out the biggest offenders first.
 Search to find exactly what you’re looking for.
 
 ### Collaborate as a team
+
 Works with Team Accounts.
 Everyone on your team sees the same OOV list, so you stay aligned.
 
 ### Built-in trust
+
 Zero data retention — this is opt-in by design.
 Fully compliant with BAA, HIPAA, and SOC II.
 
 ### Quick turnaround
+
 Corrections are usually live within a week or less, depending on volume.
-
-
 
 ## Next steps
 
@@ -77,3 +84,15 @@ Head to the [Speech QA Dashboard](https://app.rime.ai/oov/) to review flagged wo
 Invite teammates via Team Accounts.
 Keep your speech output crisp, consistent, and customer-ready.
 Be proactive when onboarding new customer and process your lexicon through our [**Check Coverage page**](https://app.rime.ai/coverage/)
+
+## Demo Video
+
+<iframe
+  width="100%"
+  height="400"
+  src="https://www.youtube.com/embed/VIHy5u2hiMo"
+  title="Speech QA Demo"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>

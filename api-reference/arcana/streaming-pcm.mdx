@@ -4,6 +4,8 @@ api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
+Streaming PCM returns a stream of audio bytes in 16-bit little-endian linear PCM.
+
 ## Fixed Headers
 
 <ParamField header="Accept" type="audio/pcm" required></ParamField>
@@ -44,7 +46,16 @@ authMethod: "bearer"
 </ParamField>
 
 <ParamField body="samplingRate" type="int" default="24000">
-  The sampling rate (Hz). Accepted values: 8000, 16000, 22050, 24000, 44100, 48000, 96000. Anything above 24000 is up sampling.
+  The sampling rate (Hz).
+
+  * **On-cloud**: Accepted values: 8000, 16000, 22050, 24000, 44100, 48000, 96000. Anything above 24000 is up sampling.
+  * **On-prem**: Any value is accepted.
+</ParamField>
+
+<ParamField body="speedAlpha" type="float" default="1">
+  The time scaling factor. **On-prem only**.
+
+  A value below 1 slows down the audio, a value above 1 speeds up the audio.
 </ParamField>
 
 <ParamField body="max_tokens" type="int" default="1200">

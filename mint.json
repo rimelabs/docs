@@ -82,7 +82,8 @@
         },
         "api-reference/privacy-compliance",
         "platform/teams",
-        "platform/speech-qa"
+        "platform/speech-qa",
+        "platform/check-coverage"
       ]
     },
     {

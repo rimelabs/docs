@@ -6,9 +6,9 @@ authMethod: "bearer"
 
 ## Overview
 
-This API endpoint allows you to determine which words are included in the Rime dictionary out of the box. 
+This API endpoint allows you to determine which words are included in the Rime dictionary out of the box.
 
-We can add new words to our dictionary as needed within around 24 hours. Or you can immediately [generate a custom pronunciation](//api-reference/custom-pronunciation), which uses the [Rime phonetic alphabet](//api-reference/custom-pronunciation#rimes-phonetic-alphabet).
+We can add new words to our dictionary as needed within around 24 hours. Or you can immediately [generate a custom pronunciation](/api-reference/custom-pronunciation), which uses the [Rime phonetic alphabet](/api-reference/custom-pronunciation#rimes-phonetic-alphabet).
 
 If a word is not in our dictionary, our TTS model will still attempt a pronunciation, which is often suitable if the spelling follows typical linguistic patterns.
 
@@ -33,7 +33,7 @@ The response will include an array with any strings not covered by the current R
 ## Variable Parameters
 
 <ParamField body="text" type="string" required>
-  A string one or more words you'd like to check for coverage in our dictionary. Words can be separated by spaces, commas, or newlines. 
+  A string one or more words you'd like to check for coverage in our dictionary. Words can be separated by spaces, commas, or newlines.
 </ParamField>
 
 <RequestExample>

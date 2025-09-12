@@ -82,8 +82,11 @@
         },
         "api-reference/privacy-compliance",
         "platform/teams",
-        "platform/speech-qa",
-        "platform/check-coverage"
+        {
+          "group": "Speech QA",
+          "icon": "magnifying-glass-chart",
+          "pages": ["platform/speech-qa", "platform/check-coverage"]
+         }
       ]
     },
     {

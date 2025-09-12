@@ -33,9 +33,9 @@ With an on-premises deployment, all sensitive data remains within your corporate
 
 - GPU
   - For Mist
-    - NVIDIA T4, L4, A10G, or any equivalent or higher-performing GPU
+    - NVIDIA T4, L4, A10G, or higher
   - For Arcana
-    - NVIDIA H100, or any equivalent or higher-performing GPU
+    - NVIDIA H100 (MIG `3g.40gb`), A100, or higher
 - Storage
   - 50 GB storage
 - CPU
@@ -49,7 +49,7 @@ With an on-premises deployment, all sensitive data remains within your corporate
   - Debian 12 (`bookworm`), x86_64
   - Ubuntu Server 24.04 (`jammy`), x86_64
 - NVIDIA drivers
-  - 570 or higher (for CUDA 12.8)
+  - `570.133.20` or higher
 - Docker
 - NVIDIA Container Toolkit
 
@@ -67,7 +67,7 @@ sudo apt-get update
 sudo apt-get install -y gcc make wget linux-headers-$(uname -r)
 
 # Download and install the NVIDIA driver.
-NVIDIA_DRIVER_VERSION=570.103.01
+NVIDIA_DRIVER_VERSION=570.133.20
 NVIDIA_DRIVER_PATH=/opt/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER_VERSION}.run
 sudo rm -f "${NVIDIA_DRIVER_PATH}"
 sudo wget "https://us.download.nvidia.com/tesla/${NVIDIA_DRIVER_VERSION}/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER_VERSION}.run" -O "${NVIDIA_DRIVER_PATH}"
@@ -132,17 +132,17 @@ cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.
 
 Currently the latest image versions are:
 
-* `us-docker.pkg.dev/rime-labs/arcana/v2/de:20250909`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/en:20250909`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/es:20250909`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20250909`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/de:20250913`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/en:20250913`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/es:20250913`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20250913`
 * `us-docker.pkg.dev/rime-labs/mist/v2/en:20250814`
 
 #### API Service
 
 The latest image version is:
 
-* `us-docker.pkg.dev/rime-labs/api/service:20250731`
+* `us-docker.pkg.dev/rime-labs/api/service:20250909`
 
 ### Docker Compose Configuration
 
@@ -173,8 +173,6 @@ services:
             - driver: nvidia
               capabilities: [gpu]
               count: all
-    ports:
-      - "8080:8080"
     restart: unless-stopped
 ```
 

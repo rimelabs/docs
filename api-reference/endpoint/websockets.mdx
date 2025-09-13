@@ -103,7 +103,11 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
   - "bySentence" (default) - Waits for complete sentences before synthesis
 
 Note: For backward compatibility, setting `immediate=true` in query params is equivalent to `segment=immediate`. If a null value is provided, it will default to "bySentence".
+</ParamField>
 
+<ParamField body="saveOovs" type="bool" default="false">
+  If set to `true`, Rime shall save any currently OOV (out-of-vocabulary) words encountered in `text`, and save them for the User or Team to review on the
+  <a href="https://app.rime.ai/oov/">Speech QA dashboard</a>
 </ParamField>
 
 

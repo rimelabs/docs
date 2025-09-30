@@ -19,7 +19,7 @@ Please see [Finding a Voice](https://rimelabs.mintlify.app/api-reference/voices)
 ```json
 [
     {
-        "name": "Juan",
+        "speaker": "Juan",
         "gender": "Male",
         "age": "Middle",
         "country": "US",
@@ -28,11 +28,12 @@ Please see [Finding a Voice](https://rimelabs.mintlify.app/api-reference/voices)
         "genre": [
             "Conversational"
         ],
-        "model_id": "mist",
-        "language": "eng"
+        "modelId": "mist",
+        "language": "English",
+        "lang": "eng"
     },
     {
-        "name": "Abbie",
+        "speaker": "Abbie",
         "gender": "Female",
         "age": "Young",
         "country": "US",
@@ -41,8 +42,9 @@ Please see [Finding a Voice](https://rimelabs.mintlify.app/api-reference/voices)
         "genre": [
             "Conversational"
         ],
-        "model_id": "mistv2",
-        "language": "eng"
+        "modelId": "mistv2",
+        "language": "English",
+        "lang": "eng"
     },
     // and more...
 ]
@@ -50,12 +52,13 @@ Please see [Finding a Voice](https://rimelabs.mintlify.app/api-reference/voices)
 
 ## Explanation of fields
 The response object is an array of objects, each representing a voice. Each object contains the following fields:
-- `name`: Represents the name of the voice.
+- `speaker`: Represents the name of the voice.
 - `gender`: Indicates the gender of the voice.
 - `age`: Describes the age group of the voice.
 - `country`: The country that the voice is associated with, typically representing the accent or regional dialect.
 - `region`: More specific than country, this field can indicate a particular area within a country.
 - `demographic`: Describes the demographic group the voice represents.
 - `genre`: An array of genres that the voice is suitable for, such as 'Conversational'.
-- `language`: The spoken language that the model is usable for
-- `model_id`: THe model id that the speaker is available under
+- `language`: The spoken language that the model is usable for.
+- `lang`: This is the value you pass to specify the language the selected speaker should speak
+- `modelId`: The model id that the speaker is available under

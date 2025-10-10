@@ -5,6 +5,10 @@ icon: list
 
 ## Rime API Changelog
 
+<Update label="2025-10-10">
+ * Api on-prem image with tag `20251010`: Uses https instead of http in the external calls to rime.optimize.ai to acquire licenses and track usage.
+ * ⚠️ When upgrading to this image you may have to update your firewall settings to account for the new URLs ([see docs](https://docs.rime.ai/api-reference/on-prem-quickstart#firewall-requirements)).
+</Update>
 
 <Update label="⚠️ 2025-09-30">
  * We have made breaking changes in voice details api (https://users.rime.ai/data/voices/voice_details.json)

@@ -92,10 +92,21 @@
     {
       "group": "Arcana API reference",
       "pages": [
-        "api-reference/arcana/streaming-mp3",
-        "api-reference/arcana/streaming-pcm",
-        "api-reference/arcana/streaming-wav",
-        "api-reference/arcana/streaming-mulaw"
+        {
+          "group": "Streaming",
+          "pages": [
+            "api-reference/arcana/streaming-mp3",
+            "api-reference/arcana/streaming-pcm",
+            "api-reference/arcana/streaming-wav",
+            "api-reference/arcana/streaming-mulaw"
+          ]
+        },
+        {
+          "group": "Websocket",
+          "pages": [
+            "api-reference/arcana/websockets"
+          ]
+        }
       ]
     },
     {

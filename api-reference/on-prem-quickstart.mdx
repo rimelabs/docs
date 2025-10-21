@@ -67,7 +67,7 @@ sudo apt-get update
 sudo apt-get install -y gcc make wget linux-headers-$(uname -r)
 
 # Download and install the NVIDIA driver.
-NVIDIA_DRIVER_VERSION=570.133.20
+NVIDIA_DRIVER_VERSION=580.95.05
 NVIDIA_DRIVER_PATH=/opt/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER_VERSION}.run
 sudo rm -f "${NVIDIA_DRIVER_PATH}"
 sudo wget "https://us.download.nvidia.com/tesla/${NVIDIA_DRIVER_VERSION}/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER_VERSION}.run" -O "${NVIDIA_DRIVER_PATH}"
@@ -79,9 +79,13 @@ sudo "${NVIDIA_DRIVER_PATH}" --silent --no-questions
 
 Follow https://docs.docker.com/engine/install to install Docker on your system.
 
+Optionally, add the current user to the `docker` group for convenience: https://docs.docker.com/engine/install/linux-postinstall
+
 ##### NVIDIA Container Toolkit
 
 Follow https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html to install the NVIDIA Container Toolkit.
+
+Note that you should follow both the *Installation* and the *Configuration* sections.
 
 ##### Verification
 
@@ -132,11 +136,11 @@ cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.
 
 Currently the latest image versions are:
 
-* `us-docker.pkg.dev/rime-labs/arcana/v2/ar:20251014`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/de:20251014`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/en:20251014`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/es:20251014`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20251014`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/ar:20251020`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/de:20251020`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/en:20251020`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/es:20251020`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20251020`
 * `us-docker.pkg.dev/rime-labs/mist/v2/en:20251006`
 
 #### API Service
@@ -149,13 +153,13 @@ The latest image version is:
 
 A simple way of deploying on a machine is to use Docker Compose.
 
-Create a `docker-compose.yml` file with your editor of choice to define the services and their configurations:
+Create a `compose.yml` file with your editor of choice to define the services and their configurations:
 
-```yaml docker-compose.yml
+```yaml compose.yml
 version: '3.8'
 services:
   api:
-    image: <image_id>
+    image: us-docker.pkg.dev/rime-labs/api/service:<tag>
     depends_on:
       - model
     ports:
@@ -166,7 +170,7 @@ services:
       - MODEL_URL=http://model:8080/invocations
 
   model:
-    image: <image_id>
+    image: us-docker.pkg.dev/rime-labs/<model>/<version>/<language>:<tag>
     deploy:
       resources:
         reservations:
@@ -181,9 +185,9 @@ services:
 
 #### Multi-model backend
 
-If you want to serve multiple arcana language via a single API instance, you can create a `docker-compose.yml` like the following:
+If you want to serve multiple arcana language via a single API instance, you can create a `compose.yml` like the following:
 
-```yaml docker-compose.yml
+```yaml compose.yml
 services:
   en-api: us-docker.pkg.dev/rime-labs/api/service:<tag>
     image:

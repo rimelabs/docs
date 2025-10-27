@@ -2,34 +2,32 @@
 title: Quickstart
 ---
 
-# Rime On-Premises Deployment Quickstart
-
 <Tip>On-prem is in *public beta*. For more information regarding access to Docker images and pricing info, reach out to help@rime.ai.</Tip>
 
-## Introduction
+# Introduction
 
-### Why On-Premises?
+## Why On-Premises?
 
 Deploying on-premises offers several advantages over using cloud APIs over a public network. One of the main benefits is speed; by hosting the services locally, you can significantly reduce network latency, resulting in faster system responses and data processing.
 
-### Security
+## Security
 
 With an on-premises deployment, all sensitive data remains within your corporate network, ensuring enhanced security as it is not transmitted over the Internet. This setup helps in complying with strict data privacy and protection regulations.
 
-### Performance
+## Performance
 
-#### Latency
+### Latency
 
 - Mistv2: Our tests have shown median latency of **175ms** with randomly generated sentences between 40 and 50 characters on A10Gs and similar GPUs.
-- Arcana: You should be getting a time-to-first-frame latency around **400ms** on H100, and a real-time-factor (RTF) lower than 1.
+- Arcana: See [performance tuning](/api-reference/on-prem/performance#metrics).
 
-### Components
+## Components
 
 ![On-Premise Components](/images/on-prem-components_update.png)
 
-## Prerequisites
+# Prerequisites
 
-### Hardware Requirements
+## Hardware Requirements
 
 - GPU
   - For Mist
@@ -43,7 +41,7 @@ With an on-premises deployment, all sensitive data remains within your corporate
 - Memory requirements
   - 32 GiB
 
-### Software Requirements
+## Software Requirements
 
 - Supported Linux Distributions
   - Debian 12 (`bookworm`), x86_64
@@ -53,9 +51,9 @@ With an on-premises deployment, all sensitive data remains within your corporate
 - Docker
 - NVIDIA Container Toolkit
 
-#### Installations
+### Installations
 
-##### NVIDIA Drivers
+#### NVIDIA Drivers
 
 Follow https://www.nvidia.com/en-us/drivers to install the latest NVIDIA drivers, or use the following instructions on Debian-based systems:
 
@@ -75,19 +73,20 @@ sudo chmod +x "${NVIDIA_DRIVER_PATH}"
 sudo "${NVIDIA_DRIVER_PATH}" --silent --no-questions
 ```
 
-##### Docker
+#### Docker
 
 Follow https://docs.docker.com/engine/install to install Docker on your system.
 
-Optionally, add the current user to the `docker` group for convenience: https://docs.docker.com/engine/install/linux-postinstall
+Optionally, add the current user to the `docker` group for convenience: https://docs.docker.com/engine/install/linux-postinstall.
+The code snippets below assume that you can run `docker` as the current login.
 
-##### NVIDIA Container Toolkit
+#### NVIDIA Container Toolkit
 
 Follow https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html to install the NVIDIA Container Toolkit.
 
 Note that you should follow both the *Installation* and the *Configuration* sections.
 
-##### Verification
+#### Verification
 
 To verify that you have all the prerequisites installed, run the following command:
 
@@ -97,7 +96,7 @@ docker run --rm --gpus all nvidia/cuda:12.8.1-base-ubi9 nvidia-smi
 
 You should see your GPU listed in the output, alongside the driver version and CUDA version.
 
-### Firewall Requirements
+## Firewall Requirements
 
 The Rime API instance will listen on port `8000` for http traffic, and port `8001` for websockets traffic.
 
@@ -107,13 +106,13 @@ You will also need to allow the following outbound traffic in your firewall rule
 - `https://optimize.rime.ai/license`: verifies that your on-prem license is active.
 - `us-docker.pkg.dev` on port `443`: container image registry.
 
-## Self-Service Licensing & Credentials
+# Self-Service Licensing & Credentials
 
-### API Key Generation
+## API Key Generation
 
 Refer to our [user interface dashboard](https://rime.ai/dashboard) to generate the necessary keys and credentials for authenticating and authorizing the deployment and use of our services.
 
-## Deployment
+# Deployment
 
 The deployment consists of two services, each powered by a container image:
 
@@ -122,7 +121,7 @@ The deployment consists of two services, each powered by a container image:
 
 There is a 1:1 relationship between the API service and the TTS service: for each TTS model, you will need a corresponding API service. Multiple pairs of API and TTS services can be deployed on the same machine.
 
-### Artifact Registry Login
+## Artifact Registry Login
 
 Key file to be provided by Rime.
 
@@ -130,26 +129,26 @@ Key file to be provided by Rime.
 cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
 ```
 
-### Container Images
+## Container Images
 
-#### TTS Service
+### TTS Service
 
 Currently the latest image versions are:
 
-* `us-docker.pkg.dev/rime-labs/arcana/v2/ar:20251020`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/de:20251020`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/en:20251020`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/es:20251020`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20251020`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/ar:20251027`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/de:20251027`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/en:20251027`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/es:20251027`
+* `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20251027`
 * `us-docker.pkg.dev/rime-labs/mist/v2/en:20251006`
 
-#### API Service
+### API Service
 
 The latest image version is:
 
 * `us-docker.pkg.dev/rime-labs/api/service:20251010`
 
-### Docker Compose Configuration
+## Docker Compose Configuration
 
 A simple way of deploying on a machine is to use Docker Compose.
 
@@ -183,7 +182,7 @@ services:
 
 > When running on Kubernetes, ensure that `MODEL_URL` points to `http://0.0.0.0:8080/invocations` instead of the Docker Compose service name.
 
-#### Multi-model backend
+### Multi-model backend
 
 If you want to serve multiple arcana language via a single API instance, you can create a `compose.yml` like the following:
 
@@ -235,13 +234,13 @@ ARCANA_GER_MODEL_URL
 
 The api will route to these model backends based on the request parameter <a href="https://docs.rime.ai/api-reference/arcana/streaming-mp3#param-lang">lang</a>.
 
-#### Start Docker Compose
+### Start Docker Compose
 
 ```bash Start Docker Compose
 docker compose up -d
 ```
 
-### Deployment Steps
+## Deployment Steps
 
 <iframe src="https://drive.google.com/file/d/1zzrPCVIDsiTMNY_pyb4Z2TezgCTl4Qc1/preview" width="560" height="315" allow="autoplay" allowfullscreen></iframe>
 
@@ -252,14 +251,14 @@ docker compose up -d
 
 > **Note**: Once the containers are started, expect 5 minutes delay for warm up before sending first tts requests.
 
-### Additional Information
+## Additional Information
 
 - **Troubleshooting Guide**: A troubleshooting guide will be provided to help resolve common issues during deployment.
 - **Available voices/models**: all voices are currently available.
 
-## Requests and Response Formats
+# Requests and Response Formats
 
-### HTTP Requests
+## HTTP Requests
 
 **Request**:
 
@@ -292,7 +291,7 @@ curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY> -H "Con
 
 Sample response file: [result.txt](https://drive.google.com/file/d/1GW2D8pm5witYMQdKQrPvp_OW5PM0TxNj/view?usp=drive_link)
 
-### Receiving a response in mp3 format
+## Receiving a response in mp3 format
 
 **Request**:
 
@@ -326,4 +325,4 @@ Sample response file: [result.pcm](https://drive.google.com/file/d/1pwkGW9jCe1TN
 
 ### Websockets Endpoints
 
-The json websockets endpoint will be served at port `8001`.  For example `ws://localhost:8001` which will be equivalent to our [cloud websockets-json api ](/api-reference/endpoint/websockets-json).
+The json websockets endpoint will be served at port `8001`.  For example `ws://localhost:8001` which will be equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).

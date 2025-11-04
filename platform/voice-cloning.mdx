@@ -1,0 +1,53 @@
+---
+title: Voice Cloning
+icon: clone
+---
+
+### Why use enterprise voice cloning?
+
+A cloned voice that matches the company’s tone (friendly, trustworthy, professional, etc.) helps reinforce brand identity. Customers recognize and trust the same voice each time. 
+
+### Creating an EVC with Rime
+
+Rime offers high-quality Enterprise Voice Cloning (EVC) for customers on our Growth and Enterprise plans.
+
+<Steps>
+  <Step title="Prepare data">
+    High-quality voice cloning data comes from clean, consistent, and varied recordings. Use a low-reverb space with only the target speaker. Around 30 to 60 minutes is enough for basic cloning, while two to five hours or more yields highly natural results. Keep the same microphone, distance, and speaking energy throughout sessions. Use a pop filter, include natural breaths and pauses, and record over multiple days to capture subtle variations while avoiding fatigue.
+
+    Ensure that each line in your script is separated by three to four seconds of silence.
+
+    Ideally the script **should contain the following elements**:
+        - Brand-specific terminology
+        - Alphanumeric sequences like phone numbers, addresses, etc.
+        - The performance and prosody that you're looking for (e.g. outbound calling, inbound customer support, etc.)
+    
+    <Tip> Please reach out to us if you're in need of a high-quality script. </Tip>
+  </Step>
+  <Step title="Delivery criteria">
+    Deliver the audio in the following format:
+        - **Channels**: Mono
+        - **Format**: Lossloss format (.wav or .flac)
+        - **Sampling rate**: At least 44.1kHz
+        - **Bit depth**: At least 16-bit
+  </Step>
+  <Step title="Delivery and completion">
+    Deliver the finished audio to the Rime team, and inform us which foundational model you want the clone to be trained on, e.g. Mist, Arcana, or both.
+
+    Turnaround time is subject to ongoing demand fluctuation but is most often under seven business days. A unique UUID will be assigned to the voice clone and will be made API-accessible under that UUID. For example, if assigned `84462a19-dc31-4f30-91e5-19bfc6415a85`, you can access your clone as follows:
+
+    ```bash
+    curl --request POST \
+        --url https://users.rime.ai/v1/rime-tts \
+        --header 'Accept: audio/pcm' \
+        --header 'Authorization: Bearer <authorization>' \
+        --header 'Content-Type: application/json' \
+        --data '{
+        "speaker": "84462a19-dc31-4f30-91e5-19bfc6415a8",
+        "text": "<string>",
+        "modelId": "arcana"
+    }'
+    ```
+
+  </Step>
+</Steps>

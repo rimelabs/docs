@@ -82,6 +82,7 @@
           ]
         },
         "api-reference/privacy-compliance",
+        "platform/voice-cloning",
         "platform/teams",
         {
           "group": "Speech QA",

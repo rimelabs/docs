@@ -133,14 +133,22 @@ cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.
 
 ### TTS Service
 
-Currently the latest image versions are:
+#### Arcana
 
-* `us-docker.pkg.dev/rime-labs/arcana/v2/ar:20251101`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/de:20251101`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/en:20251101`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/es:20251101`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/fr:20251101`
-* `us-docker.pkg.dev/rime-labs/arcana/v2/hi:20251101`
+The Arcana images can be found at `us-docker.pkg.dev/rime-labs/arcana/v2/<language>:<tag>`.
+
+* The support languages are: `ar`, `de`, `en`, `es`, `fr`, `hi`.
+* The latest version is `20251110`.
+
+For Arcana only, you can also load the engine and data packages from different containers:
+
+* `us-docker.pkg.dev/rime-labs/engine/arcana:<tag>`
+* `us-docker.pkg.dev/rime-labs/package/arcana/<language>:<tag>`
+
+#### Mist
+
+There is only a mist on-prem image for English:
+
 * `us-docker.pkg.dev/rime-labs/mist/v2/en:20251106`
 
 ### API Service

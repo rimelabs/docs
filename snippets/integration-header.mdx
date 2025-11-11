@@ -1,0 +1,41 @@
+export const IntegrationHeader = ({ 
+  partnerLogo, 
+  partnerAlt = "Partner logo",
+  rimeLogo = "/images/rime_logo_new.svg",
+  rimeAlt = "Rime logo"
+}) => (
+  <div style={{
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "12px",
+    flexWrap: "nowrap",
+    marginBottom: "24px"
+  }}>
+    <img 
+      src={rimeLogo} 
+      style={{
+        height: "40px",
+        display: "inline-block"
+      }} 
+      alt={rimeAlt} 
+    />
+    <span style={{
+      fontSize: "24px",
+      color: "#666",
+      display: "inline-block"
+    }}>
+      +
+    </span>
+    <img 
+      src={partnerLogo} 
+      style={{
+        height: "40px",
+        display: "inline-block"
+      }} 
+      alt={partnerAlt} 
+    />
+  </div>
+);

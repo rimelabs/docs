@@ -3,7 +3,7 @@ title: Metrics
 ---
 Keeping track of system metrics is crucial for maintaining a stable Rime self-hosted deployment. These insights help guide decisions about scaling and performance. To support this, Rime services expose multiple endpoints that let you monitor system health.
 
-### Rime API
+## API Container
 
 A `/health` route is available on port 8000 to give you a quick snapshot of overall status. You can check it with the following command:
 
@@ -22,22 +22,9 @@ A typical response looks like this:
 ```
 This provides a simple health check mechanism to verify that both api and model services are up and responding.
 
-### Rime Model
+## Arcana Container
 
-#### Healthcheck (Mist)
-
-To check if the model is running properly, you can perform a liveness probe using the `/ping` endpoint:
-
-```bash
-curl -X GET "http://localhost:8080/ping"
-```
-
-A typical response looks like this:
-```json
-pong
-```
-
-#### Healthcheck (Arcana)
+### Healthcheck
 
 To check if the model is running properly, you can perform a liveness probe using the `/readyz` endpoint:
 
@@ -50,48 +37,27 @@ A typical response looks like this:
 ok
 ```
 
-#### Metrics (Mist)
+### Metrics
 
-⚠️ More metrics to be added in future releases.
+The model is capable of emitting OpenTelemetry metrics.
 
-##### Prometheus metrics
-
-For more detailed operational insights, the model service exposes Prometheus-compatible metrics at the /metrics endpoint:
-
-```bash
-curl -X GET "http://localhost:8080/metrics"
-```
-
-This endpoint provides telemetry data including:
-* HTTP Request Counters: Detailed breakdown of requests by endpoint, status code, and HTTP method
-* Error Tracking: Counts of HTTP errors by type and status code
-
-Example metrics include:
-```json
-# HELP http_requests_total Total number of HTTP requests
-# TYPE http_requests_total counter
-http_requests_total{endpoint="/invocations",http_status="200",method="POST"} 102018.0
-http_requests_total{endpoint="/metrics",http_status="200",method="GET"} 69908.0
-http_requests_total{endpoint="/invocations",http_status="500",method="POST"} 38.0
-
-# HELP http_errors_total Total number of HTTP errors
-# TYPE http_errors_total counter
-http_errors_total{endpoint="/invocations",error_message="cannot access local variable '_var_var_6' where it is not associated with a value",http_status="500",method="POST"} 38.0
-```
-
-These metrics can be integrated with Prometheus monitoring systems to create dashboards and alerts for your Rime deployment. Read integration setup in the next page.
-
-#### Metrics (Arcana)
-
-The model is capable of emitting OpenTelemetry metrics. The internal vLLM process also exposes a Prometheus `/metrics` endpoint.
+The internal vLLM process also exposes a Prometheus `/metrics` endpoint.
 
 Both can serve as sources of data for metrics collection, tuning, and debugging.
 
-##### OpenTelemetry metrics
+#### OpenTelemetry metrics
+
+The Rime engine exposes the following OpenTelemetry metrics:
+
+* `rime.engine.concurrent_pipeline`
+* `rime.engine.generated_audio_duration`
+* `rime.engine.gpu_load`
+* `rime.engine.initial_latency`
+* `rime.engine.invocation_request`
 
 To have the model emit OpenTelemetry metrics, set two environment variables ...
 
-- ... set `OTEL_COLLECTOR_PROTOCOL` to `grpc`, `http/protobuf`, or `http/json`.
+- ... set `OTEL_COLLECTOR_PROTOCOL` to `grpc` (recommended), `http/protobuf`, or `http/json`.
 - ... provide a valid OpenTelemetry Collector endpoint (through `OTEL_COLLECTOR_ENDPOINT`).
 
 e.g.;
@@ -105,13 +71,13 @@ The model does not set any resource attributes for these metrics. `OTEL_RESOURCE
 
 The model does not implement OpenTelemetry authentication. If authentication is desired, running an OpenTelemetry Collector sidecar to forward metrics is recommended.
 
-##### Prometheus metrics
+#### Prometheus metrics
 
 To retrieve vLLM Prometheus metrics, issue a HTTP request to `http://localhost:${GENERATOR_VLLM_PORT:?}/metrics`.
 
 By default, a random port is assigned to the vLLM server. To choose a fixed port (which would be convenient for forwarding these metrics, if desired), set the environment variable `GENERATOR_VLLM_PORT` to an available port number.
 
-##### OpenTelemetry Collector sidecar
+#### OpenTelemetry Collector sidecar
 
 > If authentication, or other OpenTelemetry Collector extensions, are desired, be sure to utilize the `contrib` distribution which includes them.
 
@@ -122,7 +88,7 @@ For example, Docker Compose can be used to run the model and an OpenTelemetry Co
 ```yaml
 services:
   model:
-    image: rime-labs/arcana/v2/en:20251121
+    image: us-docker.pkg.dev/rime-labs/arcana/v2:20251206
     # ...
     environment:
       # ...
@@ -177,3 +143,44 @@ service:
       receivers: [otlp, prometheus/generator-vllm]
       exporters: [prometheus]
 ```
+
+## Mist Container
+
+### Healthcheck
+
+To check if the model is running properly, you can perform a liveness probe using the `/ping` endpoint:
+
+```bash
+curl -X GET "http://localhost:8080/ping"
+```
+
+A typical response looks like this:
+```json
+pong
+```
+
+### Metrics
+
+For more detailed operational insights, the model service exposes Prometheus-compatible metrics at the /metrics endpoint:
+
+```bash
+curl -X GET "http://localhost:8080/metrics"
+```
+
+This endpoint provides telemetry data including:
+* HTTP Request Counters: Detailed breakdown of requests by endpoint, status code, and HTTP method
+* Error Tracking: Counts of HTTP errors by type and status code
+
+Example metrics include:
+```json
+# HELP http_requests_total Total number of HTTP requests
+# TYPE http_requests_total counter
+http_requests_total{endpoint="/invocations",http_status="200",method="POST"} 102018.0
+http_requests_total{endpoint="/metrics",http_status="200",method="GET"} 69908.0
+http_requests_total{endpoint="/invocations",http_status="500",method="POST"} 38.0
+
+# HELP http_errors_total Total number of HTTP errors
+# TYPE http_errors_total counter
+http_errors_total{endpoint="/invocations",error_message="cannot access local variable '_var_var_6' where it is not associated with a value",http_status="500",method="POST"} 38.0
+```
+These metrics can be integrated with Prometheus monitoring systems to create dashboards and alerts for your Rime deployment.

@@ -78,7 +78,8 @@
             "api-reference/livekit",
             "api-reference/signalwire",
             "api-reference/vapi",
-            "api-reference/cerebrium"
+            "api-reference/cerebrium",
+            "api-reference/hathora"
           ]
         },
         "api-reference/privacy-compliance",

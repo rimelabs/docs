@@ -47,7 +47,8 @@ With an on-premises deployment, all sensitive data remains within your corporate
   - Debian 12 (`bookworm`), x86_64
   - Ubuntu Server 24.04 (`jammy`), x86_64
 - NVIDIA drivers
-  - `570.133.20` or higher
+  - Minimum: `525.60.13`
+  - Recommended: `570.133.20` or higher
 - Docker
 - NVIDIA Container Toolkit
 
@@ -138,7 +139,7 @@ cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.
 The Arcana images can be found at `us-docker.pkg.dev/rime-labs/arcana/v2/<language>:<tag>`.
 
 * The support languages are: `ar`, `de`, `en`, `es`, `fr`, `hi`.
-* The latest version is `20251206`.
+* The latest version is `20251213`.
 
 For Arcana only, you can also load the engine and data packages from different containers:
 
@@ -155,7 +156,7 @@ There is only a mist on-prem image for English:
 
 The latest image version is:
 
-* `us-docker.pkg.dev/rime-labs/api/service:20250909`
+* `us-docker.pkg.dev/rime-labs/api/service:20251209`
 
 ## Docker Compose Configuration
 

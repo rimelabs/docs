@@ -5,6 +5,19 @@ icon: list
 
 ## Rime API Changelog
 
+<Update label="2025-12-13">
+* Arcana release `20251213`:
+  * Performance improvements for the English model.
+  * Minimum requirements for NVIDIA drivers reduced to `525.60.13`.
+  * General reliability updates.
+
+* API release `20251209`:
+  * Exposes non-JSON WebSockets over port `8002`, allowing for Arcana over
+    WebSockets.
+  * Fixes an issue where `null` values were sent to the model for parameter
+    keys not set by the user.
+</Update>
+
 <Update label="2025-12-06">
 * Arcana release `20251206`:
   * [OpenTelemetry metrics](https://docs.rime.ai/api-reference/on-prem/metrics#metrics-arcana) are now available in the model images.

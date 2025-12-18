@@ -74,13 +74,13 @@
           "group": "Integrations",
           "icon": "puzzle-piece",
           "pages": [
-            "api-reference/together-ai",
+            "api-reference/cerebrium",
             "api-reference/daily",
+            "api-reference/hathora",
             "api-reference/livekit",
             "api-reference/signalwire",
-            "api-reference/vapi",
-            "api-reference/cerebrium",
-            "api-reference/hathora"
+            "api-reference/together-ai",
+            "api-reference/vapi"
           ]
         },
         "api-reference/privacy-compliance",

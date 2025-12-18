@@ -74,6 +74,7 @@
           "group": "Integrations",
           "icon": "puzzle-piece",
           "pages": [
+            "api-reference/together-ai",
             "api-reference/daily",
             "api-reference/livekit",
             "api-reference/signalwire",

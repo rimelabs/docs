@@ -1,0 +1,35 @@
+---
+title: Load balancing
+---
+
+To ensure real-time streaming, it is often necessary to limit the number of
+inference requests that a model is processing concurrently.
+
+To support this, Rime's Arcana model images return a [Open Request Cost
+Aggregation (ORCA) header](https://github.com/envoyproxy/envoy/issues/6614) to
+inform a load balancer based on the number of concurrent requests.
+
+<Note>ORCA headers are returned by Arcana model containers since the `20251220`
+release.</Note>
+
+## HTTP ORCA header
+
+The ORCA header in HTTP responses looks like:
+
+```
+endpoint-load-metrics: TEXT named_metrics.inference_concurrency_utilization=0.5
+```
+
+## Max concurrency
+
+The `inference_concurrency_utilization` named metric is calculated by dividing
+the number of concurrent inference requests by a preconfigured max
+concurrency.
+
+You can override the max concurrency after [parameter
+tuning](/api-reference/on-prem/performance) by setting the
+`INFERENCE_CONCURRENCY_CAPACITY` to the desired max concurrency.
+
+<Note>The `INFERENCE_CONCURRENCY_CAPACITY` variable is only used to calculate
+the utilization to inform the load balancer. Setting it does not reject or
+queue overflowing requests.</Note>

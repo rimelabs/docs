@@ -65,6 +65,7 @@
           "pages": [
             "api-reference/on-prem/quickstart",
             "api-reference/on-prem/metrics",
+            "api-reference/on-prem/load-balancing",
             "api-reference/on-prem/performance",
             "api-reference/on-prem/prometheus",
             "api-reference/on-prem/helmcharts"

@@ -2,7 +2,9 @@ export const IntegrationHeader = ({
   partnerLogo, 
   partnerAlt = "Partner logo",
   rimeLogo = "/images/rime_logo_new.svg",
-  rimeAlt = "Rime logo"
+  rimeAlt = "Rime logo",
+  rimeHeight = "40px",
+  partnerHeight = "40px"
 }) => (
   <div style={{
     width: "100%",
@@ -17,7 +19,7 @@ export const IntegrationHeader = ({
     <img 
       src={rimeLogo} 
       style={{
-        height: "40px",
+        height: rimeHeight,
         display: "inline-block"
       }} 
       alt={rimeAlt} 
@@ -32,7 +34,7 @@ export const IntegrationHeader = ({
     <img 
       src={partnerLogo} 
       style={{
-        height: "40px",
+        height: partnerHeight,
         display: "inline-block"
       }} 
       alt={partnerAlt} 

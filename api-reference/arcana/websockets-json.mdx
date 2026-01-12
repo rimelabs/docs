@@ -114,7 +114,7 @@ type ErrorEvent = {
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/api-reference/voices">listed in our documentation</a>.
+  Must be one of the voices <a href="/api-reference/voices">listed in our documentation</a> for `arcana`.
 </ParamField>
 
 <ParamField body="text" type="string" required>
@@ -122,7 +122,7 @@ type ErrorEvent = {
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  Choose `mistv2` for Rime's fastest, most accurate, and most customizable model, or `mist` for Rime's earlier model (default: `mist`)
+  This value **must** be set to `arcana` else the websockets server will default to `mistv2` for speech synthesis.
 </ParamField>
 
 <ParamField body="audioFormat" type="string">
@@ -133,31 +133,29 @@ type ErrorEvent = {
   If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
 </ParamField>
 
-<ParamField body="pauseBetweenBrackets" type="bool" default="false">
-  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
-  Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences.
+<ParamField body="repetition_penalty" type="float" default="1.5">
+  The repetition penalty. We do not recommend changing this from the default value. Typical range is 1 to 2.
+
+  Float that penalizes new tokens based on whether they appear in the prompt and the generated text so far. Values > 1 encourage the model to use new tokens, while values < 1 encourage the model to repeat tokens.
 </ParamField>
 
-<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
-  When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
-  Example: "\{h'El.o} World" will pronounce "Hello" as expected. Learn more about <a href="/api-reference/custom-pronunciation">custom pronunciation</a>.
+<ParamField body="temperature" type="float" default="0.5">
+  The temperature. We do not recommend changing this from the default value. Typical range is 0 to 1.
+
+  Float that controls the randomness of the sampling. Lower values make the model more deterministic, while higher values make the model more random. Zero means greedy sampling.
 </ParamField>
 
-<ParamField body="inlineSpeedAlpha" type="string">
-  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
-  Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
+<ParamField body="top_p" type="float" default="1">
+  The top p. We do not recommend changing this from the default value. Typical range is 0 to 1.
+
+  Float that controls the cumulative probability of the top tokens to consider. Must be in (0, 1]. Set to 1 to consider all tokens.
 </ParamField>
 
-<ParamField body="samplingRate" type="int">
-  The value, if provided, must be between 4000 and 44100. Default: 22050
-</ParamField>
+<ParamField body="samplingRate" type="int" default="24000">
+  The sampling rate (Hz).
 
-<ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher than 1.0 is slower than default.
-</ParamField>
-
-<ParamField body="noTextNormalization" type="bool" default="false">
-  Skips text normalization of the input text prior to synthesizing audio. This will reduce latency at the cost of some possible mispronunciation of digits and abbreviations.
+  * **On-cloud**: Accepted values: 8000, 16000, 22050, 24000, 44100, 48000, 96000. Anything above 24000 is up sampling.
+  * **On-prem**: Any value is accepted.
 </ParamField>
 
 <ParamField body="segment" type="string" default="bySentence">
@@ -167,11 +165,6 @@ type ErrorEvent = {
   - "bySentence" (default) - Waits for complete sentences before synthesis
 
 Note: For backward compatibility, setting `immediate=true` in query params is equivalent to `segment=immediate`. If a null value is provided, it will default to "bySentence".
-</ParamField>
-
-<ParamField body="saveOovs" type="bool" default="false">
-  If set to `true`, Rime shall save any currently OOV (out-of-vocabulary) words encountered in `text`, and save them for the User or Team to review on the
-  <a href="https://app.rime.ai/oov/">Speech QA dashboard</a>. <b>Note:</b> It may take up to 15 minutes for OOV words to appear on your dashboard.
 </ParamField>
 
 <RequestExample>

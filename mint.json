@@ -110,7 +110,8 @@
         {
           "group": "Websocket",
           "pages": [
-            "api-reference/arcana/websockets"
+            "api-reference/arcana/websockets",
+            "api-reference/arcana/websockets-json"
           ]
         }
       ]

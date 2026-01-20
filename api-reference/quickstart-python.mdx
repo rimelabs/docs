@@ -1,0 +1,133 @@
+---
+title: 5 Minute Quickstart
+icon: rocket
+---
+
+This guide will show you how to generate your first audio clip with Rime's TTS API and experiment with different voices and speech customizations.
+
+## Prerequisites
+
+For this guide you will need a Rime API token. To get a token, create a free [Rime account](https://app.rime.ai/signup/). Then, from the Rime dashboard, navigate to the [API Tokens](https://app.rime.ai/tokens/) page and copy the API key for later use.
+
+We will be using **Python** to send requests to the Rime API so install [Python 3.10](https://www.python.org/downloads/release/python-3100/) or later.
+
+## Set Up Your Environment
+
+Create a virtual environment to keep your project dependencies isolated.
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+Install the requests library:
+
+```bash
+pip install requests
+```
+
+## Create Your Python Script
+
+Create a file called `rime_hello_world.py` and import the requests library.
+
+```python
+import requests
+```
+Next, create the request to the Rime API. Set the request headers specifying the Rime API key that you copied.
+
+```python
+RIME_API_KEY = "your_api_key_here"
+
+headers = {
+    "Accept": "audio/mp3",
+    "Authorization": f"Bearer {RIME_API_KEY}",
+    "Content-Type": "application/json"
+}
+```
+Now, create a payload where we will specify the details of the request to the API.
+
+```python
+payload = {
+    "text": "Hello! This is Rime speaking.",
+    "speaker": "celeste",
+    "modelId": "arcana"
+}
+```
+
+There are many optional parameters that we could send to the API but the following are required:
+- `text` - The text to convert to speech
+- `speaker` - The voice to use (see [voices](/api-reference/voices))
+- `modelId` - Use `arcana` for the most realistic voices, or `mistv2` for faster synthesis
+
+See the [api-reference](/api-reference/arcana/streaming-mp3) for more optional parameters.
+
+Now that our headers and payload are created, make a POST request to the Rime API and write the streamed audio response to a file.
+
+```python
+with requests.post(
+    "https://users.rime.ai/v1/rime-tts",
+    headers=headers,
+    json=payload,
+    stream=True
+) as response:
+    response.raise_for_status()
+    
+    with open("output.mp3", "wb") as f:
+        for chunk in response.iter_content(chunk_size=4096):
+            if chunk:
+                f.write(chunk)
+
+print("Audio saved to output.mp3")
+```
+
+Streaming writes audio chunks as they arrive, reducing memory usage for longer text.
+
+Test the script by simply running it from the terminal.
+
+```bash
+python rime_hello_world.py
+```
+
+On a successful run, we should see confirmation that our audio file is saved.
+
+```bash
+'Audio saved to output.mp3'
+```
+
+## Choose a Voice
+
+Rime offers a range of voices with different personalities. To change the voice, update the `speaker` parameter in your request.
+
+```python
+json={
+    "text": "Hello! This is Rime speaking.",
+    "speaker": "orion",  # Try different voices here
+    "modelId": "arcana",
+    "samplingRate": 24000
+}
+```
+
+Browse all available voices on the [voices page](/api-reference/voices).
+
+## Custom Pronunciation
+
+The `mistv2` model offers a way to specify pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/api-reference/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
+
+```python
+json={
+    "text": "Welcome to {r1Ym} labs.",
+    "speaker": "peak",
+    "modelId": "mistv2",
+    "samplingRate": 24000,
+    "phonemizeBetweenBrackets": True
+}
+```
+
+Use the [Pronunciation tool](https://rime.ai/dashboard/pronunciation) in the dashboard to generate phonetic strings for any word.
+
+## Next Steps
+
+Now that you can generate TTS audio, the [next guide](/api-reference/quickstart-livekit) will explore how to enable a real-time conversation between you and an agent.
+
+Before that, check out these resources to get more familiar with Rime:
+- [Models](/api-reference/models) - Compare Arcana (realistic) vs Mist v2 (fast)

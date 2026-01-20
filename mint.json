@@ -15,6 +15,15 @@
       "to": "#B2321A"
     }
   },
+  "primaryTab": {
+    "name": "Guides"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "/api-reference/endpoint/streaming-pcm"
+    }
+  ],
   "topbarLinks": [
     {
       "name": "Homepage",
@@ -29,7 +38,9 @@
     {
       "group": "Documentation",
       "pages": [
-        "api-reference/quickstart",
+        "api-reference/introduction",
+        "api-reference/quickstart-python",
+        "api-reference/quickstart-livekit",
         "api-reference/changelog",
         "api-reference/voices",
         "api-reference/models",

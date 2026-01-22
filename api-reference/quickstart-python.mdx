@@ -1,39 +1,25 @@
 ---
-title: 5 Minute Quickstart
+title: Generate text-to-speech in five-minutes
 icon: rocket
 ---
 
-This guide will show you how to generate your first audio clip with Rime's TTS API and experiment with different voices and speech customizations.
+This guide will show you how to generate your first audio clip with Rime's text-to-speech (TTS) API and experiment with different voices and speech customizations.
 
 ## Prerequisites
 
-For this guide you will need a Rime API token. To get a token, create a free [Rime account](https://app.rime.ai/signup/). Then, from the Rime dashboard, navigate to the [API Tokens](https://app.rime.ai/tokens/) page and copy the API key for later use.
+- A Rime API token. Create a free [Rime account](https://app.rime.ai/signup/). Then, from the Rime dashboard, navigate to the [API Tokens](https://app.rime.ai/tokens/) page and copy the API key for later use.
 
-We will be using **Python** to send requests to the Rime API so install [Python 3.10](https://www.python.org/downloads/release/python-3100/) or later.
+- [Python 3.10+](https://www.python.org/downloads/release/python-3100/) to send requests to the Rime API.
 
-## Set Up Your Environment
+## Create your python script
 
-Create a virtual environment to keep your project dependencies isolated.
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-Install the requests library:
-
-```bash
-pip install requests
-```
-
-## Create Your Python Script
-
-Create a file called `rime_hello_world.py` and import the requests library.
+Create a file called `rime_hello_world.py` and import the required library modules.
 
 ```python
-import requests
+import json
+import urllib.request
 ```
-Next, create the request to the Rime API. Set the request headers specifying the Rime API key that you copied.
+Next, create a request to the Rime API. Set the request headers specifying the Rime API key that you copied.
 
 ```python
 RIME_API_KEY = "your_api_key_here"
@@ -44,7 +30,7 @@ headers = {
     "Content-Type": "application/json"
 }
 ```
-Now, create a payload where we will specify the details of the request to the API.
+Now, create a payload specifying the details of the request to the API.
 
 ```python
 payload = {
@@ -54,80 +40,81 @@ payload = {
 }
 ```
 
-There are many optional parameters that we could send to the API but the following are required:
-- `text` - The text to convert to speech
-- `speaker` - The voice to use (see [voices](/api-reference/voices))
-- `modelId` - Use `arcana` for the most realistic voices, or `mistv2` for faster synthesis
+Set the following required parameters:
+- `text` adds the text to convert to speech
+- `speaker`: The voice to use (see [voices](/api-reference/voices))
+- `modelId`: Use `arcana` for the most realistic voices, or `mistv2` for faster synthesis
 
-See the [api-reference](/api-reference/arcana/streaming-mp3) for more optional parameters.
+See the [Arcana API reference](/api-reference/arcana/streaming-mp3) for more optional parameters.
 
-Now that our headers and payload are created, make a POST request to the Rime API and write the streamed audio response to a file.
+Now that you've created the headers and payload, make a `POST` request to the Rime API and write the streamed audio response to a file.
 
 ```python
-with requests.post(
+data = json.dumps(payload).encode("utf-8")
+
+request = urllib.request.Request(
     "https://users.rime.ai/v1/rime-tts",
+    data=data,
     headers=headers,
-    json=payload,
-    stream=True
-) as response:
-    response.raise_for_status()
-    
+    method="POST"
+)
+
+with urllib.request.urlopen(request) as response:
     with open("output.mp3", "wb") as f:
-        for chunk in response.iter_content(chunk_size=4096):
-            if chunk:
-                f.write(chunk)
+        while chunk := response.read(4096):
+            f.write(chunk)
 
 print("Audio saved to output.mp3")
 ```
 
-Streaming writes audio chunks as they arrive, reducing memory usage for longer text.
+Streaming allows audio playback to begin before generation completes. This enables conversational flow as the user can begin to hear the responses before the entire audio clip is generated. As you are writing to a file in this example, this is less important. But it will become crucial when using these models in real-time conversations.
 
-Test the script by simply running it from the terminal.
+Test the script by running it from the terminal:
 
 ```bash
 python rime_hello_world.py
 ```
 
-On a successful run, we should see confirmation that our audio file is saved.
+On a successful run, the terminal displays the following confirmation that our audio file is saved:
 
 ```bash
 'Audio saved to output.mp3'
 ```
 
-## Choose a Voice
+<audio controls src="/sounds/example-output.mp3"></audio>
 
-Rime offers a range of voices with different personalities. To change the voice, update the `speaker` parameter in your request.
+## Choose a voice
+
+Rime offers a range of voices with different personalities. To change the voice, update the `speaker` parameter in your request:
 
 ```python
-json={
+payload = {
     "text": "Hello! This is Rime speaking.",
     "speaker": "orion",  # Try different voices here
-    "modelId": "arcana",
-    "samplingRate": 24000
+    "modelId": "arcana"
 }
 ```
 
-Browse all available voices on the [voices page](/api-reference/voices).
+Browse all available voices on the [Voices](/api-reference/voices) page.
 
-## Custom Pronunciation
+## Custom pronunciation
 
-The `mistv2` model offers a way to specify pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/api-reference/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
+The `mistv2` model lets you specify pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/api-reference/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
 
 ```python
-json={
+payload = {
     "text": "Welcome to {r1Ym} labs.",
     "speaker": "peak",
     "modelId": "mistv2",
-    "samplingRate": 24000,
     "phonemizeBetweenBrackets": True
 }
 ```
 
 Use the [Pronunciation tool](https://rime.ai/dashboard/pronunciation) in the dashboard to generate phonetic strings for any word.
 
-## Next Steps
+## Next steps
 
-Now that you can generate TTS audio, the [next guide](/api-reference/quickstart-livekit) will explore how to enable a real-time conversation between you and an agent.
+Now that you can generate TTS audio, the [LiveKit quickstart guide](/api-reference/quickstart-livekit) will explore how to enable a real-time conversation between you and an agent.
 
 Before that, check out these resources to get more familiar with Rime:
-- [Models](/api-reference/models) - Compare Arcana (realistic) vs Mist v2 (fast)
+- [Models](/api-reference/models): Compare Arcana (realistic) and Mistv2 (fast)

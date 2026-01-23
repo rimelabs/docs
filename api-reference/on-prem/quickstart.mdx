@@ -156,7 +156,7 @@ There is only a mist on-prem image for English:
 
 The latest image version is:
 
-* `us-docker.pkg.dev/rime-labs/api/service:20251209`
+* `us-docker.pkg.dev/rime-labs/api/service:20260123`
 
 ## Docker Compose Configuration
 
@@ -173,7 +173,8 @@ services:
       - model
     ports:
       - "8000:8000"  # HTTP API
-      - "8001:8001"  # WebSocket API
+      - "8001:8001"  # Json WebSocket API
+      - "8002:8002"  # Json WebSocket API
     restart: unless-stopped
     environment:
       - MODEL_URL=http://model:8080/invocations
@@ -333,6 +334,13 @@ curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Co
 
 Sample response file: [result.pcm](https://drive.google.com/file/d/1pwkGW9jCe1TN9GF5yQa6j619vc8WfjGu/view?usp=drive_link)
 
-### Websockets Endpoints
+### Binary Websockets Endpoints
 
-The json websockets endpoint will be served at port `8001`.  For example `ws://localhost:8001` which will be equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).
+The binary (non-json) websockets endpoint will be served at port `8002`.
+For example `ws://localhost:8002` which will be equivalent to our [cloud websockets API](/api-reference/endpoint/websockets).
+
+### Json Websockets Endpoints
+
+The json websockets endpoint will be served at port `8001`.
+For example `ws://localhost:8001` which will be equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).
+

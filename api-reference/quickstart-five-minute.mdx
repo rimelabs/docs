@@ -9,9 +9,14 @@ This guide will show you how to generate your first audio clip with Rime's text-
 
 - A Rime API token. Create a free [Rime account](https://app.rime.ai/signup/). Then, from the Rime dashboard, navigate to the [API Tokens](https://app.rime.ai/tokens/) page and copy the API key for later use.
 
+Select your preferred language:
+
+<Tabs>
+<Tab title="Python" icon="python">
+
 - [Python 3.10+](https://www.python.org/downloads/release/python-3100/) to send requests to the Rime API.
 
-## Create your python script
+### Create your Python script
 
 Create a file called `rime_hello_world.py` and import the required library modules.
 
@@ -81,13 +86,92 @@ On a successful run, the terminal displays the following confirmation that our a
 'Audio saved to output.mp3'
 ```
 
+</Tab>
+
+<Tab title="JavaScript" icon="js">
+
+- [Node.js 18+](https://nodejs.org/) to send requests to the Rime API.
+
+### Create your JavaScript script
+
+Create a file called `rime_hello_world.js` and set up the request to the Rime API.
+
+```javascript
+const fs = require('fs');
+
+const RIME_API_KEY = "your_api_key_here";
+
+const headers = {
+    "Accept": "audio/mp3",
+    "Authorization": `Bearer ${RIME_API_KEY}`,
+    "Content-Type": "application/json"
+};
+```
+
+Now, create a payload specifying the details of the request to the API.
+
+```javascript
+const payload = {
+    text: "Hello! This is Rime speaking.",
+    speaker: "celeste",
+    modelId: "arcana"
+};
+```
+
+Set the following required parameters:
+- `text` adds the text to convert to speech
+- `speaker`: The voice to use (see [voices](/api-reference/voices))
+- `modelId`: Use `arcana` for the most realistic voices, or `mistv2` for faster synthesis
+
+See the [Arcana API reference](/api-reference/arcana/streaming-mp3) for more optional parameters.
+
+Now that you've created the headers and payload, make a `POST` request to the Rime API and write the streamed audio response to a file.
+
+```javascript
+async function generateSpeech() {
+    const response = await fetch("https://users.rime.ai/v1/rime-tts", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const buffer = await response.arrayBuffer();
+    fs.writeFileSync("output.mp3", Buffer.from(buffer));
+    console.log("Audio saved to output.mp3");
+}
+
+generateSpeech();
+```
+
+Streaming allows audio playback to begin before generation completes. This enables conversational flow as the user can begin to hear the responses before the entire audio clip is generated. As you are writing to a file in this example, this is less important. But it will become crucial when using these models in real-time conversations. If this sounds interesting, check out our [LiveKit Quickstart](/api-reference/quickstart-livekit/) guide to create a conversational agent.
+
+Test the script by running it from the terminal:
+
+```bash
+node rime_hello_world.js
+```
+
+On a successful run, the terminal displays the following confirmation that our audio file is saved:
+
+```bash
+'Audio saved to output.mp3'
+```
+
+</Tab>
+</Tabs>
+
 <audio controls src="/sounds/example-output.mp3"></audio>
 
 ## Choose a voice
 
 Rime offers a range of voices with different personalities. To change the voice, update the `speaker` parameter in your request:
 
-```python
+<CodeGroup>
+```python Python
 payload = {
     "text": "Hello! This is Rime speaking.",
     "speaker": "orion",  # Try different voices here
@@ -95,13 +179,23 @@ payload = {
 }
 ```
 
+```javascript JavaScript
+const payload = {
+    text: "Hello! This is Rime speaking.",
+    speaker: "orion",  // Try different voices here
+    modelId: "arcana"
+};
+```
+</CodeGroup>
+
 Browse all available voices on the [Voices](/api-reference/voices) page.
 
 ## Custom pronunciation
 
 The `mistv2` model lets you specify pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/api-reference/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
 
-```python
+<CodeGroup>
+```python Python
 payload = {
     "text": "Welcome to {r1Ym} labs.",
     "speaker": "peak",
@@ -109,6 +203,16 @@ payload = {
     "phonemizeBetweenBrackets": True
 }
 ```
+
+```javascript JavaScript
+const payload = {
+    text: "Welcome to {r1Ym} labs.",
+    speaker: "peak",
+    modelId: "mistv2",
+    phonemizeBetweenBrackets: true
+};
+```
+</CodeGroup>
 
 Use the [Pronunciation tool](https://rime.ai/dashboard/pronunciation) in the dashboard to generate phonetic strings for any word.
 

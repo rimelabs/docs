@@ -5,6 +5,12 @@ icon: list
 
 ## Rime API Changelog
 
+<Update label="2025-01-23">
+ * Api on-prem image `20260123`:
+    * Exposes the binary websockets api on port 8002. This api is equivalent to the [cloud websockets API](/api-reference/endpoint/websockets).
+    * Supports specifying an arabic language model backend via the env var `ARCANA_ARA_MODEL_URL`.
+</Update>
+
 <Update label="2026-01-22">
 * Arcana release `20260122`:
   * `rime.engine.initial_latency` and `rime.engine.generated_audio_duration` have saner defaults and [can be tuned](https://docs.rime.ai/api-reference/on-prem/metrics).

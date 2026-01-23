@@ -2,11 +2,11 @@
 title: Quickstart
 ---
 
-<Tip>On-prem is  now **public and generally available**! For more information regarding access to Docker images and pricing info, reach out to help@rime.ai.</Tip>
+<Tip>On-prem is  now **public and generally available!** For more information regarding access to Docker images and pricing info, reach out to help@rime.ai.</Tip>
 
 # Introduction
 
-## Why On-Premises?
+## Why on-premises?
 
 Deploying on-premises offers several advantages over using cloud APIs over a public network. One of the main benefits is speed; by hosting the services locally, you can significantly reduce network latency, resulting in faster system responses and data processing.
 
@@ -18,8 +18,8 @@ With an on-premises deployment, all sensitive data remains within your corporate
 
 ### Latency
 
-- Mistv2: Our tests have shown median latency of **175ms** with randomly generated sentences between 40 and 50 characters on A10Gs and similar GPUs.
-- Arcana: See [performance tuning](/api-reference/on-prem/performance#metrics).
+- **Mistv2:** Our tests have shown median latency of **175ms** with randomly generated sentences between 40 and 50 characters on A10Gs and similar GPUs.
+- **Arcana:** See [performance tuning](/api-reference/on-prem/performance#metrics).
 
 ## Components
 
@@ -27,7 +27,7 @@ With an on-premises deployment, all sensitive data remains within your corporate
 
 # Prerequisites
 
-## Hardware Requirements
+## Hardware requirements
 
 - GPU
   - For Mist
@@ -41,7 +41,7 @@ With an on-premises deployment, all sensitive data remains within your corporate
 - Memory requirements
   - 32 GiB
 
-## Software Requirements
+## Software requirements
 
 - Supported Linux Distributions
   - Debian 12 (`bookworm`), x86_64
@@ -54,7 +54,7 @@ With an on-premises deployment, all sensitive data remains within your corporate
 
 ### Installations
 
-#### NVIDIA Drivers
+#### NVIDIA drivers
 
 Follow https://www.nvidia.com/en-us/drivers to install the latest NVIDIA drivers, or use the following instructions on Debian-based systems:
 
@@ -85,7 +85,7 @@ The code snippets below assume that you can run `docker` as the current login.
 
 Follow https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html to install the NVIDIA Container Toolkit.
 
-Note that you should follow both the *Installation* and the *Configuration* sections.
+Note that you should follow both the **Installation** and the **Configuration** sections.
 
 #### Verification
 
@@ -97,19 +97,19 @@ docker run --rm --gpus all nvidia/cuda:12.8.1-base-ubi9 nvidia-smi
 
 You should see your GPU listed in the output, alongside the driver version and CUDA version.
 
-## Firewall Requirements
+## Firewall requirements
 
-The Rime API instance will listen on port `8000` for http traffic, and port `8001` for websockets traffic.
+The Rime API instance will listen on port 8000 for HTTP traffic, and on port 8001 for WebSocket traffic.
 
 You will also need to allow the following outbound traffic in your firewall rules:
 
 - `https://optimize.rime.ai/usage`: registers on-prem usage with our servers.
 - `https://optimize.rime.ai/license`: verifies that your on-prem license is active.
-- `us-docker.pkg.dev` on port `443`: container image registry.
+- `us-docker.pkg.dev` on port 443: container image registry.
 
-# Self-Service Licensing & Credentials
+# Self-service licensing and credentials
 
-## API Key Generation
+## API key Generation
 
 Refer to our [user interface dashboard](https://rime.ai/dashboard) to generate the necessary keys and credentials for authenticating and authorizing the deployment and use of our services.
 
@@ -117,22 +117,22 @@ Refer to our [user interface dashboard](https://rime.ai/dashboard) to generate t
 
 The deployment consists of two services, each powered by a container image:
 
-- **API service**: responsible for handling the HTTP and WebSocket requests, and for verifying the license. It serves as a proxy to the TTS service.
-- **TTS service**: responsible for model inference.
+- **API service:** responsible for handling the HTTP and WebSocket requests, and for verifying the license. It serves as a proxy to the TTS service.
+- **TTS service:** responsible for model inference.
 
 There is a 1:1 relationship between the API service and the TTS service: for each TTS model, you will need a corresponding API service. Multiple pairs of API and TTS services can be deployed on the same machine.
 
-## Artifact Registry Login
+## Artifact Registry login
 
 Key file to be provided by Rime.
 
-```bash Login to Artifact Registry
+```bash Log in to Artifact Registry
 cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
 ```
 
-## Container Images
+## Container images
 
-### TTS Service
+### TTS service
 
 #### Arcana
 
@@ -148,17 +148,17 @@ For Arcana only, you can also load the engine and data packages from different c
 
 #### Mist
 
-There is only a mist on-prem image for English:
+There is only a Mist on-prem image for English:
 
 * `us-docker.pkg.dev/rime-labs/mist/v2/en:20251106`
 
-### API Service
+### API service
 
 The latest image version is:
 
 * `us-docker.pkg.dev/rime-labs/api/service:20251209`
 
-## Docker Compose Configuration
+## Docker Compose configuration
 
 A simple way of deploying on a machine is to use Docker Compose.
 
@@ -194,7 +194,7 @@ services:
 
 ### Multi-model backend
 
-If you want to serve multiple arcana language via a single API instance, you can create a `compose.yml` like the following:
+If you want to serve multiple Arcana languages via a single API instance, you can create a `compose.yml` like the following:
 
 ```yaml compose.yml
 services:
@@ -233,8 +233,9 @@ services:
     restart: unless-stopped
 ```
 
-**Note** that the `ARCANA_{LANG}_MODEL_URL` env var must point to the container running the arcana image for that language,
-but you should still point `MODEL_URL` to a default model container. The model env vars currently supported are:
+Note that the `ARCANA_{LANG}_MODEL_URL` environment variable must point to the container running the Arcana image for that language,
+but you should still point `MODEL_URL` to a default model container. The model environment variables currently supported are:
+
 ```
 ARCANA_ENG_MODEL_URL
 ARCANA_SPA_MODEL_URL
@@ -242,7 +243,7 @@ ARCANA_FRA_MODEL_URL
 ARCANA_GER_MODEL_URL
 ```
 
-The api will route to these model backends based on the request parameter <a href="https://docs.rime.ai/api-reference/arcana/streaming-mp3#param-lang">lang</a>.
+The API will route to these model backends based on the request parameter <a href="https://docs.rime.ai/api-reference/arcana/streaming-mp3#param-lang">lang</a>.
 
 ### Start Docker Compose
 
@@ -250,32 +251,32 @@ The api will route to these model backends based on the request parameter <a hre
 docker compose up -d
 ```
 
-## Deployment Steps
+## Deployment steps
 
 <iframe src="https://drive.google.com/file/d/1zzrPCVIDsiTMNY_pyb4Z2TezgCTl4Qc1/preview" width="560" height="315" allow="autoplay" allowfullscreen></iframe>
 
-1. **Environment Setup**: Prepare your AWS environment according to the specifications required for optimal deployment.
-2. **Service Deployment**: Using Docker, deploy the images on your server.
-3. **Networking Setup**: Configure the network settings, including the Internet Gateway and port settings, to ensure connectivity and security.
-4. **Licensing and Authentication**: Generate and apply the necessary API key via our dashboard to start using the services.
+1. **Environment setup:** Prepare your AWS environment according to the specifications required for optimal deployment.
+2. **Service deployment:** Using Docker, deploy the images on your server.
+3. **Networking setup:** Configure the network settings, including the Internet Gateway and port settings, to ensure connectivity and security.
+4. **Licensing and authentication:** Generate and apply the necessary API key via our dashboard to start using the services.
 
-> **Note**: Once the containers are started, expect 5 minutes delay for warm up before sending first tts requests.
+> **Note:** Once the containers are started, expect a five-minute delay for warm-up before sending the first TTS requests.
 
-## Additional Information
+## Additional information
 
-- **Troubleshooting Guide**: A troubleshooting guide will be provided to help resolve common issues during deployment.
-- **Available voices/models**: all voices are currently available.
+- **Troubleshooting guide:** A troubleshooting guide will be provided to help resolve common issues during deployment.
+- **Available voices and models:** All voices are currently available.
 
-# Requests and Response Formats
+# Requests and response formats
 
-## HTTP Requests
+## HTTP requests
 
-**Request**:
+**Request:**
 
-```bash Health Check
+```bash Health check
 curl http://localhost:8000/health
 ```
-which should return
+This should return:
 ```json
 {
     "apiStatus":"ok",
@@ -285,7 +286,7 @@ which should return
 }
 ```
 
-```bash Request Example
+```bash Request example
 curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY> -H "Content-Type: application/json" -d '{
   "text": "I would love to have a conversation with you. The new model is out.",
   "speaker": "joy",
@@ -293,19 +294,19 @@ curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY> -H "Con
 }' -o result_mist.txt
 ```
 
-**Response**:
+**Response:**
 
-```json Response Format
+```json Response format
 {"audioContent":{"model_output":"<base64>"}}
 ```
 
-Sample response file: [result.txt](https://drive.google.com/file/d/1GW2D8pm5witYMQdKQrPvp_OW5PM0TxNj/view?usp=drive_link)
+Sample response file: [`result.txt`](https://drive.google.com/file/d/1GW2D8pm5witYMQdKQrPvp_OW5PM0TxNj/view?usp=drive_link)
 
-## Receiving a response in mp3 format
+## Receiving a response in MP3 format
 
-**Request**:
+**Request:**
 
-```bash Request Example
+```bash Request example
 curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Content-Type: application/json" -H "Accept: audio/mp3" -d '{
   "text": "I would love to have a conversation with you.",
   "speaker": "joy",
@@ -313,15 +314,15 @@ curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Co
 }' -o result.mp3
 ```
 
-**Response**:
+**Response:**
 
-Sample response file: [result.mp3](https://drive.google.com/file/d/1iwmWB1byBXknmNvNmvB_SgBpvnU4bChJ/view?usp=sharing)
+Sample response file: [`result.mp3`](https://drive.google.com/file/d/1iwmWB1byBXknmNvNmvB_SgBpvnU4bChJ/view?usp=sharing)
 
-### Receiving a response in pcm (raw) format
+### Receiving a response in PCM (raw) format
 
-**Request**:
+**Request:**
 
-```bash Request Example
+```bash Request example
 curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Content-Type: application/json" -H "Accept: audio/pcm" -d '{
   "text": "I would love to have a conversation with you.",
   "speaker": "joy",
@@ -329,10 +330,10 @@ curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Co
 }' -o result.pcm
 ```
 
-**Response**:
+**Response:**
 
-Sample response file: [result.pcm](https://drive.google.com/file/d/1pwkGW9jCe1TN9GF5yQa6j619vc8WfjGu/view?usp=drive_link)
+Sample response file: [`result.pcm`](https://drive.google.com/file/d/1pwkGW9jCe1TN9GF5yQa6j619vc8WfjGu/view?usp=drive_link)
 
-### Websockets Endpoints
+### WebSocket endpoints
 
-The json websockets endpoint will be served at port `8001`.  For example `ws://localhost:8001` which will be equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).
+The JSON WebSocket endpoint will be served at port 8001.  For example, `ws://localhost:8001`, which will be equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).

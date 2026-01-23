@@ -1,25 +1,30 @@
 ---
-title: Generate text-to-speech in five-minutes
+title: Generate text-to-speech in five minutes
 icon: rocket
 ---
 
-This guide will show you how to generate your first audio clip with Rime's text-to-speech (TTS) API and experiment with different voices and speech customizations.
+This guide shows you how to generate your first audio clip with Rime's text-to-speech (TTS) API and experiment with different voices and speech customizations.
 
 ## Prerequisites
 
-- A Rime API token. Create a free [Rime account](https://app.rime.ai/signup/). Then, from the Rime dashboard, navigate to the [API Tokens](https://app.rime.ai/tokens/) page and copy the API key for later use.
+To follow this guide, you need:
 
-- [Python 3.10+](https://www.python.org/downloads/release/python-3100/) to send requests to the Rime API.
+- **A Rime API token:** Create a free [Rime account](https://app.rime.ai/signup/) and copy your API key from the [API Tokens](https://app.rime.ai/tokens/) page.
 
-## Create your python script
+- **[Python 3.10](https://www.python.org/downloads/release/python-3100/) or later:** We use Python to send requests to the Rime API.
 
-Create a file called `rime_hello_world.py` and import the required library modules.
+## Create your Python script
+
+Create a file called `rime_hello_world.py` and import the required library modules:
 
 ```python
 import json
 import urllib.request
 ```
-Next, create a request to the Rime API. Set the request headers specifying the Rime API key that you copied.
+
+Next, we'll create a request to the Rime API.
+
+Set the request headers, specifying the Rime API key that you copied:
 
 ```python
 RIME_API_KEY = "your_api_key_here"
@@ -30,7 +35,8 @@ headers = {
     "Content-Type": "application/json"
 }
 ```
-Now, create a payload specifying the details of the request to the API.
+
+Configure a payload specifying the details of the request:
 
 ```python
 payload = {
@@ -40,14 +46,15 @@ payload = {
 }
 ```
 
-Set the following required parameters:
-- `text` adds the text to convert to speech
-- `speaker`: The voice to use (see [voices](/api-reference/voices))
-- `modelId`: Use `arcana` for the most realistic voices, or `mistv2` for faster synthesis
+This payload includes the three required parameters:
 
-See the [Arcana API reference](/api-reference/arcana/streaming-mp3) for more optional parameters.
+- `text` adds the text that the model converts to speech.
+- `speaker` sets the voice that the agent uses (view your options on our [Voices](/api-reference/voices) page).
+- `modelId` specifies which model the agent uses. Use `arcana` for the most realistic voices, or `mistv2` for faster synthesis,
 
-Now that you've created the headers and payload, make a `POST` request to the Rime API and write the streamed audio response to a file.
+The [Arcana API reference](/api-reference/arcana/streaming-mp3) details the many optional parameters you can add to request payloads.
+
+Now that you've created the headers and payload, make a `POST` request to the Rime API and write the streamed audio response to a file:
 
 ```python
 data = json.dumps(payload).encode("utf-8")
@@ -67,7 +74,9 @@ with urllib.request.urlopen(request) as response:
 print("Audio saved to output.mp3")
 ```
 
-Streaming allows audio playback to begin before generation completes. This enables conversational flow as the user can begin to hear the responses before the entire audio clip is generated. As you are writing to a file in this example, this is less important. But it will become crucial when using these models in real-time conversations. If this sounds interesting, check out our [LiveKit Quickstart](/api-reference/quickstart-livekit/) guide to create a conversational agent.
+Streaming allows audio playback to begin before generation completes. This enables conversational flow, as the user can start listening to responses before the entire audio clip has been generated.
+
+Although streaming is less important in this example, because we're writing to a file, it's vital when using models in real-time conversations. If this sounds interesting, follow the [LiveKit quickstart](/api-reference/quickstart-livekit/) to create your first conversational agent.
 
 Test the script by running it from the terminal:
 
@@ -75,7 +84,7 @@ Test the script by running it from the terminal:
 python rime_hello_world.py
 ```
 
-On a successful run, the terminal displays the following confirmation that our audio file is saved:
+On a successful run, the terminal displays a confirmation that your audio file has been saved:
 
 ```bash
 'Audio saved to output.mp3'
@@ -99,7 +108,7 @@ Browse all available voices on the [Voices](/api-reference/voices) page.
 
 ## Custom pronunciation
 
-The `mistv2` model lets you specify pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/api-reference/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
+The `mistv2` model lets you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/api-reference/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
 
 ```python
 payload = {
@@ -110,11 +119,11 @@ payload = {
 }
 ```
 
-Use the [Pronunciation tool](https://rime.ai/dashboard/pronunciation) in the dashboard to generate phonetic strings for any word.
+Use the [Pronunciation tool](https://rime.ai/dashboard/pronunciation) on the dashboard to generate phonetic strings for any word.
 
 ## Next steps
 
-Now that you can generate TTS audio, the [LiveKit quickstart guide](/api-reference/quickstart-livekit) will explore how to enable a real-time conversation between you and an agent.
+Now that you can generate TTS audio, try following the [LiveKit quickstart guide](/api-reference/quickstart-livekit) to learn how you can set up a real-time conversation with an agent.
 
-Before that, check out these resources to get more familiar with Rime:
-- [Models](/api-reference/models): Compare Arcana (realistic) and Mistv2 (fast)
+To further familiarize yourself with Rime, visit the [Models](/api-reference/models) page to explore the differences between our realistic Arcana model and faster Mistv2 model.
+

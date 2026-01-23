@@ -4,12 +4,12 @@ title: Homographs
 
 English's written form, like many languages', contains homographs. A homograph is a word that shares the same written form as a word but has one or both of: a different meaning, or a different pronunciation. 
 
-For the purpose of the Rime TTS API, we are only concerned with the latter. For example, the words _sow_ (verb, to plant seed) and _sow_ (noun, a female pig) are spelled identically but pronounced differently. This poses a problem for any speech synthesis technology, but Rime leverages both contextual syntactic analysis and frequency information to generate likely predictions.
+For the purpose of the Rime text-to-speech (TTS) API, we are only concerned with the latter. For example, the words _sow_ (verb, to plant seed) and _sow_ (noun, a female pig) are spelled identically but pronounced differently. This poses a problem for any speech synthesis technology, but Rime leverages both contextual syntactic analysis and frequency information to generate likely predictions.
 
 In the unlikely event that Rime's predicted pronunciation is incorrect, we also provide a straightforward way of overriding these pronunciations:
 
 
-```python Homograph Specification Example
+```python Homograph specification example
 # Fruits and vegetables?
 text = "I like fresh produce_noun."
 # Making things?
@@ -18,9 +18,9 @@ text = "They produce_verb a wide array of home goods for decorations."
 
 A complete list of the homographs for which you can specify a disambiguated variant can be found in the table below.
 
-## List of Homographs
+## List of homographs
 
-|   Homograph     |   wordid                 | example sentence  |
+|   Homograph     |   wordid                 | Example sentence  |
 |-----------------|--------------------------|---|
 | abstract | abstract_adj-nou | I like abstract art. |
 | abstract | abstract_vrb | I want to abstract away from the detail. |

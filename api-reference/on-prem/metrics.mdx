@@ -3,9 +3,9 @@ title: Metrics
 ---
 Keeping track of system metrics is crucial for maintaining a stable Rime self-hosted deployment. These insights help guide decisions about scaling and performance. To support this, Rime services expose multiple endpoints that let you monitor system health.
 
-## API Container
+## API container
 
-A `/health` route is available on port 8000 to give you a quick snapshot of overall status. You can check it with the following command:
+A `/health` route is available on port 8000 to give you a quick snapshot of the overall status. You can check it with the following command:
 
 ```bash
 curl -X GET "http://localhost:8000/health"
@@ -20,9 +20,9 @@ A typical response looks like this:
   "modelReachable": true
 }
 ```
-This provides a simple health check mechanism to verify that both api and model services are up and responding.
+This provides a simple health check mechanism to verify that both API and model services are up and responding.
 
-## Arcana Container
+## Arcana container
 
 ### Healthcheck
 
@@ -73,15 +73,15 @@ The model does not implement OpenTelemetry authentication. If authentication is 
 
 #### Prometheus metrics
 
-To retrieve vLLM Prometheus metrics, issue a HTTP request to `http://localhost:${GENERATOR_VLLM_PORT:?}/metrics`.
+To retrieve vLLM Prometheus metrics, issue an HTTP request to `http://localhost:${GENERATOR_VLLM_PORT:?}/metrics`.
 
 By default, a random port is assigned to the vLLM server. To choose a fixed port (which would be convenient for forwarding these metrics, if desired), set the environment variable `GENERATOR_VLLM_PORT` to an available port number.
 
 #### OpenTelemetry Collector sidecar
 
-> If authentication, or other OpenTelemetry Collector extensions, are desired, be sure to utilize the `contrib` distribution which includes them.
+> If authentication, or other OpenTelemetry Collector extensions, are desired, be sure to utilize the `contrib` distribution that includes them.
 
-An OpenTelemetry Collector may be optionally used to forward both the OpenTelemetry and Prometheus metrics. It also can be used to conveniently retrieve the OpenTelemetry metrics locally.
+An OpenTelemetry Collector may be optionally used to forward both the OpenTelemetry and Prometheus metrics. It can also be used to conveniently retrieve the OpenTelemetry metrics locally.
 
 For example, Docker Compose can be used to run the model and an OpenTelemetry Collector ...
 
@@ -176,7 +176,7 @@ To separate differently-tuned sets of data across individual metrics, a suffix m
   - Set alternative metric name suffix:
     - `HISTOGRAM_SUFFIX_GENERATED_AUDIO_DURATION='tuned_3s'` produces a metric named `rime.engine.generated_audio_duration.tuned_3s`
 
-## Mist Container
+## Mist container
 
 ### Healthcheck
 
@@ -199,9 +199,9 @@ For more detailed operational insights, the model service exposes Prometheus-com
 curl -X GET "http://localhost:8080/metrics"
 ```
 
-This endpoint provides telemetry data including:
-* HTTP Request Counters: Detailed breakdown of requests by endpoint, status code, and HTTP method
-* Error Tracking: Counts of HTTP errors by type and status code
+This endpoint provides telemetry data, including:
+- **HTTP request counters:** Detailed breakdown of requests by endpoint, status code, and HTTP method
+- **Error tracking:** Counts of HTTP errors by type and status code
 
 Example metrics include:
 ```json

@@ -13,14 +13,14 @@ typically mean a combination of the following metrics:
 * Real-time factor (RTF), defined as a proportion of the time spent on
   processing and the stream duration. A value ≤ 1 is required to stream at
   real-time. Lower is better.
-* Concurrency, i.e. the number of requests a service can handle. Higher is
+* Concurrency, defined as the number of requests a service can handle. Higher is
   better.
 
 The initial latency and RTF typically work in the opposite direction of
 concurrency: the latency and RTF typically go up as the concurrency level goes
 up. To ensure the performance of a real-time streaming service under high load,
 it is recommended to put a limit on the maximum concurrent requests a system
-handles and queue or reject the out-of-capacity requests.
+handles, and to queue or reject the out-of-capacity requests.
 
 <Note>Rime does not provide rate-limiting or queuing support, as it is highly
 dependent on the exact deployment being used.</Note>
@@ -57,14 +57,14 @@ serves the image to eliminate network latency.
 ## Environment variables
 
 There is a set of environment variables for the model image that you can tune
-in order to improve the concurrency under a set performance contraint:
+in order to improve the concurrency under a set performance constraint:
 
 * `DECODER_MAX_BATCH`, defaults to `32`
 * `DECODER_NUM_SESSIONS`, defaults to `6`
 * `GENERATOR_MAX_BATCH`, defaults to `32`
 * `GENERATOR_GPU_MEMORY_UTILIZATION`, defaults to `0.8`
 
-The defaults for these variables are set to accomodate the lowest spec that
+The defaults for these variables are set to accommodate the lowest spec that
 Rime supports, so we recommend tuning them with a benchmark-driven approach.
 
 ## Tuning

@@ -39,7 +39,7 @@
       "group": "Documentation",
       "pages": [
         "api-reference/introduction",
-        "api-reference/quickstart-python",
+        "api-reference/quickstart-five-minute",
         "api-reference/quickstart-livekit",
         "api-reference/changelog",
         "api-reference/voices",

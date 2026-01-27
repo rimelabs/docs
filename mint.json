@@ -15,15 +15,6 @@
       "to": "#B2321A"
     }
   },
-  "primaryTab": {
-    "name": "Guides"
-  },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "/api-reference/endpoint/streaming-pcm"
-    }
-  ],
   "topbarLinks": [
     {
       "name": "Homepage",
@@ -34,77 +25,94 @@
     "name": "Dashboard",
     "url": "https://rime.ai/dashboard"
   },
+
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
   "navigation": [
+    {
+      "group": "Introduction",
+      "pages": [
+        "docs/introduction"
+      ]
+    },
+    {
+      "group": "Getting started",
+      "pages": [
+        "docs/quickstart-five-minute",
+        "docs/quickstart-livekit"
+      ]
+    },
     {
       "group": "Documentation",
       "pages": [
-        "api-reference/introduction",
-        "api-reference/quickstart-five-minute",
-        "api-reference/quickstart-livekit",
-        "api-reference/changelog",
-        "api-reference/voices",
-        "api-reference/models",
+        "docs/changelog",
+        "docs/voices",
+        "docs/models",
         {
           "group": "Formatting Text",
           "icon": "language",
           "pages": [
-            "api-reference/text-normalization",
-            "api-reference/punctuation",
-            "api-reference/numbers",
-            "api-reference/dates",
-            "api-reference/abbreviations",
-            "api-reference/symbols",
-            "api-reference/addresses"
+            "docs/text-normalization",
+            "docs/punctuation",
+            "docs/numbers",
+            "docs/dates",
+            "docs/abbreviations",
+            "docs/symbols",
+            "docs/addresses"
           ]
         },
         {
           "group": "Customizing Mist v2",
           "icon": "wrench",
           "pages": [
-            "api-reference/linguistics",
-            "api-reference/speed",
-            "api-reference/homographs",
-            "api-reference/custom-pauses",
-            "api-reference/custom-pronunciation",
-            "api-reference/spell"
+            "docs/linguistics",
+            "docs/speed",
+            "docs/homographs",
+            "docs/custom-pauses",
+            "docs/custom-pronunciation",
+            "docs/spell"
           ]
         },
-        "api-reference/latency",
+        "docs/latency",
         {
           "group": "On-prem",
           "icon": "server",
           "pages": [
-            "api-reference/on-prem/quickstart",
-            "api-reference/on-prem/metrics",
-            "api-reference/on-prem/load-balancing",
-            "api-reference/on-prem/performance",
-            "api-reference/on-prem/prometheus",
-            "api-reference/on-prem/helmcharts"
+            "docs/on-prem/quickstart",
+            "docs/on-prem/metrics",
+            "docs/on-prem/load-balancing",
+            "docs/on-prem/performance",
+            "docs/on-prem/prometheus",
+            "docs/on-prem/helmcharts"
           ]
         },
         {
           "group": "Integrations",
           "icon": "puzzle-piece",
           "pages": [
-            "api-reference/cerebrium",
-            "api-reference/daily",
-            "api-reference/hathora",
-            "api-reference/livekit",
-            "api-reference/lovable",
-            "api-reference/replit",
-            "api-reference/signalwire",
-            "api-reference/together-ai",
-            "api-reference/vapi"
+            "docs/cerebrium",
+            "docs/daily",
+            "docs/hathora",
+            "docs/livekit",
+            "docs/lovable",
+            "docs/replit",
+            "docs/signalwire",
+            "docs/together-ai",
+            "docs/vapi"
           ]
         },
-        "api-reference/privacy-compliance",
+        "docs/privacy-compliance",
         "platform/voice-cloning",
         "platform/teams",
         {
           "group": "Speech QA",
           "icon": "magnifying-glass-chart",
           "pages": ["platform/speech-qa", "platform/check-coverage"]
-         }
+        }
       ]
     },
     {
@@ -128,34 +136,34 @@
       ]
     },
     {
-    "group": "Mist v2 API reference",
-    "pages": [
-      {
-        "group": "Streaming",
-        "pages": [
-          "api-reference/endpoint/streaming-pcm",
-          "api-reference/endpoint/streaming-mp3",
-          "api-reference/endpoint/streaming-mulaw",
-          "api-reference/endpoint/sse"
-        ]
-      },
-      {
-        "group": "Websocket",
-        "pages": [
-          "api-reference/endpoint/websockets",
-          "api-reference/endpoint/websockets-json"
-        ]
-      },
-      {
-        "group": "Non-Streaming",
-        "pages": [
-          "api-reference/endpoint/json-mp3",
-          "api-reference/endpoint/json-wav",
-          "api-reference/endpoint/json-ogg",
-          "api-reference/endpoint/json-mulaw"
-        ]
-      }
-    ]
+      "group": "Mist v2 API reference",
+      "pages": [
+        {
+          "group": "Streaming",
+          "pages": [
+            "api-reference/endpoint/streaming-pcm",
+            "api-reference/endpoint/streaming-mp3",
+            "api-reference/endpoint/streaming-mulaw",
+            "api-reference/endpoint/sse"
+          ]
+        },
+        {
+          "group": "Websocket",
+          "pages": [
+            "api-reference/endpoint/websockets",
+            "api-reference/endpoint/websockets-json"
+          ]
+        },
+        {
+          "group": "Non-Streaming",
+          "pages": [
+            "api-reference/endpoint/json-mp3",
+            "api-reference/endpoint/json-wav",
+            "api-reference/endpoint/json-ogg",
+            "api-reference/endpoint/json-mulaw"
+          ]
+        }
+      ]
     },
     {
       "group": "API Metadata",

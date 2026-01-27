@@ -1,0 +1,25 @@
+---
+title: 'Custom pauses'
+---
+
+By default, Rime will add pauses based on the [punctuation](/api-reference/punctuation) in the sentence. To insert a shorter or longer pause within a sentence, simply insert the length of your desired pause in milliseconds within angle brackets. 
+
+For example, `<750>` inserts a pause of 750 milliseconds (or .75 seconds). To hear the difference, compare the following:
+
+|    Audio clip     |      Sentence             |
+|-----------------|--------------------------|
+|   <audio controls src="https://rime.ai/sounds/docs/wait_no_pause.wav"></audio>     |    wait, are you actually serious.      |
+|   <audio controls src="https://rime.ai/sounds/docs/wait_750.wav"></audio>    |      wait. `<750>` are you actually serious.        |
+
+> **Note:** To get the best results for a silent pause, we recommend placing a `space <time> space comma`, for example, ` <800> ,`.
+
+> **Note:** When making an API request, you must set `pauseBetweenBrackets` to `true`. The request would look like this:
+
+```python Custom Pause Example
+{
+	"text": "wait. <750> are you actually serious.",
+    "speaker": "cove",
+    "modelId": "mistv2",
+    "pauseBetweenBrackets": true
+}
+```

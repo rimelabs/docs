@@ -40,7 +40,7 @@ If you'd like to experiment with Rime's TTS API directly before building a full 
 To follow this guide you need:
 
 - A **[Rime API Key](https://app.rime.ai/tokens/)** for text-to-speech synthesis
-- An **[OpenAI API Key*](https://platform.openai.com/api-keys)** for speech-to-text (STT) and LLM responses (see [Alternative Providers](#step-6-alternative-providers) for using Deepgram and Gemini instead)
+- An **[OpenAI API Key*](https://platform.openai.com/api-keys)** for speech-to-text (STT) and LLM responses
 - A **[LiveKit Cloud Account](https://cloud.livekit.io/)** for real-time audio transport
     - Create a new LiveKit project called `rime-agent`
     - Go to **Settings** -> **API keys** -> **Create key** to generate a **WebSocket URL**, **API key**, and **API secret**. You will need all three of these
@@ -344,6 +344,8 @@ You can now talk to your agent using your microphone or by typing in the chat se
 
 ## Step 5: Customize your agent
 
+Now that your agent is running, you can experiment with different voices and personalities.
+
 ### 5.1 Change the voice
 
 Update the `tts` line in your `AgentSession` to try a different voice:
@@ -406,55 +408,6 @@ await session.say(INTRO_MESSAGE)
 ```
 
 Storing your system prompt in a separate file keeps your personality configuration separate from your agent logic, making it easy to experiment with different characters.
-
-## Step 6: Alternative providers
-
-LiveKit's plugin system lets you swap out your models for other STT and LLM providers. For example, if you don't have an OpenAI subscription, here's how to use Deepgram for STT and Google Gemini for the LLM.
-
-### 6.1 Update dependencies
-
-Replace the contents of `requirements.txt` with:
-
-```txt
-livekit-agents[deepgram,google,rime,silero,turn-detector]~=1.2
-livekit-plugins-noise-cancellation~=0.2
-python-dotenv>=1.1.1
-```
-
-Run `pip install -r requirements.txt` to install the new dependencies. This replaces the OpenAI plugin with Deepgram and Google plugins.
-
-### 6.2 Update environment variables
-
-Replace `OPENAI_API_KEY` in your `.env` file with:
-
-```
-DEEPGRAM_API_KEY=your_deepgram_api_key
-GOOGLE_API_KEY=your_google_api_key
-```
-
-Get your keys from [console.deepgram.com](https://console.deepgram.com/) and [aistudio.google.com/apikey](https://aistudio.google.com/). Keep your LiveKit and Rime variables unchanged.
-
-### 6.3 Update the agent code
-
-Update the imports in `agent.py`:
-
-```python
-from livekit.plugins import deepgram, google, noise_cancellation, rime, silero
-```
-
-Update the `AgentSession` configuration:
-
-```python
-session = AgentSession(
-    stt=deepgram.STT(),
-    llm=google.LLM(model="gemini-2.0-flash"),
-    tts=rime.TTS(model="arcana", speaker="luna"),
-    vad=ctx.proc.userdata["vad"],
-    turn_detection=MultilingualModel(),
-)
-```
-
-Your agent now uses Deepgram for transcription and Gemini for responses while keeping Rime for TTS.
 
 ## Troubleshooting
 

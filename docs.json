@@ -1,0 +1,212 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Rime Docs",
+  "colors": {
+    "primary": "#B2321A",
+    "light": "#E68732",
+    "dark": "#B2321A"
+  },
+  "favicon": "/favicon-rime.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Documentation",
+        "pages": [
+          "api-reference/quickstart",
+          "api-reference/changelog",
+          "api-reference/voices",
+          "api-reference/models",
+          {
+            "group": "Formatting Text",
+            "icon": "language",
+            "pages": [
+              "api-reference/text-normalization",
+              "api-reference/punctuation",
+              "api-reference/numbers",
+              "api-reference/dates",
+              "api-reference/abbreviations",
+              "api-reference/symbols",
+              "api-reference/addresses"
+            ]
+          },
+          {
+            "group": "Customizing Mist v2",
+            "icon": "wrench",
+            "pages": [
+              "api-reference/linguistics",
+              "api-reference/speed",
+              "api-reference/homographs",
+              "api-reference/custom-pauses",
+              "api-reference/custom-pronunciation",
+              "api-reference/spell"
+            ]
+          },
+          "api-reference/latency",
+          {
+            "group": "On-prem",
+            "icon": "server",
+            "pages": [
+              "api-reference/on-prem/quickstart",
+              "api-reference/on-prem/metrics",
+              "api-reference/on-prem/load-balancing",
+              "api-reference/on-prem/performance",
+              "api-reference/on-prem/prometheus",
+              "api-reference/on-prem/helmcharts"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "icon": "puzzle-piece",
+            "pages": [
+              "api-reference/cerebrium",
+              "api-reference/daily",
+              "api-reference/hathora",
+              "api-reference/livekit",
+              "api-reference/lovable",
+              "api-reference/replit",
+              "api-reference/signalwire",
+              "api-reference/together-ai",
+              "api-reference/vapi"
+            ]
+          },
+          "api-reference/privacy-compliance",
+          "platform/voice-cloning",
+          "platform/teams",
+          {
+            "group": "Speech QA",
+            "icon": "magnifying-glass-chart",
+            "pages": [
+              "platform/speech-qa",
+              "platform/check-coverage"
+            ]
+          }
+        ]
+      },
+      {
+        "group": "Arcana API reference",
+        "pages": [
+          {
+            "group": "Streaming",
+            "pages": [
+              "api-reference/arcana/streaming-mp3",
+              "api-reference/arcana/streaming-pcm",
+              "api-reference/arcana/streaming-wav",
+              "api-reference/arcana/streaming-mulaw"
+            ]
+          },
+          {
+            "group": "Websocket",
+            "pages": [
+              "api-reference/arcana/websockets"
+            ]
+          }
+        ]
+      },
+      {
+        "group": "Mist v2 API reference",
+        "pages": [
+          {
+            "group": "Streaming",
+            "pages": [
+              "api-reference/endpoint/streaming-pcm",
+              "api-reference/endpoint/streaming-mp3",
+              "api-reference/endpoint/streaming-mulaw",
+              "api-reference/endpoint/sse"
+            ]
+          },
+          {
+            "group": "Websocket",
+            "pages": [
+              "api-reference/endpoint/websockets",
+              "api-reference/endpoint/websockets-json"
+            ]
+          },
+          {
+            "group": "Non-Streaming",
+            "pages": [
+              "api-reference/endpoint/json-mp3",
+              "api-reference/endpoint/json-wav",
+              "api-reference/endpoint/json-ogg",
+              "api-reference/endpoint/json-mulaw"
+            ]
+          }
+        ]
+      },
+      {
+        "group": "API Metadata",
+        "pages": [
+          "api-reference/data/voices-v2",
+          "api-reference/data/voice-details"
+        ]
+      },
+      {
+        "group": "Other APIs",
+        "pages": [
+          "api-reference/endpoint/oov"
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "api": {
+    "playground": {
+      "display": "none"
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Homepage",
+        "href": "https://rime.ai/"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://rime.ai/dashboard"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy"
+    ]
+  },
+  "redirects": [
+    {
+      "source": "/api-reference/input-tools",
+      "destination": "/api-reference/quickstart"
+    },
+    {
+      "source": "/api-reference/how-to-use-api",
+      "destination": "/api-reference/quickstart"
+    },
+    {
+      "source": "/api-reference/female-voices",
+      "destination": "/api-reference/voices"
+    },
+    {
+      "source": "/api-reference/male-voices",
+      "destination": "/api-reference/voices"
+    },
+    {
+      "source": "/api-reference/on-prem-quickstart",
+      "destination": "/api-reference/on-prem/quickstart"
+    },
+    {
+      "source": "/api-reference/on-prem-metrics",
+      "destination": "/api-reference/on-prem/metrics"
+    },
+    {
+      "source": "/api-reference/on-prem-prometheus",
+      "destination": "/api-reference/on-prem/prometheus"
+    },
+    {
+      "source": "/api-reference/on-prem-helmcharts",
+      "destination": "/api-reference/on-prem/helmcharts"
+    }
+  ]
+}

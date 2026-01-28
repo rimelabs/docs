@@ -37,16 +37,31 @@ If you'd like to experiment with Rime's TTS API directly before building a full 
 
 ## Step 1: Prerequisites
 
-To follow this guide you need:
+Gather the following API keys and tools before starting.
 
-- A **[Rime API Key](https://app.rime.ai/tokens/)** for text-to-speech synthesis
-- An **[OpenAI API Key*](https://platform.openai.com/api-keys)** for speech-to-text (STT) and LLM responses
-- A **[LiveKit Cloud Account](https://cloud.livekit.io/)** for real-time audio transport
-    - Create a new LiveKit project called `rime-agent`
-    - Go to **Settings** -> **API keys** -> **Create key** to generate a **WebSocket URL**, **API key**, and **API secret**. You will need all three of these
-- **Python 3.10 or later**
+### 1.1 Rime API Key
+
+Sign up for a [Rime account](https://app.rime.ai/signup/) and copy your API key from the [API Tokens](https://app.rime.ai/tokens/) page. This enables access to the Rime API for text-to-speech (TTS).
+
+### 1.2 OpenAI API Key
+
+Create an [OpenAI account](https://platform.openai.com/signup) and generate an API key from the [API keys page](https://platform.openai.com/api-keys). This key enables speech-to-text (STT) and LLM responses.
+
+### 1.3 LiveKit Cloud
+
+Create a [LiveKit Cloud account](https://cloud.livekit.io/) for real-time audio transport:
+
+1. Create a new project called `rime-agent`
+2. Go to **Settings** → **API keys** → **Create key**
+3. Copy your **WebSocket URL**, **API key**, and **API secret**. you'll need all three
+
+### 1.4 Python
+
+Install [Python 3.10 or later](https://www.python.org/downloads/). Verify your installation by running `python --version` in your terminal.
 
 ## Step 2: Project setup
+
+Set up your project folder, environment variables, and dependencies.
 
 ### 2.1 Create the project folder
 
@@ -59,13 +74,7 @@ cd rime-voice-agent
 
 ### 2.2 Set up environment variables
 
-In the new directory, create a file called `.env` to store your API keys securely:
-
-```bash
-touch .env
-```
-
-Open `.env` and add the keys that you created in [Step 1](#step-1:-prerequisites):
+In the new directory, create a file called `.env` and add the keys that you created in [Step 1](#step-1:-prerequisites):
 
 ```
 LIVEKIT_URL=wss://your-project.livekit.cloud
@@ -93,7 +102,7 @@ venv\Scripts\activate
 ```
 </CodeGroup>
 
-Next install the `uv` package manager:
+Next, install the `uv` package manager:
 
 ```bash
 pip install uv
@@ -130,7 +139,7 @@ uv sync
 
 ## Step 3: Create the agent
 
-Create a file called `agent.py` for all the code that gets your agent talking. If you're happy with the defaults and just want to run it, skip to [Step 3.6: Full agent code](#3-6-full-agent-code).
+Create a file called `agent.py` for all the code that gets your agent talking. If you're in a rush and just want to run it, skip to [Step 3.6: Full agent code](#3-6-full-agent-code). Otherwise, continue reading to code the agent step-by-step.
 
 ### 3.1 Load environment variables
 
@@ -314,7 +323,7 @@ if __name__ == "__main__":
 Start your agent by running:
 
 ```bash
-python agent.py dev
+uv run agent.py dev
 ```
 
 The `dev` argument starts the agent in development mode. You'll see output like:

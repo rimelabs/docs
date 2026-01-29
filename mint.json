@@ -182,35 +182,183 @@
   "redirects": [
     {
       "source": "/api-reference/input-tools",
-      "destination": "/api-reference/quickstart"
+      "destination": "/docs/quickstart-five-minute"
     },
     {
       "source": "/api-reference/how-to-use-api",
-      "destination": "/api-reference/quickstart"
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/api-reference/quickstart",
+      "destination": "/docs/quickstart-five-minute"
     },
     {
       "source": "/api-reference/female-voices",
-      "destination": "/api-reference/voices"
+      "destination": "/docs/voices"
     },
     {
       "source": "/api-reference/male-voices",
-      "destination": "/api-reference/voices"
+      "destination": "/docs/voices"
     },
     {
       "source": "/api-reference/on-prem-quickstart",
-      "destination": "/api-reference/on-prem/quickstart"
+      "destination": "/docs/on-prem/quickstart"
     },
     {
       "source": "/api-reference/on-prem-metrics",
-      "destination": "/api-reference/on-prem/metrics"
+      "destination": "/docs/on-prem/metrics"
     },
     {
       "source": "/api-reference/on-prem-prometheus",
-      "destination": "/api-reference/on-prem/prometheus"
+      "destination": "/docs/on-prem/prometheus"
     },
     {
       "source": "/api-reference/on-prem-helmcharts",
-      "destination": "/api-reference/on-prem/helmcharts"
+      "destination": "/docs/on-prem/helmcharts"
+    },
+    {
+      "source": "/api-reference/abbreviations",
+      "destination": "/docs/abbreviations"
+    },
+    {
+      "source": "/api-reference/addresses",
+      "destination": "/docs/addresses"
+    },
+    {
+      "source": "/api-reference/cerebrium",
+      "destination": "/docs/cerebrium"
+    },
+    {
+      "source": "/api-reference/changelog",
+      "destination": "/docs/changelog"
+    },
+    {
+      "source": "/api-reference/custom-pauses",
+      "destination": "/docs/custom-pauses"
+    },
+    {
+      "source": "/api-reference/custom-pronunciation",
+      "destination": "/docs/custom-pronunciation"
+    },
+    {
+      "source": "/api-reference/daily",
+      "destination": "/docs/daily"
+    },
+    {
+      "source": "/api-reference/dates",
+      "destination": "/docs/dates"
+    },
+    {
+      "source": "/api-reference/hathora",
+      "destination": "/docs/hathora"
+    },
+    {
+      "source": "/api-reference/homographs",
+      "destination": "/docs/homographs"
+    },
+    {
+      "source": "/api-reference/introduction",
+      "destination": "/docs/introduction"
+    },
+    {
+      "source": "/api-reference/latency",
+      "destination": "/docs/latency"
+    },
+    {
+      "source": "/api-reference/linguistics",
+      "destination": "/docs/linguistics"
+    },
+    {
+      "source": "/api-reference/livekit",
+      "destination": "/docs/livekit"
+    },
+    {
+      "source": "/api-reference/lovable",
+      "destination": "/docs/lovable"
+    },
+    {
+      "source": "/api-reference/models",
+      "destination": "/docs/models"
+    },
+    {
+      "source": "/api-reference/numbers",
+      "destination": "/docs/numbers"
+    },
+    {
+      "source": "/api-reference/on-prem/helmcharts",
+      "destination": "/docs/on-prem/helmcharts"
+    },
+    {
+      "source": "/api-reference/on-prem/load-balancing",
+      "destination": "/docs/on-prem/load-balancing"
+    },
+    {
+      "source": "/api-reference/on-prem/metrics",
+      "destination": "/docs/on-prem/metrics"
+    },
+    {
+      "source": "/api-reference/on-prem/performance",
+      "destination": "/docs/on-prem/performance"
+    },
+    {
+      "source": "/api-reference/on-prem/prometheus",
+      "destination": "/docs/on-prem/prometheus"
+    },
+    {
+      "source": "/api-reference/on-prem/quickstart",
+      "destination": "/docs/on-prem/quickstart"
+    },
+    {
+      "source": "/api-reference/privacy-compliance",
+      "destination": "/docs/privacy-compliance"
+    },
+    {
+      "source": "/api-reference/punctuation",
+      "destination": "/docs/punctuation"
+    },
+    {
+      "source": "/api-reference/quickstart-five-minute",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/api-reference/quickstart-livekit",
+      "destination": "/docs/quickstart-livekit"
+    },
+    {
+      "source": "/api-reference/replit",
+      "destination": "/docs/replit"
+    },
+    {
+      "source": "/api-reference/signalwire",
+      "destination": "/docs/signalwire"
+    },
+    {
+      "source": "/api-reference/speed",
+      "destination": "/docs/speed"
+    },
+    {
+      "source": "/api-reference/spell",
+      "destination": "/docs/spell"
+    },
+    {
+      "source": "/api-reference/symbols",
+      "destination": "/docs/symbols"
+    },
+    {
+      "source": "/api-reference/text-normalization",
+      "destination": "/docs/text-normalization"
+    },
+    {
+      "source": "/api-reference/together-ai",
+      "destination": "/docs/together-ai"
+    },
+    {
+      "source": "/api-reference/vapi",
+      "destination": "/docs/vapi"
+    },
+    {
+      "source": "/api-reference/voices",
+      "destination": "/docs/voices"
     }
   ],
   "api": {

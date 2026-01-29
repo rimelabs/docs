@@ -317,14 +317,6 @@
       "destination": "/docs/punctuation"
     },
     {
-      "source": "/api-reference/quickstart-five-minute",
-      "destination": "/docs/quickstart-five-minute"
-    },
-    {
-      "source": "/api-reference/quickstart-livekit",
-      "destination": "/docs/quickstart-livekit"
-    },
-    {
       "source": "/api-reference/replit",
       "destination": "/docs/replit"
     },

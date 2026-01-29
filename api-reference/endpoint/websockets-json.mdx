@@ -114,7 +114,7 @@ type ErrorEvent = {
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/api-reference/voices">listed in our documentation</a>.
+  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
 </ParamField>
 
 <ParamField body="text" type="string" required>
@@ -130,7 +130,7 @@ type ErrorEvent = {
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
 </ParamField>
 
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">
@@ -140,7 +140,7 @@ type ErrorEvent = {
 
 <ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
   When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
-  Example: "\{h'El.o} World" will pronounce "Hello" as expected. Learn more about <a href="/api-reference/custom-pronunciation">custom pronunciation</a>.
+  Example: "\{h'El.o} World" will pronounce "Hello" as expected. Learn more about <a href="/docs/custom-pronunciation">custom pronunciation</a>.
 </ParamField>
 
 <ParamField body="inlineSpeedAlpha" type="string">

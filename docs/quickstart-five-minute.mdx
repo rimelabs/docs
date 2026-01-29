@@ -163,7 +163,7 @@ const payload = {
 This payload includes the three required parameters:
 
 - `text` adds the text that the model converts to speech.
-- `speaker` sets the voice that the agent uses (view your options on our [Voices](/api-reference/voices) page).
+- `speaker` sets the voice that the agent uses (view your options on our [Voices](/docs/voices) page).
 - `modelId` specifies which model the agent uses. Use `arcana` for the most realistic voices, or `mistv2` for faster synthesis.
 
 The [Arcana API reference](/api-reference/arcana/streaming-mp3) details the many optional parameters you can add to request payloads.
@@ -212,7 +212,7 @@ generateSpeech();
 
 Streaming allows audio playback to begin before generation completes. This enables conversational flow, as the user can start listening to responses before the entire audio clip has been generated.
 
-Although streaming is less important in this example, because we're writing to a file, it's vital when using models in real-time conversations. If this sounds interesting, follow the [LiveKit quickstart](/api-reference/quickstart-livekit/) to create your first conversational agent.
+Although streaming is less important in this example, because we're writing to a file, it's vital when using models in real-time conversations. If this sounds interesting, follow the [LiveKit quickstart](/docs/quickstart-livekit) to create your first conversational agent.
 
 ## Test the script
 
@@ -258,11 +258,11 @@ const payload = {
 ```
 </CodeGroup>
 
-Browse all available voices on the [Voices](/api-reference/voices) page.
+Browse all available voices on the [Voices](/docs/voices) page.
 
 ## Custom pronunciation
 
-The `mistv2` model lets you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/api-reference/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
+The `mistv2` model lets you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/docs/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
 
 <CodeGroup>
 ```python Python
@@ -288,18 +288,18 @@ Use the [Pronunciation tool](https://rime.ai/dashboard/pronunciation) on the das
 
 ## Next steps
 
-Now that you can generate TTS audio, try following the [LiveKit quickstart guide](/api-reference/quickstart-livekit) to learn how you can set up a real-time conversation with an agent.
+Now that you can generate TTS audio, try following the [LiveKit quickstart guide](/docs/quickstart-livekit) to learn how you can set up a real-time conversation with an agent.
 
 Check out these resources to get more familiar with Rime:
 
 <CardGroup cols={2}>
-  <Card title="Models" icon="microchip" href="/api-reference/models">
+  <Card title="Models" icon="microchip" href="/docs/models">
     Compare Arcana (realistic) and Mistv2 (fast)
   </Card>
-  <Card title="Voices" icon="waveform" href="/api-reference/voices">
+  <Card title="Voices" icon="waveform" href="/docs/voices">
     Browse all available voice options
   </Card>
-  <Card title="Latency" icon="gauge-high" href="/api-reference/latency">
+  <Card title="Latency" icon="gauge-high" href="/docs/latency">
     Optimize for real-time performance
   </Card>
   <Card title="Arcana Streaming API" icon="bolt" href="/api-reference/arcana/streaming-mp3">

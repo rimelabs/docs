@@ -1,15 +1,15 @@
 ---
-title: LiveKit Quickstart
+title: LiveKit quickstart
 icon: rocket
 ---
 
 This guide demonstrates how to build a real-time voice agent using LiveKit's Agents SDK with natural speech provided by Rime. The agent uses LiveKit's plugins:
--  `silero` and `turn-detector`, for conversational turn-taking 
-- `gpt-4o-mini-transcribe` for speech-to-text (STT)
-- `gpt-4.1-mini` to generate responses
-- `rime` to generate realistic text-to-speech (TTS)
+- `silero` and `turn-detector` for conversational turn-taking 
+- `gpt-4o-mini-transcribe` for transcribing speech-to-text (STT)
+- `gpt-4.1-mini` for generating responses
+- `rime` for generating realistic text-to-speech (TTS)
 
-By the end, you'll have a working voice agent that you can talk to in your browser. 
+By the end, you'll have a working voice agent that you can talk to in your browser.
 
 <img
   src="/images/livekit-demo.gif"
@@ -17,8 +17,8 @@ By the end, you'll have a working voice agent that you can talk to in your brows
 />
 
 The following LiveKit terminology will help your understanding of the rest of the guide:
-- a **Room** is a virtual space where participants connect and share media in real-time.
-- an **Agent** is a server-side participant that can process media streams and interact with users.
+- A **Room** is a virtual space where participants connect and share media in real time.
+- An **Agent** is a server-side participant that can process media streams and interact with users.
 - **LiveKit Cloud** is a platform for real-time audio streaming between participants.
 
 Here's how audio flows through the system:
@@ -33,27 +33,27 @@ Here's how audio flows through the system:
   className="hidden dark:block"
 />
 
-If you'd like to experiment with Rime's TTS API directly before building a full voice agent, check out: [TTS in five minutes](/docs/quickstart-five-minute).
+If you'd like to experiment with Rime's TTS API directly before building a full voice agent, check out [TTS in five minutes](/docs/quickstart-five-minute).
 
 ## Step 1: Prerequisites
 
 Gather the following API keys and tools before starting.
 
-### 1.1 Rime API Key
+### 1.1 Rime API key
 
-Sign up for a [Rime account](https://app.rime.ai/tokens/) and copy your API key from the [API Tokens](https://app.rime.ai/tokens/) page. This enables access to the Rime API for text-to-speech (TTS).
+Sign up for a [Rime account](https://app.rime.ai/tokens/) and copy your API key from the [API Tokens](https://app.rime.ai/tokens/) page. This enables access to the Rime API for TTS.
 
-### 1.2 OpenAI API Key
+### 1.2 OpenAI API key
 
-Create an [OpenAI account](https://platform.openai.com/signup) and generate an API key from the [API keys page](https://platform.openai.com/api-keys). This key enables speech-to-text (STT) and LLM responses.
+Create an [OpenAI account](https://platform.openai.com/signup) and generate an API key from the [API keys](https://platform.openai.com/api-keys) page. This key enables STT and LLM responses.
 
 ### 1.3 LiveKit Cloud
 
 Create a [LiveKit Cloud account](https://cloud.livekit.io/) for real-time audio transport:
 
-1. Create a new project called `rime-agent`
-2. Go to **Settings** → **API keys** → **Create key**
-3. Copy your **WebSocket URL**, **API key**, and **API secret**. you'll need all three
+1. Create a new project called `rime-agent`.
+2. Go to **Settings** → **API keys** → **Create key**.
+3. Copy your **WebSocket URL**, **API key**, and **API secret**. You'll need all three.
 
 ### 1.4 Python and uv
 
@@ -93,7 +93,7 @@ RIME_API_KEY=your_rime_api_key
 
 ## Step 3: Create the agent
 
-Create a file called `agent.py` for all the code that gets your agent talking. If you're in a rush and just want to run it, skip to [Step 3.7: Full agent code](#3-7-full-agent-code). Otherwise, continue reading to code the agent step-by-step.
+Create an `agent.py` file for all the code that gets your agent talking. If you're in a rush and just want to run it, skip to [Step 3.7: Full agent code](#3-7-full-agent-code). Otherwise, continue reading to code the agent step by step.
 
 ### 3.1 Declare dependencies
 
@@ -110,15 +110,14 @@ Add the following to the top of `agent.py`:
 # ///
 ```
 
-This uses [inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies) so uv automatically installs dependencies when you run the script.
+This uses [inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies), so uv automatically installs the following dependencies when you run the script:
 
-These packages provide:
-- **openai plugin**: Connects to OpenAI for STT and LLM
-- **rime plugin**: Connects to Rime for text-to-speech
-- **silero plugin**: Voice Activity Detection (knows when you start/stop speaking)
-- **turn-detector plugin**: Detects when you've finished your turn in the conversation
-- **noise-cancellation plugin**: Filters out background noise
-- **python-dotenv**: Loads your API keys from the `.env` file
+- `openai` connects to OpenAI for STT and LLM.
+- `rime` connects to Rime for TTS.
+- `silero` adds voice activity detection (VAD), so the agent knows when you start and stop speaking.
+- `turn-detector` adds conversational turn detection, so the agent knows when you've finished your turn in the conversation.
+- `noise-cancellation` filters out background noise.
+- `python-dotenv` loads your API keys from the `.env` file.
 
 ### 3.2 Load environment variables
 
@@ -148,7 +147,7 @@ class RimeAgent(Agent):
 
 This creates a class that extends the `Agent` base class, defining your agent's personality through a system prompt. The prompt can be as simple or complex as you like. Later in the guide you'll see an example of a detailed system prompt that fully customizes the agent's behavior.
 
- Import the `Agent` class at the top of the the script. For convenience, below are all the rest of the required imports. Add these imports to the top of `agent.py` as well:
+Import the `Agent` class at the top of the script. For convenience, we've included the remaining required imports below. Add these imports to the top of `agent.py` as well:
 
 ```python
 from dotenv import load_dotenv
@@ -166,7 +165,7 @@ from livekit.plugins import openai, noise_cancellation, rime, silero
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
 ```
 
-These provide access to the LiveKit Agents SDK and the plugins for STT, LLM, TTS, and VAD (voice activity detection).
+These provide access to the LiveKit Agents SDK and the plugins for STT, LLM, TTS, and VAD.
 
 ### 3.4 Code the conversation pipeline 
 
@@ -216,7 +215,7 @@ def prewarm(proc: JobProcess):
     proc.userdata["vad"] = silero.VAD.load()
 ```
 
-This function loads the VAD plugin once when the worker starts, rather than for each new conversation.
+This function loads the VAD plugin once, when the worker starts, rather than loading it for each new conversation.
 
 ### 3.6 Create the main entrypoint
 
@@ -232,11 +231,13 @@ if __name__ == "__main__":
     )
 ```
 
-This starts the agent server that listens for incoming connections from LiveKit. `WorkerOptions` is configured with the two functions you created above: `prewarm_fnc` runs once per worker process to preload models, and `entrypoint_fnc` runs each time a user connects to a room.
+This starts the agent server that listens for incoming connections from LiveKit. The `WorkerOptions` object is configured with the two functions we created above:
+- `prewarm_fnc` runs once per worker process to preload models.
+- `entrypoint_fnc` runs each time a user connects to a room.
 
 ### 3.7 Full agent code
 
-At this point, your `agent.py` should look like the complete example below:
+At this point, your `agent.py` should look like the following complete example:
 
 <Accordion title="Full agent code">
 ```python
@@ -321,7 +322,7 @@ Start your agent by running:
 uv run agent.py dev
 ```
 
-The first run may take a few minutes to start as the dependencies are downloaded.
+The first run may take a few minutes to start while the dependencies are downloaded.
 
 The `dev` argument starts the agent in development mode. You'll see output like:
 
@@ -336,9 +337,9 @@ INFO   livekit.agents     HTTP server listening on :12332
 
 Open the [LiveKit Agents Playground](https://agents-playground.livekit.io) in your browser.
 
-- Select your project and click **Use [project_name]**
-- In the top right of the Playground, click **Connect**
-- Allow microphone access when prompted
+- Select your project and click **Use [project_name]**.
+- In the top right of the Playground, click **Connect**.
+- Allow microphone access when prompted.
 
 If everything is set up correctly, you should hear your agent say the greeting that you configured above: `"Hey there! How can I help you today?"`
 
@@ -441,7 +442,7 @@ RIME_API_KEY=your_rime_api_key
 ### Incorrect voice detection
 
 - **Enable noise cancellation:** Verify `noise_cancellation.BVC()` is included in your `RoomInputOptions`.
-- **Check your microphone:** Test with a different input device or headset
+- **Check your microphone:** Test with a different input device or headset.
 - **Reduce background noise:** The VAD may struggle to detect speech in noisy environments.
 
 

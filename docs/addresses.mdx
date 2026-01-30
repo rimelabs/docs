@@ -1,0 +1,34 @@
+---
+title: 'Addresses, URLs, and emails'
+---
+
+We recommend the following inputs to get your desired output.
+- [Addresses](#addresses)
+- [URLs](#urls)
+- [Emails](#emails)
+
+## Addresses
+
+While Rime will typically pronounce state name abbreviations correctly in the context of an address, best practice is to write out the full state name, for example, "Massachusetts" instead of "MA", to get consistent results. Common street abbreviations, such as "Rd." and "St.", will automatically be pronounced correctly.
+
+| Desired output | Input |
+| --- | --- |
+| Five twenty-nine main street, boston, massachusetts, zero two one two nine | 529 Main St., Boston, Massachusetts 02129 |
+| Five twenty-nine main street, boston, massachusetts, zero two one two nine | 529 Main St., Boston, MA 02129 |
+| Five twenty-nine main street, boston, massachusetts, zero two one two nine | 529 Main Street, Boston, MA 02129 |
+| Five twenty-nine main street, boston, massachusetts, zero two one two nine | 529 Main St, Boston, MA 02129 |
+
+## URLs
+
+| Desired output | Input |
+| --- | --- |
+| Double-u double-u double-u dot example dot com | `www.example.com` |
+| H t t p s colon slash slash double-u double-u double-u dot rime dot ai slash dashboard | `https://rime.ai/dashboard` |
+
+## Emails
+
+| Desired output | Input |
+| --- | --- |
+| Name at example dot com | `name@example.com` |
+
+> **Note:** Emails are handled by our custom segmentation model. This model breaks up compound words and also handles punctuations and most top-level domains. If you hear something off, let us know!

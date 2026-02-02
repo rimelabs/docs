@@ -83,7 +83,8 @@
             "api-reference/replit",
             "api-reference/signalwire",
             "api-reference/together-ai",
-            "api-reference/vapi"
+            "api-reference/vapi",
+            "api-reference/videosdk"
           ]
         },
         "api-reference/privacy-compliance",

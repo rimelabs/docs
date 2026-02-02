@@ -13,7 +13,7 @@ Streaming G.711 μ-law returns a headerless stream of audio bytes.
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the flagship Arcana voices <a href="https://docs.rime.ai/api-reference/voices">listed in our documentation</a>.
+  Must be one of the flagship Arcana voices <a href="/docs/voices">listed in our documentation</a>.
 </ParamField>
 <ParamField body="text" type="string" required>
   The text you'd like spoken. Unlimited via API. Character limit per request is 3,000 in the dashboard UI.
@@ -24,7 +24,7 @@ Streaming G.711 μ-law returns a headerless stream of audio bytes.
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
 </ParamField>
 
 <ParamField body="repetition_penalty" type="float" default="1.5">

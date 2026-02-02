@@ -1,0 +1,84 @@
+---
+title: Lovable
+---
+
+import { IntegrationHeader } from '/snippets/integration-header.mdx'
+
+<IntegrationHeader 
+  partnerLogo="/images/lovable.png" 
+  partnerAlt="Lovable logo"
+  rimeHeight="50px"
+  partnerHeight="32px"
+/>
+
+[Lovable](https://lovable.dev/) is an AI-powered platform that lets anyone, regardless of technical skill, build full-stack web applications using natural language. Just describe what you want, and Lovable builds it for you.
+
+With Rime's text-to-speech integration, you can now add natural, lifelike voice capabilities to your Lovable apps with just a few lines in your prompt. Whether you're building a voiceover tool, an accessibility feature, or an AI assistant, getting Rime TTS into your Lovable project is surprisingly simple.
+
+## How It Works
+
+Since Rime's API requires authentication, Lovable handles this securely through [Lovable Cloud](https://docs.lovable.dev/integrations/cloud). Your API key gets stored as a secret and accessed through Edge Functions, so it's never exposed in your frontend code.
+
+Here's how to get started:
+
+**Step 1:** Grab your Rime API key from [app.rime.ai/tokens](https://app.rime.ai/tokens/)
+
+**Step 2:** In your Lovable prompt, explicitly tell it to use Rime as the TTS provider. Include the API details so Lovable knows exactly how to wire things up:
+
+```
+Use Rime TTS
+**API:** POST https://users.rime.ai/v1/rime-tts
+- Header: Authorization: Bearer {API_KEY}
+- Docs: https://docs.rime.ai/api-reference/arcana/streaming-wav
+Store the API key in Lovable Cloud.
+```
+
+**Step 3:** When Lovable prompts you to enable Cloud and add a secret, paste in your Rime API key. That's it, Lovable handles the rest.
+
+For a deeper understanding of how Lovable manages authenticated APIs, check out their [integration docs](https://docs.lovable.dev/integrations/introduction#authenticated-apis-requires-secrets).
+
+## Try It Yourself
+
+Here's a real prompt you can paste into Lovable to build a voiceover studio app:
+
+```
+Build an Instant Voiceover Studio, a single-page app where users paste text, 
+pick a voice, and generate professional audio using Rime TTS.
+
+**For:** Content creators who need quick voiceovers for YouTube, podcasts, and apps.
+
+**Design:** Rime design language with near-black background (#0D0D0D, #161616), 
+orange-to-red gradient accents (#FF9300 to #B10000), grey surfaces (#333, #1A1A1A), 
+Inter font. Clean and premium.
+
+**Layout (two-column on desktop, stacked on mobile):**
+
+**Left Panel:**
+1. Text input area with character count (5000 max)
+2. Voice picker with a grid of 16 Arcana voice cards (luna, astra, sirius, estelle, lyra, vespera, walnut, eliphas, arcade, atrium, eucalyptus, fern, stucco, transom, oculus, moss) with gradient avatars
+3. "Generate Voiceover" button
+4. Audio controls with play/pause, progress bar, download wav
+
+**Right Panel:**
+5. Three.js particle sphere with a small orb of 500+ particles, centered in the 
+   right panel. Slowly rotates when idle with dim orange tint. When audio plays: 
+   particles expand outward and glow bright orange (#FF9300) to red (#B10000), 
+   pulsing with the voice.
+
+Use Rime TTS
+**API:** POST https://users.rime.ai/v1/rime-tts
+- Header: Authorization: Bearer {API_KEY}
+- Docs: https://docs.rime.ai/api-reference/arcana/streaming-wav
+Store the API key in Lovable Cloud.
+```
+
+Feel free to tweak the design, swap out voices, or completely reimagine the app. The key is including those Rime TTS instructions so Lovable knows how to connect everything.
+
+**See what this prompt builds:** [rime.lovable.app](https://rime.lovable.app)
+
+## Tips for Better Results
+
+- Be specific about what you want. Lovable works best with clear, detailed prompts
+- Always include the full API details (endpoint, headers, docs link) so Lovable can implement the integration correctly
+- Explicitly mention storing the API key in Lovable Cloud for security
+- Check out Lovable's [prompt engineering guide](https://docs.lovable.dev/prompting/prompting-one) for more tips on crafting effective prompts

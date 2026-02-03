@@ -45,6 +45,16 @@ If I want the sentence to read:
 |--------------|
 |  <audio controls src="https://rime.ai/sounds/docs/jonathan.mp3"></audio>
 
+The `spell()` function also works with the `arcana` model:
+
+```json
+{
+   "speaker": "astra",
+   "modelId": "arcana",
+   "text": "the name is spelled spell(jonathan)."
+}
+```
+
 ## `spell()` applied to numbers
 
 For number sequences, if I want the sentence to read:
@@ -61,6 +71,16 @@ For number sequences, if I want the sentence to read:
 }
 ```
 
+With the `arcana` model:
+
+```json
+{
+   "speaker": "astra",
+   "modelId": "arcana",
+   "text": "the number is spell(4252528929)."
+}
+```
+
 ## `spell()` applied to alphanumeric sequences
 
 The same goes for mixed alphanumerics. If I want the sentence to be read:
@@ -73,6 +93,16 @@ The same goes for mixed alphanumerics. If I want the sentence to be read:
 {
    "speaker": "tibur",
    "modelId": "mistv2",
+   "text": "the account is spell(rf543dc2)."
+}
+```
+
+With the `arcana` model:
+
+```json
+{
+   "speaker": "astra",
+   "modelId": "arcana",
    "text": "the account is spell(rf543dc2)."
 }
 ```
@@ -96,6 +126,16 @@ Spell also works with common symbols. For example:
 {
    "speaker": "tibur",
    "modelId": "mistv2",
+   "text": "the email address is spell(help@rime.ai)."
+}
+```
+
+With the `arcana` model:
+
+```json
+{
+   "speaker": "astra",
+   "modelId": "arcana",
    "text": "the email address is spell(help@rime.ai)."
 }
 ```

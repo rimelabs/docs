@@ -6,9 +6,17 @@ authMethod: "bearer"
 
 ## Overview
 
-In addition to a plaintext websocket implementation, Rime also has an implementation that sends and receives events as JSON objects. Like the other implementation, all synthesis arguments are provided as query parameters when establishing the connection.
+In addition to a plaintext websocket implementation,
+Rime also has an implementation that sends and receives events as JSON objects.
+Like the other implementation, all synthesis arguments are provided as query
+parameters when establishing the connection.
 
-The websocket API buffers inputs up to on of the following punctuation characters: `.`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
+The websocket API buffers inputs up to on of the following punctuation
+characters: `.`, `?`, `!`. This is most pertinent for the initial messages
+sent to the API, as synthesis won't begin until there are sufficient
+tokens to generate audio with natural prosody. After the first synthesis
+of any given utterance, typically enough time has elapsed that subsequent
+audio contains multiple clauses, and the buffering becomes largely invisible.
 
 ## Messages
 
@@ -40,7 +48,13 @@ examples:
 }
 ```
 
-Context IDs can be provided, which will be attached to subsequent messages that the server sends back to the client. Rime will not maintain multiple simultaneous context ids. The events will contain the most recent context ID at the time that audio was requested. In the above examples, even if both messages are received by the server before it sends any audio, the audio response for the first sentence will be tagged with `contextId: null`, and the audio for the second will be tagged with its UUID.
+Context IDs can be provided, which will be attached to subsequent messages
+that the server sends back to the client. Rime will not maintain multiple s
+imultaneous context ids. The events will contain the most recent context ID
+at the time that audio was requested. In the above examples, even if both
+messages are received by the server before it sends any audio, the audio
+response for the first sentence will be tagged with `contextId: null`,
+and the audio for the second will be tagged with its UUID.
 
 
 #### Clear
@@ -61,7 +75,8 @@ This forces whatever buffer exists, if any, to be synthesized, and the generated
 
 #### EOS
 
-At times, your client would like to generate audio for whatever remains in the buffer, and then have the connection immediately closed.
+At times, your client would like to generate audio for whatever
+remains in the buffer, and then have the connection immediately closed.
 
 ```json
 { "operation" : "eos" }
@@ -83,7 +98,8 @@ type AudioChunkEvent = {
 }
 ```
 
-The audio will be a base64 encoded chunk of audio bytes in the audio format specified when the connection was established. If you provided any context id when sending the relevant text, it'll be included here.
+The audio will be a base64 encoded chunk of audio bytes in the audio format specified
+when the connection was established. If you provided any context id when sending the relevant text, it'll be included here.
 
 #### Timestamps
 
@@ -102,7 +118,9 @@ type TimestampsEvent = {
 
 #### Error
 
-In the event of a malformed or unexpected input, the server will immediately respond with an error message. The server will _not_ close the connection, and will still accept subsequent well-formed messages. It's up to the client to decide if it wants to close upon receiving an error.
+In the event of a malformed or unexpected input, the server will immediately respond with an error message.
+The server will _not_ close the connection, and will still accept subsequent well-formed messages.
+It's up to the client to decide if it wants to close upon receiving an error.
 
 ```typescript
 type ErrorEvent = {
@@ -130,13 +148,15 @@ type ErrorEvent = {
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+  If provided, the language must match the language spoken by the provided speaker.
+  This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
 </ParamField>
 
 <ParamField body="repetition_penalty" type="float" default="1.5">
   The repetition penalty. We do not recommend changing this from the default value. Typical range is 1 to 2.
 
-  Float that penalizes new tokens based on whether they appear in the prompt and the generated text so far. Values > 1 encourage the model to use new tokens, while values < 1 encourage the model to repeat tokens.
+  Float that penalizes new tokens based on whether they appear in the prompt and
+    the generated text so far. Values > 1 encourage the model to use new tokens, while values < 1 encourage the model to repeat tokens.
 </ParamField>
 
 <ParamField body="temperature" type="float" default="0.5">

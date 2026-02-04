@@ -1,6 +1,6 @@
 ---
 title: 'Websockets JSON'
-api: 'GET wss://users.rime.ai/ws2'
+api: 'GET wss://users-ws.rime.ai/ws2'
 authMethod: "bearer"
 ---
 
@@ -184,7 +184,7 @@ import base64
 
 class RimeClient:
     def __init__(self, speaker, api_key):
-        self.url = f"wss://users.rime.ai/ws2?speaker={speaker}&modelId=mistv2&audioFormat=mp3"
+        self.url = f"wss://users-ws.rime.ai/ws2?speaker={speaker}&modelId=mistv2&audioFormat=mp3"
         self.auth_headers = {
             "Authorization": f"Bearer {api_key}"
         }

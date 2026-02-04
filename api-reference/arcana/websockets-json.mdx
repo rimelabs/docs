@@ -108,7 +108,7 @@ Word timestamps are provided to better understand what precisely has been alread
 ```typescript
 type TimestampsEvent = {
   type: "timestamps",
-  word_timestamps: {
+  wordTimestamps: {
     words: string[],
     start: number[],
     end: number[],
@@ -220,7 +220,7 @@ class RimeClient:
 
             if message['type'] == 'timestamps':
                 print("Rime model pronounced the words...\n")
-                for w, t in zip(message['word_timestamps']['words'], message['word_timestamps']['start']):
+                for w, t in zip(message['wordTimestamps']['words'], message['wordTimestamps']['start']):
                     print(f"'{w}' at time {t}")
 
     async def run(self, messages):

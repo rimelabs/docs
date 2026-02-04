@@ -1,6 +1,6 @@
 ---
 title: 'Websockets'
-api: 'GET wss://users.rime.ai/ws'
+api: 'GET wss://users-ws.rime.ai/ws'
 authMethod: "bearer"
 ---
 
@@ -123,7 +123,7 @@ FILE_PATH = "arcana_ws.wav"
 
 class RimeClient:
     def __init__(self, speaker, api_key):
-        self.url = f"wss://users.rime.ai/ws?speaker={speaker}&modelId=arcana&audioFormat=wav"
+        self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=arcana&audioFormat=wav"
         self.auth_headers = {
             "Authorization": f"Bearer {api_key}"
         }

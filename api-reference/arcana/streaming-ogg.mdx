@@ -1,0 +1,209 @@
+---
+title: 'Streaming OGG'
+api: 'POST https://users.rime.ai/v1/rime-tts'
+authMethod: "bearer"
+---
+
+## Fixed Headers
+
+<ParamField header="Accept" type="audio/ogg;codecs=opus" required></ParamField>
+
+<Info>OGG output is intended for HTTP streaming or binary WebSocket transports. For JSON-only WebSocket streaming, prefer MP3, PCM, or μ-law.</Info>
+
+## Variable Parameters
+
+<ParamField body="speaker" type="string" required>
+  Must be one of the flagship Arcana voices <a href="/docs/voices">listed in our documentation</a>.
+</ParamField>
+<ParamField body="text" type="string" required>
+  The text you'd like spoken. Unlimited via API. Character limit per request is 3,000 in the dashboard UI.
+</ParamField>
+
+<ParamField body="modelId" type="string">
+  Choose `arcana` for Rime's most realistic conversational voices.
+</ParamField>
+
+<ParamField body="lang" type="string" default="eng">
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
+</ParamField>
+
+<ParamField body="repetition_penalty" type="float" default="1.5">
+  The repetition penalty. We do not recommend changing this from the default value. Typical range is 1 to 2.
+
+  Float that penalizes new tokens based on whether they appear in the prompt and the generated text so far. Values > 1 encourage the model to use new tokens, while values < 1 encourage the model to repeat tokens.
+</ParamField>
+
+<ParamField body="temperature" type="float" default="0.5">
+  The temperature. We do not recommend changing this from the default value. Typical range is 0 to 1.
+
+  Float that controls the randomness of the sampling. Lower values make the model more deterministic, while higher values make the model more random. Zero means greedy sampling.
+</ParamField>
+
+<ParamField body="top_p" type="float" default="1">
+  The top p. We do not recommend changing this from the default value. Typical range is 0 to 1.
+
+  Float that controls the cumulative probability of the top tokens to consider. Must be in (0, 1]. Set to 1 to consider all tokens.
+</ParamField>
+
+<ParamField body="samplingRate" type="int" default="24000">
+  The sampling rate (Hz).
+
+  * **On-cloud**: Accepted values: 8000, 16000, 22050, 24000, 44100, 48000, 96000. Anything above 24000 is up sampling.
+  * **On-prem**: Any value is accepted.
+</ParamField>
+
+<ParamField body="speedAlpha" type="float" default="1">
+  The time scaling factor. **On-prem only**.
+
+  A value below 1 slows down the audio, a value above 1 speeds up the audio.
+</ParamField>
+
+<ParamField body="max_tokens" type="int" default="1200">
+  The max tokens. Range is 200 to 5000.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://users.rime.ai/v1/rime-tts \
+  --header 'Accept: audio/ogg;codecs=opus' \
+  --header 'Authorization: Bearer <authorization>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "speaker": "<string>",
+  "text": "<string>",
+  "modelId": "arcana",
+  "repetition_penalty": 1.5,
+  "temperature": 0.5,
+  "top_p": 1,
+  "samplingRate": 24000,
+  "max_tokens": 1200
+}'
+```
+
+```python Python
+import requests
+
+url = "https://users.rime.ai/v1/rime-tts"
+
+payload = {
+    "speaker": "<string>",
+    "text": "<string>",
+    "modelId": "arcana",
+    "repetition_penalty": 1.5,
+    "temperature": 0.5,
+    "top_p": 1,
+    "samplingRate": 24000,
+    "max_tokens": 1200
+}
+headers = {
+    "Accept": "audio/ogg;codecs=opus",
+    "Authorization": "Bearer <authorization>",
+    "Content-Type": "application/json"
+}
+
+with requests.post(url, headers=headers, json=payload, stream=True) as response:
+    response.raise_for_status()
+    with open("audio_output.ogg", "wb") as f:
+        for chunk in response.iter_content(chunk_size=4096):
+            if chunk:
+                f.write(chunk)
+```
+
+```javascript JavaScript
+const fs = require("fs");
+
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'audio/ogg;codecs=opus',
+    Authorization: 'Bearer <authorization>',
+    'Content-Type': 'application/json'
+  },
+  body: '{"speaker":"<string>","text":"<string>","modelId":"arcana","repetition_penalty":1.5,"temperature":0.5,"top_p":1,"samplingRate":24000,"max_tokens":1200}'
+};
+
+fetch('https://users.rime.ai/v1/rime-tts', options)
+  .then(response => response.arrayBuffer())
+  .then(buffer => {
+    fs.writeFileSync("audio_output.ogg", Buffer.from(buffer));
+    console.log("Audio saved to audio_output.ogg");
+  })
+  .catch(err => console.error(err));
+```
+
+```php PHP
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://users.rime.ai/v1/rime-tts",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}",
+  CURLOPT_HTTPHEADER => [
+    "Accept: audio/ogg;codecs=opus",
+    "Authorization: Bearer <authorization>",
+    "Content-Type: application/json"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+```
+
+```go Go
+package main
+
+import (
+  "io"
+  "net/http"
+  "os"
+  "strings"
+)
+
+func main() {
+
+  url := "https://users.rime.ai/v1/rime-tts"
+
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}")
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Accept", "audio/ogg;codecs=opus")
+  req.Header.Add("Authorization", "Bearer <authorization>")
+  req.Header.Add("Content-Type", "application/json")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := io.ReadAll(res.Body)
+
+  _ = os.WriteFile("audio_output.ogg", body, 0644)
+}
+```
+
+```java Java
+HttpResponse<byte[]> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
+  .header("Accept", "audio/ogg;codecs=opus")
+  .header("Authorization", "Bearer <authorization>")
+  .header("Content-Type", "application/json")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"temperature\": 0.5,\n  \"repetition_penalty\": 1.5,\n  \"top_p\": 1,\n  \"samplingRate\": 24000,\n  \"max_tokens\": 1200\n}")
+  .asBytes();
+Files.write(Paths.get("audio_output.ogg"), response.getBody());
+```
+</RequestExample>

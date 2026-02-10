@@ -245,15 +245,15 @@ Add the pipeline that connects all the components:
     ])
 ```
 
-Frames flow through processors in order:
+Frames flow through the processors in order.
 
-- **Audio in:** raw microphone input from the user
-- **Transcription:** converts speech to text via the STT provider
-- **User context:** aggregates the user's message into the conversation history
-- **LLM response:** generates a reply based on the conversation so far
-- **Speech synthesis:** converts the LLM's text response to audio via Rime TTS
-- **Audio out:** streams the synthesized speech back to the user
-- **Assistant context:** records the assistant's response in the conversation history
+1. **Audio in:** Raw microphone input from the user
+2. **Transcription:** Converting speech to text via the STT provider
+3. **User context:** Aggregating the user's message into the conversation history
+4. **LLM response:** Generating a reply based on the conversation so far
+5. **Speech synthesis:** Converting the LLM's text response to audio via Rime TTS
+6. **Audio out:** Streaming the synthesized speech back to the user
+7. **Assistant context:** Recording the assistant's response in the conversation history
 
 The context aggregator appears twice to capture both sides of the conversation.
 
@@ -293,7 +293,7 @@ Pipecat's `main` helper from `pipecat.runner.run` automatically:
 - Serves a prebuilt browser client at `/client`
 - Sets up the WebRTC connection and passes the connection to your `bot` function
 
-When you run the agent, Pipecat starts a local HTTP server. Open the browser client to connect via WebRTC. The server runs locally, but API calls are made to OpenAI's and Rime's cloud services.
+When you run the agent, Pipecat starts a local HTTP server. Open the browser client to connect via WebRTC. The server runs locally, but the agent makes API calls to OpenAI's and Rime's cloud services.
 
 ### 3.5 Full agent code
 

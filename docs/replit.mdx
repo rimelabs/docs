@@ -11,7 +11,7 @@ import { IntegrationHeader } from '/snippets/integration-header.mdx'
   partnerHeight="40px"
 />
 
-This guide shows how to add text-to-speech to apps built with [Replit](https://replit.com/), an AI-powered platform where you describe what you want and an AI agent writes the code. Rime is a text-to-speech API that generates natural-sounding voice audio. When your Replit app needs to speak, it sends text to Rime's API and receives audio back.
+This guide demonstrates how to add Rime's text-to-speech (TTS) functionality to apps built with [Replit](https://replit.com/), an AI-powered platform that generates code from users' text descriptions. Rime is a TTS API that generates natural-sounding voice audio. When your Replit app needs to speak, it sends text to Rime's API and receives audio back.
 
 <video
   controls
@@ -21,16 +21,18 @@ This guide shows how to add text-to-speech to apps built with [Replit](https://r
   src="/images/replit-demo-app.mp4"
 />
 
-This approach works well if you want to prototype voice features quickly without writing integration code yourself. Replit's agent handles the API calls, authentication, and audio playback while Rime generates the speech.
+This approach works well if you want to prototype voice features quickly without writing integration code yourself. The Replit agent handles the API calls, authentication, and audio playback, while Rime generates the speech.
 
 ## Prerequisites
 
+To follow this guide, you need:
+
 - A [Replit account](https://replit.com/signup)
-- A Rime API key from [app.rime.ai/tokens](https://app.rime.ai/tokens/)
+- A Rime API key from [API Tokens](https://app.rime.ai/tokens/) page
 
 ## Create your app
 
-Paste the following prompt into Replit to build a voiceover studio app. It uses the [Arcana](/docs/models#arcana) model's voice library to generate speech. You can modify this prompt to build your own app idea.
+Paste the following prompt in Replit to build a voiceover studio app. It uses the [Arcana](/docs/models#arcana) model's voice library to generate speech. You can modify this prompt to build your own app idea.
 
 ```
 Build an Instant Voiceover Studio, a single-page app where users paste text,
@@ -50,11 +52,11 @@ Left Panel:
    lyra, vespera, walnut, eliphas, arcade, atrium, eucalyptus, fern, stucco, transom,
    oculus, moss) with gradient avatars
 3. "Generate Voiceover" button following Rime design language
-4. Audio controls with play/pause, progress bar, download wav
+4. Audio controls with play and pause, progress bar, and download wav options.
 
 Right Panel:
-5. Three.js particle sphere with a small orb of 500+ particles, centered in the
-   right panel. Slowly rotates when idle with dim orange tint. When audio plays:
+5. Three.js particle sphere with a small orb of over 500+ particles, centered in the
+   right panel. It slowly rotates when idle with a dim orange tint. When audio plays:
    particles expand outward and glow bright orange (#FF9300) to red (#B10000),
    pulsing with the voice.
 
@@ -65,24 +67,24 @@ modelId: Arcana
 Docs: https://docs.rime.ai/api-reference/arcana/streaming-wav
 ```
 
-Replit's agent generates code that reads `RIME_API_KEY` from your Secrets and uses it to authenticate with Rime's API.
+The Replit agent generates code that reads the `RIME_API_KEY` from your **Secrets** and uses it to authenticate the app with the Rime API.
 
 ## Add your API key
 
-Once Replit has created your app, add your Rime API key as a Secret:
+Once Replit has created your app, add your Rime API key as a **Secret**:
 
-1. Press **Cmd+K** (Mac) or **Ctrl+K** (Windows/Linux) to open the command palette
-2. Search for **Secrets** and select it
-3. Click **New configuration**
+1. Press `Cmd + K` (Mac) or `Ctrl + K` (Windows and Linux) to open the command palette.
+2. Search for **Secrets** and select it.
+3. Click **New configuration**.
 4. Enter `RIME_API_KEY` as the key and paste your API key from [app.rime.ai/tokens](https://app.rime.ai/tokens/) as the value
 
 This keeps your key secure so that it never appears in your code or version history
 
-
 ## Learn more
+
+Refer to the following documentation to learn more about using Replit and Rime:
 
 - [Replit: Getting Started](https://docs.replit.com/getting-started/intro-replit)
 - [Replit: Agent Integrations](https://docs.replit.com/replitai/integrations)
 - [Replit: Secrets Management](https://docs.replit.com/replit-workspace/workspace-features/secrets)
-- [Rime Voices](/docs/voices)
-
+- [Rime: Voices](/docs/voices)

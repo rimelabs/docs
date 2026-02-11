@@ -80,19 +80,21 @@ data: {"done": true}
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
   --header 'Accept: text/event-stream' \
-  --header 'Authorization: Bearer <authorization>' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
+  --output output.txt \
+  --fail \
   --data '{
-  "speaker": "<string>",
   "text": "<string>",
   "modelId": "<string>",
+  "speaker": "<string>",
   "lang": "eng",
-  "samplingRate": 22050,
-  "speedAlpha": 1.0,
+  "inlineSpeedAlpha": "0.5, 3",
   "noTextNormalization": false,
   "pauseBetweenBrackets": false,
   "phonemizeBetweenBrackets": false,
-  "inlineSpeedAlpha": "0.5, 3"
+  "samplingRate": 22050,
+  "speedAlpha": 1.0
 }'
 ```
 

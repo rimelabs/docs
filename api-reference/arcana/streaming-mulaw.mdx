@@ -67,17 +67,21 @@ Streaming G.711 μ-law returns a headerless stream of audio bytes.
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
   --header 'Accept: audio/x-mulaw' \
-  --header 'Authorization: Bearer <authorization>' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
+  --output output.mulaw \
+  --fail \
   --data '{
-  "speaker": "<string>",
   "text": "<string>",
   "modelId": "arcana",
+  "speaker": "<string>",
+  "lang": "eng",
+  "max_tokens": 1200,
   "repetition_penalty": 1.5,
-  "temperature": 0.5,
-  "top_p": 1,
   "samplingRate": 8000,
-  "max_tokens": 1200
+  "speedAlpha": 1,
+  "temperature": 0.5,
+  "top_p": 1
 }'
 ```
 

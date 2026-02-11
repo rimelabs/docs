@@ -42,8 +42,9 @@ The response will include an array with any strings not covered by the current R
 curl --request POST \
   --url https://beta.rime.ai/oov \
   --header 'Accept: application/json' \
-  --header 'Authorization: Bearer <authorization>' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
+  --fail \
   --data '{
   "text": "<string>"
 }'

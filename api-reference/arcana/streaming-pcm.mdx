@@ -67,17 +67,21 @@ Streaming PCM returns a stream of audio bytes in 16-bit little-endian linear PCM
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
   --header 'Accept: audio/pcm' \
-  --header 'Authorization: Bearer <authorization>' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
+  --output output.pcm \
+  --fail \
   --data '{
-  "speaker": "<string>",
   "text": "<string>",
   "modelId": "arcana",
+  "speaker": "<string>",
+  "lang": "eng",
+  "max_tokens": 1200,
   "repetition_penalty": 1.5,
-  "temperature": 0.5,
-  "top_p": 1,
   "samplingRate": 24000,
-  "max_tokens": 1200
+  "speedAlpha": 1,
+  "temperature": 0.5,
+  "top_p": 1
 }'
 ```
 

@@ -53,7 +53,7 @@ authMethod: "bearer"
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1">
-  The time scaling factor. **On-prem only**.
+  The time scaling factor.
 
   A value below 1 slows down the audio, a value above 1 speeds up the audio.
 </ParamField>
@@ -68,17 +68,21 @@ authMethod: "bearer"
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
   --header 'Accept: audio/ogg;codecs=opus' \
-  --header 'Authorization: Bearer <authorization>' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
+  --output output.ogg \
+  --fail \
   --data '{
-  "speaker": "<string>",
   "text": "<string>",
   "modelId": "arcana",
+  "speaker": "<string>",
+  "lang": "eng",
+  "max_tokens": 1200,
   "repetition_penalty": 1.5,
-  "temperature": 0.5,
-  "top_p": 1,
   "samplingRate": 24000,
-  "max_tokens": 1200
+  "speedAlpha": 1,
+  "temperature": 0.5,
+  "top_p": 1
 }'
 ```
 

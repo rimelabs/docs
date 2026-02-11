@@ -36,17 +36,24 @@ Turn it on with a single parameter:
 
 ```json
 {
-  "saveOov": true
+  "saveOovs": true
 }
 ```
 For example, sending the request
 ```bash
-curl -X POST "http://users.rime.ai/v1/rime-tts" \
-   -H "Authorization: Bearer $RIME_API_KEY" \
-   -H "Accept: audio/mp3" \
-  -H "Content-Type: application/json" \
-  -d '{"modelId": "mistv2", "text": "we found something in the interphalangeal joint.", "speaker": "cove", "saveOovs": true}' \
-  -o speech_with_oov.mp3
+curl --request POST \
+  --url https://users.rime.ai/v1/rime-tts \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Accept: audio/mp3' \
+  --header 'Content-Type: application/json' \
+  --output speech_with_oov.mp3 \
+  --fail \
+  --data '{
+  "text": "we found something in the interphalangeal joint.",
+  "modelId": "mistv2",
+  "speaker": "cove",
+  "saveOovs": true
+}'
 ```
 will save any out-of-vocabulary words found in `text` to your QA dashboard.
 

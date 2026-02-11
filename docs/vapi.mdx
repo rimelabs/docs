@@ -1,5 +1,5 @@
 ---
-title: VAPI
+title: Vapi
 ---
 import { IntegrationHeader } from '/snippets/integration-header.mdx'
 
@@ -10,24 +10,34 @@ import { IntegrationHeader } from '/snippets/integration-header.mdx'
 
 ![Vapi demo](/images/vapi-demo.gif)
 
-[Vapi](https://vapi.ai) is an API-first platform for building, testing, and deploying voice AI agents. It handles telephony, orchestration, and integrations so you can focus on your agent's behavior. Paired with Rime's ultra-realistic voices, you get natural-sounding conversations with sub-200ms latency. This guide walks you through creating a basic voice assistant with Vapi and Rime.
-
+[Vapi](https://vapi.ai) is an API-first platform for building, testing, and deploying AI voice agents. It handles telephony, orchestration, and integrations so you can focus on your agent's behavior. Paired with Rime's ultra-realistic voices, you get natural-sounding conversations with sub-200ms latency. This guide walks you through creating a basic voice assistant with Vapi and Rime.
+ 
 ## Prerequisites
 
-- [Vapi account](https://dashboard.vapi.ai)
-- [Rime API key](https://app.rime.ai/tokens) (optional)
+To follow this guide, you need:
+
+- A [Vapi](https://dashboard.vapi.ai) account
+- A Rime [API key](https://app.rime.ai/tokens) (optional)
 
 ## Step 1: Create the assistant
 
-From the [Vapi dashboard](https://dashboard.vapi.ai), navigate to **Assistants** and press **Create Assistant**.
+From the [Vapi Dashboard](https://dashboard.vapi.ai), navigate to **Assistants** and click **Create Assistant**.
 
 ![Vapi assistants page with Create Assistant button](/images/vapi-create-assistant-button.png)
+
+### 1.1 Select a template
 
 Give your assistant a name, select **Blank Template**, and click **Create Assistant**.
 
 ![Create assistant modal](/images/vapi-create-assistant.png)
 
-In the **Model** tab, select your preferred LLM provider. Any option should work, but models with lower latency enable conversational flow better. Then, add a **First Message** so that your assistant can begin the conversation. Finally, configure a system prompt to define your agents personality and behavior. The system prompt can be as complex or simple as you like. For example:
+### 1.2 Configure the model
+
+In the **Model** tab, select your preferred LLM provider. Any option should work, but models with lower latency enable better conversational flow.
+
+Add a **First Message** to enable your assistant to begin conversations.
+
+Configure a **System Prompt** to define your agent's personality and behavior. The system prompt can be as complex or simple as you like. For example:
 
 ```
 You are a helpful voice assistant.
@@ -35,29 +45,41 @@ Keep your responses short and conversational. No more than 2-3 sentences.
 Be friendly and natural.
 ```
 
-Alternatively, use the **Generate** button and get AI help to create a well structured prompt.
+Alternatively, use the **Generate** button and get AI help to create a well-structured prompt.
 
 ![Model tab configuration](/images/vapi-model.png)
 
-Next, in the **Voice** tab, configure your assistant to use **Rime AI** as the **Provider**. Then, select the **Voice** that you want your assistant to use. Find more details about Rime's voices on the [Voices page](./voices) set the **Model** to **Arcana** to use the latest Rime model with the most realistic voices.
+### 1.3 Configure the voice
+
+In the **Voice** tab, configure your assistant to use **Rime AI** as the **Provider**.
+
+Select the **Voice** that you want your assistant to use. Learn more about Rime's voices on the [Voices](./voices) page. 
+
+Set the **Model** to **Arcana** to use the latest Rime model with the most realistic voices.
 
 ![Voice tab with Rime AI provider selected](/images/vapi-voice.png)
 
-Finally, in the **Transcriber** tab, select your preferred speech-to-text (STT) provider and then click **Publish**.
+### 1.4 Configure the transcriber
+
+Finally, in the **Transcriber** tab, select your preferred speech-to-text (STT) **Provider** and click **Publish**.
 
 ![Transcriber tab configuration](/images/vapi-transcriber.png)
 
-On the publishing pop-up window, select **Skip and Publish**.
+### 1.5 Publish the assistant
 
-![Publish pop-up window](/images/vapi-publish-popup.png)
+In the publishing popup window, select **Skip and Publish**.
 
-## Step 2 (optional): Add your API keys to Vapi
+![Publish popup window](/images/vapi-publish-popup.png)
 
-Vapi provides API access to all it's supported models through its integrated billing plans. However, if you already have a subscription plan to one or more of your assistant's configured providers, you can enable access to these by clicking on **More** under the **Build** heading and then **Integrations**. 
+## Step 2: Add your API keys to Vapi  (optional)
+
+Vapi provides API access to all its supported models via its billing plans. However, if you already have a subscription plan for one or more of your assistant's configured providers, you can enable the assistant to access them instead of using integrated Vapi billing:
+
+Under the **Build** heading, click **More** and select **Integrations**. Then, find your providers and add your API keys.
 
 ![Integrations](/images/vapi-integrations.png)
 
-Then, find your providers and add your API keys. These will be stored securely and automatically be used by your assistant instead of the integrated Vapi billing.
+Vapi stores API keys securely and automatically grants your assistants access to them.
 
 ![Rime API key integration](/images/vapi-rime-api-key.png)
 
@@ -71,7 +93,9 @@ Click **Talk to Assistant** in the dashboard to start a conversation in your bro
 
 ## Next steps
 
-- **Try different voices:** `celeste`, `orion`, `andromeda`. Audition them at [app.rime.ai](https://app.rime.ai)
-- **Add a phone number:** Provision one in the Vapi dashboard and assign it to your assistant for telephony
-- **Create a workflow:** Your assistant can be programmed to do complex tasks using the [Workflows dashboard](https://dashboard.vapi.ai/workflows).
-- **Customize the personality:** Update the system prompt to match your use case
+To further customize your assistant, you can:
+
+- **Try different voices:** Audition other voices like `celeste`, `orion`, and `andromeda` at [app.rime.ai](https://app.rime.ai).
+- **Add a phone number:** Provision a contact number in the Vapi dashboard and assign it to your assistant for telephony
+- **Create a workflow:** Program your assistant to do complex tasks using [Vapi Workflows](https://dashboard.vapi.ai/workflows).
+- **Customize the personality:** Update the system prompt to match your use case.

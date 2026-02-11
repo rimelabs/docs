@@ -24,8 +24,6 @@ icon: list
   | hi    | hin         | Hindi      |
   | ja    | jpn         | Japanese   |
   | pt    | por         | Portuguese |
-  | si    | sin         | Sinhala    |
-  | ta    | tam         | Tamil      |
 
   Any valid ISO 639-1, 639-2, or 639-3 code that maps to one of these 11 languages is accepted.
 </Update>
@@ -41,8 +39,8 @@ icon: list
 * Arcana now supports JSON websockets with Word-Level-Timestamps:
   * `wss://users-ws.rime.ai/ws3` and `wss://users-east-ws.rime.ai/ws3` serve the JSON websockets api that now supports both `mist` and `arcana` model classes.
 * Arcana release `20260204` (Arcana v3):
-  * Added support for 11 languages: Arabic (`lang=ara`), English (`lang=eng`), French (`lang=fra`), German (`lang=ger`), Hebrew (`lang=heb`), Hindi (`lang=hin`), Japanese (`lang=jpn`), Portuguese (`lang=por`), Sinhala (`lang=sin`), Spanish (`lang=spa`), and Tamil (`lang=tam`).
-  * Languages can be specified using either 2-character codes (`ar`, `en`, `fr`, `de`, `he`, `hi`, `ja`, `pt`, `si`, `es`, `ta`) or 3-character codes (`ara`, `eng`, `fra`, `ger`, `heb`, `hin`, `jpn`, `por`, `sin`, `spa`, `tam`).
+  * Added support for 11 languages: Arabic (`lang=ara`), English (`lang=eng`), French (`lang=fra`), German (`lang=ger`), Hebrew (`lang=heb`), Hindi (`lang=hin`), Japanese (`lang=jpn`), Portuguese (`lang=por`), Spanish (`lang=spa`).
+  * Languages can be specified using either 2-character codes (`ar`, `en`, `fr`, `de`, `he`, `hi`, `ja`, `pt`, `es`) or 3-character codes (`ara`, `eng`, `fra`, `ger`, `heb`, `hin`, `jpn`, `por`, `spa`).
 </Update>
 
 <Update label="2026-02-03">
@@ -268,4 +266,3 @@ New api onprem image `us-docker.pkg.dev/rime-labs/api/service:20250917` released
   * Fixed a bug where silence information is not processed properly when `pauseBetweenBrackets` is True
   * The url `demo-api.rime.ai` has been **deprecated**. Please use `demo.rime.ai` instead if you are using the demo API.
 </Update>
-

@@ -156,7 +156,7 @@ There is only a Mist on-prem image for English:
 
 The latest image version is:
 
-* `us-docker.pkg.dev/rime-labs/api/service:20260123`
+* `us-docker.pkg.dev/rime-labs/api/service:20260211`
 
 ## Docker Compose configuration
 
@@ -172,9 +172,9 @@ services:
     depends_on:
       - model
     ports:
-      - "8000:8000"  # HTTP API
-      - "8001:8001"  # Json WebSocket API
-      - "8002:8002"  # Json WebSocket API
+      - "8000:8000"
+      - "8002:8002" # binary websockets api
+      - "8003:8003" # json websockets api
     restart: unless-stopped
     environment:
       - MODEL_URL=http://model:8080/invocations
@@ -206,6 +206,9 @@ services:
       - es-model
     ports:
       - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
     restart: unless-stopped
     environment:
       - MODEL_URL=http://en-model:8080/invocations
@@ -338,4 +341,15 @@ Sample response file: [`result.pcm`](https://drive.google.com/file/d/1pwkGW9jCe1
 
 ### WebSocket endpoints
 
-The JSON WebSocket endpoint will be served at port 8001.  For example, `ws://localhost:8001`, which will be equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).
+#### JSON websockets
+The JSON WebSocket endpoint compatible with both `arcana` models as well as `mist` will be served at port `8003`.  For example, `ws://localhost:8003`, which will be equivalent to our [cloud websockets-json API.
+See the [arcana json websockets docs](/api-reference/arcana/websockets-json) and the [mist json websockets docs](/api-reference/endpoint/websockets-json) depending
+on which model backend you have configured.
+
+#### Non-JSON websockets
+
+The non-JSON WebSocket endpoint will be served at port `8002`.  For example, `ws://localhost:8002`, which will be equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).
+`
+#### Deprecated
+
+A **deprecated** websockets endpoint will be served on port `8001` that is **only** compatible with the mist model lines, and is equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).

@@ -85,15 +85,16 @@ curl --request POST \
   --output output.txt \
   --fail \
   --data '{
-  "text": "<string>",
-  "modelId": "<string>",
-  "speaker": "<string>",
+  "text": "Hello from Rime!",
+  "modelId": "mistv2",
+  "speaker": "astra",
   "lang": "eng",
   "inlineSpeedAlpha": "0.5, 3",
   "noTextNormalization": false,
   "pauseBetweenBrackets": false,
   "phonemizeBetweenBrackets": false,
   "samplingRate": 22050,
+  "saveOovs": false,
   "speedAlpha": 1.0
 }'
 ```

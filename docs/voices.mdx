@@ -3,17 +3,7 @@ title: Voices
 icon: microphone-lines
 ---
 
-Rime's TTS functionality exposes both a large set of demographically diverse voices to users as well as an increasingly large toolkit for generating voices on the fly.
-
-The flagship voices for Arcana are:
-- **luna** (female, chill but excitable, gen-z optimist)
-- **celeste** (female, warm, laid-back, fun-loving)
-- **orion** (male, older, african american, happy)
-- **ursa** (male, 20 years old, encyclopedic knowledge of 2000s emo)
-- **astra** (female, young, wide-eyed)
-- **esther** (female, older, chinese american, loving)
-- **estelle** (female, middle-aged, african-american, sounds so sweet)
-- **andromeda** (female, young, breathy, yoga vibes)
+Rime exposes a broad portfolio of production-ready voices across our models. Each voice is designed for real-time conversational performance, with distinct tonal identity, emotional range, and demographic diversity.
 
 As of 4 February 2026, Rime supports the following languages:
 - Arabic `lang=ara` or `lang=ar` (Arcana only)
@@ -26,34 +16,50 @@ As of 4 February 2026, Rime supports the following languages:
 - Portuguese `lang=por` or `lang=pt` (Arcana only)
 - Spanish `lang=spa` or `lang=es`
 
-You can view a list of all voices [online](/api-reference/data/voices) or [via the API](https://users.rime.ai/data/voices/all-v2.json).
+## Arcana v3 Voices (Flagship)
 
-Similarly, you can view all the voice details [online](/api-reference/data/voice-details) or [via the API](https://users.rime.ai/data/voices/voice_details.json).
+Arcana v3 is Rime’s most expressive and human-realistic text-to-speech model. The voices in Arcana are designed to sound natural in live conversation — capturing pacing, rhythm, breath, subtle emotional shifts, and multilingual fluency without sacrificing responsiveness.
+
+Arcana v3 supports native multilingual speech and code-switching.
 
 
+### The 94 Arcana Flagship Voices
 
-## Demographic categories
+Arcana v3 includes 94 flagship voices spanning a wide tonal and demographic spectrum. Rather than optimizing for a single “neutral assistant” sound, Arcana voices are intentionally distinct and characterful.
 
-Rime currently has many voices across a number of demographic categories (including Southern, African American, Latina, Midwestern, and LGBT voices) as well as age ranges from young to old.
+At a high level, the range includes:
 
-## TTS and genre
+- **Age diversity** — young adult through older adult voices
+- **Regional variety** — American regional accents (Southern, Midwestern, West Coast, East Coast), as well as international English and native speakers across supported languages
+- **Cultural representation** — African American, Latina/o, Asian American, and other globally representative identities
+- **Gender spectrum** — balanced representation across male and female voices, including stylistic variation within each
+- **Energy profiles** — from calm and grounded to upbeat, playful, warm, authoritative, or highly conversational
+- **Use-case fit** — voices well-suited for IVR, customer support, healthcare, fintech, education, media narration, and expressive AI companions
 
-Our customers have many use cases for TTS and we know that different uses require different TTS performances, which we also call **genre**. Right now we have models for the following genres:
+Arcana voices are built to maintain voice identity even when switching languages mid-utterance, making them especially powerful for global conversational applications.
 
-**General:** A catch-all use case. Works decently for everything.
+## Mist v2 Voices
 
-**Conversational:** Sounds like normal people having a natural conversation with a dependable range of emotions. When natural and human qualities are the goal, these are the voices to use.
+Mist v2 is optimized for speed, precision, and control. While Arcana emphasizes expressive realism, Mist focuses on clarity, pronunciation accuracy, and high-throughput production environments.
 
-**Narration:** Works great for narrating books, articles, or newsreaders.
+Mist voices are:
 
-**IVR**: Perfect for interactive voice agents, call centers, and food ordering. Humanlike performance with the natural cadence of a seasoned call center agent. Works great with filler words. Can have a conversational or more professional style depending on the voice parameter, and captures appropriate emotions based on callflow-specific text.
+- Highly intelligible and consistent  
+- Well-suited for structured IVR systems and high-volume applications  
+- Optimized for fast synthesis and predictable delivery  
+- Designed to handle complex proper nouns, brand names, and domain-specific terminology cleanly  
 
-## Using the dashboard
+Mist v2 provides a curated set of dependable, production-stable voices that prioritize control and scalability.
 
-Your [dashboard](https://app.rime.ai/) is a great place to find a voice. By specifying filters, you can find Rime voices that meet your needs.
+## Accessing Voices
 
-![dashboard-view](/images/new-dashboard.png)
+- Online: [/api-reference/data/voices](/api-reference/data/voices)
+- Via API: https://users.rime.ai/data/voices/all-v2.json
 
-Using these filters, and using the play button to hear the voices, you've determined `Colby` will be a great voice for your application. You can then use `Colby` as the `speaker` parameter for Rime's TTS API.
+Detailed voice metadata is available:
 
-> **Note:** After you get an account, you can use the dashboard to listen to audio samples and find the right voice for your application. To generate audio, you will need an active API key accessible and an active subscription.
+- Online: [/api-reference/data/voice-details](/api-reference/data/voice-details)
+- Via API: https://users.rime.ai/data/voices/voice_details.json
+
+Use the `speaker` parameter in the TTS API to select a voice.
+

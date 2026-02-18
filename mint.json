@@ -86,8 +86,7 @@
             "docs/on-prem/metrics",
             "docs/on-prem/load-balancing",
             "docs/on-prem/performance",
-            "docs/on-prem/prometheus",
-            "docs/on-prem/helmcharts"
+            "docs/on-prem/prometheus"
           ]
         },
         {

@@ -1,0 +1,162 @@
+# Text-to-speech: Rime vs ElevenLabs 
+
+Rime is breaking into the text-to-speech (TTS) space with realistic voice models that are trained by linguists. The following article compares Rime with the more established services from ElevenLabs. It focuses on the quality that you can expect from both providers as well as the user experience (UX) and the cost breakdown. 
+
+It also looks at the agent experience (AX) for each provider. Similar to UX, this is how easy an AI agent finds it to use the provided service.
+
+## Quality
+Both Rime and ElevenLabs have specialized realistic voice models. They prioritize emotional range and the ability to shift tone based on context.
+
+-- Currently unable to do a proper comparison due to the issues with Rime's dashboard/API
+
+## Pricing
+
+Both Rime and ElevenLabs have pricing models that decrease in cost per minute of TTS based on the amount of minutes or credits that you commit to buying.
+
+Rime comes in at an average of approximately 4x cheaper per minute than ElevenLabs for generating TTS with their respective flagship models.
+
+The full breakdown for each provider is as follows:
+
+### ElevenLabs costs breakdown
+
+ElevenLabs has 5 pricing tiers with an increasing per month cost. The cheapest tier is \$5 per month which gives you 30 minutes of TTS with their flagship model. On this plan, you cannot top-up your credits so you would need to upgrade to the next tier if you needed more TTS time for a specific month.
+
+The higher tiers, ranging from \$22 to \$1320 per month, allow you to 'pay-as-you-go' with a decreasing cost per credit as you go up the tiers. The cost per minute for these tiers start at \$0.30 per minute at the \$22 dollar tier and decreases to \$0.10 per minute at the highest tier.
+
+Notably, the ElevenLabs credits can be used across their service suite, so you will have access to more than TTS generation only.
+
+### Rime costs breakdown
+
+Rime does not have any per month payment structures. With Rime, there are two options: the 'Starter' plan gives you TTS generation at \$4 per 100 minutes and the 'Growth' plan is down to \$3 per 100 minutes if you make a minimum commitment of \$5k per year. Both options are 'pay-as-you-go' so you lose nothing if you do not use up your available credit.
+
+### Concurrency
+
+Both providers limit the amount of requests you can make for TTS generation at the same time. This can be crucial if your solution has the need to perform multiple conversations in realtime. For example, a customer support call center could require dozens of concurrent requests in order to maintain natural, low-latency conversational flow.
+
+For Rime, the 'Starter' plan limits you to five concurrent request and this increases to 20 on the 'Growth' plan.
+
+ElevenLabs gives you a limit of three concurrent requests on its \$5 per month plan. This then increases to five on the next tier, then 10 on the following tier and caps off at 15 on their most expensive plans.
+
+### Pricing summary
+The most comparable payment options between the two providers are the Starter plan from Rime and the Creator plan from ElevenLabs. The comparison breakdown between them is below:
+
+| | Rime Starter | EL Creator (\$22/mo) |
+|---|---|---|
+| Cost per 100 minutes | ~\$4.00 | ~\$22.00 |
+| Top-up available | Yes | Yes (~\$0.30/min) |
+| Concurrent requests | 5 | 5 |
+| Minimum commitment | None | \$22/month |
+
+## User experience
+
+The onboarding for both providers is quite similar across sign-up, generating audio through a UI, and creating a basic TTS agent.
+
+### Sign-up
+Both Rime and ElevenLabs allow you to do a one-click sign-up with your Google account. You can also enter an email and password manually for both. Rime also has the options to sign up with Github or a custom SSO.
+
+It is also very simple to create an API key for both through the respective dashboards to allow programmatic interaction with the models.
+
+### Playgrounds
+Rime and ElevenLabs have similar capabilities if you want to experiment with the different voices and models through a UI.
+
+On Rime's dashboard you can click **Generate Audio** and you will get a screen that allows you to enter text and select your preferred voice and model from drop down menus. 
+
+Once the audio is generated you will get an option to directly download the clip. 
+
+Similarly, for ElevenLabs, navigate to the **Text to Speech** page 
+
+### Documentation
+
+Both Rime and ElevenLabs have quickstart guides that allow you to generate TTS quickly through API endpoints. They also have API reference guides that provide a breakdown of the various parameters that the APIs expect.
+
+Rime's docs focus more on a programmatic approach to using their models whereas ElevenLabs prefers users to interact with their models through their web UI.
+
+## Agent Experience
+
+similar to what UX is for humans, AX is a metric that explains how usable a product or service is for an AI agent. For all the below tests we used Anthropic's Claude Sonnet 4.6.
+
+### Discoverability  
+
+To test discoverability, we started a fresh session with the agent in a clean directory so it would not have any context of the task we are performing. For the initial discoverability prompt, we asked the following:
+
+```
+I want to build a voice agent with a realistic voice. What providers would you recommend for TTS?
+```
+
+Both Rime and ElevenLabs showed up in the response. ElevenLabs was the overall preferred model by the agent. The agent described it as: `Best overall realism, voice cloning, multilingual` and with an average model latency of `~300ms`.
+
+Rime came in as option five. Described as `Expressive, good for conversational agents` and with a latency of `~200`.
+
+We then prompted the agent to compare the two by telling it:
+
+```
+I'm trying to choose between Rime and ElevenLabs.
+```
+
+This led the agent to give us a breakdown of the pros and cons of each provider.
+
+The key points it gave are listed below:
+```
+When to pick Rime
+
+- You want a voice that sounds like a call center/phone agent — natural pauses, filler words, conversational cadence
+- Cost matters — it's significantly cheaper
+- You're English-only
+
+When to pick ElevenLabs
+
+- You need the most realistic/human voice possible
+- You need multilingual support
+- You want voice cloning with high fidelity
+- You need expressive, emotional range (e.g.,storytelling, not just Q&A)
+```
+
+The agent did not pick up the multi-lingual capabilities of Rime but did pickup on the relative costs of each provider.
+
+### Creating a voice agent with Rime
+
+Next, we prompted the agent to build a voice agent using Rime:
+
+```
+help me create a voice agent with Rime.
+```
+
+It started off with some design questions about the our choice of framework, interface, and LLM. And provided a list of options for each.
+
+We choice `LiveKit`, `Web based` and `Anthropic` respectively.
+
+After a couple of minutes the voice agent script was created and the following setup steps were provided.
+
+```
+1. LiveKit Cloud — create a free project at cloud.livekit.io, grab your URL, API key, and secret
+2. Fill in .env.local with your API keys for LiveKit, Anthropic, Deepgram, and Rime 
+3. Run in dev mode to test in the browser: uv run agent.py dev 
+4. This opens a link to the LiveKit Agents Playground — a browser UI where you can talk to your agent immediately, no frontend code needed.
+```
+
+The biggest friction for the user here is creating the accounts and acquiring the API keys. After this, the code works as expected and you get a working agent that you can have a conversation with in your browser.
+
+
+### Creating a voice agent with ElevenLabs
+
+We used the same prompts to create the voice agent with ElevenLabs.
+
+When asked to create the agent the initial questions where slightly different. It only asked us to choose a framework and input method. We chose `PipeCat` as `LiveKit` was not provided as an option and chose "microphone" as the desired input.
+
+After about three minutes the agent had finished the code and required API keys for Deepgram, OpenAPI and, ElevenLabs.
+
+Once provided, the agent attempted to run the script but ran into some errors that triggered more web searches. This then deliberated for another couple of minutes and made some code changes.
+
+Next, the script ran and displayed 'Pipeline ready' but it did respond to speaking.
+
+After prompting Claude to fix it, it played around for another five minutes, made a few more bug fixes and then declared that the agent was working correctly now. However, the agent still did not respond to input.
+
+Eventually the agent was able to respond but was getting confused with it's turn taking capabilities and sometimes responded to itself.
+
+### AX summary
+
+With the non-deterministic behavior of LLMs there is some luck involved when getting a particular scenario working. In this particular test Rime scored much better on the AX metric after Claude easily built a browser based voice agent with the only friction being account setup and the acquisition of API keys.
+
+ElevenLabs scored much lower as Claude struggled to get a working voice agent and it was still buggy after several attempts.
+
+These results are probably due to Rime's simplicity and focus on programmatic integrations. ElevenLabs has extensive docs and prefers users to interact with it's proprietary UI.

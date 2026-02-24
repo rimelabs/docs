@@ -118,6 +118,12 @@
       ]
     },
     {
+      "group": "Comparisons",
+      "pages": [
+        "docs/comparisons/rime-vs-elevenlabs"
+      ]
+    },
+    {
       "group": "Arcana API reference",
       "pages": [
         {

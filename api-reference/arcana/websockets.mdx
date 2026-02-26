@@ -1,6 +1,6 @@
 ---
 title: 'Websockets'
-api: 'GET wss://users.rime.ai/ws'
+api: 'GET wss://users-ws.rime.ai/ws'
 authMethod: "bearer"
 ---
 
@@ -48,7 +48,7 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/api-reference/voices">listed in our documentation</a> for `arcana`.
+  Must be one of the voices <a href="/docs/voices">listed in our documentation</a> for `arcana`.
 </ParamField>
 
 <ParamField body="text" type="string" required>
@@ -60,11 +60,11 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 </ParamField>
 
 <ParamField body="audioFormat" type="string">
-  One of `mp3`, `mulaw`, or `pcm`
+  One of `mp3`, `ogg`, `mulaw`, or `pcm`
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
 </ParamField>
 
 <ParamField body="repetition_penalty" type="float" default="1.5">
@@ -123,7 +123,7 @@ FILE_PATH = "arcana_ws.wav"
 
 class RimeClient:
     def __init__(self, speaker, api_key):
-        self.url = f"wss://users.rime.ai/ws?speaker={speaker}&modelId=arcana&audioFormat=wav"
+        self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=arcana&audioFormat=wav"
         self.auth_headers = {
             "Authorization": f"Bearer {api_key}"
         }

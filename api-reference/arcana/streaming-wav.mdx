@@ -13,7 +13,7 @@ Streaming WAV returns a stream of bytes with the RIFF WAVE header followed by th
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the flagship Arcana voices <a href="https://docs.rime.ai/api-reference/voices">listed in our documentation</a>.
+  Must be one of the flagship Arcana voices <a href="/docs/voices">listed in our documentation</a>.
 </ParamField>
 <ParamField body="text" type="string" required>
   The text you'd like spoken. Unlimited via API. Character limit per request is 3,000 in the dashboard UI.
@@ -24,7 +24,7 @@ Streaming WAV returns a stream of bytes with the RIFF WAVE header followed by th
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
 </ParamField>
 
 <ParamField body="repetition_penalty" type="float" default="1.5">
@@ -53,7 +53,7 @@ Streaming WAV returns a stream of bytes with the RIFF WAVE header followed by th
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1">
-  The time scaling factor. **On-prem only**.
+  The time scaling factor.
 
   A value below 1 slows down the audio, a value above 1 speeds up the audio.
 </ParamField>
@@ -67,17 +67,21 @@ Streaming WAV returns a stream of bytes with the RIFF WAVE header followed by th
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
   --header 'Accept: audio/wav' \
-  --header 'Authorization: Bearer <authorization>' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
+  --output output.wav \
+  --fail \
   --data '{
-  "speaker": "<string>",
   "text": "<string>",
   "modelId": "arcana",
+  "speaker": "<string>",
+  "lang": "eng",
+  "max_tokens": 1200,
   "repetition_penalty": 1.5,
-  "temperature": 0.5,
-  "top_p": 1,
   "samplingRate": 24000,
-  "max_tokens": 1200
+  "speedAlpha": 1,
+  "temperature": 0.5,
+  "top_p": 1
 }'
 ```
 

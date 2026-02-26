@@ -3,26 +3,30 @@ title: Teams
 icon: people-group
 ---
 
-## Creating a Team on Rime
-Navigate to the ["Team" tab](https://app.rime.ai/teams/) in the dashboard under "Settings". Give your new team a name.
+## Creating a team on Rime
+
+Navigate to the [**Team**](https://app.rime.ai/teams/) tab on the dashboard under **Settings**. Give your new team a name.
 Once you create a team, there is currently no way to undo this action.
 
 ## Sending an invite
+
 Once you have created a team, and are the owner of that team, you can invite new members.
-Navigate to the "Invite" tab in the dashboard. Enter the email address and desired role for the new team member.
+Navigate to the **Invite** tab on the dashboard. Enter the email address and desired role for the new team member.
 
-NOTE: Rime users can only be a member of one team at a time.
+> **Note:** Rime users can only be a member of one team at a time.
 
-## Team Billing
+## Team billing
+
 ⚠️ The Stripe account associated with the Rime user who created the team shall be the billing account for the entire team's api usage.
 Any owner can access and update the billing information.
-Any api key belonging to a member of the team shall have it's usage rolled up into the team's metered usage.
+Any API key belonging to a member of the team shall have its usage rolled up into the team's metered usage.
 
 
-## Team Roles
+## Team roles
+
 There are two roles on Rime teams: **Owner** and **Member**.
 
-| Role  | Can Invite New Members | Can Access and Edit Billing Info | Can See All Member's API Keys | Can Create API Keys | Can Delete Any Member's API Keys | Can Remove Members |
+| Role  | Can invite new members | Can access and edit billing info | Can see all members' API keys | Can create API keys | Can delete any member's API keys | Can remove members |
 |-------|------------------------|---------------------------------|-------------------------------|---------------------|----------------------------------|--------------------|
 | Owner | ✅                     | ✅                               | ✅                            | ✅                  | ✅                               | ✅                 |
 | Member| ❌                     | ❌                               | ❌                            | ✅                  | ❌                               | ❌                 |
@@ -34,5 +38,5 @@ When a team member is removed, their API keys are transferred to the owner who r
 
 A team must have at least one owner, and you cannot remove an owner (or member) whose email matches the one on the billing page.
 
-To update the billing email, go to [Usage and Billing](https://app.rime.ai/billing/) on your Rime dashboard and click on Manage Billing.
+To update the billing email, go to [**Usage and Billing**](https://app.rime.ai/billing/) on your Rime dashboard and click on **Manage Billing**.
 

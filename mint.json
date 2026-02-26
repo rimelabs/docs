@@ -43,7 +43,8 @@
       "group": "Getting started",
       "pages": [
         "docs/quickstart-five-minute",
-        "docs/quickstart-livekit"
+        "docs/quickstart-livekit",
+        "docs/quickstart-cli"
       ]
     },
     {
@@ -112,7 +113,8 @@
           "group": "Speech QA",
           "icon": "magnifying-glass-chart",
           "pages": ["platform/speech-qa", "platform/check-coverage"]
-        }
+        },
+        "docs/cli-reference"
       ]
     },
     {

@@ -1,0 +1,128 @@
+---
+title: CLI Quickstart
+icon: terminal
+---
+
+Go from zero to using Rime's TTS API in 60 seconds using the Rime CLI.
+
+## Prerequisites
+
+- **A Rime account:** [Sign up free](https://app.rime.ai/signup/) (you will log in through the CLI)
+- **macOS or Linux** (the CLI runs on both)
+
+## Step 1: Install the CLI
+
+Pick your preferred installation method.
+
+```bash Shell script
+curl -fsSL https://rime.ai/install-cli.sh | sh
+```
+
+Verify the installation:
+
+```bash
+rime --version
+```
+
+```
+rime version 0.x.x
+```
+
+<Note>After installation, you may need to open a new terminal or run `source ~/.zshrc` (or `~/.bashrc`) for the `rime` command to be available.</Note>
+
+## Step 2: Log in
+
+```bash
+rime login
+```
+
+This opens your browser to the Rime dashboard. Authenticate there, and the CLI saves your API key to `~/.rime/rime.toml` automatically.
+
+![Demo of the `rime login` command](/images/cli/login-demo.gif)
+
+
+## Step 3: Hear your first voice
+
+```bash
+rime hello
+```
+
+![Demo of the `rime hello` command](/images/cli/hello-demo.gif)
+
+## Synthesize your own text
+
+Now that the CLI is set up, generate speech from any text:
+
+```bash
+rime tts "Hello from Rime." -s celeste -m arcana
+```
+
+![Demo of the `rime tts` command](/images/cli/tts-demo.gif)
+
+This plays the audio directly. To save it to a file instead:
+
+```bash
+rime tts "Hey, how's it going?" -s celeste -m arcana -o welcome.wav
+```
+
+Play it back with waveform visualization:
+
+```bash
+rime play welcome.wav
+```
+
+![Demo of the `rime play` command](/images/cli/play-demo.gif)
+
+## Try different voices and models
+
+Rime offers 94+ voices. Swap the `--speaker` flag to change the voice:
+
+```bash
+rime tts "The quick brown fox." -s orion -m arcana
+rime tts "The quick brown fox." -s luna -m arcana
+rime tts "The quick brown fox." -s peak -m mistv2 -f mp3
+```
+
+<Note>The `mistv2` and `mist` models require `--format mp3` (or `-f mp3`).</Note>
+
+## Generate a curl command
+
+Need to integrate with the API directly? Generate a ready-to-use curl command:
+
+```bash
+rime curl "Hello from Rime" -s astra -m arcana
+```
+
+```
+curl --request POST \
+  --url 'https://users.rime.ai/v1/rime-tts' \
+  --header 'Accept: audio/wav' \
+  --header 'Authorization: Bearer $RIME_CLI_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "text": "Hello from Rime",
+  "speaker": "astra",
+  "modelId": "arcana",
+  "lang": "eng"
+}'
+# Tip: use --show-key or export RIME_CLI_API_KEY
+```
+
+Add `--show-key` to include your actual API key in the output, or `--oneline` for easy copy-paste.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="CLI Reference" icon="terminal" href="/docs/cli-reference">
+    Full command and flag reference
+  </Card>
+  <Card title="Voices" icon="waveform" href="/docs/voices">
+    Browse all 94+ available voices
+  </Card>
+  <Card title="Models" icon="microchip" href="/docs/models">
+    Compare Arcana and Mist v2
+  </Card>
+  <Card title="TTS in Five Minutes" icon="rocket" href="/docs/quickstart-five-minute">
+    Use the API from Python or JavaScript
+  </Card>
+</CardGroup>

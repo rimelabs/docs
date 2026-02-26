@@ -1,0 +1,409 @@
+---
+title: Rime CLI
+icon: terminal
+---
+
+The Rime CLI is a command-line tool for synthesizing and listening to AI speech. It supports streaming audio generation, live playback with waveform visualization, and multiple output formats.
+
+## Installation
+
+<CodeGroup>
+```bash Shell script
+curl -fsSL https://rime.ai/install-cli.sh | sh
+```
+
+```bash Homebrew
+brew tap rimelabs/rime-cli && brew install rime-cli
+```
+</CodeGroup>
+
+## `rime tts`
+
+Synthesize text to speech. Supports WAV and MP3 formats. The format is automatically selected based on the model: `mistv2` and `mist` output MP3 while `arcana` and `arcanav2` default to WAV but support MP3 as well. Use `--format` to override.
+
+```bash
+rime tts TEXT --speaker VOICE --model-id MODEL
+```
+
+**Required flags:**
+
+| Flag | Short | Description |
+| ---- | ----- | ----------- |
+| `--speaker` | `-s` | Voice speaker to use (e.g., `astra`, `celeste`, `orion`) |
+| `--model-id` | `-m` | Model ID: `arcana`, `arcanav2`, `mistv2`, or `mist` |
+
+**Optional flags:**
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--output` | `-o` | -- | Output file path. Use `-` for stdout. If omitted, plays audio directly |
+| `--play` | `-p` | `false` | Play audio after synthesis (default behavior when no output is specified) |
+| `--lang` | `-l` | `eng` | Language code (e.g., `eng`, `es`, `fra`). Valid codes depend on model |
+| `--format` | `-f` | -- | Audio format: `wav` or `mp3` (overrides model default) |
+| `--api-url` | -- | -- | API URL (default: `$RIME_API_URL` or `https://users.rime.ai/v1/rime-tts`) |
+
+**Examples:**
+
+```bash
+# Play audio directly through speakers
+rime tts "Hello world" -s astra -m arcana
+
+# Save to a WAV file
+rime tts "Hello world" -s astra -m arcana -o output.wav
+
+# Pipe audio to stdout
+rime tts "Hello world" -s astra -m arcana -o - > audio.wav
+
+# Use mistv2 (requires MP3 format)
+rime tts "Hello world" -s peak -m mistv2 -f mp3
+
+# Synthesize in Spanish with Arcana
+rime tts "Hola mundo" -s astra -m arcana -l es
+
+# JSON output with timing metadata
+rime tts "Hello world" -s astra -m arcana -o output.wav --json
+```
+
+**Supported languages by model:**
+
+| Model | Languages |
+| ----- | --------- |
+| `arcana` | `eng`, `ara`, `fra`, `ger`, `heb`, `hin`, `jpn`, `por`, `sin`, `spa`, `tam` (and ISO 639-1 equivalents) |
+| `arcanav2` | `eng`, `spa`, `ger`, `fra`, `hin` (and ISO 639-1 equivalents) |
+| `mistv2` / `mist` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
+
+<Note>The `mist` and `mistv2` models require `--format mp3`. The CLI returns an error if you omit it.</Note>
+
+---
+
+## `rime hello`
+
+Quick demo that generates a time-appropriate greeting ("good morning/afternoon/evening from Rime AI!") using the Astra voice on the Arcana model.
+
+```bash
+rime hello
+```
+
+**Optional flags:**
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--output` | `-o` | -- | Output file path (plays audio by default) |
+| `--api-url` | -- | -- | API URL override |
+
+**Examples:**
+
+```bash
+# Play the greeting
+rime hello
+
+# Save the greeting to a file
+rime hello -o greeting.wav
+
+# Output as JSON
+rime hello --json
+```
+
+---
+
+## `rime play`
+
+Play a WAV audio file with terminal waveform visualization.
+
+```bash
+rime play FILE
+```
+
+**Examples:**
+
+```bash
+rime play output.wav
+```
+
+---
+
+## `rime curl`
+
+Generate a curl command for making TTS API requests. Run without arguments to see an example command with defaults (Astra voice, Arcana model).
+
+```bash
+rime curl [TEXT]
+```
+
+When providing text, `--speaker` and `--model-id` are required. When run without arguments, defaults to an example request.
+
+**Optional flags:**
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--speaker` | `-s` | `astra`* | Voice speaker to use |
+| `--model-id` | `-m` | `arcana`* | Model ID |
+| `--lang` | `-l` | `eng` | Language code |
+| `--show-key` | -- | `false` | Include actual API key in output (default: `$RIME_CLI_API_KEY` placeholder) |
+| `--oneline` | -- | `false` | Output as a single line for easy copy-paste |
+| `--api-url` | -- | -- | API URL override |
+
+*Defaults apply only when run without arguments. When text is provided, `--speaker` and `--model-id` are required.
+
+**Examples:**
+
+```bash
+# Show example curl command
+rime curl
+
+# Generate curl for custom text
+rime curl "Hello from Rime" -s celeste -m arcana
+
+# Single-line output with your real API key
+rime curl "Hello" -s astra -m arcana --oneline --show-key
+```
+
+---
+
+## `rime login`
+
+Authenticate with Rime. Opens your browser to the Rime dashboard for OAuth-based authentication. A local callback server receives the API key and saves it to `~/.rime/rime.toml`.
+
+```bash
+rime login
+```
+
+No flags. The command validates the API key before saving.
+
+---
+
+## `rime logout`
+
+Remove your saved API key by deleting the config file at `~/.rime/rime.toml`.
+
+```bash
+rime logout
+```
+
+No flags.
+
+---
+
+## `rime config`
+
+Manage CLI configuration. The config file is TOML-based and lives at `~/.rime/rime.toml`.
+
+### `rime config init`
+
+Create a new config file. Prompts for an API key interactively.
+
+```bash
+rime config init
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--force` | `false` | Overwrite an existing config file |
+
+The generated file looks like:
+
+```toml
+api_key = "your_api_key"
+api_url = "https://users.rime.ai/v1/rime-tts"
+
+# [env.example]
+# api_url = "https://example.rime.ai/v1/rime-tts"
+```
+
+### `rime config list`
+
+List all configured environments.
+
+```bash
+rime config list
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--json` | `false` | Output as JSON |
+
+### `rime config show`
+
+Show the fully resolved configuration for a given environment, including where the API key comes from (config file vs. environment variable).
+
+```bash
+rime config show
+```
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--env` | `-e` | `default` | Environment to show |
+| `--json` | -- | `false` | Output as JSON |
+| `--show-key` | -- | `false` | Display the full API key (redacted by default) |
+
+**Example output:**
+
+```
+Environment:  default
+API URL:      https://users.rime.ai/v1/rime-tts
+API Key:      rime_aHR0cHM6Ly... (redacted)
+Auth Prefix:  Bearer
+Auth Header:  Authorization: Bearer (redacted)
+```
+
+---
+
+## `rime speedtest`
+
+Measure time-to-first-byte (TTFB) for all configured environments. Sends a TTS request to each endpoint and reports latency.
+
+```bash
+rime speedtest
+```
+
+No command-specific flags. Uses the global `--json` and `--quiet` flags.
+
+**Example output:**
+
+```
+ENV             URL                                                TTFB
+--------------------------------------------------------------------------------
+default         https://users.rime.ai/v1/rime-tts                 245.12ms
+
+Fastest: default (245.12ms)
+```
+
+---
+
+## `rime usage`
+
+Display daily character usage history for the past week, broken down by Mist and Arcana models.
+
+```bash
+rime usage
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--csv` | `false` | Output as CSV |
+
+Also supports the global `--json` flag.
+
+**Example output:**
+
+```
+       Day  Mist Chars  Arcana Chars       Total
+----------  ----------  ------------  ----------
+2026-02-24           0         1,234       1,234
+2026-02-23         500         2,100       2,600
+```
+
+---
+
+## `rime uninstall`
+
+Remove the Rime CLI binary, configuration, and shell PATH entries. Detects whether the CLI was installed via Homebrew or the shell script and provides appropriate instructions.
+
+```bash
+rime uninstall
+```
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--yes` | `-y` | `false` | Skip the confirmation prompt |
+
+If installed via Homebrew, the command prints `brew uninstall rime` instead of performing removal directly.
+
+---
+
+## Global flags
+
+These flags work with all commands:
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--quiet` | `-q` | `false` | Suppress non-essential output |
+| `--json` | -- | `false` | Output results as JSON |
+| `--env` | `-e` | -- | Named environment to use from config |
+| `--config` | `-c` | -- | Path to a custom config file |
+| `--version` | -- | -- | Print version information |
+| `--help` | `-h` | -- | Help for any command |
+
+## Environment variables
+
+| Variable | Description |
+| -------- | ----------- |
+| `RIME_CLI_API_KEY` | API key for authentication (overrides the key in `rime.toml`) |
+| `RIME_API_URL` | API endpoint URL (overrides the URL in `rime.toml`) |
+| `RIME_AUTH_HEADER_PREFIX` | Authorization header prefix (default: `Bearer`) |
+| `RIME_DASHBOARD_URL` | Dashboard URL for `rime login` (default: `https://app.rime.ai`) |
+
+## Configuration
+
+The CLI uses a TOML config file at `~/.rime/rime.toml`. You can define multiple named environments for different API endpoints.
+
+```toml
+api_key = "your_api_key"
+api_url = "https://users.rime.ai/v1/rime-tts"
+
+[env.staging]
+api_url = "https://staging.rime.ai/v1/rime-tts"
+
+[env.onprem]
+api_url = "https://rime.internal:8080/v1/rime-tts"
+api_key = "different_key"
+auth_header_prefix = "Api-Key"
+```
+
+Select an environment with the `--env` flag:
+
+```bash
+rime tts "Hello" -s astra -m arcana --env staging
+```
+
+**Resolution order:** Environment variables override config file values, which override defaults. Within the config file, named environment values override top-level values.
+
+## Audio formats
+
+| Format | Extension | Default for | Notes |
+| ------ | --------- | ----------- | ----- |
+| WAV | `.wav` | `arcana`, `arcanav2` | Uncompressed, higher quality, larger files |
+| MP3 | `.mp3` | `mistv2`, `mist` | Compressed, smaller files. Required for Mist models |
+
+## Metadata embedding
+
+Audio files saved by the CLI include embedded metadata (voice, model, text). This metadata is visible in `rime play` waveform output and in media players like Finder or Preview.
+
+- **WAV files:** LIST/INFO chunk (`IART`, `INAM`, `ICMT`)
+- **MP3 files:** ID3v2.3 tags (`TPE1`, `TIT2`, `COMM`)
+
+## Troubleshooting
+
+### "API key not found"
+
+Run `rime login` or set the environment variable:
+
+```bash
+export RIME_CLI_API_KEY=your_key_here
+```
+
+### "authentication failed: invalid API key"
+
+Verify your API key at [app.rime.ai/tokens](https://app.rime.ai/tokens). Then run `rime login` again.
+
+### "mist and mistv2 models require --format mp3"
+
+The Mist models only support MP3 output. Add the `-f mp3` flag:
+
+```bash
+rime tts "Hello" -s cove -m mistv2 -f mp3
+```
+
+### No audio playback
+
+- Check your system audio output settings
+- Try saving to a file instead: `rime tts "Hello" -s astra -m arcana -o output.wav`
+- Headless builds (e.g., Docker) require `-o FILE` since playback is disabled
+
+### "command not found: rime"
+
+If you installed via the shell script, open a new terminal window or run:
+
+```bash
+source ~/.zshrc   # or ~/.bashrc
+```

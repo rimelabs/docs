@@ -77,6 +77,14 @@
             "docs/spell"
           ]
         },
+        {
+          "group": "WebSocket API",
+          "icon": "plug",
+          "pages": [
+            "docs/websockets",
+            "docs/websockets-segment"
+          ]
+        },
         "docs/latency",
         {
           "group": "On-prem",

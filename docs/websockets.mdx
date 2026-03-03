@@ -1,0 +1,152 @@
+---
+title: WebSocket API Overview
+icon: plug
+---
+
+## tl;dr: Use `/ws3`.
+
+`/ws3` is Rime's flagship WebSocket endpoint. It supports all current and future Rime TTS models, delivers the lowest possible TTFB via direct model streaming, and returns audio as structured JSON messages. Unless you have a specific reason to use a legacy endpoint, start here.
+
+## Choosing an endpoint
+
+Rime offers three WebSocket endpoints. Here's how they compare:
+
+| | `/ws3` | `/ws2` | `/ws` |
+|---|---|---|---|
+| **Message format** | JSON | JSON | Raw binary audio |
+| **Arcana** | ✅ | ❌ | ✅ |
+| **Mist v1** | ✅ | ✅ | ✅ |
+| **Mist v2** | ✅ | ✅ | ✅ |
+| **Word-level timestamps** | ✅ | ✅ | ❌ |
+| **Context IDs** | ✅ | ✅ | ❌ |
+| **TTFB optimization** | ✅ Actively optimized | ❌ | ❌ |
+
+---
+
+## `/ws3` — JSON WebSocket (flagship)
+
+```
+wss://users-ws.rime.ai/ws3
+```
+
+This is the endpoint Rime actively invests in. It supports all current and upcoming Rime TTS models and streams audio as base64-encoded JSON chunks. TTFB is minimized by streaming model responses directly from the engine as they are produced.
+
+**Supported models:**
+- `arcana` (all versions)
+- `mistv1`, `mistv2`
+- All future Rime TTS models
+
+<Tip>
+  If you're onboarding to Rime's WebSocket API for the first time, use `/ws3`. It's the most capable endpoint and the one we'll keep improving.
+</Tip>
+
+---
+
+## `/ws2` — Legacy JSON WebSocket
+
+```
+wss://users-ws.rime.ai/ws2
+```
+
+`/ws2` supports the same JSON message format as `/ws3` but is limited to the `mist` model family (v1 and v2) running on Baseten. TTFB is not further optimized beyond what Baseten's infrastructure provides. This endpoint will not receive new model support.
+
+**Supported models:**
+- `mistv1`, `mistv2`
+
+<Info>
+  `/ws2` is functionally equivalent to `/ws3` for `mist` workloads, but `/ws3` is preferred. Existing integrations using `/ws2` will continue to work.
+</Info>
+
+---
+
+## `/ws` — Binary WebSocket (legacy)
+
+```
+wss://users-ws.rime.ai/ws
+```
+
+`/ws` sends and receives raw audio bytes rather than JSON. It supports a broader model set than `/ws2` but does not benefit from TTFB optimization. This endpoint is suited for clients that need raw PCM/binary audio and cannot handle JSON framing.
+
+**Supported models:**
+- `mistv1`, `mistv2`
+- `arcana`
+
+<Warning>
+  `/ws` returns raw audio bytes with no JSON framing. It does not support word-level timestamps, context IDs, or structured error events. If you need any of these features, use `/ws3` or `/ws2` instead.
+</Warning>
+
+---
+
+## Features available on JSON endpoints (`/ws3` and `/ws2`)
+
+### Word-level timestamps
+
+Both JSON endpoints return word-level timing data alongside audio. This is useful for tracking which words have already been spoken — for example, when an end-user interrupts the assistant mid-sentence.
+
+```typescript
+type TimestampsEvent = {
+  type: "timestamps",
+  word_timestamps: {
+    words: string[],
+    start: number[],
+    end: number[],
+  },
+}
+```
+
+### Context IDs
+
+On `/ws3` and `/ws2`, you can attach a `contextId` to any text message and it will be echoed back on the corresponding audio chunk event. This is useful for correlating audio output to specific turns or requests in a multi-turn conversation.
+
+```json
+{
+  "text": "Hello, how can I help you today?",
+  "contextId": "turn-001"
+}
+```
+
+<Info>
+  Rime does not maintain multiple simultaneous context IDs. The audio chunk event will carry the most recent context ID that was active at the time the audio was requested. If you send two messages before any audio is synthesized, only the later context ID will be reflected on the first audio chunk.
+</Info>
+
+---
+
+## Operations
+
+In addition to sending text, your client can send structured operation messages to control the synthesis pipeline.
+
+### `flush`
+
+Forces the current text buffer to be synthesized immediately and the resulting audio to be sent.
+
+```json
+{ "operation": "flush" }
+```
+
+This is used explicitly when running in `segment=never` mode. See the [Segmentation guide](/docs/websockets-segment) for details.
+
+### `clear`
+
+Discards the accumulated text buffer without synthesizing it. Useful when the user interrupts the assistant and you want to cancel queued speech.
+
+```json
+{ "operation": "clear" }
+```
+
+### `eos` (end of stream)
+
+Synthesizes whatever remains in the buffer, then immediately closes the connection.
+
+```json
+{ "operation": "eos" }
+```
+
+---
+
+## Next steps
+
+How text is buffered and when synthesis is triggered is controlled by the `segment` parameter. Understanding segmentation is the key to getting predictable, low-latency behavior from the WebSocket API.
+
+<Card title="Segmentation & behavior settings" icon="sliders" href="/docs/websockets-segment">
+  Learn how `segment=never`, `segment=bySentence`, and `segment=immediate` work, and how to choose the right one for your use case.
+</Card>

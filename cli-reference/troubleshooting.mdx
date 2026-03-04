@@ -1,0 +1,39 @@
+---
+title: "Troubleshooting"
+description: "Fix common issues with the Rime CLI."
+icon: "wrench"
+---
+
+## "API key not found"
+
+Run `rime login` or set the environment variable:
+
+```bash
+export RIME_CLI_API_KEY=your_key_here
+```
+
+## "authentication failed: invalid API key"
+
+Verify your API key at [app.rime.ai/tokens](https://app.rime.ai/tokens). Then run `rime login` again.
+
+## "mist and mistv2 models require --format mp3"
+
+The Mist models only support MP3 output. Add the `-f mp3` flag:
+
+```bash
+rime tts "Hello" -s cove -m mistv2 -f mp3
+```
+
+## No audio playback
+
+- Check your system audio output settings
+- Try saving to a file instead: `rime tts "Hello" -s astra -m arcana -o output.wav`
+- Headless builds (e.g., Docker) require `-o FILE` since playback is disabled
+
+## "command not found: rime"
+
+If you installed via the shell script, open a new terminal window or run:
+
+```bash
+source ~/.zshrc   # or ~/.bashrc
+```

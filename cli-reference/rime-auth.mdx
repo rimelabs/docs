@@ -1,0 +1,41 @@
+---
+title: "Authentication"
+description: "Authenticate the Rime CLI using rime login, rime logout, and rime key."
+icon: "key"
+---
+
+## `rime login`
+
+Authenticate with Rime. Opens your browser to the Rime dashboard for OAuth-based authentication. A local callback server receives the API key and saves it to `~/.rime/rime.toml`.
+
+```bash
+rime login
+```
+
+![Demo of the rime login command](/images/cli/login-demo.gif)
+
+No flags. The command validates the API key before saving.
+
+---
+
+## `rime logout`
+
+Remove your saved API key by deleting the config file at `~/.rime/rime.toml`.
+
+```bash
+rime logout
+```
+
+No flags.
+
+---
+
+## `rime key`
+
+Print the resolved API key (no trailing newline). Useful in shell scripts and as a subexpression — `rime curl` uses `$(rime key)` in its generated commands.
+
+```bash
+rime key
+```
+
+No flags. Resolves the key from config or `RIME_CLI_API_KEY`, using the active environment.

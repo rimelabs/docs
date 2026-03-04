@@ -1,0 +1,59 @@
+---
+title: "rime curl"
+description: "Generate a ready-to-run curl command for the Rime TTS API."
+icon: "terminal"
+---
+
+Generate a curl command for making TTS API requests. The generated command uses `$(rime key)` as a shell expression, so it resolves your API key automatically when you paste and run it. Run without arguments to see an example.
+
+```bash
+rime curl [TEXT]
+```
+
+When providing text, `--speaker` and `--model-id` are required. When run without arguments, defaults to an example request.
+
+## Optional flags
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--speaker` | `-s` | `astra`* | Voice speaker to use |
+| `--model-id` | `-m` | `arcana`* | Model ID |
+| `--lang` | `-l` | `eng` | Language code |
+| `--speed-alpha` | -- | `1` | Speed multiplier — must be greater than 0 |
+| `--sampling-rate` | -- | -- | Output sampling rate in Hz. Arcana: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
+| `--oneline` | -- | `false` | Output as a single line for easy copy-paste |
+| `--api-url` | -- | -- | API URL override |
+
+## Arcana/arcanav2 flags
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--temperature` | `0.5` | Sampling temperature (0–1) |
+| `--top-p` | `1` | Top-p nucleus sampling (0–1) |
+| `--max-tokens` | `1200` | Max output tokens (200–5000) |
+| `--repetition-penalty` | `1.5` | Repetition penalty (1–2) |
+
+## Mist/mistv2 flags
+
+| Flag | Description |
+| ---- | ----------- |
+| `--no-text-normalization` | Disable text normalization |
+| `--pause-between-brackets` | Insert pause at bracketed markers |
+| `--phonemize-between-brackets` | Phonemize text in brackets |
+| `--inline-speed-alpha` | Comma-separated per-segment speed values |
+| `--save-oovs` | Save out-of-vocabulary words |
+
+*Defaults apply only when run without arguments. When text is provided, `--speaker` and `--model-id` are required.
+
+## Examples
+
+```bash
+# Show example curl command
+rime curl
+
+# Generate curl for custom text
+rime curl "Hello from Rime" -s celeste -m arcana
+
+# Single-line output
+rime curl "Hello" -s astra -m arcana --oneline
+```

@@ -1,0 +1,53 @@
+---
+title: "rime hello & rime play"
+description: "Quick audio demo and terminal waveform playback with the Rime CLI."
+icon: "play"
+---
+
+## `rime hello`
+
+Quick demo that generates a time-appropriate greeting ("good morning/afternoon/evening from Rime AI!") using the Astra voice on the Arcana model.
+
+```bash
+rime hello
+```
+
+![Demo of the rime hello command](/images/cli/hello-demo.gif)
+
+### Optional flags
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--output` | `-o` | -- | Output file path (plays audio by default) |
+| `--api-url` | -- | -- | API URL override |
+
+### Examples
+
+```bash
+# Play the greeting
+rime hello
+
+# Save the greeting to a file
+rime hello -o greeting.wav
+
+# Output as JSON
+rime hello --json
+```
+
+---
+
+## `rime play`
+
+Play a WAV audio file with terminal waveform visualization.
+
+```bash
+rime play FILE
+```
+
+![Demo of the rime play command](/images/cli/play-demo.gif)
+
+### Examples
+
+```bash
+rime play output.wav
+```

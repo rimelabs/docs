@@ -1,0 +1,45 @@
+---
+title: "Overview"
+description: "Install and get started with the Rime CLI — a command-line tool for synthesizing and listening to AI speech."
+icon: "house"
+---
+
+The Rime CLI is a command-line tool for synthesizing and listening to AI speech. It supports streaming audio generation, live playback with waveform visualization, and multiple output formats.
+
+## Installation
+
+<CodeGroup>
+```bash Shell script
+curl -fsSL https://rime.ai/install-cli.sh | sh
+```
+
+```bash Homebrew
+brew tap rimelabs/rime-cli && brew install rime-cli
+```
+</CodeGroup>
+
+## Commands
+
+<CardGroup cols={2}>
+  <Card title="rime tts" icon="waveform-lines" href="/cli-reference/rime-tts">
+    Synthesize text to speech and play or save audio
+  </Card>
+  <Card title="rime curl" icon="code" href="/cli-reference/rime-curl">
+    Generate curl commands for direct API requests
+  </Card>
+  <Card title="rime config" icon="sliders" href="/cli-reference/rime-config">
+    Manage configuration and named environments
+  </Card>
+  <Card title="rime login / logout" icon="key" href="/cli-reference/rime-auth">
+    Authenticate with the Rime dashboard
+  </Card>
+  <Card title="Utility commands" icon="wrench" href="/cli-reference/rime-utilities">
+    rime play, rime hello, rime speedtest, rime usage, and more
+  </Card>
+  <Card title="Reference" icon="book" href="/cli-reference/reference">
+    Global flags, environment variables, and configuration format
+  </Card>
+  <Card title="Troubleshooting" icon="circle-exclamation" href="/cli-reference/troubleshooting">
+    Fix common errors and installation issues
+  </Card>
+</CardGroup>

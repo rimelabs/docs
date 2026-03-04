@@ -1,0 +1,83 @@
+---
+title: "rime tts"
+description: "Synthesize text to speech from the command line using the Rime CLI."
+icon: "waveform"
+---
+
+Synthesize text to speech. Supports WAV and MP3 formats. The format is automatically selected based on the model: `mistv2` and `mist` output MP3 while `arcana` and `arcanav2` default to WAV but support MP3 as well. Use `--format` to override.
+
+```bash
+rime tts TEXT --speaker VOICE --model-id MODEL
+```
+
+![Demo of the rime tts command](/images/cli/tts-demo.gif)
+
+## Required flags
+
+| Flag | Short | Description |
+| ---- | ----- | ----------- |
+| `--speaker` | `-s` | Voice speaker to use (e.g., `astra`, `celeste`, `orion`) |
+| `--model-id` | `-m` | Model ID: `arcana`, `arcanav2`, `mistv2`, or `mist` |
+
+## Optional flags
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--output` | `-o` | -- | Output file path. Use `-` for stdout. If omitted, plays audio directly |
+| `--play` | `-p` | `false` | Play audio after synthesis (default behavior when no output is specified) |
+| `--lang` | `-l` | `eng` | Language code (e.g., `eng`, `es`, `fra`). Valid codes depend on model |
+| `--format` | `-f` | -- | Audio format: `wav` or `mp3` (overrides model default) |
+| `--speed-alpha` | -- | `1` | Speed multiplier — must be greater than 0 |
+| `--sampling-rate` | -- | -- | Output sampling rate in Hz. Arcana: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
+| `--api-url` | -- | -- | API URL (default: `$RIME_API_URL` or `https://users.rime.ai/v1/rime-tts`) |
+
+## Arcana/arcanav2 flags
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--temperature` | `0.5` | Sampling temperature (0–1) |
+| `--top-p` | `1` | Top-p nucleus sampling (0–1) |
+| `--max-tokens` | `1200` | Max output tokens (200–5000) |
+| `--repetition-penalty` | `1.5` | Repetition penalty (1–2) |
+
+## Mist/mistv2 flags
+
+| Flag | Description |
+| ---- | ----------- |
+| `--no-text-normalization` | Disable text normalization |
+| `--pause-between-brackets` | Insert pause at bracketed markers |
+| `--phonemize-between-brackets` | Phonemize text in brackets |
+| `--inline-speed-alpha` | Comma-separated per-segment speed values |
+| `--save-oovs` | Save out-of-vocabulary words |
+
+## Examples
+
+```bash
+# Play audio directly through speakers
+rime tts "Hello world" -s astra -m arcana
+
+# Save to a WAV file
+rime tts "Hello world" -s astra -m arcana -o output.wav
+
+# Pipe audio to stdout
+rime tts "Hello world" -s astra -m arcana -o - > audio.wav
+
+# Use mistv2 (requires MP3 format)
+rime tts "Hello world" -s peak -m mistv2 -f mp3
+
+# Synthesize in Spanish with Arcana
+rime tts "Hola mundo" -s astra -m arcana -l es
+
+# JSON output with timing metadata
+rime tts "Hello world" -s astra -m arcana -o output.wav --json
+```
+
+## Supported languages by model
+
+| Model | Languages |
+| ----- | --------- |
+| `arcana` | `eng`, `ara`, `fra`, `ger`, `heb`, `hin`, `jpn`, `por`, `sin`, `spa`, `tam` (and ISO 639-1 equivalents) |
+| `arcanav2` | `eng`, `spa`, `ger`, `fra`, `hin` (and ISO 639-1 equivalents) |
+| `mistv2` / `mist` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
+
+<Note>The `mist` and `mistv2` models require `--format mp3`. The CLI returns an error if you omit it.</Note>

@@ -1,0 +1,111 @@
+---
+title: "rime config"
+description: "Manage Rime CLI configuration and named environments with rime config subcommands."
+icon: "gear"
+---
+
+Manage CLI configuration. The config file is TOML-based and lives at `~/.rime/rime.toml`.
+
+## `rime config init`
+
+Create a new config file. Prompts for an API key interactively.
+
+```bash
+rime config init
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--force` | `false` | Overwrite an existing config file |
+
+The generated file looks like:
+
+```toml
+api_key = "your_api_key"
+api_url = "https://users.rime.ai/v1/rime-tts"
+
+# [env.example]
+# api_url = "https://example.rime.ai/v1/rime-tts"
+```
+
+## `rime config list`
+
+List all configured environments.
+
+```bash
+rime config list
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--json` | `false` | Output as JSON |
+
+## `rime config show`
+
+Show the fully resolved configuration for a given environment, including where the API key comes from (config file vs. environment variable).
+
+```bash
+rime config show
+```
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--env` | `-e` | `default` | Environment to show |
+| `--json` | -- | `false` | Output as JSON |
+| `--show-key` | -- | `false` | Display the full API key (redacted by default) |
+
+**Example output:**
+
+```
+Environment:  default
+API URL:      https://users.rime.ai/v1/rime-tts
+API Key:      rime_aHR0cHM6Ly... (redacted)
+Auth Prefix:  Bearer
+Auth Header:  Authorization: Bearer (redacted)
+```
+
+## `rime config add`
+
+Add a named environment to `~/.rime/rime.toml`. Prompts interactively for API URL, API key (input hidden), and an optional auth prefix. You cannot add an environment named `default` — use `rime config init` to modify the default.
+
+```bash
+rime config add <name>
+```
+
+| Flag | Description |
+| ---- | ----------- |
+| `--url` | API URL (default: `https://users.rime.ai/v1/rime-tts`) |
+| `--key` | API key (skips interactive prompt) |
+| `--auth-prefix` | Auth header prefix, e.g. `Bearer` (optional) |
+
+**Examples:**
+
+```bash
+# Add a staging environment interactively
+rime config add staging
+
+# Add an on-prem environment non-interactively
+rime config add onprem --url https://rime.internal:8080/v1/rime-tts --key your_key_here
+```
+
+## `rime config rm`
+
+Remove a named environment from `~/.rime/rime.toml`. Prompts for confirmation unless `--yes` is passed.
+
+```bash
+rime config rm <name>
+```
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--yes` | `-y` | `false` | Skip confirmation prompt |
+
+## `rime config edit`
+
+Open `~/.rime/rime.toml` in your default editor (`$VISUAL` or `$EDITOR`, falling back to `nano` or `vi`).
+
+```bash
+rime config edit
+```
+
+No flags. Requires the config file to exist — run `rime config init` first if needed.

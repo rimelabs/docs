@@ -30,6 +30,10 @@
     {
       "name": "API Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "CLI Reference",
+      "url": "cli-reference"
     }
   ],
   "navigation": [
@@ -121,8 +125,41 @@
           "group": "Speech QA",
           "icon": "magnifying-glass-chart",
           "pages": ["platform/speech-qa", "platform/check-coverage"]
-        },
-        "docs/cli-reference"
+        }
+      ]
+    },
+    {
+      "group": "CLI Reference",
+      "pages": [
+        "cli-reference/overview"
+      ]
+    },
+    {
+      "group": "Text-to-Speech",
+      "pages": [
+        "cli-reference/rime-tts",
+        "cli-reference/rime-curl",
+        "cli-reference/rime-hello-play"
+      ]
+    },
+    {
+      "group": "Authentication & Config",
+      "pages": [
+        "cli-reference/rime-auth",
+        "cli-reference/rime-config"
+      ]
+    },
+    {
+      "group": "Monitoring & Usage",
+      "pages": [
+        "cli-reference/rime-monitoring"
+      ]
+    },
+    {
+      "group": "Reference",
+      "pages": [
+        "cli-reference/reference",
+        "cli-reference/troubleshooting"
       ]
     },
     {
@@ -192,6 +229,10 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/docs/cli-reference",
+      "destination": "/cli-reference/overview"
+    },
     {
       "source": "/api-reference/input-tools",
       "destination": "/docs/quickstart-five-minute"

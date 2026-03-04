@@ -1,0 +1,100 @@
+---
+title: "Monitoring & Usage"
+description: "Measure latency, view character usage, and uninstall the Rime CLI."
+icon: "chart-line"
+---
+
+## `rime speedtest`
+
+Measure time-to-first-byte (TTFB) for configured environments. Sends a TTS request to each endpoint and reports latency.
+
+```bash
+rime speedtest
+```
+
+### Flags
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--model` | `-m` | `arcana` | Model ID for the test request |
+| `--speaker` | `-s` | `astra` | Speaker for the test request |
+| `--runs` | -- | `1` | Number of requests per endpoint — reports mean/min/max when greater than 1 |
+| `--timeout` | -- | `10s` | Per-request timeout (`0` disables timeout) |
+| `--url` | -- | -- | Additional URL to test, not in config (repeatable) |
+| `--env` | -- | -- | Only test these named environments from config (repeatable) |
+
+Also supports all model-specific flags from `rime tts` (e.g. `--temperature`, `--top-p`).
+
+### Behavior
+
+- No flags: tests all configured environments
+- `--url` alone: tests only the specified URLs (config envs are skipped)
+- `--env` + `--url`: tests both the named envs and the extra URLs
+- When using `--url`, your configured API credentials are forwarded to those URLs (a warning is printed)
+
+### Example output (single run)
+
+```
+ENV             URL                                                TTFB
+--------------------------------------------------------------------------------
+default         https://users.rime.ai/v1/rime-tts                 245.12ms
+
+Fastest: default (245.12ms)
+```
+
+### Example output (`--runs 3`)
+
+```
+ENV             URL                                                TTFB (3 runs)
+--------------------------------------------------------------------------------
+default         https://users.rime.ai/v1/rime-tts                 mean=148.30ms  min=132.10ms  max=171.50ms
+
+Fastest: default (148.30ms)
+```
+
+When `--runs` is greater than 1, the JSON output includes `ttfb_min_ms` and `ttfb_max_ms` fields in addition to `ttfb_ms` (mean).
+
+---
+
+## `rime usage`
+
+Display daily character usage history for the past week, broken down by Mist and Arcana models.
+
+```bash
+rime usage
+```
+
+### Flags
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--csv` | `false` | Output as CSV |
+
+Also supports the global `--json` flag.
+
+### Example output
+
+```
+       Day  Mist Chars  Arcana Chars       Total
+----------  ----------  ------------  ----------
+2026-02-24           0         1,234       1,234
+2026-02-23         500         2,100       2,600
+```
+
+---
+
+## `rime uninstall`
+
+Remove the Rime CLI binary, configuration, and shell PATH entries. Detects whether the CLI was installed via Homebrew or the shell script and provides appropriate instructions.
+
+```bash
+rime uninstall
+```
+
+### Flags
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--yes` | `-y` | `false` | Skip the confirmation prompt |
+
+<Note>If installed via Homebrew, the command prints `brew uninstall rime` instead of performing removal directly.</Note>

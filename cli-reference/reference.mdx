@@ -1,0 +1,66 @@
+---
+title: "Reference"
+description: "Global flags, environment variables, configuration file format, audio formats, and metadata embedding for the Rime CLI."
+icon: "book"
+---
+
+## Global flags
+
+These flags work with all commands:
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--quiet` | `-q` | `false` | Suppress non-essential output |
+| `--json` | -- | `false` | Output results as JSON |
+| `--env` | `-e` | -- | Named environment to use from config |
+| `--config` | `-c` | -- | Path to a custom config file |
+| `--version` | `-v` | -- | Print version information |
+| `--help` | `-h` | -- | Help for any command |
+
+## Environment variables
+
+| Variable | Description |
+| -------- | ----------- |
+| `RIME_CLI_API_KEY` | API key for authentication (overrides the key in `rime.toml`) |
+| `RIME_API_URL` | API endpoint URL (overrides the URL in `rime.toml`) |
+| `RIME_AUTH_HEADER_PREFIX` | Authorization header prefix (default: `Bearer`) |
+| `RIME_DASHBOARD_URL` | Dashboard URL for `rime login` (default: `https://app.rime.ai`) |
+
+## Configuration
+
+The CLI uses a TOML config file at `~/.rime/rime.toml`. You can define multiple named environments for different API endpoints.
+
+```toml
+api_key = "your_api_key"
+api_url = "https://users.rime.ai/v1/rime-tts"
+
+[env.staging]
+api_url = "https://staging.rime.ai/v1/rime-tts"
+
+[env.onprem]
+api_url = "https://rime.internal:8080/v1/rime-tts"
+api_key = "different_key"
+auth_header_prefix = "Api-Key"
+```
+
+Select an environment with the `--env` flag:
+
+```bash
+rime tts "Hello" -s astra -m arcana --env staging
+```
+
+**Resolution order:** Environment variables override config file values, which override defaults. Within the config file, named environment values override top-level values.
+
+## Audio formats
+
+| Format | Extension | Default for | Notes |
+| ------ | --------- | ----------- | ----- |
+| WAV | `.wav` | `arcana`, `arcanav2` | Uncompressed, higher quality, larger files |
+| MP3 | `.mp3` | `mistv2`, `mist` | Compressed, smaller files. Required for Mist models |
+
+## Metadata embedding
+
+Audio files saved by the CLI include embedded metadata (voice, model, text). This metadata is visible in `rime play` waveform output and in media players like Finder or Preview.
+
+- **WAV files:** LIST/INFO chunk (`IART`, `INAM`, `ICMT`)
+- **MP3 files:** ID3v2.3 tags (`TPE1`, `TIT2`, `COMM`)

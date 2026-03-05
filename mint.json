@@ -165,12 +165,7 @@
     {
       "group": "Arcana API reference",
       "pages": [
-        {
-          "group": "Streaming",
-          "pages": [
-            "api-reference/arcana/streaming"
-          ]
-        },
+        "api-reference/arcana/http",
         {
           "group": "Websocket",
           "pages": [
@@ -183,15 +178,8 @@
     {
       "group": "Mist v2 API reference",
       "pages": [
-        {
-          "group": "Streaming",
-          "pages": [
-            "api-reference/endpoint/streaming-pcm",
-            "api-reference/endpoint/streaming-mp3",
-            "api-reference/endpoint/streaming-mulaw",
-            "api-reference/endpoint/sse"
-          ]
-        },
+        "api-reference/endpoint/http",
+        "api-reference/endpoint/sse",
         {
           "group": "Websocket",
           "pages": [
@@ -226,24 +214,40 @@
   ],
   "redirects": [
     {
+      "source": "/api-reference/endpoint/streaming-pcm",
+      "destination": "/api-reference/endpoint/http"
+    },
+    {
+      "source": "/api-reference/endpoint/streaming-mp3",
+      "destination": "/api-reference/endpoint/http"
+    },
+    {
+      "source": "/api-reference/endpoint/streaming-mulaw",
+      "destination": "/api-reference/endpoint/http"
+    },
+    {
+      "source": "/api-reference/arcana/streaming",
+      "destination": "/api-reference/arcana/http"
+    },
+    {
       "source": "/api-reference/arcana/streaming-mp3",
-      "destination": "/api-reference/arcana/streaming"
+      "destination": "/api-reference/arcana/http"
     },
     {
       "source": "/api-reference/arcana/streaming-ogg",
-      "destination": "/api-reference/arcana/streaming"
+      "destination": "/api-reference/arcana/http"
     },
     {
       "source": "/api-reference/arcana/streaming-pcm",
-      "destination": "/api-reference/arcana/streaming"
+      "destination": "/api-reference/arcana/http"
     },
     {
       "source": "/api-reference/arcana/streaming-wav",
-      "destination": "/api-reference/arcana/streaming"
+      "destination": "/api-reference/arcana/http"
     },
     {
       "source": "/api-reference/arcana/streaming-mulaw",
-      "destination": "/api-reference/arcana/streaming"
+      "destination": "/api-reference/arcana/http"
     },
     {
       "source": "/docs/cli-reference",

@@ -1,0 +1,340 @@
+---
+title: "OpenClaw document reader with Rime TTS Telegram bot"
+description: "Configure OpenClaw to be your personal reading assistant"
+---
+
+As convenient as having an AI agent read your documents aloud seems, the actual experience of text-to-speech (TTS) is often marred by the stilted cadence of an obviously generated voice. This guide demonstrates how to configure an OpenClaw assistant to read documents aloud in a voice that doesn't suck to listen to.
+
+By adding Rime TTS to OpenClaw, you can convert any text to natural-sounding speech via instant messaging. Simply open a chat with your AI assistant, attach the text as a document or paste it in a message, and the bot returns a voice note in your desired mode of delivery: a verbatim reading, summary, or podcast discussion.
+
+Compare how the OpenClaw assistant delivers a podcast-style reading when it uses our custom [Rime.ai](https://rime.ai/) reading skill and when it uses its built-in TTS:
+
+| Rime TTS | Default TTS |
+| --- | --- |
+| <audio controls src="/audio/rime_podcast.ogg"></audio> | <audio controls src="/audio/edge_default_podcast.ogg"></audio> |
+
+The Rime voices sound far more natural, and by setting up a custom skill, we can configure the OpenClaw assistant to present users with a wide range of voices.
+
+## Prerequisites
+
+To follow this guide, you need:
+
+- [OpenClaw](https://github.com/openclaw/openclaw)
+- [FFmpeg](https://ffmpeg.org/)
+- Python 3
+- A [Rime API key](https://app.rime.ai/tokens/)
+- A Telegram account
+
+## Step 1: Create a Telegram bot and connect it to OpenClaw
+
+This guide uses Telegram as the primary interface with OpenClaw, but you could easily adapt it to use your preferred messaging service.
+
+First, create a new bot using Telegram's **BotFather**:
+
+1. Open Telegram and search for [@BotFather](https://t.me/botfather).
+2. Send `/newbot` and follow the prompts to choose a name and username.
+3. BotFather replies with your bot token, which looks like `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`.
+
+Add the bot token to `~/.openclaw/.env`:
+
+```bash
+TELEGRAM_BOT_TOKEN=123456789:ABCdefGHIjklMNOpqrsTUVwxyz
+```
+
+Then enable the Telegram plugin in the `~/.openclaw/openclaw.json` file:
+
+```json
+{
+  "plugins": {
+    "entries": {
+      "telegram": {
+        "enabled": true
+      }
+    }
+  }
+}
+```
+
+Restart the gateway to pick up the new token:
+
+```bash
+openclaw gateway restart
+```
+
+Verify the basic text chat functionality by messaging your bot in Telegram. The first time you message the bot, it shows an `access not configured` message with an access code. Copy the access code and run the following command in your terminal to pair the bot with OpenClaw:
+
+```bash
+openclaw pairing approve telegram <access-code>
+```
+
+## Step 2: Add your Rime API key
+
+OpenClaw reads environment variables from the `~/.openclaw/.env` file. Add your Rime API key to it:
+
+```bash
+RIME_API_KEY=...
+```
+
+## Step 3: Disable OpenClaw's built-in TTS
+
+OpenClaw has a built-in TTS system that the assistant uses by default. We need to disable the built-in TTS so that OpenClaw instead uses the new Rime skill we are adding.
+
+Update your `openclaw.json` file as follows:
+
+```json
+{
+  "messages": {
+    "tts": {
+      "auto": "off",
+      "edge": {
+        "enabled": false
+      }
+    }
+  },
+  "tools": {
+    "deny": ["tts"]
+  }
+}
+```
+
+This code:
+
+1. **Turns off auto-TTS** so the built-in pipeline doesn't generate audio automatically
+2. **Disables Edge TTS** so it can't be used as a fallback
+3. **Denies the built-in `tts` tool** so the LLM can't call it directly
+
+## Step 4: Install the rime-reader skill
+
+The `rime-reader` skill reads documents aloud in three modes:
+
+- In **verbatim** mode, it reads the document aloud, word for word, in your chosen voice.
+- In **summary** mode, it summarizes the document's content in your chosen voice.
+- In **podcast** mode, two AI hosts, each with a different voice, summarize and discuss the content.
+
+Install the `rime-reader` skill by cloning it from the following repository into your `~/.openclaw/skills/` directory:
+
+```bash
+git clone https://github.com/LewisDwyer/rime-reader-openclaw ~/.openclaw/skills/rime-reader
+```
+
+The skill folder contains a single Python script (`rime.py`) that handles all three modes and a `SKILL.md` that teaches the LLM how to use it.
+
+```
+~/.openclaw/skills/rime-reader/
+├── SKILL.md
+└── rime.py
+```
+
+### How rime.py works
+
+The script has three modes, driven by the following command-line arguments:
+
+- A file path for document reading
+- `--text` for a single utterance
+- `--segments` for podcast
+
+All three arguments share the same synthesis and encoding pipeline.
+
+#### Chunking
+
+In verbatim and summary mode, `rime.py` uses **chunking** to break long text into sentence-aligned chunks of roughly 400 characters each. This ensures that no single API call is too large.
+
+```python
+def chunk_text(text: str, size: int = CHUNK_SIZE) -> list:
+    """Split text into sentence-aligned chunks under `size` characters."""
+    text = " ".join(text.split())
+    sentences = []
+    for raw in text.replace("! ", ".\n").replace("? ", ".\n").split(".\n"):
+        s = raw.strip()
+        if s:
+            sentences.append(s if s.endswith((".", "!", "?")) else s + ".")
+    chunks, current, current_len = [], [], 0
+    for sentence in sentences:
+        if current_len + len(sentence) > size and current:
+            chunks.append(" ".join(current))
+            current, current_len = [sentence], len(sentence)
+        else:
+            current.append(sentence)
+            current_len += len(sentence) + 1
+    if current:
+        chunks.append(" ".join(current))
+    return chunks
+```
+
+#### Synthesis
+
+The script then sends the chunks to the Rime API, which **synthesizes** them and returns raw audio bytes.
+
+```python
+def synthesize(text, voice, speed, lang, api_key, model="arcana"):
+    body = {
+        "text": text,
+        "speaker": voice,
+        "modelId": model,
+        "samplingRate": SAMPLE_RATE,
+        "speedAlpha": speed,
+    }
+    req = urllib.request.Request(
+        "https://users.rime.ai/v1/rime-tts",
+        data=json.dumps(body).encode(),
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Accept": "audio/pcm",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return resp.read()
+```
+
+#### Stitching
+
+The script concatenates the bytes from each chunk and generates silences between them, **stitching** them all into a single `bytearray`.
+
+You can specify a voice for each segment in podcast mode:
+
+```python
+silence = generate_silence(args.pause)  # e.g. 0.3s of silent PCM
+all_pcm = bytearray()
+
+for seg in segments:
+    pcm = synthesize(seg["text"], seg["voice"], ...)
+    all_pcm.extend(pcm)
+    all_pcm.extend(silence)
+```
+
+#### Encoding
+
+Then, `rime.py` encodes the `bytearray` by making an `ffmpeg` call that converts the raw audio buffer to OGG Opus, the format that Telegram expects:
+
+```python
+def pcm_to_ogg(pcm_data, ogg_path):
+    subprocess.run([
+        "ffmpeg", "-y",
+        "-f", "s16le", "-ar", "48000", "-ac", "1", "-i", pcm_path,
+        "-c:a", "libopus", "-b:a", "64k", "-vbr", "on",
+        "-application", "voip",
+        ogg_path,
+    ])
+```
+
+The script prints the output `.ogg` path to `stdout`. The LLM reads this and uses it in a `MEDIA:` directive with `[[audio_as_voice]]` to deliver it as a Telegram voice note bubble.
+
+## Step 5: Register the skill and configure the personality
+
+Enable the skill in `~/.openclaw/openclaw.json`:
+
+```json
+{
+  "skills": {
+    "entries": {
+      "rime-reader": {
+        "enabled": true
+      }
+    }
+  }
+}
+```
+
+### Personality (SOUL.md)
+
+The `~/.openclaw/workspace/SOUL.md` file configures OpenClaw's agent personality. The LLM reads the file at the start of every session.
+
+Add the following **Document Reading** section below to your `SOUL.md` file. Without it, the bot skips the `rime-reader` skill and generates audio using whichever TTS model it finds first. Since we've disabled the default TTS model, it would fail to generate any audio and fall back to replying in text.
+
+```markdown
+## Document Reading
+
+When the user sends a file or pastes text and asks you to read it, you must
+follow the `rime-reader` skill workflow exactly. **Do not generate any audio
+until both the mode and voice have been confirmed.** There are no exceptions.
+
+**Step 1 — ask for the delivery mode.** Only skip if the user's message
+contained the exact word "verbatim", "summary", or "podcast":
+
+> How would you like this delivered?
+>
+> 📖 **Verbatim** — full text
+> 📋 **Summary** — concise spoken summary
+> 🎙️ **Podcast** — two hosts break it down in a lively conversation
+
+**Step 2 — ask for a voice.** For verbatim or summary, ask for one voice. For
+podcast, ask for two voices (Host 1 and Host 2). Use exactly this menu:
+
+> Which voice should I use?
+>
+> 🏛️ **atrium** — steady, polished, confident
+> ✨ **lyra** — smooth, expressive, quietly intense
+> 🌊 **transom** — deep, resonant, commanding
+> 🧊 **parapet** — cool, measured, precise
+> 🌿 **fern** — warm, natural, approachable
+> 🌑 **thalassa** — rich, textured, distinctive
+> 🔩 **truss** — firm, clear, authoritative
+> 🔷 **sirius** — crisp, formal, reliable
+> 🌒 **eliphas** — smooth, deep, gravitas
+> 📐 **lintel** — deliberate, focused, clean
+>
+> For podcast, reply with two names (e.g. "atrium and fern"), or say "surprise me".
+
+**Step 3 — only now** follow the full `rime-reader` skill for normalization,
+scripting, and audio generation. Always use `rime.py` — never use another TTS
+path.
+```
+
+## Step 6: Test the flow
+
+Restart the gateway, so that you can test the document reading flow:
+
+```bash
+openclaw gateway restart
+```
+
+In Telegram, start a fresh session by sending `/new` to your bot.
+
+Then send a document or paste text in the chat and ask the bot to read it.
+
+The bot should ask you to choose from the three delivery modes: verbatim, summary, or podcast.
+
+Choose the verbatim mode.
+
+Next, it should prompt you to pick a voice.
+
+Once you've selected a voice, you should receive a voice note of your text.
+
+## Tuning
+
+The bot's behavior is driven by `SOUL.md`, which means you can reshape it. Just edit the file or tell the bot, directly in your Telegram chat, to update it for you.
+
+Consider how you can tweak various aspects of your OpenClaw assistant:
+
+### Voice
+
+You can select a default voice for your OpenClaw assistant by editing `SOUL.md` or sending a Telegram message telling the bot to, _**"Use Transom next time."**_
+
+You can use any of the available Arcana voices: `atrium`, `lyra`, `transom`, `parapet`, `fern`, `thalassa`, `truss`, `sirius`, `eliphas`, `lintel`, or one of the many others listed on Rime's [Voices](./voices.mdx) page.
+
+### Podcast personality
+
+The LLM writes the podcast script before synthesizing it, so you can steer the tone. Try adding a line such as the following to the **Document Reading** section of your `SOUL.md`:
+
+```markdown
+For podcast mode, write the script in the style of a late-night talk show —
+one host is deadpan and skeptical, the other is wildly enthusiastic. Keep it
+punchy: no segment longer than two sentences.
+```
+
+Alternatively, skip editing `SOUL.md` entirely and just tell the bot to, _**"Make the podcast hosts argue like an old married couple."**_ The LLM will adapt the script on the fly.
+
+### Skip the prompts
+
+If you always want the same voice and delivery mode, you can hardcode them in `SOUL.md` to skip the bot prompts.
+
+For example, you could replace the first two steps with the following instruction:
+
+```markdown
+Default to **summary** mode with the **fern** voice. Only ask if the user
+says "let me choose".
+```
+
+Since OpenClaw loads `SOUL.md` afresh every session, your changes take effect immediately after you send `/new` in Telegram.

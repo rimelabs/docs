@@ -168,11 +168,7 @@
         {
           "group": "Streaming",
           "pages": [
-            "api-reference/arcana/streaming-mp3",
-            "api-reference/arcana/streaming-ogg",
-            "api-reference/arcana/streaming-pcm",
-            "api-reference/arcana/streaming-wav",
-            "api-reference/arcana/streaming-mulaw"
+            "api-reference/arcana/streaming"
           ]
         },
         {
@@ -229,6 +225,26 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/api-reference/arcana/streaming-mp3",
+      "destination": "/api-reference/arcana/streaming"
+    },
+    {
+      "source": "/api-reference/arcana/streaming-ogg",
+      "destination": "/api-reference/arcana/streaming"
+    },
+    {
+      "source": "/api-reference/arcana/streaming-pcm",
+      "destination": "/api-reference/arcana/streaming"
+    },
+    {
+      "source": "/api-reference/arcana/streaming-wav",
+      "destination": "/api-reference/arcana/streaming"
+    },
+    {
+      "source": "/api-reference/arcana/streaming-mulaw",
+      "destination": "/api-reference/arcana/streaming"
+    },
     {
       "source": "/docs/cli-reference",
       "destination": "/cli-reference/overview"

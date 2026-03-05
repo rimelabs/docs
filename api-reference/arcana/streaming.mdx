@@ -1,14 +1,23 @@
 ---
-title: 'Streaming OGG'
+title: 'Streaming'
 api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
-## Fixed Headers
+The streaming endpoint returns audio bytes in the format specified by the `Accept` header.
 
-<ParamField header="Accept" type="audio/ogg;codecs=opus" required></ParamField>
+## Audio Formats
 
-<Info>OGG output is intended for HTTP streaming or binary WebSocket transports. For JSON-only WebSocket streaming, prefer MP3, PCM, or μ-law.</Info>
+Set the `Accept` header to one of the following values:
+
+| Format | Accept Header | Notes |
+|---|---|---|
+| Opus (WebM) | `audio/webm;codecs=opus` | Recommended. Opus offers excellent compression. WebM streams natively in browsers. |
+| Opus (OGG) | `audio/ogg;codecs=opus` | Opus offers excellent compression. OGG container. |
+| MP3 | `audio/mp3` | Lower compression rate than Opus. Highest compatibility across devices and players. |
+| WAV | `audio/wav` | Uncompressed. RIFF WAVE header with 16-bit little-endian linear PCM samples. Streams natively in browsers. |
+| PCM | `audio/pcm` | Headerless 16-bit little-endian linear PCM. |
+| G.711 μ-law | `audio/x-mulaw` | Headerless stream of audio bytes. |
 
 ## Variable Parameters
 
@@ -40,21 +49,20 @@ authMethod: "bearer"
   A value below 1 slows down the audio, a value above 1 speeds up the audio.
 </ParamField>
 
-
 <RequestExample>
 
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
-  --header 'Accept: audio/ogg;codecs=opus' \
+  --header 'Accept: audio/webm;codecs=opus' \
   --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --output output.ogg \
+  --output output.webm \
   --fail \
   --data '{
-  "text": "<string>",
+  "text": "Hello from Rime!",
   "modelId": "arcana",
-  "speaker": "<string>",
+  "speaker": "astra",
   "lang": "eng",
   "samplingRate": 24000,
   "speedAlpha": 1
@@ -67,20 +75,20 @@ import requests
 url = "https://users.rime.ai/v1/rime-tts"
 
 payload = {
-    "speaker": "<string>",
-    "text": "<string>",
+    "speaker": "astra",
+    "text": "Hello from Rime!",
     "modelId": "arcana",
     "samplingRate": 24000
 }
 headers = {
-    "Accept": "audio/ogg;codecs=opus",
-    "Authorization": "Bearer <authorization>",
+    "Accept": "audio/webm;codecs=opus",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
 }
 
 with requests.post(url, headers=headers, json=payload, stream=True) as response:
     response.raise_for_status()
-    with open("audio_output.ogg", "wb") as f:
+    with open("output.webm", "wb") as f:
         for chunk in response.iter_content(chunk_size=4096):
             if chunk:
                 f.write(chunk)
@@ -92,18 +100,18 @@ const fs = require("fs");
 const options = {
   method: 'POST',
   headers: {
-    Accept: 'audio/ogg;codecs=opus',
-    Authorization: 'Bearer <authorization>',
+    Accept: 'audio/webm;codecs=opus',
+    Authorization: 'Bearer YOUR_API_KEY',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","modelId":"arcana","samplingRate":24000}'
+  body: '{"speaker":"astra","text":"Hello from Rime!","modelId":"arcana","samplingRate":24000}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
   .then(response => response.arrayBuffer())
   .then(buffer => {
-    fs.writeFileSync("audio_output.ogg", Buffer.from(buffer));
-    console.log("Audio saved to audio_output.ogg");
+    fs.writeFileSync("output.webm", Buffer.from(buffer));
+    console.log("Audio saved to output.webm");
   })
   .catch(err => console.error(err));
 ```
@@ -121,10 +129,10 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"samplingRate\": 24000\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"arcana\",\n  \"samplingRate\": 24000\n}",
   CURLOPT_HTTPHEADER => [
-    "Accept: audio/ogg;codecs=opus",
-    "Authorization: Bearer <authorization>",
+    "Accept: audio/webm;codecs=opus",
+    "Authorization: Bearer YOUR_API_KEY",
     "Content-Type: application/json"
   ],
 ]);
@@ -155,12 +163,12 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"samplingRate\": 24000\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"arcana\",\n  \"samplingRate\": 24000\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
-  req.Header.Add("Accept", "audio/ogg;codecs=opus")
-  req.Header.Add("Authorization", "Bearer <authorization>")
+  req.Header.Add("Accept", "audio/webm;codecs=opus")
+  req.Header.Add("Authorization", "Bearer YOUR_API_KEY")
   req.Header.Add("Content-Type", "application/json")
 
   res, _ := http.DefaultClient.Do(req)
@@ -168,17 +176,17 @@ func main() {
   defer res.Body.Close()
   body, _ := io.ReadAll(res.Body)
 
-  _ = os.WriteFile("audio_output.ogg", body, 0644)
+  _ = os.WriteFile("output.webm", body, 0644)
 }
 ```
 
 ```java Java
 HttpResponse<byte[]> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
-  .header("Accept", "audio/ogg;codecs=opus")
-  .header("Authorization", "Bearer <authorization>")
+  .header("Accept", "audio/webm;codecs=opus")
+  .header("Authorization", "Bearer YOUR_API_KEY")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"arcana\",\n  \"samplingRate\": 24000\n}")
+  .body("{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"arcana\",\n  \"samplingRate\": 24000\n}")
   .asBytes();
-Files.write(Paths.get("audio_output.ogg"), response.getBody());
+Files.write(Paths.get("output.webm"), response.getBody());
 ```
 </RequestExample>

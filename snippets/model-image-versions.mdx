@@ -1,0 +1,43 @@
+{/* Single source of truth for latest image tags. Update the versions below when releasing new images. */}
+export const ModelImageVersionsList = () => (
+  <table>
+    <thead>
+      <tr>
+        <th>Image name</th>
+        <th>Latest version</th>
+        <th>Supported languages</th>
+        <th>Image URL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Arcana v2</td>
+        <td><code>20260131</code></td>
+        <td><code>ar</code>, <code>de</code>, <code>en</code>, <code>es</code>, <code>fr</code>, <code>hi</code>, <code>si</code></td>
+        <td><code>us-docker.pkg.dev/rime-labs/arcana/v2/&lt;language&gt;:&lt;version&gt;</code></td>
+      </tr>
+      <tr>
+        <td>Arcana v3</td>
+        <td><code>20260223</code></td>
+        <td><code>ar</code>, <code>de</code>, <code>en</code>, <code>es</code>, <code>fr</code>, <code>he</code>, <code>hi</code>, <code>ja</code>, <code>pt</code>, <code>si</code>, <code>ta</code></td>
+        <td>
+          <code>us-docker.pkg.dev/rime-labs/arcana/v3/endeka:&lt;version&gt;</code>
+          <br />
+          <code>us-docker.pkg.dev/rime-labs/engine/arcana:&lt;version&gt;</code>, <code>us-docker.pkg.dev/rime-labs/package/arcana/&lt;language&gt;:&lt;version&gt;</code>
+        </td>
+      </tr>
+      <tr>
+        <td>Mist</td>
+        <td><code>20260217</code></td>
+        <td><code>en</code></td>
+        <td><code>us-docker.pkg.dev/rime-labs/mist/v2/en:&lt;version&gt;</code></td>
+      </tr>
+      <tr>
+        <td>API</td>
+        <td><code>20260212</code></td>
+        <td>N/A</td>
+        <td><code>us-docker.pkg.dev/rime-labs/api/service:&lt;version&gt;</code></td>
+      </tr>
+    </tbody>
+  </table>
+);

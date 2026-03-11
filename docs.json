@@ -444,6 +444,10 @@
     {
       "source": "/api-reference/voices",
       "destination": "/docs/voices"
+    },
+    {
+      "source": "/api-reference/quickstart-python",
+      "destination": "/docs/quickstart-five-minute"
     }
   ]
 }

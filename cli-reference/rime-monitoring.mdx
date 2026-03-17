@@ -17,13 +17,11 @@ rime speedtest
 | Flag | Short | Default | Description |
 | ---- | ----- | ------- | ----------- |
 | `--model` | `-m` | `arcana` | Model ID for the test request |
-| `--speaker` | `-s` | `astra` | Speaker for the test request |
 | `--runs` | -- | `1` | Number of requests per endpoint — reports mean/min/max when greater than 1 |
 | `--timeout` | -- | `10s` | Per-request timeout (`0` disables timeout) |
 | `--url` | -- | -- | Additional URL to test, not in config (repeatable) |
 | `--env` | -- | -- | Only test these named environments from config (repeatable) |
-
-Also supports all model-specific flags from `rime tts` (e.g. `--temperature`, `--top-p`).
+| `--yes` | `-y` | `false` | Automatically switch the default environment if a faster one is found |
 
 ### Behavior
 
@@ -31,15 +29,18 @@ Also supports all model-specific flags from `rime tts` (e.g. `--temperature`, `-
 - `--url` alone: tests only the specified URLs (config envs are skipped)
 - `--env` + `--url`: tests both the named envs and the extra URLs
 - When using `--url`, your configured API credentials are forwarded to those URLs (a warning is printed)
+- After the test completes, if the fastest environment differs from the current default, the CLI prompts you to switch. Use `--yes` to skip the prompt and switch automatically.
 
 ### Example output (single run)
 
 ```
 ENV             URL                                                TTFB
 --------------------------------------------------------------------------------
-default         https://users.rime.ai/v1/rime-tts                 245.12ms
+users           https://users.rime.ai/v1/rime-tts                 245.12ms
+users-east      https://users-east.rime.ai/v1/rime-tts            189.40ms
 
-Fastest: default (245.12ms)
+Fastest: users-east (189.40ms)
+Switch default environment from "users" to "users-east"? [y/N]:
 ```
 
 ### Example output (`--runs 3`)
@@ -47,9 +48,11 @@ Fastest: default (245.12ms)
 ```
 ENV             URL                                                TTFB (3 runs)
 --------------------------------------------------------------------------------
-default         https://users.rime.ai/v1/rime-tts                 mean=148.30ms  min=132.10ms  max=171.50ms
+users           https://users.rime.ai/v1/rime-tts                 mean=245.12ms  min=221.30ms  max=271.50ms
+users-east      https://users-east.rime.ai/v1/rime-tts            mean=189.40ms  min=175.10ms  max=203.80ms
 
-Fastest: default (148.30ms)
+Fastest: users-east (189.40ms)
+Switch default environment from "users" to "users-east"? [y/N]:
 ```
 
 When `--runs` is greater than 1, the JSON output includes `ttfb_min_ms` and `ttfb_max_ms` fields in addition to `ttfb_ms` (mean).

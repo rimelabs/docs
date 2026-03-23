@@ -21,24 +21,65 @@ rime config init
 The generated file looks like:
 
 ```toml
-api_key = "your_api_key"
-api_url = "https://users.rime.ai/v1/rime-tts"
+default_env = "users"
 
-# [env.example]
-# api_url = "https://example.rime.ai/v1/rime-tts"
+[env.users]
+api_url = "https://users.rime.ai/v1/rime-tts"
+api_key = "your_api_key_here"
+
+[env.users-east]
+api_url = "https://users-east.rime.ai/v1/rime-tts"
+api_key = "your_api_key_here"
 ```
+
+Both standard Rime endpoints are pre-configured as named environments. The `default_env` field designates which one is active by default.
+
+<Note>Older config files without `default_env` continue to work — the top-level `api_url` and `api_key` fields are still respected as the fallback default.</Note>
 
 ## `rime config list`
 
-List all configured environments.
+List all configured environments. The currently active default environment is marked with a `*` in the `NAME` column.
 
 ```bash
 rime config list
 ```
 
+```
+NAME            URL                                                AUTH
+--------------------------------------------------------------------------------
+users *         https://users.rime.ai/v1/rime-tts                 Bearer
+users-east      https://users-east.rime.ai/v1/rime-tts            Bearer
+```
+
 | Flag | Default | Description |
 | ---- | ------- | ----------- |
 | `--json` | `false` | Output as JSON |
+
+## `rime config default`
+
+Get or set the default environment.
+
+```bash
+# Print the current default environment name
+rime config default
+
+# Switch the default to a different environment
+rime config default users-east
+```
+
+With no arguments, prints the name of the current default environment:
+
+```
+users
+```
+
+With a name argument, updates `default_env` in `~/.rime/rime.toml` and confirms:
+
+```
+Default environment set to "users-east"
+```
+
+No flags.
 
 ## `rime config show`
 
@@ -57,7 +98,7 @@ rime config show
 **Example output:**
 
 ```
-Environment:  default
+Environment:  users
 API URL:      https://users.rime.ai/v1/rime-tts
 API Key:      rime_aHR0cHM6Ly... (redacted)
 Auth Prefix:  Bearer
@@ -66,7 +107,7 @@ Auth Header:  Authorization: Bearer (redacted)
 
 ## `rime config add`
 
-Add a named environment to `~/.rime/rime.toml`. Prompts interactively for API URL, API key (input hidden), and an optional auth prefix. You cannot add an environment named `default` — use `rime config init` to modify the default.
+Add a named environment to `~/.rime/rime.toml`. Prompts interactively for API URL, API key (input hidden), and an optional auth prefix. You cannot add an environment named `default` — use `rime config default` to change which environment is the default.
 
 ```bash
 rime config add <name>

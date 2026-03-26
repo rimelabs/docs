@@ -212,6 +212,12 @@
             ]
           },
           {
+            "group": "Changelog",
+            "pages": [
+              "cli-reference/changelog"
+            ]
+          },
+          {
             "group": "Reference",
             "pages": [
               "cli-reference/reference",

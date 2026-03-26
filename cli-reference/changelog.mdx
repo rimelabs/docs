@@ -1,0 +1,40 @@
+---
+title: Changelog
+description: Release notes for the Rime CLI.
+icon: list
+---
+
+Use [`rime upgrade`](/cli-reference/reference#upgrade) to update to the latest version, or [`rime changelog`](/cli-reference/reference#changelog) to view this in the terminal.
+
+<Update label="v0.5.0 — March 25, 2026">
+- `upgrade` command for self-updating the CLI (`rime upgrade`)
+- `changelog` command to view release notes in the terminal (`rime changelog --since v0.4.0`)
+- Background update checker — notifies you on stderr when a newer version is available
+- Semantic ANSI colors for better terminal theme compatibility
+- `--days` flag on `rime usage`
+- `speedtest` UX improvements and `default_env` config option
+</Update>
+
+<Update label="v0.4.0 — March 12, 2026">
+- Simplified waveform display in `tts` and `play`
+- Updated `hello` command to use Vespera voice
+</Update>
+
+<Update label="v0.3.0 — March 4, 2026">
+- Animated and truncated text for long utterances in `tts` and `play`
+- `config` subcommands: `add`, `list`, `show`, `rm`, `edit`, `default`
+- `key` command to display the current API key
+- Additional flags for `speedtest`: `--speaker`, `--lang`, `--text`
+</Update>
+
+<Update label="v0.2.0 — February 27, 2026">
+- `usage` command for viewing API usage history
+- Model-specific TTS parameters (`--temperature`, `--top-p`, `--repetition-penalty`, etc.)
+- Improved `curl` command options
+- Rime unicode logo in terminal output
+</Update>
+
+<Update label="v0.1.0 — February 20, 2026">
+- Initial release (renamed from cli-go)
+- Core commands: `tts`, `play`, `curl`, `login`, `logout`, `config`, `speedtest`
+</Update>

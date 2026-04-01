@@ -63,16 +63,16 @@
                   "docs/addresses"
                 ]
               },
+              "docs/spell",
               {
-                "group": "Customizing Mist v2",
+                "group": "Customizing Mist",
                 "icon": "wrench",
                 "pages": [
                   "docs/linguistics",
                   "docs/speed",
                   "docs/homographs",
                   "docs/custom-pauses",
-                  "docs/custom-pronunciation",
-                  "docs/spell"
+                  "docs/custom-pronunciation"
                 ]
               },
               {

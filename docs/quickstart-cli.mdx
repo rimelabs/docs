@@ -80,10 +80,11 @@ Rime offers 94+ voices. Swap the `--speaker` flag to change the voice:
 ```bash
 rime tts "The quick brown fox." -s orion -m arcana
 rime tts "The quick brown fox." -s luna -m arcana
+rime tts "The quick brown fox." -s peak -m mistv3
 rime tts "The quick brown fox." -s peak -m mistv2 -f mp3
 ```
 
-<Note>The `mistv2` and `mist` models require `--format mp3` (or `-f mp3`).</Note>
+<Note>`mistv3` outputs WAV by default. `mistv2` and `mist` require `--format mp3` (or `-f mp3`).</Note>
 
 ## Generate a curl command
 
@@ -120,7 +121,7 @@ Add `--show-key` to include your actual API key in the output, or `--oneline` fo
     Browse all 94+ available voices
   </Card>
   <Card title="Models" icon="microchip" href="/docs/models">
-    Compare Arcana and Mist v2
+    Compare models: Arcana, Mist v3, Mist v2
   </Card>
   <Card title="TTS in Five Minutes" icon="rocket" href="/docs/quickstart-five-minute">
     Use the API from Python or JavaScript

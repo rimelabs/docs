@@ -67,8 +67,8 @@ rime tts "Hello world" -s astra -m arcana -o - > audio.wav
 # Use mistv3 (WAV by default)
 rime tts "Hello world" -s peak -m mistv3
 
-# Use mistv2 (requires MP3 format)
-rime tts "Hello world" -s peak -m mistv2 -f mp3
+# Use mistv2 (outputs MP3 by default)
+rime tts "Hello world" -s peak -m mistv2
 
 # Synthesize in Spanish with Arcana
 rime tts "Hola mundo" -s astra -m arcana -l es
@@ -86,4 +86,4 @@ rime tts "Hello world" -s astra -m arcana -o output.wav --json
 | `mistv3` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
 | `mistv2` / `mist` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
 
-<Note>The `mist` and `mistv2` models require `--format mp3`. The CLI returns an error if you omit it. `mistv3` defaults to WAV and does not require `--format mp3`.</Note>
+<Note>The `mist` and `mistv2` models default to MP3. `mistv3`, `arcana`, and `arcanav2` default to WAV. Use `--format` to override.</Note>

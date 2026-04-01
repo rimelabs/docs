@@ -11,9 +11,12 @@ Learn how to adjust the speaking speed using Rime's APIs.
 
 ## Adjusting the overall speed
 
-Overall speaking speed in Rime is controlled using the `speedAlpha` parameter. 
+Overall speaking speed in Rime is controlled using the `speedAlpha` parameter.
 
-Lower than 1.0 is faster than the default. Higher than 1.0 is slower than the default.
+The direction of `speedAlpha` depends on the model:
+
+- **`mist`, `mistv2`:** Lower than 1.0 is faster; higher than 1.0 is slower.
+- **`mistv3`, `arcana`:** Higher than 1.0 is faster; lower than 1.0 is slower.
 
 ```js
 {

@@ -40,7 +40,7 @@ curl -X POST http://users.rime.ai/v1/rime-tts \
 
 ### Recommendations for reducing response time
 
-<Tip>Rime's `mistv2` and `mist` models are across the board faster than our `v1` models (which were deprecated in February 2025). Using the `modelId` parameter, you can select our Mist models for TTS inference.</Tip>
+<Tip>For the lowest cloud latency, use `mistv3` — typical TTFB is well below 100ms.</Tip>
 
 - Use the API parameter `noTextNormalization`, which turns off text normalization, to reduce the amount of computation needed to prepare input text for TTS inference. This can safely be used in cases where there are no digits, abbreviations, or tricky punctuation, such as in `Yes, I grew up on one twenty-three Main Street in Oakland, California.` instead of `Yes, I grew up on 123 Main St. in Oakland, CA.`.
 - Request audio that meets the needs of your application. Remember: Smaller payloads move across the network more quickly. For example, if you're building an application for telephony, request 8000kHz-sampled audio using the `samplingRate` parameter.

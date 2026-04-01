@@ -46,3 +46,16 @@ curl -X POST http://users.rime.ai/v1/rime-tts \
 - Request audio that meets the needs of your application. Remember: Smaller payloads move across the network more quickly. For example, if you're building an application for telephony, request 8000kHz-sampled audio using the `samplingRate` parameter.
 <Info>Rime's models produce PCM audio by default, and conversion and downsampling must take place for sampling rates other than 22kHz. Still, the reduction in payload size and therefore network overhead more than makes up for increased server processing time.</Info>
 
+## Regional endpoints
+
+Rime provides regional API endpoints so you can route requests to the data center closest to your application's deployment:
+
+| Endpoint | Region |
+| -------- | ------ |
+| `https://users.rime.ai/v1/rime-tts` | Default (auto-routed) |
+| `https://users-east.rime.ai/v1/rime-tts` | US East (us-east-1) |
+| `https://users-west.rime.ai/v1/rime-tts` | US West (us-west-1) |
+
+WebSocket equivalents follow the same pattern: `wss://users-east-ws.rime.ai/ws` and `wss://users-west-ws.rime.ai/ws`.
+
+Choosing the endpoint closest to your deployment typically reduces round-trip time compared to using the default URL from a distant region. Use the [`rime speedtest`](/cli-reference/rime-monitoring) command to measure TTFB against each endpoint from your machine.

@@ -4,7 +4,7 @@ description: "Synthesize text to speech from the command line using the Rime CLI
 icon: "waveform"
 ---
 
-Synthesize text to speech. Supports WAV and MP3 formats. The format is automatically selected based on the model: `mistv2` and `mist` output MP3 while `arcana` and `arcanav2` default to WAV but support MP3 as well. Use `--format` to override.
+Synthesize text to speech. Supports WAV and MP3 formats. The format is automatically selected based on the model: `mist` and `mistv2` output MP3, while `mistv3`, `arcana`, and `arcanav2` default to WAV. Use `--format` to override.
 
 ```bash
 rime tts TEXT --speaker VOICE --model-id MODEL
@@ -17,7 +17,7 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | Flag | Short | Description |
 | ---- | ----- | ----------- |
 | `--speaker` | `-s` | Voice speaker to use (e.g., `astra`, `celeste`, `orion`) |
-| `--model-id` | `-m` | Model ID: `arcana`, `arcanav2`, `mistv2`, or `mist` |
+| `--model-id` | `-m` | Model ID: `arcana`, `arcanav2`, `mistv3`, `mistv2`, or `mist` |
 
 ## Optional flags
 
@@ -27,7 +27,7 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | `--play` | `-p` | `false` | Play audio after synthesis (default behavior when no output is specified) |
 | `--lang` | `-l` | `eng` | Language code (e.g., `eng`, `es`, `fra`). Valid codes depend on model |
 | `--format` | `-f` | -- | Audio format: `wav` or `mp3` (overrides model default) |
-| `--speed-alpha` | -- | `1` | Speed multiplier — must be greater than 0 |
+| `--speed-alpha` | -- | `1` | Speed multiplier. For `mist`/`mistv2`: lower is faster. For `mistv3`/`arcana`: higher is faster |
 | `--sampling-rate` | -- | -- | Output sampling rate in Hz. Arcana: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
 | `--api-url` | -- | -- | API URL (default: `$RIME_API_URL` or `https://users.rime.ai/v1/rime-tts`) |
 
@@ -40,7 +40,9 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | `--max-tokens` | `1200` | Max output tokens (200–5000) |
 | `--repetition-penalty` | `1.5` | Repetition penalty (1–2) |
 
-## Mist/mistv2 flags
+## mist/mistv2 flags
+
+These flags are supported by `mist` and `mistv2` only. They are not supported by `mistv3`.
 
 | Flag | Description |
 | ---- | ----------- |
@@ -62,8 +64,11 @@ rime tts "Hello world" -s astra -m arcana -o output.wav
 # Pipe audio to stdout
 rime tts "Hello world" -s astra -m arcana -o - > audio.wav
 
-# Use mistv2 (requires MP3 format)
-rime tts "Hello world" -s peak -m mistv2 -f mp3
+# Use mistv3 (WAV by default)
+rime tts "Hello world" -s peak -m mistv3
+
+# Use mistv2 (outputs MP3 by default)
+rime tts "Hello world" -s peak -m mistv2
 
 # Synthesize in Spanish with Arcana
 rime tts "Hola mundo" -s astra -m arcana -l es
@@ -78,6 +83,7 @@ rime tts "Hello world" -s astra -m arcana -o output.wav --json
 | ----- | --------- |
 | `arcana` | `eng`, `ara`, `fra`, `ger`, `heb`, `hin`, `jpn`, `por`, `sin`, `spa`, `tam` (and ISO 639-1 equivalents) |
 | `arcanav2` | `eng`, `spa`, `ger`, `fra`, `hin` (and ISO 639-1 equivalents) |
+| `mistv3` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
 | `mistv2` / `mist` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
 
-<Note>The `mist` and `mistv2` models require `--format mp3`. The CLI returns an error if you omit it.</Note>
+<Note>The `mist` and `mistv2` models default to MP3. `mistv3`, `arcana`, and `arcanav2` default to WAV. Use `--format` to override.</Note>

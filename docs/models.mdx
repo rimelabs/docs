@@ -5,7 +5,7 @@ icon: cube
 
 Models are constantly being trained and fine-tuned based on user and customer feedback. Please check back often, as we push changes frequently.
 
-Rime currently has three models in production: `arcana`, `mistv2`, and `mist`.
+Rime currently has four models in production: `arcana`, `mistv3`, `mistv2`, and `mist`.
 
 ## Arcana
 
@@ -19,6 +19,13 @@ Rime currently has three models in production: `arcana`, `mistv2`, and `mist`.
 * Available via `modelId: arcana` through Rime's API endpoints
 
 ## Mist
+
+**Mist v3**, released March 2026, is a major update to the engine powering our classic Mist model.
+
+* Typical TTFB is now well below 100ms — a significant performance improvement over previous versions, achieved without sacrificing the quality and predictability of Mist
+* `modelId: mistv3`
+* Our most popular Mist speakers are all available — see the [full voice list](/api-reference/data/voices)
+* `speedAlpha` behavior is reversed compared to Mist and Mist v2, bringing it to parity with Arcana: **higher values produce faster speech**
 
 **Mistv2**, released February 2025, has the following features:
 

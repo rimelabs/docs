@@ -19,7 +19,7 @@ authMethod: "bearer"
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  Choose `mistv2` for Rime's fastest, most accurate, and most customizable model, or `mist` for Rime's earlier model (default: `mist`)
+  Choose `mistv3` for the fastest model with sub-100ms TTFB, or `mistv2` for the previous fast model (default: `mistv2`)
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
@@ -27,30 +27,30 @@ authMethod: "bearer"
 </ParamField>
 
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">
-  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
+  **mist/mistv2 only.** When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
   Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences.
 </ParamField>
 
 <ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
-  When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
+  **mist/mistv2 only.** When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
   Example: "\{h'El.o} World" will pronounce "Hello" as expected. Learn more about <a href="/docs/custom-pronunciation">custom pronunciation</a>.
 </ParamField>
 
 <ParamField body="inlineSpeedAlpha" type="string">
-  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
+  **mist/mistv2 only.** Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
   Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Lower than 1.0 is faster than default. Higher than 1.0 is slower than default.
+  Adjusts the speed of speech. Behavior depends on model: for `mist` and `mistv2`, lower than 1.0 is faster and higher than 1.0 is slower. For `mistv3` and `arcana`, higher than 1.0 is faster and lower than 1.0 is slower.
 </ParamField>
 
 <ParamField body="noTextNormalization" type="bool" default="false">
-  Skips text normalization of the input text prior to synthesizing audio. This will reduce latency at the cost of some possible mispronunciation of digits and abbreviations.
+  **mist/mistv2 only.** Skips text normalization of the input text prior to synthesizing audio. This will reduce latency at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
 
 <ParamField body="saveOovs" type="bool" default="false">
-  If set to `true`, Rime shall save any currently OOV (out-of-vocabulary) words encountered in `text`, and save them for the User or Team to review on the
+  **mist/mistv2 only.** If set to `true`, Rime shall save any currently OOV (out-of-vocabulary) words encountered in `text`, and save them for the User or Team to review on the
   <a href="https://app.rime.ai/oov/">Speech QA dashboard</a>. <b>Note:</b> It may take up to 15 minutes for OOV words to appear on your dashboard.
 </ParamField>
 

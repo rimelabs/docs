@@ -19,7 +19,7 @@ authMethod: "bearer"
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  Choose `mistv3` for the fastest model with sub-100ms TTFB, or `mistv2` for the previous fast model (default: `mistv2`)
+  Set to `mistv2`.
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
@@ -46,7 +46,7 @@ authMethod: "bearer"
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Behavior depends on model: for `mist` and `mistv2`, lower than 1.0 is faster and higher than 1.0 is slower. For `mistv3` and `arcana`, higher than 1.0 is faster and lower than 1.0 is slower.
+  Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
 </ParamField>
 
 <ParamField body="noTextNormalization" type="bool" default="false">

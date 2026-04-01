@@ -1,0 +1,131 @@
+---
+title: 'Websockets'
+api: 'GET wss://users-ws.rime.ai/ws'
+authMethod: "bearer"
+---
+
+## Overview
+
+Rime's websocket implementation accepts bare text, and responds with audio bytes of the selected format. All synthesis arguments are provided as query parameters when establishing the connection.
+
+The websocket API buffers inputs up to one of the following punctuation characters: `.`, `,`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
+
+## Messages
+
+### Send
+
+The messages your client will send to the websocket API will be bare (non-serialized) text.
+
+```example
+This will be converted to audio via websockets
+```
+
+### Receive
+
+The messages your client will receive will be raw audio bytes in the audio format specified at connection time.
+
+## Commands
+
+### `<CLEAR>`
+
+This clears the current buffer. Used in the event of interruptions.
+
+### `<FLUSH>`
+
+This forces whatever buffer exists, if any, to be synthesized, and the generated audio to be sent over.
+
+### `<EOS>`
+
+This forces whatever buffer exists, if any, to be synthesized, and for the server to close the connection after sending the generated audio.
+
+
+## Variable Parameters
+
+<ParamField body="speaker" type="string" required>
+  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
+</ParamField>
+
+<ParamField body="modelId" type="string" default="mistv3">
+  Set to `mistv3`.
+</ParamField>
+
+<ParamField body="audioFormat" type="string">
+  One of `mp3`, `mulaw`, or `pcm`
+</ParamField>
+
+<ParamField body="lang" type="string" default="eng">
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
+</ParamField>
+
+<ParamField body="samplingRate" type="int">
+  The value, if provided, must be between 4000 and 44100. Default: 22050
+</ParamField>
+
+<ParamField body="speedAlpha" type="float" default="1.0">
+  Adjusts the speed of speech. Higher than 1.0 is faster and lower than 1.0 is slower.
+</ParamField>
+
+<ParamField body="segment" type="string" default="bySentence">
+  Controls how text is segmented for synthesis. Available options:
+  - "immediate" - Synthesizes text immediately without waiting for complete sentences
+  - "never" - Never segments the text, waits for explicit flush or EOS
+  - "bySentence" (default) - Waits for complete sentences before synthesis
+</ParamField>
+
+
+<RequestExample>
+
+```python Python
+import asyncio
+import websockets
+
+class RimeClient:
+    def __init__(self, speaker, api_key):
+        self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=mistv3&audioFormat=mp3"
+        self.auth_headers = {
+            "Authorization": f"Bearer {api_key}"
+        }
+        self.audio_data = b''
+
+    async def send_tokens(self, websocket, message):
+        for token in message:
+            await websocket.send(token)
+
+    async def handle_audio(self, websocket):
+        while True:
+            try:
+                audio = await websocket.recv()
+            except websockets.exceptions.ConnectionClosedOK:
+                break
+            self.audio_data += audio
+
+    async def run(self, message):
+        async with websockets.connect(self.url, additional_headers=self.auth_headers) as websocket:
+            await asyncio.gather(
+                self.send_tokens(websocket, message),
+                self.handle_audio(websocket),
+            )
+
+    def save_audio(self, file_path):
+        with open(file_path, 'wb') as f:
+            f.write(self.audio_data)
+
+message = [
+    "This ",
+    "is ",
+    "a ",
+    "sentence, ",
+    "that ",
+    "will ",
+    "produce ",
+    "audio.",
+    "<EOS>",
+]
+
+client = RimeClient("cove", api_key="YOUR_API_KEY")
+asyncio.run(client.run(message))
+
+client.save_audio("output.mp3")
+```
+
+</RequestExample>

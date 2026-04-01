@@ -155,7 +155,7 @@ import base64
 
 API_KEY = "your-api-key"
 # segment=bySentence is the default, but shown explicitly here for clarity
-URL = "wss://users-ws.rime.ai/ws3?speaker=cove&modelId=mistv2&segment=bySentence"
+URL = "wss://users-ws.rime.ai/ws3?speaker=cove&modelId=mistv3&segment=bySentence"
 
 async def run():
     async with websockets.connect(URL, additional_headers={"Authorization": f"Bearer {API_KEY}"}) as ws:

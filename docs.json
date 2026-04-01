@@ -169,22 +169,22 @@
           {
             "group": "Mist v2 API reference",
             "pages": [
-              "api-reference/endpoint/http",
-              "api-reference/endpoint/sse",
+              "api-reference/mistv2/http",
+              "api-reference/mistv2/sse",
               {
                 "group": "Websocket",
                 "pages": [
-                  "api-reference/endpoint/websockets",
-                  "api-reference/endpoint/websockets-json"
+                  "api-reference/mistv2/websockets",
+                  "api-reference/mistv2/websockets-json"
                 ]
               },
               {
                 "group": "Non-Streaming",
                 "pages": [
-                  "api-reference/endpoint/json-mp3",
-                  "api-reference/endpoint/json-wav",
-                  "api-reference/endpoint/json-ogg",
-                  "api-reference/endpoint/json-mulaw"
+                  "api-reference/mistv2/json-mp3",
+                  "api-reference/mistv2/json-wav",
+                  "api-reference/mistv2/json-ogg",
+                  "api-reference/mistv2/json-mulaw"
                 ]
               }
             ]
@@ -199,7 +199,7 @@
           {
             "group": "Other APIs",
             "pages": [
-              "api-reference/endpoint/oov"
+              "api-reference/mistv2/oov"
             ]
           }
         ]
@@ -257,16 +257,52 @@
   },
   "redirects": [
     {
+      "source": "/api-reference/endpoint/http",
+      "destination": "/api-reference/mistv2/http"
+    },
+    {
+      "source": "/api-reference/endpoint/sse",
+      "destination": "/api-reference/mistv2/sse"
+    },
+    {
+      "source": "/api-reference/endpoint/websockets",
+      "destination": "/api-reference/mistv2/websockets"
+    },
+    {
+      "source": "/api-reference/endpoint/websockets-json",
+      "destination": "/api-reference/mistv2/websockets-json"
+    },
+    {
+      "source": "/api-reference/endpoint/json-mp3",
+      "destination": "/api-reference/mistv2/json-mp3"
+    },
+    {
+      "source": "/api-reference/endpoint/json-wav",
+      "destination": "/api-reference/mistv2/json-wav"
+    },
+    {
+      "source": "/api-reference/endpoint/json-ogg",
+      "destination": "/api-reference/mistv2/json-ogg"
+    },
+    {
+      "source": "/api-reference/endpoint/json-mulaw",
+      "destination": "/api-reference/mistv2/json-mulaw"
+    },
+    {
+      "source": "/api-reference/endpoint/oov",
+      "destination": "/api-reference/mistv2/oov"
+    },
+    {
       "source": "/api-reference/endpoint/streaming-pcm",
-      "destination": "/api-reference/endpoint/http"
+      "destination": "/api-reference/mistv2/http"
     },
     {
       "source": "/api-reference/endpoint/streaming-mp3",
-      "destination": "/api-reference/endpoint/http"
+      "destination": "/api-reference/mistv2/http"
     },
     {
       "source": "/api-reference/endpoint/streaming-mulaw",
-      "destination": "/api-reference/endpoint/http"
+      "destination": "/api-reference/mistv2/http"
     },
     {
       "source": "/api-reference/arcana/streaming",

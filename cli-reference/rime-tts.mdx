@@ -4,7 +4,7 @@ description: "Synthesize text to speech from the command line using the Rime CLI
 icon: "waveform"
 ---
 
-Synthesize text to speech. Supports WAV and MP3 formats. The format is automatically selected based on the model: `mistv2` and `mist` output MP3 while `arcana` and `arcanav2` default to WAV but support MP3 as well. Use `--format` to override.
+Synthesize text to speech. Supports WAV and MP3 formats. The format is automatically selected based on the model: `mist` and `mistv2` output MP3, while `mistv3`, `arcana`, and `arcanav2` default to WAV. Use `--format` to override.
 
 ```bash
 rime tts TEXT --speaker VOICE --model-id MODEL
@@ -17,7 +17,7 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | Flag | Short | Description |
 | ---- | ----- | ----------- |
 | `--speaker` | `-s` | Voice speaker to use (e.g., `astra`, `celeste`, `orion`) |
-| `--model-id` | `-m` | Model ID: `arcana`, `arcanav2`, `mistv2`, or `mist` |
+| `--model-id` | `-m` | Model ID: `arcana`, `arcanav2`, `mistv3`, `mistv2`, or `mist` |
 
 ## Optional flags
 
@@ -40,7 +40,7 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | `--max-tokens` | `1200` | Max output tokens (200–5000) |
 | `--repetition-penalty` | `1.5` | Repetition penalty (1–2) |
 
-## Mist/mistv2 flags
+## Mist flags
 
 | Flag | Description |
 | ---- | ----------- |
@@ -62,6 +62,9 @@ rime tts "Hello world" -s astra -m arcana -o output.wav
 # Pipe audio to stdout
 rime tts "Hello world" -s astra -m arcana -o - > audio.wav
 
+# Use mistv3 (WAV by default)
+rime tts "Hello world" -s peak -m mistv3
+
 # Use mistv2 (requires MP3 format)
 rime tts "Hello world" -s peak -m mistv2 -f mp3
 
@@ -78,6 +81,7 @@ rime tts "Hello world" -s astra -m arcana -o output.wav --json
 | ----- | --------- |
 | `arcana` | `eng`, `ara`, `fra`, `ger`, `heb`, `hin`, `jpn`, `por`, `sin`, `spa`, `tam` (and ISO 639-1 equivalents) |
 | `arcanav2` | `eng`, `spa`, `ger`, `fra`, `hin` (and ISO 639-1 equivalents) |
+| `mistv3` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
 | `mistv2` / `mist` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
 
-<Note>The `mist` and `mistv2` models require `--format mp3`. The CLI returns an error if you omit it.</Note>
+<Note>The `mist` and `mistv2` models require `--format mp3`. The CLI returns an error if you omit it. `mistv3` defaults to WAV and does not require `--format mp3`.</Note>

@@ -27,7 +27,7 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | `--play` | `-p` | `false` | Play audio after synthesis (default behavior when no output is specified) |
 | `--lang` | `-l` | `eng` | Language code (e.g., `eng`, `es`, `fra`). Valid codes depend on model |
 | `--format` | `-f` | -- | Audio format: `wav` or `mp3` (overrides model default) |
-| `--speed-alpha` | -- | `1` | Speed multiplier — must be greater than 0 |
+| `--speed-alpha` | -- | `1` | Speed multiplier. For `mist`/`mistv2`: lower is faster. For `mistv3`/`arcana`: higher is faster |
 | `--sampling-rate` | -- | -- | Output sampling rate in Hz. Arcana: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
 | `--api-url` | -- | -- | API URL (default: `$RIME_API_URL` or `https://users.rime.ai/v1/rime-tts`) |
 

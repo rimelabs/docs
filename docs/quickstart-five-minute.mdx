@@ -260,14 +260,14 @@ Browse all available voices on the [Voices](/docs/voices) page.
 
 ## Custom pronunciation
 
-The Mist models (`mistv3`, `mistv2`) let you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/docs/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
+The `mistv2` model lets you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/docs/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
 
 <CodeGroup>
 ```python Python
 payload = {
     "text": "Welcome to {r1Ym} labs.",
     "speaker": "peak",
-    "modelId": "mistv3",
+    "modelId": "mistv2",
     "phonemizeBetweenBrackets": True
 }
 ```
@@ -276,7 +276,7 @@ payload = {
 const payload = {
     text: "Welcome to {r1Ym} labs.",
     speaker: "peak",
-    modelId: "mistv3",
+    modelId: "mistv2",
     phonemizeBetweenBrackets: true
 };
 ```

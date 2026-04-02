@@ -33,6 +33,16 @@ Set the `Accept` header to one of the following values:
   If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
 </ParamField>
 
+<ParamField body="pauseBetweenBrackets" type="bool" default="false">
+  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds.
+  Example: `Hi. <200> I'd love to have a conversation with you.` adds a 200ms pause. Learn more about [custom pauses](/docs/custom-pauses).
+</ParamField>
+
+<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
+  When set to true, you can specify the phonemes for a word enclosed in curly brackets.
+  Example: `{h'El.o} World` will pronounce "Hello" as expected. Learn more about [custom pronunciation](/docs/custom-pronunciation).
+</ParamField>
+
 <ParamField body="samplingRate" type="int">
   The value, if provided, must be between 4000 and 44100. Default depends on format (see table above).
 </ParamField>

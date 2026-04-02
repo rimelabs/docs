@@ -40,6 +40,14 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | `--max-tokens` | `1200` | Max output tokens (200–5000) |
 | `--repetition-penalty` | `1.5` | Repetition penalty (1–2) |
 
+## mist/mistv2/mistv3 flags
+
+| Flag | Description |
+| ---- | ----------- |
+| `--inline-speed-alpha` | Comma-separated per-segment speed values |
+| `--pause-between-brackets` | Insert pause at bracketed markers |
+| `--phonemize-between-brackets` | Phonemize text in brackets |
+
 ## mist/mistv2 flags
 
 These flags are supported by `mist` and `mistv2` only. They are not supported by `mistv3`.
@@ -47,9 +55,6 @@ These flags are supported by `mist` and `mistv2` only. They are not supported by
 | Flag | Description |
 | ---- | ----------- |
 | `--no-text-normalization` | Disable text normalization |
-| `--pause-between-brackets` | Insert pause at bracketed markers |
-| `--phonemize-between-brackets` | Phonemize text in brackets |
-| `--inline-speed-alpha` | Comma-separated per-segment speed values |
 | `--save-oovs` | Save out-of-vocabulary words |
 
 ## Examples

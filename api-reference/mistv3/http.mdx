@@ -47,6 +47,11 @@ Set the `Accept` header to one of the following values:
   The value, if provided, must be between 4000 and 44100. Default depends on format (see table above).
 </ParamField>
 
+<ParamField body="inlineSpeedAlpha" type="string">
+  Comma-separated list of speed values applied to words in square brackets. Values > 1.0 speed up speech, < 1.0 slow it down.
+  Example: "This is [slow] and [fast]", use "0.5, 3" to make "slow" slower and "fast" faster.
+</ParamField>
+
 <ParamField body="speedAlpha" type="float" default="1.0">
   Adjusts the speed of speech. Higher than 1.0 is faster and lower than 1.0 is slower.
 </ParamField>

@@ -33,6 +33,14 @@ When providing text, `--speaker` and `--model-id` are required. When run without
 | `--max-tokens` | `1200` | Max output tokens (200–5000) |
 | `--repetition-penalty` | `1.5` | Repetition penalty (1–2) |
 
+## Mist/Mist v2/Mist v3 flags
+
+| Flag | Description |
+| ---- | ----------- |
+| `--inline-speed-alpha` | Comma-separated per-segment speed values |
+| `--pause-between-brackets` | Insert pause at bracketed markers |
+| `--phonemize-between-brackets` | Phonemize text in brackets |
+
 ## Mist/Mist v2 flags
 
 These flags are only supported by `mist` and `mistv2`. They are not supported by `mistv3`.
@@ -40,9 +48,6 @@ These flags are only supported by `mist` and `mistv2`. They are not supported by
 | Flag | Description |
 | ---- | ----------- |
 | `--no-text-normalization` | Disable text normalization |
-| `--pause-between-brackets` | Insert pause at bracketed markers |
-| `--phonemize-between-brackets` | Phonemize text in brackets |
-| `--inline-speed-alpha` | Comma-separated per-segment speed values |
 | `--save-oovs` | Save out-of-vocabulary words |
 
 *Defaults apply only when run without arguments. When text is provided, `--speaker` and `--model-id` are required.

@@ -1,0 +1,150 @@
+---
+title: 'Streaming HTTP'
+api: 'POST https://users.rime.ai/v1/rime-tts'
+authMethod: "bearer"
+---
+
+The streaming endpoint returns audio bytes in the format specified by the `Accept` header.
+
+## Audio Formats
+
+Set the `Accept` header to one of the following values:
+
+| Format | Accept Header | Default Sampling Rate | Notes |
+|---|---|---|---|
+| MP3 | `audio/mp3` | 22050 | |
+| PCM | `audio/pcm` | 16000 | Headerless 16-bit little-endian linear PCM. |
+| G.711 μ-law | `audio/x-mulaw` | 8000 | Headerless stream of audio bytes. |
+
+## Variable Parameters
+
+<ParamField body="speaker" type="string" required>
+  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
+</ParamField>
+<ParamField body="text" type="string" required>
+  The text you'd like spoken. Character limit per request is 500 via the API and 1,000 in the dashboard UI.
+</ParamField>
+
+<ParamField body="modelId" type="string" default="mistv3">
+  Set to `mistv3`.
+</ParamField>
+
+<ParamField body="lang" type="string" default="eng">
+  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
+</ParamField>
+
+<ParamField body="pauseBetweenBrackets" type="bool" default="false">
+  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds.
+  Example: `Hi. <200> I'd love to have a conversation with you.` adds a 200ms pause. Learn more about [custom pauses](/docs/custom-pauses).
+</ParamField>
+
+<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
+  When set to true, you can specify the phonemes for a word enclosed in curly brackets.
+  Example: `{h'El.o} World` will pronounce "Hello" as expected. Learn more about [custom pronunciation](/docs/custom-pronunciation).
+</ParamField>
+
+<ParamField body="samplingRate" type="int">
+  The value, if provided, must be between 4000 and 44100. Default depends on format (see table above).
+</ParamField>
+
+<ParamField body="speedAlpha" type="float" default="1.0">
+  Adjusts the speed of speech. Higher than 1.0 is faster and lower than 1.0 is slower.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://users.rime.ai/v1/rime-tts \
+  --header 'Accept: audio/mp3' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --output output.mp3 \
+  --fail \
+  --data '{
+  "text": "Hello from Rime!",
+  "modelId": "mistv3",
+  "speaker": "cove",
+  "lang": "eng",
+  "speedAlpha": 1.0
+}'
+```
+
+```python Python
+import requests
+
+url = "https://users.rime.ai/v1/rime-tts"
+
+payload = {
+    "speaker": "cove",
+    "text": "Hello from Rime!",
+    "modelId": "mistv3",
+    "lang": "eng",
+    "speedAlpha": 1.0
+}
+headers = {
+    "Accept": "audio/mp3",
+    "Authorization": "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json"
+}
+
+with requests.post(url, headers=headers, json=payload, stream=True) as response:
+    response.raise_for_status()
+    with open("output.mp3", "wb") as f:
+        for chunk in response.iter_content(chunk_size=4096):
+            if chunk:
+                f.write(chunk)
+```
+
+```javascript JavaScript
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'audio/mp3',
+    Authorization: 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: '{"speaker":"cove","text":"Hello from Rime!","modelId":"mistv3","lang":"eng","speedAlpha":1.0}'
+};
+
+fetch('https://users.rime.ai/v1/rime-tts', options)
+  .then(response => response.arrayBuffer())
+  .then(buffer => {
+    require("fs").writeFileSync("output.mp3", Buffer.from(buffer));
+    console.log("Audio saved to output.mp3");
+  })
+  .catch(err => console.error(err));
+```
+
+```go Go
+package main
+
+import (
+  "io"
+  "net/http"
+  "os"
+  "strings"
+)
+
+func main() {
+
+  url := "https://users.rime.ai/v1/rime-tts"
+
+  payload := strings.NewReader("{\n  \"speaker\": \"cove\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv3\",\n  \"lang\": \"eng\",\n  \"speedAlpha\": 1.0\n}")
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Accept", "audio/mp3")
+  req.Header.Add("Authorization", "Bearer YOUR_API_KEY")
+  req.Header.Add("Content-Type", "application/json")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := io.ReadAll(res.Body)
+
+  _ = os.WriteFile("output.mp3", body, 0644)
+}
+```
+
+</RequestExample>

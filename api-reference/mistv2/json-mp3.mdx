@@ -1,12 +1,12 @@
 ---
-title: 'μ-law over JSON'
+title: 'MP3 over JSON'
 api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
 ## Fixed Parameters
 
-<ParamField body="audioFormat" type="mulaw" required></ParamField>
+<ParamField body="audioFormat" type="mp3" required></ParamField>
 
 ## Variable Parameters
 
@@ -19,7 +19,7 @@ authMethod: "bearer"
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  Choose `mistv3` for the fastest model with sub-100ms TTFB, or `mistv2` for the previous fast model (default: `mistv2`)
+  Set to `mistv2`.
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
@@ -38,11 +38,15 @@ authMethod: "bearer"
 
 <ParamField body="inlineSpeedAlpha" type="string">
   **mist/mistv2 only.** Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
-  Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
+  Example: For text "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
+</ParamField>
+
+<ParamField body="samplingRate" type="int">
+  The value, if provided, must be between 4000 and 44100. Default: 22050
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Behavior depends on model: for `mist` and `mistv2`, lower than 1.0 is faster and higher than 1.0 is slower. For `mistv3` and `arcana`, higher than 1.0 is faster and lower than 1.0 is slower.
+  Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
 </ParamField>
 
 <ParamField body="noTextNormalization" type="bool" default="false">
@@ -68,11 +72,12 @@ curl --request POST \
   "modelId": "mistv2",
   "speaker": "astra",
   "lang": "eng",
-  "audioFormat": "mulaw",
+  "audioFormat": "mp3",
   "inlineSpeedAlpha": "0.5, 3",
   "noTextNormalization": false,
   "pauseBetweenBrackets": false,
   "phonemizeBetweenBrackets": false,
+  "samplingRate": 22050,
   "saveOovs": false,
   "speedAlpha": 1.0
 }'
@@ -86,13 +91,12 @@ url = "https://users.rime.ai/v1/rime-tts"
 payload = {
     "speaker": "<string>",
     "text": "<string>",
-    "modelId": "mistv2",
+    "modelId": "<string>",
     "lang": "eng",
-    "audioFormat": "mulaw",
+    "audioFormat": "mp3",
+    "samplingRate": 22050,
     "speedAlpha": 1.0,
     "noTextNormalization": False
-    "pauseBetweenBrackets": false,
-    "phonemizeBetweenBrackets": false
 }
 headers = {
     "Accept": "application/json",
@@ -113,7 +117,7 @@ const options = {
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>","lang": "eng","audioFormat": "mulaw","speedAlpha":1.0,"noTextNormalization":false}'
+  body: '{"speaker":"<string>","text":"<string>", "modelId": "<string>", "lang": "eng", "audioFormat": "mp3", "samplingRate":22050,"speedAlpha":1.0,"noTextNormalization":false}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
@@ -135,7 +139,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\":\"eng\",\n \"audioFormat\": \"mulaw\",\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\":\"<string>\",\n  \"lang\":\"eng\",\n \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}",
   CURLOPT_HTTPHEADER => [
     "Accept: application/json",
     "Authorization: Bearer <authorization>",
@@ -169,7 +173,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\: \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"mulaw\",\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"text\": \"<string>\",\n  \"lang\": \"eng\",\n \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
@@ -193,7 +197,7 @@ HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts"
   .header("Accept", "application/json")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"mulaw\",\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
   .asString();
 ```
 </RequestExample>

@@ -1,25 +1,32 @@
 ---
-title: 'MP3 over JSON'
+title: 'Streaming HTTP'
 api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
-## Fixed Parameters
+The streaming endpoint returns audio bytes in the format specified by the `Accept` header.
 
-<ParamField body="audioFormat" type="mp3" required></ParamField>
+## Audio Formats
+
+Set the `Accept` header to one of the following values:
+
+| Format | Accept Header | Default Sampling Rate | Notes |
+|---|---|---|---|
+| MP3 | `audio/mp3` | 22050 | |
+| PCM | `audio/pcm` | 16000 | Headerless 16-bit little-endian linear PCM. |
+| G.711 μ-law | `audio/x-mulaw` | 8000 | Headerless stream of audio bytes. |
 
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
   Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
 </ParamField>
-
 <ParamField body="text" type="string" required>
   The text you'd like spoken. Character limit per request is 500 via the API and 1,000 in the dashboard UI.
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  Choose `mistv3` for the fastest model with sub-100ms TTFB, or `mistv2` for the previous fast model (default: `mistv2`)
+  Set to `mistv2`.
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
@@ -38,15 +45,15 @@ authMethod: "bearer"
 
 <ParamField body="inlineSpeedAlpha" type="string">
   **mist/mistv2 only.** Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
-  Example: For text "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
+  Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
 </ParamField>
 
 <ParamField body="samplingRate" type="int">
-  The value, if provided, must be between 4000 and 44100. Default: 22050
+  The value, if provided, must be between 4000 and 44100. Default depends on format (see table above).
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Behavior depends on model: for `mist` and `mistv2`, lower than 1.0 is faster and higher than 1.0 is slower. For `mistv3` and `arcana`, higher than 1.0 is faster and lower than 1.0 is slower.
+  Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
 </ParamField>
 
 <ParamField body="noTextNormalization" type="bool" default="false">
@@ -59,26 +66,21 @@ authMethod: "bearer"
 </ParamField>
 
 <RequestExample>
+
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
-  --header 'Accept: application/json' \
+  --header 'Accept: audio/mp3' \
   --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --output output.json \
+  --output output.mp3 \
   --fail \
   --data '{
   "text": "Hello from Rime!",
   "modelId": "mistv2",
   "speaker": "astra",
   "lang": "eng",
-  "audioFormat": "mp3",
-  "inlineSpeedAlpha": "0.5, 3",
-  "noTextNormalization": false,
-  "pauseBetweenBrackets": false,
-  "phonemizeBetweenBrackets": false,
   "samplingRate": 22050,
-  "saveOovs": false,
   "speedAlpha": 1.0
 }'
 ```
@@ -89,40 +91,44 @@ import requests
 url = "https://users.rime.ai/v1/rime-tts"
 
 payload = {
-    "speaker": "<string>",
-    "text": "<string>",
-    "modelId": "<string>",
+    "speaker": "astra",
+    "text": "Hello from Rime!",
+    "modelId": "mistv2",
     "lang": "eng",
-    "audioFormat": "mp3",
     "samplingRate": 22050,
-    "speedAlpha": 1.0,
-    "noTextNormalization": False
+    "speedAlpha": 1.0
 }
 headers = {
-    "Accept": "application/json",
-    "Authorization": "Bearer <authorization>",
+    "Accept": "audio/mp3",
+    "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
 }
 
-response = requests.request("POST", url, json=payload, headers=headers)
-
-print(response.text)
+with requests.post(url, headers=headers, json=payload, stream=True) as response:
+    response.raise_for_status()
+    with open("output.mp3", "wb") as f:
+        for chunk in response.iter_content(chunk_size=4096):
+            if chunk:
+                f.write(chunk)
 ```
 
 ```javascript JavaScript
 const options = {
   method: 'POST',
   headers: {
-    Accept: 'application/json',
-    Authorization: 'Bearer <authorization>',
+    Accept: 'audio/mp3',
+    Authorization: 'Bearer YOUR_API_KEY',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>", "modelId": "<string>", "lang": "eng", "audioFormat": "mp3", "samplingRate":22050,"speedAlpha":1.0,"noTextNormalization":false}'
+  body: '{"speaker":"astra","text":"Hello from Rime!","modelId":"mistv2","lang":"eng","samplingRate":22050,"speedAlpha":1.0}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
-  .then(response => response.json())
-  .then(response => console.log(response))
+  .then(response => response.arrayBuffer())
+  .then(buffer => {
+    require("fs").writeFileSync("output.mp3", Buffer.from(buffer));
+    console.log("Audio saved to output.mp3");
+  })
   .catch(err => console.error(err));
 ```
 
@@ -139,10 +145,10 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\":\"<string>\",\n  \"lang\":\"eng\",\n \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv2\",\n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0\n}",
   CURLOPT_HTTPHEADER => [
-    "Accept: application/json",
-    "Authorization: Bearer <authorization>",
+    "Accept: audio/mp3",
+    "Authorization: Bearer YOUR_API_KEY",
     "Content-Type: application/json"
   ],
 ]);
@@ -163,41 +169,39 @@ if ($err) {
 package main
 
 import (
-  "fmt"
-  "strings"
+  "io"
   "net/http"
-  "io/ioutil"
+  "os"
+  "strings"
 )
 
 func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"text\": \"<string>\",\n  \"lang\": \"eng\",\n \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv2\",\n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
-  req.Header.Add("Accept", "application/json")
-  req.Header.Add("Authorization", "Bearer <authorization>")
+  req.Header.Add("Accept", "audio/mp3")
+  req.Header.Add("Authorization", "Bearer YOUR_API_KEY")
   req.Header.Add("Content-Type", "application/json")
 
   res, _ := http.DefaultClient.Do(req)
 
   defer res.Body.Close()
-  body, _ := ioutil.ReadAll(res.Body)
+  body, _ := io.ReadAll(res.Body)
 
-  fmt.Println(res)
-  fmt.Println(string(body))
-
+  _ = os.WriteFile("output.mp3", body, 0644)
 }
 ```
 
 ```java Java
 HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
-  .header("Accept", "application/json")
-  .header("Authorization", "Bearer <authorization>")
+  .header("Accept", "audio/mp3")
+  .header("Authorization", "Bearer YOUR_API_KEY")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"mp3\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
+  .body("{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv2\",\n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0\n}")
   .asString();
 ```
 </RequestExample>

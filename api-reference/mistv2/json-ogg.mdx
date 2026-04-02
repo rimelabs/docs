@@ -1,12 +1,12 @@
 ---
-title: 'Server-sent Events'
+title: 'OGG over JSON'
 api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
-## Fixed Headers
+## Fixed Parameters
 
-<ParamField header="Accept" type="text/eventstream" required></ParamField>
+<ParamField body="audioFormat" type="ogg" required></ParamField>
 
 ## Variable Parameters
 
@@ -16,14 +16,6 @@ authMethod: "bearer"
 
 <ParamField body="text" type="string" required>
   The text you'd like spoken. Character limit per request is 500 via the API and 1,000 in the dashboard UI.
-</ParamField>
-
-<ParamField body="modelId" type="string">
-  Choose `mistv3` for the fastest model with sub-100ms TTFB, or `mistv2` for the previous fast model (default: `mistv2`)
-</ParamField>
-
-<ParamField body="audioFormat" type="string">
-  One of `mp3`, `mulaw`, or `pcm`
 </ParamField>
 
 <ParamField body="lang" type="string" default="eng">
@@ -45,50 +37,42 @@ authMethod: "bearer"
   Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
 </ParamField>
 
-<ParamField body="samplingRate" type="int">
-  The value, if provided, must be between 4000 and 44100. Default: 22050
+<ParamField body="samplingRate" type="int" required>
+  Must be one of `8000`, `12000`, `16000`, or `24000`
+</ParamField>
+
+<ParamField body="modelId" type="string">
+  Set to `mistv2`.
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Behavior depends on model: for `mist` and `mistv2`, lower than 1.0 is faster and higher than 1.0 is slower. For `mistv3` and `arcana`, higher than 1.0 is faster and lower than 1.0 is slower.
+  Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
 </ParamField>
 
 <ParamField body="noTextNormalization" type="bool" default="false">
   **mist/mistv2 only.** Skips text normalization of the input text prior to synthesizing audio. This will reduce latency at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
 
-## Example Output
-
-```
-event: chunk
-data: {"data": "vv+t/7j/sv+8/8j/zv/U/9T/z//P/87/yv/J/8n/0//X/9r/5f/p/+//8f/y//b/8f/x//P/9v/+/wAAAAD3/+3/7v/v//X/+P/0//r/8v/r//D/8P/x/+v/7P/1//D/7//0//b/9//7//r/8//5//7/9//8/wYABwAHAAgADAAKAAEA///8//n/9P/w/+//7P/p/+L/5f/l/+D/6v/s/+//9f/r/+z/8P/u/+//8//t/+j/7//t/9//3//f/97/4P/f/+D/4P/k/+P/3v/f/9//4//p/+b/5f/l/9z/4f/p/+H/5//m/+H/8P/x/+7/9f/9//z/8//2//r/9v/w/+//8f/p/+P/4f/d/9z/2//Z/9r/3P/e/9z/4P/k/+L/4//f/9z/2f/a/9v/0v/N/8n/yf/J/8D/tv+z/7f/s/+x/7f/sv+x/8D/xP/C/8b/yv/S/9H/xf/D/8n/zv/S/8//0P/X/9D/z//X/9T/0P/L/8X/yP/S/9X/0f/L/83/1f/b/+D/2//W/9X/0P/U/9j/0P/U/9n/2v/i/+v/8v/s/9z/2f/U/8f/yP/M/8n/yf/P/9D/yf/Q/8r/xP/Q/8v/zf/T/9L/2v/Z/9z/5v/o/+j/6f/o/+b/5//o//H/+P/z//L/7//o/+T/5P/m/+3/7//v//P/6//p//P/8P/p/+X/4//j/+X/6P/l/+X/7P/o/9//5P/h/9n/2//b/93/5f/g/9r/0//L/8//yf++/7//vP+8/8H/wf/C/8H/v/+6/7T/sf+u/63/qv+t/6//q/+t/6v/p/+l/6T/pf+t/7L/r/+u/7f/vf+7/7r/vf+6/7v/u//A/83/yf/I/w=="}
-
-event: chunk
-data: {"data": "zP/J/8P/uP+8/7r/tf+//7j/tP+3/7X/uv+//8H/x//F/8L/yf/J/8n/y//H/8P/vf+7/73/xv/J/8r/z//N/8//yf/D/8P/xf/M/8z/yP/G/8H/vP+//8X/xf/J/8//0P/P/9T/2P/Y/9v/2f/Z/9//2v/d/+H/3f/d/9v/0//U/9j/1v/Z/+L/6v/s/+7/6v/g/9v/1//P/8n/x//I/8f/v/+3/7X/uP+7/7T/tP+6/7T/sP+6/8P/zP/Q/8z/z//T/9j/4f/c/+D/5v/d/+X/7v/o/+n/6v/o/+j/6P/i/9z/2//f/9z/3P/e/9j/2f/g/+z/7v/q/+n/5v/r//L/8v/n/9z/5P/u/+3/6f/p/+//7//o/+r/9P/v//H/+P/t/+//9f/2//T/8P/1//X/9f/+/wcABAAIABIAFAAYABcAEwAYABgAGwAlACgAKAAoACQAJAAnACYAJwAoACAAGwAiACYAKQArACsALwAuACkAKwAqACkAJQAXABcAGAAQABIAGAAaABgAHgAlACIAJAAjACUAKwAkACEAJAAjACYAKwAzADUAMAAyADgAMwArAC8AMgA0ADgAOAA6ADYAPABCAEEARABHAEQAQwBDAD8APQBDAEUARgBDADsAPgBBADgAPABDAD4ARQBMAEkARwBCAEIAQwBFAEcAQABCAEcAPgBBAEYAQwA7ADYAPQBDAEcARABEAEgARwBOAE0ARwBOAE0ASABEADgANQA2ADoAQAA5ADIANQA0ADUAOQA5ADwAQgBDAEIARQBGAEIAPgA9AD4AOwA7ADsAQwBJAEYAVQBaAFUAUwBNAFIAVgBQAE8AUgBYAFQATQBQAA=="}
-
-event: timestamps
-data: {"word_timestamps": {"words": ["over", "the", "last", "six", "months", ",", "there", "has", "been", "a", "lot", "of", "talk", "about", "the", "future", "of", "theatrical", "exhibition"], "start": [0, 0.624, 0.816, 1.12, 1.52, 2.08, 2.3, 2.496, 2.7, 2.896, 3.024, 3.232, 3.408, 3.664, 4.0, 4.192, 4.608, 4.768, 5.456], "end": [0.624, 0.816, 1.12, 1.52, 2.08, 2.304, 2.496, 2.704, 2.896, 3.024, 3.232, 3.408, 3.664, 4.0, 4.192, 4.608, 4.768, 5.456, 6.672]}}
-
-event: done
-data: {"done": true}
-
-```
-
+<ParamField body="saveOovs" type="bool" default="false">
+  **mist/mistv2 only.** If set to `true`, Rime shall save any currently OOV (out-of-vocabulary) words encountered in `text`, and save them for the User or Team to review on the
+  <a href="https://app.rime.ai/oov/">Speech QA dashboard</a>. <b>Note:</b> It may take up to 15 minutes for OOV words to appear on your dashboard.
+</ParamField>
 
 <RequestExample>
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
-  --header 'Accept: text/event-stream' \
+  --header 'Accept: application/json' \
   --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
-  --output output.txt \
+  --output output.json \
   --fail \
   --data '{
   "text": "Hello from Rime!",
   "modelId": "mistv2",
   "speaker": "astra",
   "lang": "eng",
+  "audioFormat": "ogg",
   "inlineSpeedAlpha": "0.5, 3",
   "noTextNormalization": false,
   "pauseBetweenBrackets": false,
@@ -107,8 +91,9 @@ url = "https://users.rime.ai/v1/rime-tts"
 payload = {
     "speaker": "<string>",
     "text": "<string>",
-    "modelId": "<string>",
+    "modelId": "mistv2",
     "lang": "eng",
+    "audioFormat": "ogg",
     "samplingRate": 22050,
     "speedAlpha": 1.0,
     "noTextNormalization": False,
@@ -116,22 +101,12 @@ payload = {
     "phonemizeBetweenBrackets": false
 }
 headers = {
-    "Accept": "text/eventstream",
+    "Accept": "application/json",
     "Authorization": "Bearer <authorization>",
     "Content-Type": "application/json"
 }
 
-# Use stream=True to handle streaming response
-response = requests.request("POST", url, json=payload, headers=headers, stream=True)
-
-# Check if the request was successful
-if response.status_code == 200:
-    with open("audio_output.mp3", "wb") as f:
-        for chunk in response.iter_content(chunk_size=1024):
-            if chunk:
-                f.write(chunk)
-else:
-    print("Error:", response.status_code)
+response = requests.request("POST", url, json=payload, headers=headers)
 
 print(response.text)
 ```
@@ -140,15 +115,15 @@ print(response.text)
 const options = {
   method: 'POST',
   headers: {
-    Accept: 'text/eventstream',
+    Accept: 'application/json',
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>","lang": "eng", "samplingRate":22050,"speedAlpha":1.0,"noTextNormalization":false}'
+  body: '{"speaker":"<string>","text":"<string>","modelId":"<string>", "lang": "eng", "audioFormat": "ogg","samplingRate":22050,"speedAlpha":1.0,"noTextNormalization":false}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
-  .then(response => response.text())
+  .then(response => response.json())
   .then(response => console.log(response))
   .catch(err => console.error(err));
 ```
@@ -166,9 +141,9 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\":\"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\":\"eng\",\n  \"audioFormat\": \"ogg\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}",
   CURLOPT_HTTPHEADER => [
-    "Accept: text/eventstream",
+    "Accept: application/json",
     "Authorization: Bearer <authorization>",
     "Content-Type: application/json"
   ],
@@ -200,11 +175,11 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\: \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"ogg\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
-  req.Header.Add("Accept", "text/eventstream")
+  req.Header.Add("Accept", "application/json")
   req.Header.Add("Authorization", "Bearer <authorization>")
   req.Header.Add("Content-Type", "application/json")
 
@@ -221,10 +196,10 @@ func main() {
 
 ```java Java
 HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
-  .header("Accept", "text/eventstream")
+  .header("Accept", "application/json")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
+  .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"ogg\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
   .asString();
 ```
 </RequestExample>

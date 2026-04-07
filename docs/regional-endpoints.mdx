@@ -1,0 +1,33 @@
+---
+title: Regional endpoints
+icon: globe
+---
+
+Rime provides regional API endpoints so you can route requests to the data center closest to your application's deployment, reducing network latency.
+
+## HTTP endpoints
+
+Use these endpoints for standard HTTP and SSE requests:
+
+| Endpoint | Region |
+| -------- | ------ |
+| `https://users-west.rime.ai` | US West (us-west-2) |
+| `https://users-east.rime.ai` | US East (us-east-1) |
+
+## WebSocket endpoints
+
+Use these endpoints for real-time streaming over WebSocket:
+
+| Endpoint | Region |
+| -------- | ------ |
+| `wss://users-ws.rime.ai/ws3` | US West (us-west-2) |
+| `wss://users-east-ws.rime.ai/ws3` | US East (us-east-1) |
+
+## Choosing a region
+
+Choose the endpoint in the region closest to where your application is deployed. For example:
+
+- If your server runs in AWS `us-west-2`, use `users-west.rime.ai` / `users-ws.rime.ai`.
+- If your server runs in AWS `us-east-1`, use `users-east.rime.ai` / `users-east-ws.rime.ai`.
+
+<Tip>Use the [`rime speedtest`](/cli-reference/rime-monitoring) command to measure TTFB against each endpoint from your machine.</Tip>

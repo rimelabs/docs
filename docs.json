@@ -39,6 +39,7 @@
           {
             "group": "Getting started",
             "pages": [
+              "docs/regional-endpoints",
               "docs/quickstart-five-minute",
               "docs/quickstart-livekit",
               "docs/quickstart-cli"

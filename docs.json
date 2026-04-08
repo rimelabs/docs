@@ -147,21 +147,11 @@
             "group": "Mist v3 API reference",
             "pages": [
               "api-reference/mistv3/http",
-              "api-reference/mistv3/sse",
               {
                 "group": "Websocket",
                 "pages": [
                   "api-reference/mistv3/websockets",
                   "api-reference/mistv3/websockets-json"
-                ]
-              },
-              {
-                "group": "Non-Streaming",
-                "pages": [
-                  "api-reference/mistv3/json-mp3",
-                  "api-reference/mistv3/json-wav",
-                  "api-reference/mistv3/json-ogg",
-                  "api-reference/mistv3/json-mulaw"
                 ]
               }
             ]

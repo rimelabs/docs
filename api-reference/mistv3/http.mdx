@@ -33,20 +33,17 @@ Set the `Accept` header to one of the following values:
   Set to `mistv3`.
 </ParamField>
 
-<ParamField body="samplingRate" type="int" default="24000">
+<ParamField body="samplingRate" type="number" default="24000">
   The sampling rate (Hz).
-
-  * **On-cloud**: Accepted values: 8000, 16000, 22050, 24000, 44100, 48000, 96000. Anything above 24000 is up sampling.
-  * **On-prem**: Any value is accepted.
 </ParamField>
 
-<ParamField body="timeScaleFactor" type="float" default="1">
+<ParamField body="timeScaleFactor" type="number" default="1">
   The time scaling factor.
 
   A value below 1 slows down the audio, a value above 1 speeds up the audio.
 </ParamField>
 
-<ParamField body="lang" type="string" default="eng">
+<ParamField body="lang" type="string" default="en">
   If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
 </ParamField>
 
@@ -79,9 +76,8 @@ curl --request POST \
   "text": "Hello from Rime!",
   "modelId": "mistv3",
   "speaker": "cove",
-  "lang": "eng",
-  "samplingRate": 24000,
-  "speedAlpha": 1
+  "lang": "en",
+  "samplingRate": 24000
 }'
 ```
 

@@ -165,7 +165,7 @@ The Mist v3 images can be found at `us-docker.pkg.dev/rime-labs/mist/v3/omni:<ta
 
 The latest image version is:
 
-* `us-docker.pkg.dev/rime-labs/api/service:20260407`
+* `us-docker.pkg.dev/rime-labs/api/service:20260424`
 
 ## Docker Compose configuration
 
@@ -258,6 +258,62 @@ ARCANA_ARA_MODEL_URL
 ```
 
 The API will route to these model backends based on the request parameter <a href="https://docs.rime.ai/api-reference/arcana/streaming-mp3#param-lang">lang</a>.
+
+### Authentication configuration
+
+By default, callers must pass their Rime API key in every request via the `Authorization: Bearer <key>` header. Two additional environment variables let you configure authentication at the deployment level instead.
+
+#### Pre-configuring the API key (`RIME_API_KEY`)
+
+If you set `RIME_API_KEY`, the API service will use it to authenticate with the Rime license server automatically, and callers do not need to include an API key in their requests.
+
+You can supply it as an environment variable:
+
+```yaml compose.yml
+environment:
+  - MODEL_URL=http://model:8080/invocations
+  - RIME_API_KEY=<your-rime-api-key>
+```
+
+Or mount it as a secret file at `/secrets/rime_api_key` inside the container:
+
+```yaml compose.yml
+services:
+  api:
+    image: us-docker.pkg.dev/rime-labs/api/service:<tag>
+    environment:
+      - MODEL_URL=http://model:8080/invocations
+    volumes:
+      - /run/secrets/rime_api_key:/secrets/rime_api_key:ro
+```
+
+When neither is provided, the per-request `Authorization` header pathway remains active as normal.
+
+#### Alternate API key header (`API_KEY_HEADER`)
+
+On platforms that intercept the `Authorization` header, set `API_KEY_HEADER` to the name of an alternate header that callers will use to pass their Rime API key:
+
+```yaml compose.yml
+environment:
+  - MODEL_URL=http://model:8080/invocations
+  - API_KEY_HEADER=x-my-platform-rime-api-key
+```
+
+Callers then authenticate with:
+
+```bash
+curl -H "x-my-platform-rime-api-key: <your-rime-api-key>" ...
+```
+
+#### Platform API key (`PLATFORM_API_KEY`)
+
+On platforms that require authenticated inter-container requests, set `PLATFORM_API_KEY` so the API service can reach the model backend. It can also be mounted as a secret at `/secrets/platform_api_key`:
+
+```yaml compose.yml
+environment:
+  - MODEL_URL=http://model:8080/invocations
+  - PLATFORM_API_KEY=<your-platform-api-key>
+```
 
 ### Start Docker Compose
 

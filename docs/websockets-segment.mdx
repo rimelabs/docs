@@ -66,6 +66,7 @@ Once flushed, Rime synthesizes the entire accumulated buffer as a single utteran
 - Synthesizing audio whenever a `flush` is received.
 - Queuing the buffer for synthesis if the previous utterance is still being produced.
 - Never synthesizing mid-stream without your explicit instruction.
+- Sending a `done` event after all audio for each `flush` has been delivered. Each `flush` produces exactly one `done`. `eos` also emits `done` for any content remaining in the buffer.
 
 ### Example
 
@@ -136,6 +137,7 @@ Rime watches the incoming token stream for sentence-ending punctuation: `.`, `?`
 - Accumulating tokens until a sentence boundary is detected.
 - Synthesizing the buffer at that boundary, **only if no audio is currently being produced**.
 - Using heuristics to determine whether a given punctuation mark constitutes a sentence end.
+- Sending a `done` event once per synthesis run, after the last segment has been delivered and the text buffer is empty. Intermediate sentence boundaries within a run do **not** emit `done`.
 
 ### When to use this
 
@@ -201,6 +203,7 @@ Each time Rime receives a text message and the synthesis pipeline is idle, it sy
 
 - Synthesizing immediately upon receiving text when the pipeline is idle.
 - Accumulating tokens while synthesis is active, then synthesizing the full buffer once idle again.
+- Sending a `done` event once per synthesis run, after the last segment has been delivered and the buffer is empty.
 
 ### When to use this
 

@@ -99,6 +99,19 @@ type TimestampsEvent = {
 }
 ```
 
+#### Done
+
+After the last audio chunk for a synthesis batch has been sent, the server emits a `done` event. This signals that the current synthesis is fully complete. If the client sends more text and triggers further synthesis, another `done` will follow.
+
+```typescript
+type DoneEvent = {
+  type: "done",
+  contextId: string | null,
+}
+```
+
+When exactly `done` fires depends on the `segment` setting. See [Segmentation & Behavior Settings](/docs/websockets-segment) for full details.
+
 #### Error
 
 In the event of a malformed or unexpected input, the server will immediately respond with an error message. The server will _not_ close the connection, and will still accept subsequent well-formed messages.

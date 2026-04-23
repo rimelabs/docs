@@ -135,11 +135,32 @@ Discards the accumulated text buffer without synthesizing it. Useful when the us
 
 ### `eos` (end of stream)
 
-Synthesizes whatever remains in the buffer, then immediately closes the connection.
+Synthesizes whatever remains in the buffer, sends a `done` event, then immediately closes the connection.
 
 ```json
 { "operation": "eos" }
 ```
+
+---
+
+## Synthesis completion (`done`)
+
+After all audio for a synthesis batch has been sent, the server emits a `done` event. This is the signal that the current utterance is fully delivered. If the client triggers further synthesis, another `done` will follow.
+
+```typescript
+type DoneEvent = {
+  type: "done",
+  contextId: string | null,
+}
+```
+
+`done` fires at different points depending on the `segment` setting:
+
+- **`segment=never`** — fires once per `flush`, after all audio for that flush has been sent. `eos` also fires `done` for any content remaining in the buffer.
+- **`segment=bySentence` / `segment=immediate`** — fires once per synthesis run, after the last segment completes and the buffer is empty. Intermediate sentence boundaries do not emit `done`.
+- **`eos` (all modes)** — always emits `done` before closing the connection.
+
+See [Segmentation & Behavior Settings](/docs/websockets-segment) for details on each mode.
 
 ---
 

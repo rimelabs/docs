@@ -7,6 +7,14 @@ icon: list
 
 <Tip>Subscribe to the [RSS feed](https://docs.rime.ai/docs/changelog/rss.xml) to get notified of new releases.</Tip>
 
+<Update label="2026-04-24">
+* API on-prem image `20260424`:
+  * New environment variables for authentication configuration:
+    * `RIME_API_KEY`: pre-configure the API key at the deployment level so callers don't need to include it in each request. Can also be mounted as a secret file at `/secrets/rime_api_key`.
+    * `API_KEY_HEADER`: specify an alternate header name for platforms that intercept the `Authorization` header.
+    * `PLATFORM_API_KEY`: supply a platform API key for authenticated inter-container requests. Can also be mounted as a secret file at `/secrets/platform_api_key`.
+</Update>
+
 <Update label="2026-04-20">
 * Arcana V2, Arcana V3 and Mist V3 release `20260420`.
 * General performance improvements and bug fixes.
@@ -19,7 +27,6 @@ icon: list
 * Mist v3 release `20260404`:
   * Reached general availability.
 * General performance improvements across the inference stack for all models.
-</Update>
 
 <Update label="2026-04-07">
 * API on-prem image `20260407`:

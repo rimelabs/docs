@@ -1,0 +1,255 @@
+---
+title: "Custom pronunciations"
+description: "Manage your billable's custom pronunciations — the runtime-rewrite table the TTS plugins load to override how text is spoken."
+---
+
+A **custom pronunciation** pairs an input text (case preserved) with a Rime-alphabet phoneme string. The TTS plugins load the full set at connect time and rewrite matching text before synthesis. Use these to teach the engine to speak drug names, brand names, jargon, or non-canonical literals like `"AT&T"`.
+
+All endpoints require an API key passed as `Authorization: Bearer YOUR_API_KEY`. The base host is `https://optimize.rime.ai`.
+
+<Note>
+  Custom pronunciations take effect on Mist, Mist v2, and Mist v3. Arcana does not consume the bracket-escape phoneme syntax that custom pronunciations rewrite into; under Arcana the text is rewritten but the model falls back to its own pronunciation.
+</Note>
+
+## `GET /speech-qa/custom-pronunciations`
+
+Fetch every custom pronunciation registered for the authenticated billable. The response is shaped for direct consumption by the LiveKit and Pipecat plugins, which load it once at connect time and apply the rewrites in their text-preprocessing pipeline.
+
+### Response
+
+<ResponseField name="default" type="object">
+  Map of `inputText` → Rime-alphabet phoneme string. Iteration order is by `inputText` ascending.
+</ResponseField>
+
+<ResponseField name="vocabs" type="object">
+  Per-vocab overrides. Empty object.
+</ResponseField>
+
+```json
+{
+  "default": {
+    "AT&T": "1ey t1iy 1ey t1iy",
+    "Lisinopril": "l1ai s1i n0e p r0i l"
+  },
+  "vocabs": {}
+}
+```
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url https://optimize.rime.ai/speech-qa/custom-pronunciations \
+  --header 'Authorization: Bearer your_api_key_here'
+```
+
+```python Python
+import requests
+
+r = requests.get(
+    "https://optimize.rime.ai/speech-qa/custom-pronunciations",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/custom-pronunciations",
+  { headers: { Authorization: "Bearer your_api_key_here" } },
+);
+console.log(await r.json());
+```
+
+</RequestExample>
+
+## `POST /speech-qa/custom-pronunciations`
+
+Register a new custom pronunciation. Input text is case-preserved; phrases and non-canonical literals are allowed.
+
+### Body
+
+<ParamField body="inputText" type="string" required>
+  The text the engine should rewrite. Non-empty after trimming. Case is preserved.
+</ParamField>
+
+<ParamField body="pronunciation" type="string" required>
+  Rime-alphabet phoneme string. Non-empty after trimming.
+</ParamField>
+
+<ParamField body="customerContext" type="string | null">
+  Optional free-text note describing why this pronunciation exists.
+</ParamField>
+
+### Response
+
+The created row.
+
+<ResponseField name="id" type="string">UUID.</ResponseField>
+<ResponseField name="inputText" type="string">The text exactly as submitted.</ResponseField>
+<ResponseField name="pronunciation" type="string">Rime-alphabet phoneme string.</ResponseField>
+<ResponseField name="customerContext" type="string | null">The note, or `null`.</ResponseField>
+<ResponseField name="createdAt" type="string">ISO-8601 timestamp.</ResponseField>
+<ResponseField name="updatedAt" type="string">ISO-8601 timestamp.</ResponseField>
+
+A `409` is returned if a pronunciation for this `inputText` already exists. Input text is immutable — to change the text, delete the existing entry and create a new one.
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://optimize.rime.ai/speech-qa/custom-pronunciations \
+  --header 'Authorization: Bearer your_api_key_here' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "inputText": "Lisinopril",
+    "pronunciation": "l1ai s1i n0e p r0i l",
+    "customerContext": "drug name"
+  }'
+```
+
+```python Python
+import requests
+
+r = requests.post(
+    "https://optimize.rime.ai/speech-qa/custom-pronunciations",
+    headers={"Authorization": "Bearer your_api_key_here"},
+    json={
+        "inputText": "Lisinopril",
+        "pronunciation": "l1ai s1i n0e p r0i l",
+        "customerContext": "drug name",
+    },
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/custom-pronunciations",
+  {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer your_api_key_here",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inputText: "Lisinopril",
+      pronunciation: "l1ai s1i n0e p r0i l",
+      customerContext: "drug name",
+    }),
+  },
+);
+console.log(await r.json());
+```
+
+</RequestExample>
+
+## `PUT /speech-qa/custom-pronunciations/:id`
+
+Replace an existing pronunciation row. PUT semantics — the row is replaced wholesale.
+
+### Body
+
+<ParamField body="pronunciation" type="string">
+  New Rime-alphabet phoneme string. Optional in the request, but the existing pronunciation is preserved when omitted.
+</ParamField>
+
+<ParamField body="customerContext" type="string | null">
+  New customer note. Omit to leave unchanged. Pass `null` to clear.
+</ParamField>
+
+### Response
+
+The updated row, same shape as `POST`.
+
+Returns `404` if the row does not exist or belongs to a different billable.
+
+<RequestExample>
+
+```bash cURL
+curl --request PUT \
+  --url https://optimize.rime.ai/speech-qa/custom-pronunciations/8c1f4a92-3d6e-4b5a-9e7c-1a2b3c4d5e6f \
+  --header 'Authorization: Bearer your_api_key_here' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "pronunciation": "l1ai s1i n0e p r0i l",
+    "customerContext": "antihypertensive"
+  }'
+```
+
+```python Python
+import requests
+
+r = requests.put(
+    "https://optimize.rime.ai/speech-qa/custom-pronunciations/8c1f4a92-3d6e-4b5a-9e7c-1a2b3c4d5e6f",
+    headers={"Authorization": "Bearer your_api_key_here"},
+    json={
+        "pronunciation": "l1ai s1i n0e p r0i l",
+        "customerContext": "antihypertensive",
+    },
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/custom-pronunciations/8c1f4a92-3d6e-4b5a-9e7c-1a2b3c4d5e6f",
+  {
+    method: "PUT",
+    headers: {
+      Authorization: "Bearer your_api_key_here",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      pronunciation: "l1ai s1i n0e p r0i l",
+      customerContext: "antihypertensive",
+    }),
+  },
+);
+console.log(await r.json());
+```
+
+</RequestExample>
+
+## `DELETE /speech-qa/custom-pronunciations/:id`
+
+Remove a custom pronunciation by id. Returns `{ id }` on success, or `404` if the row does not exist.
+
+<Tip>
+  Clients that want delete to be idempotent can treat `404` as success — the desired end state ("this entry does not exist") is satisfied either way. The Rime CLI does this in `rime pronunciations remove`.
+</Tip>
+
+<RequestExample>
+
+```bash cURL
+curl --request DELETE \
+  --url https://optimize.rime.ai/speech-qa/custom-pronunciations/8c1f4a92-3d6e-4b5a-9e7c-1a2b3c4d5e6f \
+  --header 'Authorization: Bearer your_api_key_here'
+```
+
+```python Python
+import requests
+
+r = requests.delete(
+    "https://optimize.rime.ai/speech-qa/custom-pronunciations/8c1f4a92-3d6e-4b5a-9e7c-1a2b3c4d5e6f",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/custom-pronunciations/8c1f4a92-3d6e-4b5a-9e7c-1a2b3c4d5e6f",
+  {
+    method: "DELETE",
+    headers: { Authorization: "Bearer your_api_key_here" },
+  },
+);
+console.log(await r.json());
+```
+
+</RequestExample>

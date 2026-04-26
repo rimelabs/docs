@@ -1,0 +1,283 @@
+---
+title: "Submissions"
+description: "Submit text for pronunciation-dictionary coverage analysis, list past submissions, inspect per-word detail, and request review of encountered words."
+---
+
+A **submission** is the unit of text you send to the Speech QA API for coverage analysis. The server lowercases and tokenizes the text, partitions each unique token into in-lexicon vs. out-of-vocabulary, persists the partition as a history row, and accumulates any new out-of-vocabulary words against your billable for review.
+
+All endpoints require an API key passed as `Authorization: Bearer YOUR_API_KEY`. The base host is `https://optimize.rime.ai`.
+
+## `POST /speech-qa/submissions`
+
+Submit text. Creates a new submission record and returns the per-word partition synchronously. LLM-augmented IPA / Rime-phoneme suggestions are filled in asynchronously after the response.
+
+### Body
+
+<ParamField body="rawText" type="string" required>
+  The text to analyze. The server tokenizes on word boundaries and lowercases each token before lookup.
+</ParamField>
+
+<ParamField body="name" type="string | null">
+  Optional display name for the submission. Pass `null` or omit to leave unnamed.
+</ParamField>
+
+<ParamField body="customerContext" type="string | null">
+  Optional free-text note (e.g. the source of the text, the campaign it came from).
+</ParamField>
+
+### Response
+
+<ResponseField name="submissionId" type="string">UUID of the new submission.</ResponseField>
+<ResponseField name="shareToken" type="string">Opaque token identifying the submission for share links. Equal to `submissionId`.</ResponseField>
+<ResponseField name="name" type="string | null">Display name, or `null` if unnamed.</ResponseField>
+<ResponseField name="rawText" type="string">The text exactly as submitted.</ResponseField>
+<ResponseField name="createdAt" type="string">ISO-8601 timestamp.</ResponseField>
+<ResponseField name="lexiconVersionSha" type="string | null">SHA of the lexicon version used to evaluate this submission.</ResponseField>
+<ResponseField name="fingerprint" type="object">
+  `{ lexicon_md5, homograph_md5, acronym_md5 }` — the per-file md5 trio for the lexicon version.
+</ResponseField>
+<ResponseField name="totalTokenCount" type="number">Total tokens in `rawText` (including duplicates).</ResponseField>
+<ResponseField name="uniqueTokenCount" type="number">Distinct tokens after lowercasing.</ResponseField>
+<ResponseField name="oovTokenCount" type="number">Distinct tokens that were not in the dictionary.</ResponseField>
+<ResponseField name="words" type="array">
+  Per-word detail. Each entry: `{ word, inLexicon, occurrenceCount, status, pronunciation, speechQaWordId, llmSuggestion }`. `pronunciation` is the dictionary form when present. `llmSuggestion` is `null` at submit time and populated by the augmentation worker; when present it has shape `{ ipa, rime, confidence }` (any field may be `null`).
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://optimize.rime.ai/speech-qa/submissions \
+  --header 'Authorization: Bearer your_api_key_here' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "rawText": "Lisinopril is prescribed for hypertension.",
+    "name": "cardiology"
+  }'
+```
+
+```python Python
+import requests
+
+r = requests.post(
+    "https://optimize.rime.ai/speech-qa/submissions",
+    headers={"Authorization": "Bearer your_api_key_here"},
+    json={
+        "rawText": "Lisinopril is prescribed for hypertension.",
+        "name": "cardiology",
+    },
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch("https://optimize.rime.ai/speech-qa/submissions", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer your_api_key_here",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    rawText: "Lisinopril is prescribed for hypertension.",
+    name: "cardiology",
+  }),
+});
+console.log(await r.json());
+```
+
+</RequestExample>
+
+## `GET /speech-qa/submissions`
+
+List recent submissions for the authenticated billable, newest first.
+
+### Query parameters
+
+<ParamField query="since" type="string">
+  ISO-8601 timestamp. Only submissions created at or after this time.
+</ParamField>
+
+<ParamField query="limit" type="number" default="50">
+  Maximum rows to return. Server cap: 200.
+</ParamField>
+
+### Response
+
+<ResponseField name="submissions" type="array">
+  Each entry: `{ id, name, rawText, createdAt, totalTokenCount, uniqueTokenCount, oovTokenCount, shareToken }`.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url 'https://optimize.rime.ai/speech-qa/submissions?limit=10' \
+  --header 'Authorization: Bearer your_api_key_here'
+```
+
+```python Python
+import requests
+
+r = requests.get(
+    "https://optimize.rime.ai/speech-qa/submissions",
+    headers={"Authorization": "Bearer your_api_key_here"},
+    params={"limit": 10},
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/submissions?limit=10",
+  { headers: { Authorization: "Bearer your_api_key_here" } },
+);
+console.log(await r.json());
+```
+
+</RequestExample>
+
+## `GET /speech-qa/submissions/:id`
+
+Fetch the full detail of a single submission, including per-word status and any LLM-augmented suggestions that have landed since submit time.
+
+The `lexiconVersionSha` and `fingerprint` fields reflect the **current** lexicon. A word that was out-of-vocabulary at submit time may have since been added to the dictionary; the per-word `inLexicon` and `pronunciation` fields are evaluated against the current lexicon so reviewers see today's state.
+
+### Response
+
+Identical shape to `POST /speech-qa/submissions`. See [the response fields above](#response).
+
+Returns `404` if the submission does not exist or belongs to a different billable.
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47 \
+  --header 'Authorization: Bearer your_api_key_here'
+```
+
+```python Python
+import requests
+
+r = requests.get(
+    "https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47",
+  { headers: { Authorization: "Bearer your_api_key_here" } },
+);
+console.log(await r.json());
+```
+
+</RequestExample>
+
+## `PATCH /speech-qa/submissions/:id`
+
+Set or clear a submission's display name.
+
+### Body
+
+<ParamField body="name" type="string | null" required>
+  New display name. Pass `null` to clear the existing name. The body must explicitly include the `name` field.
+</ParamField>
+
+### Response
+
+<ResponseField name="id" type="string">Submission UUID.</ResponseField>
+<ResponseField name="name" type="string | null">The newly set name (or `null` if cleared).</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+# Set a name
+curl --request PATCH \
+  --url https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47 \
+  --header 'Authorization: Bearer your_api_key_here' \
+  --header 'Content-Type: application/json' \
+  --data '{ "name": "cardiology" }'
+
+# Clear the name
+curl --request PATCH \
+  --url https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47 \
+  --header 'Authorization: Bearer your_api_key_here' \
+  --header 'Content-Type: application/json' \
+  --data '{ "name": null }'
+```
+
+```python Python
+import requests
+
+r = requests.patch(
+    "https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47",
+    headers={"Authorization": "Bearer your_api_key_here"},
+    json={"name": "cardiology"},
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47",
+  {
+    method: "PATCH",
+    headers: {
+      Authorization: "Bearer your_api_key_here",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: "cardiology" }),
+  },
+);
+console.log(await r.json());
+```
+
+</RequestExample>
+
+## `POST /speech-qa/submissions/:id/request-review`
+
+Promote every word in this submission whose status is still `encountered` to `in_review`. Words that are already past `encountered` (or that belong to a different billable) are skipped.
+
+### Response
+
+<ResponseField name="submissionId" type="string">Submission UUID.</ResponseField>
+<ResponseField name="promotedCount" type="number">Number of words flipped to `in_review` by this call.</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47/request-review \
+  --header 'Authorization: Bearer your_api_key_here'
+```
+
+```python Python
+import requests
+
+r = requests.post(
+    "https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47/request-review",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/submissions/9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47/request-review",
+  {
+    method: "POST",
+    headers: { Authorization: "Bearer your_api_key_here" },
+  },
+);
+console.log(await r.json());
+```
+
+</RequestExample>

@@ -1,0 +1,81 @@
+---
+title: "Lexicon info"
+description: "Fetch the canonical fingerprint of the current Rime pronunciation dictionary — the SHA, per-file md5 trio, and merge timestamp."
+---
+
+The pronunciation dictionary is versioned. Each merged release of the dictionary records a SHA, a per-file md5 trio (lexicon, homograph, acronym), and the timestamp at which the version was merged. `GET /speech-qa/lexicon-info` returns the most recent entry — the canonical "what's live in the cloud right now" fingerprint.
+
+Use this endpoint to verify that a pronunciation you submitted has been merged into the dictionary, or to detect drift between two snapshots taken at different times.
+
+The endpoint requires an API key passed as `Authorization: Bearer YOUR_API_KEY`. The base host is `https://optimize.rime.ai`.
+
+## `GET /speech-qa/lexicon-info`
+
+Fetch the current canonical lexicon version.
+
+### Response
+
+<ResponseField name="sha" type="string">
+  The SHA of the merged lexicon version. A short, compact identifier suitable for display and equality comparison.
+</ResponseField>
+
+<ResponseField name="alphabet" type="string">
+  Always `"rime"` — the phoneme alphabet this version is encoded in.
+</ResponseField>
+
+<ResponseField name="lexicon_md5" type="string">
+  md5 of the canonical word-to-pronunciation table.
+</ResponseField>
+
+<ResponseField name="homograph_md5" type="string">
+  md5 of the homograph disambiguation table.
+</ResponseField>
+
+<ResponseField name="acronym_md5" type="string">
+  md5 of the acronym pronunciation table.
+</ResponseField>
+
+<ResponseField name="merged_at" type="string">
+  ISO-8601 timestamp at which this version was merged.
+</ResponseField>
+
+Returns `404` with `"no lexicon version recorded"` if no version has been merged yet (rare; expected only on a fresh deployment).
+
+```json
+{
+  "sha": "a1b2c3d4e5f6g7h8",
+  "alphabet": "rime",
+  "lexicon_md5": "d41d8cd98f00b204e9800998ecf8427e",
+  "homograph_md5": "e10adc3949ba59abbe56e057f20f883e",
+  "acronym_md5": "25d55ad283aa400af464c76d713c07ad",
+  "merged_at": "2026-04-22T17:31:09Z"
+}
+```
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url https://optimize.rime.ai/speech-qa/lexicon-info \
+  --header 'Authorization: Bearer your_api_key_here'
+```
+
+```python Python
+import requests
+
+r = requests.get(
+    "https://optimize.rime.ai/speech-qa/lexicon-info",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch("https://optimize.rime.ai/speech-qa/lexicon-info", {
+  headers: { Authorization: "Bearer your_api_key_here" },
+});
+console.log(await r.json());
+```
+
+</RequestExample>

@@ -1,0 +1,213 @@
+---
+title: "rime qa"
+description: "Submit text for pronunciation-dictionary coverage analysis, request review of out-of-vocabulary words, and inspect the loaded Rime lexicon."
+icon: "magnifying-glass-chart"
+---
+
+Quality-assurance tools for pronunciation. Use `rime qa` to submit text for coverage analysis, browse the words your billable has accumulated, and request review of words the engine could not pronounce confidently.
+
+```bash
+rime qa <subcommand>
+```
+
+| Subcommand | Description |
+| ---------- | ----------- |
+| `check`            | Submit text for coverage analysis. Returns a per-word in-lexicon vs. out-of-vocabulary partition and creates a submission record. |
+| `submissions`      | List, inspect, and rename past submissions. |
+| `corrections`      | List the words your billable has accumulated, grouped by review status. |
+| `request-review`   | Promote encountered words to the `in_review` queue, by submission or by word. |
+| `suggest`          | Use an LLM to predict Rime-alphabet phonemes for a word, with IPA lookup. |
+| `lexicon info`     | Show the in-memory lexicon SHA, the per-file md5 trio, and the merge timestamp. |
+
+## `rime qa check`
+
+Submit text to the Rime customer API. The server lowercases and tokenizes the text, partitions each unique token into in-lexicon vs. out-of-vocabulary, creates a submission record, and appends any new out-of-vocabulary words to your billable's word list for review.
+
+```bash
+rime qa check [text...]
+```
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--file` | `-f` | -- | Read text from a file instead of positional arguments. |
+
+You must pass either positional text or `--file`.
+
+**Examples:**
+
+```bash
+# Submit a one-off line
+rime qa check "Lisinopril is prescribed for hypertension."
+
+# Submit the full text of a file
+rime qa check --file ./script.txt
+```
+
+**Output:**
+
+```
+Checked 7 tokens (6 unique): 5 in-lexicon, 1 out-of-vocabulary.
+
+Out-of-vocabulary words:
+  lisinopril
+
+Lexicon version: a1b2c3d4
+
+Submitted as 9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47
+Request review of the encountered words with:
+  rime qa request-review 9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47
+```
+
+## `rime qa submissions`
+
+List and inspect past submissions.
+
+### `rime qa submissions list`
+
+```bash
+rime qa submissions list
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--since` | -- | Only submissions created at or after this ISO-8601 timestamp. |
+| `--limit` | server default 50 | Maximum rows to return. Server cap: 200. |
+
+**Output:**
+
+```
+ID                                    CREATED               NAME       TOKENS         OOV
+9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47  2026-04-23T18:04:11Z  cardiology  124 (87 unique) 4
+4b8a9d31-2c5f-4e8b-9a1c-7d3e6f0b2c89  2026-04-22T11:32:08Z  —           96 (71 unique)  2
+```
+
+### `rime qa submissions show`
+
+```bash
+rime qa submissions show <id>
+```
+
+Prints the submission header (name, timestamp, token counts, lexicon version) followed by a per-word table with status, dictionary pronunciation if any, and the LLM IPA + Rime-phoneme suggestions.
+
+### `rime qa submissions set-name`
+
+Set a submission's display name.
+
+```bash
+rime qa submissions set-name <id> <name>
+```
+
+### `rime qa submissions clear-name`
+
+Remove a submission's display name.
+
+```bash
+rime qa submissions clear-name <id>
+```
+
+## `rime qa corrections`
+
+List the words your billable has accumulated and their current review status.
+
+```bash
+rime qa corrections
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--status` | -- | Filter by status (repeatable): `encountered`, `in_review`, `pending_approval`, `approved`, `rejected`. |
+| `--since` | -- | Only words last seen at or after this ISO-8601 timestamp. |
+| `--limit` | `500` | Maximum rows. Server cap: 2000. |
+| `--q` | -- | Exact word match (case-insensitive server-side). |
+
+**Examples:**
+
+```bash
+# List everything still awaiting review
+rime qa corrections --status encountered --status in_review
+
+# Look up a single word
+rime qa corrections --q lisinopril
+```
+
+## `rime qa request-review`
+
+Promote encountered words to the `in_review` state. The argument can be a submission UUID, a billable-word UUID, or a word string. With no flag, the CLI auto-detects:
+
+- A non-UUID argument resolves as a word string (looked up via `--q`).
+- A UUID is tried as a submission first; if that 404s, it falls back to a billable-word.
+
+```bash
+rime qa request-review <id-or-word>
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--submission` | `false` | Treat the argument as a submission UUID. Mutually exclusive with `--word`. |
+| `--word` | `false` | Treat the argument as a billable-word UUID or a word string. Mutually exclusive with `--submission`. |
+
+**Examples:**
+
+```bash
+# Request review of every encountered word in a submission
+rime qa request-review 9f2e8c44-7a3d-4b1e-9c5f-2a8b6e0d1f47
+
+# Request review of a single word by name
+rime qa request-review lisinopril
+```
+
+## `rime qa suggest`
+
+Predict Rime-alphabet phonemes for one or more words. Runs an LLM against the word and looks up IPA in parallel. No submission required.
+
+```bash
+rime qa suggest <word>...
+```
+
+**Output:**
+
+```
+WORD         IPA               RIME              CATEGORY  CONFIDENCE
+lisinopril   /laɪˈsɪnəprɪl/    {l1ai s1i n0e p r0i l}  drug    92%
+```
+
+## `rime qa lexicon info`
+
+Fetch the in-memory lexicon fingerprint — the canonical SHA, the per-file md5 trio (lexicon, homograph, acronym), and the merge timestamp.
+
+```bash
+rime qa lexicon info
+```
+
+**Output:**
+
+```
+SHA:       a1b2c3d4e5f6g7h8
+Alphabet:  rime
+lexicon:   d41d8cd98f00b204e9800998ecf8427e
+homograph: e10adc3949ba59abbe56e057f20f883e
+acronym:   25d55ad283aa400af464c76d713c07ad
+MergedAt:  2026-04-22T17:31:09Z
+```
+
+## Global flags
+
+All subcommands accept the global Rime CLI flags. The most useful ones for `rime qa`:
+
+| Flag | Description |
+| ---- | ----------- |
+| `--json` | Emit the full structured response on stdout instead of the human-readable table. |
+| `--env` `-e` | Use a specific named environment from `~/.rime/rime.toml`. |
+
+See [Reference](/cli-reference/reference) for the full list.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="rime pronunciations" icon="microphone-lines" href="/cli-reference/rime-pronunciations">
+    Manage your billable's custom pronunciations.
+  </Card>
+  <Card title="Speech QA API" icon="code" href="/api-reference/speech-qa/submissions">
+    Reference for the underlying HTTP endpoints.
+  </Card>
+</CardGroup>

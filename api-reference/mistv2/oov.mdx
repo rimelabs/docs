@@ -4,6 +4,10 @@ api: 'POST  https://users.rime.ai/oov'
 authMethod: "bearer"
 ---
 
+<Note>
+  This endpoint is superseded by [`POST /speech-qa/submissions`](/api-reference/speech-qa/submissions), which performs the same coverage analysis, persists the result as a submission, and accumulates out-of-vocabulary words against your billable for review. New integrations should use the Speech QA API. This endpoint will continue to work for now.
+</Note>
+
 ## Overview
 
 This API endpoint allows you to determine which words are included in the Rime dictionary out of the box.

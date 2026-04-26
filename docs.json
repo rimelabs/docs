@@ -194,12 +194,6 @@
               "api-reference/speech-qa/custom-pronunciations",
               "api-reference/speech-qa/lexicon-info"
             ]
-          },
-          {
-            "group": "Other APIs",
-            "pages": [
-              "api-reference/mistv2/oov"
-            ]
           }
         ]
       },
@@ -293,10 +287,6 @@
     {
       "source": "/api-reference/endpoint/json-mulaw",
       "destination": "/api-reference/mistv2/json-mulaw"
-    },
-    {
-      "source": "/api-reference/endpoint/oov",
-      "destination": "/api-reference/mistv2/oov"
     },
     {
       "source": "/api-reference/endpoint/streaming-pcm",

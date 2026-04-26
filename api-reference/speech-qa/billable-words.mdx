@@ -1,0 +1,134 @@
+---
+title: "Billable words"
+description: "List the words your billable has accumulated through Speech QA submissions, and request review of individual words."
+---
+
+A **billable word** is a single (billable, word) pair tracking everything the Rime engine has observed for you on a given out-of-vocabulary token: its status in the review pipeline, the count of times it has been encountered, the latest LLM-augmented pronunciation hint, and an approved pronunciation if the annotator team has landed one.
+
+This is distinct from a **submission word**, which is a per-submission occurrence of a token. Each billable word is referenced by every submission word that names the same token; promoting a billable word's status to `in_review` propagates through every submission that included it.
+
+All endpoints require an API key passed as `Authorization: Bearer YOUR_API_KEY`. The base host is `https://optimize.rime.ai`.
+
+## `GET /speech-qa/billable-words`
+
+List the words your billable has accumulated, newest-last-seen first.
+
+### Query parameters
+
+<ParamField query="status" type="string">
+  Filter by status. Repeatable: pass the parameter multiple times to OR statuses together. Valid values: `encountered`, `in_review`, `pending_approval`, `approved`, `rejected`.
+</ParamField>
+
+<ParamField query="since" type="string">
+  ISO-8601 timestamp. Only words last seen at or after this time.
+</ParamField>
+
+<ParamField query="limit" type="number" default="500">
+  Maximum rows. Server cap: 2000.
+</ParamField>
+
+<ParamField query="q" type="string">
+  Exact-match word lookup. Case-insensitive. Useful when you have a word in hand and want its current status without paginating the full list.
+</ParamField>
+
+### Response
+
+A JSON array of word records. Each record:
+
+<ResponseField name="id" type="string">Billable-word UUID. Use this when calling `/request-review`.</ResponseField>
+<ResponseField name="speechQaWordId" type="string">UUID of the underlying word entry (shared across billables).</ResponseField>
+<ResponseField name="word" type="string">The lowercased token.</ResponseField>
+<ResponseField name="status" type="string">One of `encountered`, `in_review`, `pending_approval`, `approved`, `rejected`.</ResponseField>
+<ResponseField name="pronunciation" type="string | null">The approved Rime-alphabet pronunciation, when one exists.</ResponseField>
+<ResponseField name="customerContext" type="string | null">Any customer-supplied note attached to the word.</ResponseField>
+<ResponseField name="ttsOccurrences" type="number">Total times the engine has observed this word for your billable.</ResponseField>
+<ResponseField name="firstSeen" type="string">ISO-8601 timestamp of the first observation.</ResponseField>
+<ResponseField name="lastSeen" type="string">ISO-8601 timestamp of the most recent observation.</ResponseField>
+<ResponseField name="addedInLexiconSha" type="string | null">SHA of the lexicon version in which this word's approved pronunciation was first published, if any.</ResponseField>
+<ResponseField name="llmSuggestion" type="object | null">
+  `{ ipa, rime, confidence }` — populated by the augmentation worker. Any field may be `null`. The whole object is `null` when no LLM signal exists yet.
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+# Words still awaiting review
+curl --request GET \
+  --url 'https://optimize.rime.ai/speech-qa/billable-words?status=encountered&status=in_review' \
+  --header 'Authorization: Bearer your_api_key_here'
+
+# Look up a single word
+curl --request GET \
+  --url 'https://optimize.rime.ai/speech-qa/billable-words?q=lisinopril' \
+  --header 'Authorization: Bearer your_api_key_here'
+```
+
+```python Python
+import requests
+
+r = requests.get(
+    "https://optimize.rime.ai/speech-qa/billable-words",
+    headers={"Authorization": "Bearer your_api_key_here"},
+    params=[("status", "encountered"), ("status", "in_review"), ("limit", "100")],
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const params = new URLSearchParams();
+params.append("status", "encountered");
+params.append("status", "in_review");
+params.set("limit", "100");
+
+const r = await fetch(
+  `https://optimize.rime.ai/speech-qa/billable-words?${params}`,
+  { headers: { Authorization: "Bearer your_api_key_here" } },
+);
+console.log(await r.json());
+```
+
+</RequestExample>
+
+## `POST /speech-qa/billable-words/:id/request-review`
+
+Promote a single word from `encountered` to `in_review`. Idempotent: if the word is already `in_review` (or further along), the response reports the current status without making a change.
+
+Returns `404` if the word does not exist or your billable has never observed it.
+
+### Response
+
+<ResponseField name="id" type="string">Billable-word UUID.</ResponseField>
+<ResponseField name="status" type="string">Status after the call.</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://optimize.rime.ai/speech-qa/billable-words/4b8a9d31-2c5f-4e8b-9a1c-7d3e6f0b2c89/request-review \
+  --header 'Authorization: Bearer your_api_key_here'
+```
+
+```python Python
+import requests
+
+r = requests.post(
+    "https://optimize.rime.ai/speech-qa/billable-words/4b8a9d31-2c5f-4e8b-9a1c-7d3e6f0b2c89/request-review",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+r.raise_for_status()
+print(r.json())
+```
+
+```javascript JavaScript
+const r = await fetch(
+  "https://optimize.rime.ai/speech-qa/billable-words/4b8a9d31-2c5f-4e8b-9a1c-7d3e6f0b2c89/request-review",
+  {
+    method: "POST",
+    headers: { Authorization: "Bearer your_api_key_here" },
+  },
+);
+console.log(await r.json());
+```
+
+</RequestExample>

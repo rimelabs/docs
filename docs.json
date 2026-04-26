@@ -187,9 +187,12 @@
             ]
           },
           {
-            "group": "Other APIs",
+            "group": "Speech QA API",
             "pages": [
-              "api-reference/mistv2/oov"
+              "api-reference/speech-qa/submissions",
+              "api-reference/speech-qa/billable-words",
+              "api-reference/speech-qa/custom-pronunciations",
+              "api-reference/speech-qa/lexicon-info"
             ]
           }
         ]
@@ -209,6 +212,13 @@
               "cli-reference/rime-tts",
               "cli-reference/rime-curl",
               "cli-reference/rime-hello-play"
+            ]
+          },
+          {
+            "group": "Speech QA",
+            "pages": [
+              "cli-reference/rime-qa",
+              "cli-reference/rime-pronunciations"
             ]
           },
           {
@@ -277,10 +287,6 @@
     {
       "source": "/api-reference/endpoint/json-mulaw",
       "destination": "/api-reference/mistv2/json-mulaw"
-    },
-    {
-      "source": "/api-reference/endpoint/oov",
-      "destination": "/api-reference/mistv2/oov"
     },
     {
       "source": "/api-reference/endpoint/streaming-pcm",

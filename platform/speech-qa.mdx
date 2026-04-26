@@ -32,30 +32,19 @@ Rime’s models power the voice of your product, and the [**Speech QA Dashboard*
 
 ## Getting started
 
-Turn it on with a single parameter:
+Submit text to the Speech QA API and any out-of-vocabulary words land in your dashboard for review:
 
-```json
-{
-  "saveOovs": true
-}
-```
-For example, sending the request
 ```bash
 curl --request POST \
-  --url https://users.rime.ai/v1/rime-tts \
+  --url https://optimize.rime.ai/speech-qa/submissions \
   --header 'Authorization: Bearer YOUR_API_KEY' \
-  --header 'Accept: audio/mp3' \
   --header 'Content-Type: application/json' \
-  --output speech_with_oov.mp3 \
-  --fail \
   --data '{
-  "text": "we found something in the interphalangeal joint.",
-  "modelId": "mistv2",
-  "speaker": "cove",
-  "saveOovs": true
+  "rawText": "we found something in the interphalangeal joint."
 }'
 ```
-will save any out-of-vocabulary words found in `text` to your QA dashboard.
+
+You can also submit from the command line with [`rime qa check`](/cli-reference/rime-qa). See the [Submissions API reference](/api-reference/speech-qa/submissions) for the full request and response shape.
 
 Once there:
 

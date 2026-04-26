@@ -1,0 +1,165 @@
+---
+title: "rime pronunciations"
+description: "Manage your billable's custom pronunciations — add, update, list, remove, and phonemize from a microphone or audio file."
+icon: "microphone-lines"
+---
+
+Manage your billable's custom pronunciations. Each entry pairs an input text (case preserved, may be a phrase or non-canonical literal like `"Dr."` or `"AT&T"`) with a Rime-alphabet phoneme string. The TTS plugins load these at runtime and rewrite matching text before synthesis.
+
+```bash
+rime pronunciations <subcommand>
+```
+
+Aliases: `pronunciation`, `pron`.
+
+| Subcommand | Description |
+| ---------- | ----------- |
+| `list`        | List the billable's custom pronunciations (default action). |
+| `add`         | Register a new custom pronunciation. |
+| `update`      | Replace an existing pronunciation by input text. |
+| `remove`      | Remove a pronunciation by input text. |
+| `phonemize`   | Transcribe audio (microphone or file) to a Rime-alphabet phoneme string, with an optional save step. |
+
+<Note>
+  Custom pronunciations are honored by Mist, Mist v2, and Mist v3. Arcana does not consume the bracket-escape phoneme syntax; if you select an Arcana voice the rewrite still happens but the model falls back to its own pronunciation.
+</Note>
+
+## `rime pronunciations list`
+
+```bash
+rime pronunciations list
+```
+
+Running `rime pronunciations` with no subcommand also lists.
+
+**Output:**
+
+```
+INPUT          PRONUNCIATION                CONTEXT
+AT&T           {1ey t1iy 1ey t1iy}          common abbreviation
+Lisinopril     {l1ai s1i n0e p r0i l}       drug name
+```
+
+## `rime pronunciations add`
+
+Register a custom pronunciation for this billable. Input text is case-preserved; phrases and non-canonical literals are allowed.
+
+```bash
+rime pronunciations add <input-text> <pronunciation>
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--context` | -- | Customer note (e.g. "drug name", "company-internal jargon"). |
+
+**Examples:**
+
+```bash
+# Register a single word
+rime pronunciations add Lisinopril "l1ai s1i n0e p r0i l"
+
+# Register a phrase with a context note
+rime pronunciations add "AT&T" "1ey t1iy 1ey t1iy" --context "common abbreviation"
+```
+
+The input text is immutable. To change the spelling of an existing entry, remove it and re-add.
+
+## `rime pronunciations update`
+
+Replace an existing pronunciation row by input text. `--pronunciation` is required (the endpoint uses PUT semantics — the row is replaced wholesale, not merged).
+
+```bash
+rime pronunciations update <input-text> --pronunciation <phonemes> [--context NOTE]
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--pronunciation` | -- | New Rime-alphabet phoneme string. **Required.** |
+| `--context` | unchanged | New customer note. Omit to leave unchanged; pass an empty string to clear. |
+
+**Examples:**
+
+```bash
+rime pronunciations update Lisinopril --pronunciation "l1ai s1i n0e p r0i l"
+rime pronunciations update "AT&T" --pronunciation "1ey t1iy 1ey t1iy" --context "telecom company"
+```
+
+## `rime pronunciations remove`
+
+Remove a custom pronunciation by input text.
+
+```bash
+rime pronunciations remove <input-text>
+```
+
+Aliases: `rm`, `delete`.
+
+If the entry already does not exist, the command treats that as success and prints `No custom pronunciation for "<input-text>" (already removed)`.
+
+## `rime pronunciations phonemize`
+
+Transcribe audio to a Rime-alphabet phoneme string, then optionally register the result as a custom pronunciation. Two input modes:
+
+- **Microphone** — with no positional argument or with `--record`, captures audio from the default microphone via an `ffmpeg` subprocess. Press Enter to start, Enter again to stop. A live volume meter renders on stderr.
+- **File** — pass a path and the file is uploaded as-is. MIME is inferred from the extension and can be overridden with `--mime`.
+
+```bash
+rime pronunciations phonemize [audio-file]
+```
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `--record` | `false` | Record from the default microphone via ffmpeg. Implied when no positional argument is given. |
+| `--mime` | inferred from file extension | Override the upload Content-Type. Supported file extensions: `.mp3`, `.wav`, `.webm`, `.m4a`, `.mp4`, `.ogg`, `.opus`, `.flac`. |
+| `--add` | -- | After phonemizing, register the result as a custom pronunciation for the given input text. Skips the interactive prompt. |
+| `--mic` | `:default` | ffmpeg avfoundation audio device (e.g. `:0`, `:1`, `:default`). |
+| `--list-mics` | `false` | List available avfoundation audio devices and exit. |
+
+**Requirements:** `ffmpeg` on `PATH` (`brew install ffmpeg` on macOS), and microphone permission for your terminal in System Settings → Privacy & Security → Microphone.
+
+**Interactive flow:** when stdin is a TTY and `--json` isn't set, the CLI synthesizes "The new pronunciation is `{<phonemes>}`" with `mistv3` + `cove` and plays it back, then prompts:
+
+```
+Sound right? [Enter=save / n=cancel / e=edit / p=play again / r=re-record] >
+```
+
+On save, asks for the input text to register unless `--add` was provided.
+
+**Examples:**
+
+```bash
+# Record from the default mic, hear it back, save with prompted input text
+rime pronunciations phonemize
+
+# Record and chain straight into a save
+rime pronunciations phonemize --add Lisinopril
+
+# Phonemize an existing audio file
+rime pronunciations phonemize ./recordings/lisinopril.wav
+
+# List available microphones, then re-run with a specific one
+rime pronunciations phonemize --list-mics
+rime pronunciations phonemize --mic ":1"
+```
+
+## Global flags
+
+All subcommands accept the global Rime CLI flags. The most useful ones:
+
+| Flag | Description |
+| ---- | ----------- |
+| `--json` | Emit the structured response on stdout instead of the human-readable table. |
+| `--env` `-e` | Use a specific named environment from `~/.rime/rime.toml`. |
+
+See [Reference](/cli-reference/reference) for the full list.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="rime qa" icon="magnifying-glass-chart" href="/cli-reference/rime-qa">
+    Submit text for coverage analysis and review.
+  </Card>
+  <Card title="Custom pronunciations API" icon="code" href="/api-reference/speech-qa/custom-pronunciations">
+    Reference for the underlying HTTP endpoints.
+  </Card>
+</CardGroup>

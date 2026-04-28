@@ -1,61 +1,84 @@
 ---
 title: 'Numbers, currency, and measurements'
+description: "How Rime automatically expands numbers, currency, ranges, measurements, phone numbers, and Roman numerals into spoken form."
 ---
 
-We recommend the following inputs to get your desired output.
-- [Numbers](#numbers)
-- [Currency](#currency)
-- [Units of Measurement](#units-of-measurement)
+Rime expands numbers, currency, ranges, and measurements into their spoken form automatically. Most formats work without any preprocessing — just write naturally.
+
+<Note>
+  For a tour of text normalization across all categories, see [Text normalization](/docs/text-normalization). For specific patterns Rime doesn't expand cleanly, see [Pre-normalizing text](/docs/pre-normalization).
+</Note>
 
 ## Numbers
 
-### Ordinal numbers
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Cardinals | `123` | one hundred and twenty-three |
+| Cardinals with commas | `2,022` | two thousand and twenty-two |
+| Large cardinals | `10000`, `1.5 million`, `3M`, `450K` | ten thousand; one and a half million; three million; four hundred fifty thousand |
+| Scientific notation | `1e6`, `2.3e9` | one million; two point three billion |
+| Approximators | `~300`, `>1000`, `<0.1`, `±5`, `100+` | approximately three hundred; greater than one thousand; less than zero point one; plus or minus five; one hundred plus |
+| Negatives | `-23` | negative twenty-three |
+| Decimals | `0.75`, `.001` | zero point seven five; zero point zero zero one |
+| Ordinals | `1st`, `2nd`, `21st`, `100th` | first; second; twenty-first; one hundredth |
+| Fractions | `1/2`, `3/4`, `5 1/2`, `2 2/5` | one half; three quarters; five and a half; two and two fifths |
+| Years | `2022`, `1998` | twenty twenty-two; nineteen ninety-eight |
 
-| Desired output | Input |
-| --- | --- |
-| One hundred and twenty-three | 123 |
-| Two thousand and twenty-two | 2,022 |
-| Four zero | 4 0 |
-| Forty | 40 |
-
-### Years
-
-| Desired output | Input |
-| --- | --- |
-| Twenty twenty two | 2022 |
-
-### Cardinal numbers
-
-| Desired output | Input |
-| --- | --- |
-| Fifth | 5th |
-
-### Phone numbers
-
-| Desired output | Input |
-| --- | --- |
-| Five five five, seven seven two, nine one four zero | (555)-265-9076 |
-| Five five five, seven seven two, nine one four zero | 555-772-9140 |
-| Five five five, seven seven two, nine one four zero | 5 5 5, 7 7 2, 9 1 4 0 |
-
-### Decimals
-
-| Desired output | Input |
-| --- | --- |
-| Zero point seven five | 0.75 |
-| Zero point seven five | 0 point 7 5 |
+<Tip>
+  Insert spaces between digits to force digit-by-digit reading: `4 0` reads as "four zero" (not "forty"). For longer alphanumeric IDs and codes, use [`spell()`](/docs/spell) instead.
+</Tip>
 
 ## Currency
 
-| Desired output | Input |
-| --- | --- |
-| Seven dollars, ninety five cents | $7.95 |
-| One thousand and forty-five dollars, ninety six cents | $1,045.96 |
-| One thousand and forty-five dollars, ninety six cents | $1045.96 |
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Symbol + amount | `$5.99` | five dollars ninety-nine cents |
+| Comma-separated | `$1,000` | one thousand dollars |
+| With decimals | `$1,045.96` | one thousand and forty-five dollars, ninety-six cents |
+| Pounds, euros, yen | `£728,641`, `€70-€72` | expands with currency word |
+| Scale shorthand | `$5M`, `$1.2B` | five million dollars; one point two billion dollars |
 
-## Units of measurement
+Supported symbols: `$`, `€`, `£`, `¥`. Scale abbreviations `K`, `M`, `B`, `bn` are recognized.
 
-| Desired output | Input |
-| --- | --- |
-| Five kilograms | 5kg |
-| Seventy degrees Fahrenheit | 70°F |
+## Ranges
+
+Ranges with hyphens or en-dashes between numeric values read as "X to Y," with shared units on the right: `13-50`, `35-58 mph`, `49-56 °C`, `78-84%`, `67-77 mg`.
+
+## Measurements
+
+| Category | Examples |
+| :---- | :---- |
+| Length / mass / volume | `12km`, `5 mi`, `330 ft`, `15cm`, `5kg`, `7lb`, `12 oz`, `3mg` |
+| Temperature | `0°C`, `98°F`, `15°` |
+| Speed / power / percent | `60mph`, `120kW`, `95%` |
+
+<Tip>
+  A space between number and unit (`330 ft`) is slightly more reliable than the tight form (`330ft`). Use the space when you can.
+</Tip>
+
+## Phone numbers
+
+US and international formats both work natively, with parentheses, hyphens, or spaces as separators.
+
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| US with parens | `(213) 555-9274` | two one three, five five five, nine two seven four |
+| US with hyphens | `213-555-9274` | two one three, five five five, nine two seven four |
+| Spaced digits | `5 5 5, 7 7 2, 9 1 4 0` | five five five, seven seven two, nine one four zero |
+| International | `+1 212-555-4807` | plus one, two one two, five five five, four eight zero seven |
+| International with parens | `(+1) 415-203-7704` | plus one, four one five, two zero three, seven seven zero four |
+
+## Roman numerals (in context)
+
+Roman numerals expand when they appear after a recognized context word: `Henry VIII`, `Louis XIV`, `Chapter XV`, `Act III Scene II`, `Super Bowl LVIII`. Isolated Roman numerals without a context word usually pass through unchanged.
+
+## Known gaps
+
+A few specific patterns aren't reliably expanded — most commonly very long comma-separated numbers (`10,000,000`), non-dollar currency shorthand (`€900K`), the `m` ambiguity (`7m/s`), uncommon technical units (`kWh`, `psi`), and isolated Roman numerals. For the full list and a drop-in prompt template to handle them, see [Pre-normalizing text](/docs/pre-normalization).
+
+## Related
+
+- [Symbols and percentages](/docs/symbols) for standalone `$`, `%`, `&`, `#`
+- [Dates and times](/docs/dates) for years and clock times
+- [Addresses, URLs, and emails](/docs/addresses) for ZIP codes
+- [Spell function](/docs/spell) for forced letter-by-letter reading of IDs, account numbers, and codes

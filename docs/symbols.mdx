@@ -1,13 +1,34 @@
 ---
 title: 'Symbols and percentages'
+description: "How Rime pronounces standalone symbols and how percentage values are expanded."
 ---
 
-We recommend the following inputs to get your desired output.
+Rime pronounces common symbols correctly out of the box, both standalone and embedded in numeric values.
 
-| Desired output | Input |
-| --- | --- |
-| And | & |
-| Dollar | $ |
-| Percent | % |
-| One hundred percent | 100% |
-| Hash | # |
+<Note>
+  For a tour of text normalization across all categories, see [Text normalization](/docs/text-normalization). For symbol-adjacent patterns (currency amounts, measurements with units), see [Numbers, currency, and measurements](/docs/numbers).
+</Note>
+
+## Symbols
+
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Ampersand | `&` | and |
+| Dollar sign (standalone) | `$` | dollar |
+| Percent sign (standalone) | `%` | percent |
+| Hash | `#` | hash |
+
+## Percentages
+
+Percentage values (a number followed by `%`) are expanded automatically:
+
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Whole percentage | `100%` | one hundred percent |
+| Decimal percentage | `12.5%` | twelve point five percent |
+| Percentage range | `78-84%` | seventy-eight to eighty-four percent |
+
+## Related
+
+- [Numbers, currency, and measurements](/docs/numbers) for currency amounts (`$5.99`), measurements with units (`5kg`, `98°F`), and ranges
+- [Text normalization](/docs/text-normalization) for the full normalization overview

@@ -1,36 +1,53 @@
 ---
 title: 'Abbreviations, acronyms, and initialisms'
+description: "How Rime automatically pronounces common abbreviations, acronyms, and initialisms — and how to control pronunciation when needed."
 ---
 
-We recommend the following inputs to get your desired output.
-- [Abbreviations](#abbreviations)
-- [Acronyms and Initialisms](#acronyms-and-initialisms)
+Rime pronounces most common abbreviations, acronyms, and initialisms correctly out of the box. The patterns below show how to format input when you want to control pronunciation explicitly.
+
+<Note>
+  For a tour of text normalization across all categories, see [Text normalization](/docs/text-normalization). For specific patterns Rime doesn't expand cleanly, see [Pre-normalizing text](/docs/pre-normalization).
+</Note>
 
 ## Abbreviations
 
-Rime will correctly pronounce most common abbreviations automatically.
+Rime correctly pronounces most common abbreviations automatically.
 
-| Desired Output | Input |
-| --- | --- |
-| Doctor Smith | Dr. Smith |
-| For example | e.g. |
-| Road | rd. |
-| Saint John | St. John |
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Title abbreviation | `Dr. Smith` | doctor smith |
+| Latin abbreviation | `e.g.` | for example |
+| Street abbreviation | `rd.` | road |
+| Saint abbreviation | `St. John` | saint john |
+
+Some abbreviations resolve based on surrounding context — for example, `St.` reads as "saint" in `St. John` but "street" in `Main St.` See [Addresses](/docs/addresses) for street and state abbreviations in address context.
 
 ## Acronyms and initialisms
 
-Acronyms are pronounced as a single word. For example, NASA is pronounced as "Nasa". Initialisms are pronounced as a series of letters. For example, DNA is pronounced as "D N A".
+Acronyms are pronounced as a single word — for example, `NASA` reads as "Nasa". Initialisms are pronounced as a series of letters — for example, `DNA` reads as "D N A".
 
-By default, Rime will pronounce a series of capital letters as an acronym, that is, as a single word. However, for many common initialisms, such as DNA, ID, USA, FBI, and CIA, Rime will automatically pronounce them correctly as a series of letters.
+By default, Rime pronounces a series of capital letters as an acronym (a single word). For many common initialisms — `DNA`, `ID`, `USA`, `FBI`, `CIA` — Rime automatically pronounces them as a series of letters.
 
-That being said, to ensure that initialisms are pronounced correctly as a series of letters, the best practice is **to use lower case** and to put a period and space after each letter.
+To force initialism pronunciation reliably, **use lowercase letters with a period and space after each**:
 
-| Desired output | Input |
-| --- | --- |
-| Nasa | NASA |
-| D N A | DNA |
-| D N A | d. n. a. |
-| UPS | u. p. s. |
-| GPA | g. p. a. |
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Capitalized acronym | `NASA` | Nasa |
+| Capitalized initialism (recognized) | `DNA` | D N A |
+| Lowercase + dotted | `d. n. a.` | D N A |
+| Lowercase + dotted | `u. p. s.` | U P S |
+| Lowercase + dotted | `g. p. a.` | G P A |
 
-> **Note:** You can also specify a custom pronunciation for any acronym or initialism, using Rime's [custom pronunciations](/docs/custom-pronunciation) feature.
+<Note>
+  You can also specify a custom pronunciation for any acronym or initialism using Rime's [custom pronunciations](/docs/custom-pronunciation) feature.
+</Note>
+
+## Known gaps
+
+Context-dependent abbreviations like `Dr.`, `Mr.`, and `St.` rely on surrounding words to resolve and may not always read the way you expect. For workarounds and a drop-in prompt template, see [Pre-normalizing text](/docs/pre-normalization).
+
+## Related
+
+- [Custom pronunciation](/docs/custom-pronunciation) for defining how a specific term should sound
+- [Spell function](/docs/spell) for forced letter-by-letter reading of unrecognized acronyms (`spell(NPI)`)
+- [Addresses, URLs, and emails](/docs/addresses) for street and state abbreviations in address context

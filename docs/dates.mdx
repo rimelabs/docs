@@ -1,27 +1,52 @@
 ---
 title: 'Dates and times'
+description: "How Rime automatically expands dates and clock times into spoken form, and which formats are supported."
 ---
 
-We recommend the following inputs to get your desired output.
-- [Dates](#dates)
-- [Times](#times)
+Rime expands dates and clock times into their spoken form automatically. Most common formats work without any preprocessing.
+
+<Note>
+  For a tour of text normalization across all categories, see [Text normalization](/docs/text-normalization). For specific patterns Rime doesn't expand cleanly, see [Pre-normalizing text](/docs/pre-normalization).
+</Note>
 
 ## Dates
 
-Rime supports inputting dates in a variety of formats, such as standard date format, full dates, or abbreviated dates.
+Rime supports a variety of date formats, with year:
 
-| Desired output | Input |
-| --- | --- |
-| October twelfth, twenty twenty-four | 10/12/2024 |
-| March fifteenth, twenty twenty-three | March 15, 2023 |
-| January first | January 1st |
-| January first | Jan. 1 |
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| MM/DD/YYYY | `10/12/2024` | october twelfth, twenty twenty-four |
+| YYYY-MM-DD (ISO) | `2021-03-15` | the fifteenth of march twenty twenty-one |
+| M.D.YYYY | `8.8.2018` | august eighth twenty eighteen |
+| Month name + day + year | `April 2, 2024` | april second, twenty twenty-four |
+| Day + month name + year | `5 July 2015` | the fifth of july twenty fifteen |
+| Year alone | `1998` | nineteen ninety-eight |
+| Month + year | `May 2019` | may twenty nineteen |
+| Month + ordinal day (no year) | `January 1st`, `Jan. 1` | january first |
+
+<Note>
+  US (`MM/DD/YYYY`) and ISO (`YYYY-MM-DD`) forms read with slightly different surface phrasing — "may twelfth..." vs. "the fifteenth of march...". If wording consistency matters, pick one format.
+</Note>
 
 ## Times
 
-| Desired output | Input |
-| --- | --- |
-| Ten thirty A M | 10:30 am |
-| Ten thirty A M | 10:30am |
-| Ten thirty A M | 10:30 AM |
-| Two o'clock P M | 2 o'clock p. m. |
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Clock + meridiem | `3:45pm`, `10:30 AM` | three forty-five PM; ten thirty AM |
+| 24-hour | `15:45` | fifteen forty-five |
+| On-the-hour | `6:00` | six o'clock |
+| Dotted meridiem | `6 a.m.`, `2 o'clock p. m.` | six AM; two o'clock PM |
+| With time zone | `9:00 AM PST` | nine AM PST |
+| Word forms | `noon`, `midnight`, `quarter past 6`, `half past 6` | as written |
+| Ranges | `9:20-9:45` | nine twenty to nine forty-five |
+
+Both `am/pm` and `a.m./p.m.` are accepted, with or without spaces between the time and the meridiem.
+
+## Known gaps
+
+A few specific date and time patterns aren't reliably expanded — most commonly MM/DD without a year (`04/21`), month-and-year alone (`07/2025`), bare hours with meridiem (`3pm` without `:00`), decade names (`1990s`), financial periods (`Q1 2025`, `1H 2024`), and European `15h30` times. For the full list and a drop-in prompt template to handle them, see [Pre-normalizing text](/docs/pre-normalization).
+
+## Related
+
+- [Numbers, currency, and measurements](/docs/numbers) for years used as standalone numbers, ranges, and ordinals
+- [Punctuation](/docs/punctuation) for controlling pauses around dates and times

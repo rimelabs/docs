@@ -1,32 +1,67 @@
 ---
 title: 'Punctuation'
+description: "How punctuation drives prosody — pauses, intonation, questions, and emphasis — in Rime's TTS output."
 ---
 
-Punctuation serves many purposes in normal writing, it indicates sentence structural things like sentence breaks and questions, but it also serves to indicate pronunciation cues, such as commas for pauses and exclamation points for excitement. 
+Punctuation drives prosody in Rime's TTS output. Beyond the standard structural role (sentence breaks, questions), Rime's models use punctuation as the primary lever for controlling pause length, intonation, and emphasis. The examples below show what's possible.
 
-For Rime text-to-speech, these various uses are even more flexible. Not only can users employ punctuation for traditional structural purposes, users can modulate the prosody by using differing punctuation. Below we show some basic ways our powerful engine can alter the prosody using punctuation. These are just a few examples, feel free to play around and see what you can create!
+<Note>
+  For a tour of text normalization across all categories, see [Text normalization](/docs/text-normalization). For precise pause durations on Mist, see [Custom pauses](/docs/custom-pauses).
+</Note>
+
+## Punctuation as prosody cues
+
+Rime's models treat each punctuation mark as a prosodic cue:
+
+- **Comma (`,`).** Short pause, slight rise in pitch. Use inside sentences for list items, appositives, and clauses.
+- **Period (`.`).** Sentence-ending pause with falling pitch.
+- **Question mark (`?`).** Rising intonation.
+- **Ellipsis (`...`).** Trailing, hesitant pause.
+- **Semicolon (`;`).** Slightly longer than a comma, shorter than a period.
+
+<Warning>
+  Avoid hyphens and dashes inside numbers, IDs, or phone numbers when prosody matters. They're one of the most common sources of unwanted pauses. Use spaces or [`spell()`](/docs/spell) instead.
+</Warning>
 
 ## Questions
 
-|    Audio clip     |      Sentence             | Notes  |
-|-----------------|--------------------------|---|
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanperiod.wav"></audio>     |    what do you mean.      |  a simple period at the end of the sentence renders it a non-question  |
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanquestion.wav"></audio>    |      what do you mean?        |  a simple question mark indicates an unmarked question |
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeaninterrobang.wav"></audio>    |       what do you mean?!       |  adding an exclamation point makes the question more excited |
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanexclamq.wav"></audio>    |          what do you mean!?      |  changing the order of the exclamation point and question mark makes a different sort of question |
-|   <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanqq.wav"></audio>     |     what do you mean??         |  multiple question marks can also change the type of question prosody |
+| Audio clip | Sentence | Notes |
+| :---- | :---- | :---- |
+| <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanperiod.wav"></audio> | what do you mean. | A simple period at the end of the sentence renders it a non-question. |
+| <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanquestion.wav"></audio> | what do you mean? | A simple question mark indicates an unmarked question. |
+| <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeaninterrobang.wav"></audio> | what do you mean?! | Adding an exclamation point makes the question more excited. |
+| <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanexclamq.wav"></audio> | what do you mean!? | Reversing the order produces a different sort of question. |
+| <audio controls src="https://rime.ai/sounds/docs/whatdoyoumeanqq.wav"></audio> | what do you mean?? | Multiple question marks change the type of question prosody. |
 
 ## False starts
 
-|    Audio clip     |      Sentence             | Notes  |
-|-----------------|--------------------------|---|
-|   <audio controls src="https://rime.ai/sounds/docs/iithinkitsprettycool.wav"></audio>     |    i i think it's pretty cool     |  putting a word twice in a row can create more realistic, flawed human speech  |
-|   <audio controls src="https://rime.ai/sounds/docs/iithinkitsprettycooldash.wav"></audio>    |      i- i think it's pretty cool       |  adding a dash immediately after some words can give a cut-off, false start sort of realism |
+| Audio clip | Sentence | Notes |
+| :---- | :---- | :---- |
+| <audio controls src="https://rime.ai/sounds/docs/iithinkitsprettycool.wav"></audio> | i i think it's pretty cool | Repeating a word can create more realistic, flawed human speech. |
+| <audio controls src="https://rime.ai/sounds/docs/iithinkitsprettycooldash.wav"></audio> | i- i think it's pretty cool | A dash immediately after a word can give a cut-off, false-start sort of realism. |
 
 ## Pauses
 
-|    Audio clip     |      Sentence             | Notes  |
-|-----------------|--------------------------|---|
-|   <audio controls src="https://rime.ai/sounds/docs/soitskindafunny.wav"></audio>     |    so it's kind of funny.     |  without any comma, there will be no pause |
-|   <audio controls src="https://rime.ai/sounds/docs/soitskindafunnycomma.wav"></audio>    |      so, it's kind of funny.     |  adding a comma creates a slight pause |
-|   <audio controls src="https://rime.ai/sounds/docs/soitskindafunnyperiod.wav"></audio>    |      so. it's kind of funny.       |  adding a period creates a longer pause |
+| Audio clip | Sentence | Notes |
+| :---- | :---- | :---- |
+| <audio controls src="https://rime.ai/sounds/docs/soitskindafunny.wav"></audio> | so it's kind of funny. | Without any comma, there will be no pause. |
+| <audio controls src="https://rime.ai/sounds/docs/soitskindafunnycomma.wav"></audio> | so, it's kind of funny. | A comma creates a slight pause. |
+| <audio controls src="https://rime.ai/sounds/docs/soitskindafunnyperiod.wav"></audio> | so. it's kind of funny. | A period creates a longer pause. |
+
+For pauses of a specific duration on Mist, use the `pauseBetweenBrackets` parameter — see [Custom pauses](/docs/custom-pauses).
+
+## Common prosody problems and fixes
+
+| Problem | Likely cause | Fix |
+| :---- | :---- | :---- |
+| Pause lands inside a phone number | Digits separated by dashes | Use spaces or [`spell()`](/docs/spell) |
+| Weird pause before a currency amount | `$` glued to digits | Rewrite naturally or add whitespace |
+| Run-on sentence, no breath | Single long sentence, no internal commas | Break into shorter sentences or add commas at natural clause boundaries |
+| Unnatural upward inflection mid-sentence | Comma where there shouldn't be one | Remove the comma, or replace with a conjunction |
+| Abrupt transition between ideas | No sentence boundary | Add a period and start a new sentence |
+
+## Related
+
+- [Custom pauses](/docs/custom-pauses) for precise pause durations on Mist
+- [Spell function](/docs/spell) for forced letter-by-letter reading without unwanted pauses
+- [Text normalization](/docs/text-normalization) for the full normalization overview

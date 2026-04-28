@@ -1,12 +1,110 @@
 ---
-title: 'Text normalization recommendations'
+title: 'Text normalization'
+description: "Rime automatically normalizes English text — numbers, dates, currency, phone numbers, measurements, and more — before synthesis."
 ---
 
-When using Rime's models, most text will be correctly pronounced out-of-the box just by writing naturally. Rime's models understand pronunciation based on context.
+When you send text to Rime's TTS models, a normalization layer runs first. It expands numbers, dates, currency, phone numbers, measurements, and other non-standard words into their spoken form before the model synthesizes audio.
 
-However, we do recommend normalizing your text to get consistent and accurate results. 
+<Note>
+  **Rime handles text normalization automatically.** Most common formats — currency with symbols, dates with years, clock times, phone numbers, and standard measurements — expand correctly without any preprocessing. Just write naturally. If something sounds wrong, [debug it with `/textnorm`](#debugging-with-the-textnorm-endpoint) before adding a pre-processing layer to your application.
+</Note>
 
-Text normalization is a crucial step in text-to-speech (TTS) systems, where written text is converted into a form that can be accurately and naturally spoken. Normalization ensures the text is clear, comprehensible, and contextually accurate for speech synthesis. Rime also allows you to adjust the pronunciation of questions, pauses, and more by altering the punctuation.
+## What's handled, at a glance
 
-At Rime, we have a unique set of guidelines to help you get the best output. To see common use cases, such as numbers, dates, and abbreviations, check the pages in the **Formatting Text** folder in the menu.
+Click any category for the full input/output reference.
 
+| Category | Examples | Reference |
+| :---- | :---- | :---- |
+| Numbers, currency, ranges, measurements | `$1,045.96`, `5kg`, `98°F`, `13-50`, `1/2`, `1e6`, `(213) 555-9274` | [Numbers, currency, and measurements](/docs/numbers) |
+| Dates and times | `10/12/2024`, `2021-03-15`, `April 2, 2024`, `3:45pm`, `15:45`, `noon` | [Dates and times](/docs/dates) |
+| Addresses, URLs, emails | `529 Main St., Boston, MA 02129`, `https://app.rime.ai`, `name@example.com` | [Addresses, URLs, and emails](/docs/addresses) |
+| Abbreviations, acronyms, initialisms | `Dr. Smith`, `e.g.`, `NASA`, `d. n. a.` | [Abbreviations, acronyms, and initialisms](/docs/abbreviations) |
+| Symbols and percentages | `&`, `$`, `%`, `100%` | [Symbols and percentages](/docs/symbols) |
+| Punctuation and prosody | `,`, `.`, `?`, `...` | [Punctuation](/docs/punctuation) |
+
+## Forced letter-by-letter reading
+
+For account numbers, confirmation codes, SKUs, and acronyms the normalizer doesn't recognize, wrap the string in `spell(...)` to force letter-by-letter pronunciation. Works on both Arcana and Mist.
+
+```text
+Input:  Your confirmation code is spell(PRM423GDDML2354).
+Output: Your confirmation code is P R M, 4 2 3, G D D, M L, 2 3, 5 4.
+```
+
+For full reference, see [Spell function](/docs/spell).
+
+## Brand names, product names, and uncommon words
+
+Rime's models may not nail uncommon brand or product names on the first try. Two options:
+
+1. **Submit the word to Rime** to add to the dictionary (around 24 hours). The fastest way is the [Speech QA dashboard](/platform/speech-qa), which surfaces out-of-vocabulary words from your traffic and lets you approve or correct them in one place. You can also reach the team directly at [support@rime.ai](mailto:support@rime.ai) or via your shared Slack channel.
+2. **Use custom pronunciations inline** with Rime's phonetic alphabet and `phonemizeBetweenBrackets: true`. See [Custom pronunciation](/docs/custom-pronunciation) for the full reference.
+
+<Warning>
+  `phonemizeBetweenBrackets` works on the Mist family (v1, v2, v3). It does **not** work on Arcana. For brand or product name pronunciations on Arcana, submit the word to Rime to add to the dictionary, respell phonetically in plain English (accepting that this is approximate), or use Mist for flows where pronunciation control matters.
+</Warning>
+
+For full reference, see [Custom pronunciation](/docs/custom-pronunciation). To check whether a word is already in Rime's dictionary, use the [Coverage API](/api-reference/other/oov).
+
+## Feature availability: Arcana vs. Mist
+
+The features below apply to the Mist family (v1, v2, v3) unless otherwise noted.
+
+| Feature | Arcana | Mist |
+| :---- | :----: | :----: |
+| Native text normalization (numbers, currency, dates, etc.) | ✅ | ✅ |
+| `spell()` for forced letter-by-letter | ✅ | ✅ |
+| Punctuation-driven prosody | ✅ | ✅ |
+| `pauseBetweenBrackets` (custom pause tags like `<750>`) | ❌ | ✅ |
+| `phonemizeBetweenBrackets` (inline phonetic strings) | ❌ | ✅ |
+| Deterministic per-term pronunciation config | ❌ | ✅ |
+
+Arcana has parity with Mist for numbers, currency, and abbreviation expansion. If you tested Arcana early and saw normalization issues, re-test on the current model.
+
+For flows that need precise pause durations (legal disclaimers, regulated read-backs) or guaranteed pronunciation of brand and product names, Mist is the safer choice.
+
+## Debugging with the textnorm endpoint
+
+Rime exposes a `/textnorm` endpoint that returns the normalized form of an input string — exactly what the TTS model receives before synthesis. It's the fastest way to separate normalization issues from synthesis issues.
+
+```bash
+curl -X POST https://optimize.rime.ai/textnorm \
+    -H "Authorization: Bearer $(rime key)" \
+    -H "Content-Type: application/json" \
+    -d '{"text":"1234 1,2,3,4 1-800-444-4141 "}'
+```
+
+```json
+{"normalized":"one two three four, one , two , three , four, one, eight hundred, four four four, four one four one"}
+```
+
+This endpoint covers Rime's English text normalization. Output is the same regardless of which model you'll synthesize with. For the full request and response reference, see the [Text Normalization API](/api-reference/other/textnorm).
+
+### Triage workflow
+
+When something sounds off:
+
+1. **Capture the exact input text** that produced the bad output.
+2. **POST it to `/textnorm`** and look at the normalized output.
+3. **Compare** the normalized output to what you expected the model to say.
+4. If normalization is wrong, you have a reproducible signal — [flag it to Rime](mailto:support@rime.ai) with the input, expected normalization, and actual normalization. Fixes ship on Rime's side.
+5. If normalization looks correct but speech still sounds off, the issue is in synthesis, not normalization — try a different voice, model version, or sampling settings.
+
+## Testing checklist
+
+Before going to production, test the voice against realistic versions of:
+
+1. Every date format your backend can produce (MM/DD, MM/DD/YYYY, ISO, relative like "tomorrow").
+2. Every currency you'll quote, including round numbers and fractional cents.
+3. The longest realistic phone number, account number, and confirmation code.
+4. Your top 20 most-spoken product or brand names.
+5. At least one utterance from each of: quote, greeting, confirmation, error, payment, scheduling.
+6. The same utterance regenerated 5 to 10 times. Consistency across regenerations is what catches sampling variance.
+
+For anything that sounds wrong, POST the exact input to [`/textnorm`](#debugging-with-the-textnorm-endpoint) to see what the model actually received, then [flag it to Rime](mailto:support@rime.ai) so the fix lands for everyone.
+
+## Pre-normalizing in your application
+
+For most applications, pre-normalizing is unnecessary and adds latency and engineering complexity. Rime's normalizer handles common patterns natively, and the fastest way to fix a pronunciation issue is to verify with [`/textnorm`](#debugging-with-the-textnorm-endpoint) and [flag any miss to Rime](mailto:support@rime.ai).
+
+If you have a specific pattern that genuinely needs to be pre-expanded — for example, an alphanumeric ID format unique to your domain, or a flow where regenerated text must read identically every time — see [Pre-normalizing text](/docs/pre-normalization) for guidance and a drop-in prompt template.

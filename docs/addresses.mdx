@@ -1,34 +1,51 @@
 ---
 title: 'Addresses, URLs, and emails'
+description: "How Rime automatically expands street addresses, URLs, and email addresses into spoken form."
 ---
 
-We recommend the following inputs to get your desired output.
-- [Addresses](#addresses)
-- [URLs](#urls)
-- [Emails](#emails)
+Rime expands addresses, URLs, and email addresses into their spoken form automatically. Schemes, `www.` prefixes, paths, hyphens in domains, and common TLDs are all handled.
+
+<Note>
+  For a tour of text normalization across all categories, see [Text normalization](/docs/text-normalization). For specific patterns Rime doesn't expand cleanly, see [Pre-normalizing text](/docs/pre-normalization).
+</Note>
 
 ## Addresses
 
-While Rime will typically pronounce state name abbreviations correctly in the context of an address, best practice is to write out the full state name, for example, "Massachusetts" instead of "MA", to get consistent results. Common street abbreviations, such as "Rd." and "St.", will automatically be pronounced correctly.
+Rime typically pronounces state name abbreviations correctly in the context of an address, but writing out the full state name (e.g., "Massachusetts" instead of "MA") gives more consistent results. Common street abbreviations like `Rd.` and `St.` are pronounced correctly.
 
-| Desired output | Input |
-| --- | --- |
-| Five twenty-nine main street, boston, massachusetts, zero two one two nine | 529 Main St., Boston, Massachusetts 02129 |
-| Five twenty-nine main street, boston, massachusetts, zero two one two nine | 529 Main St., Boston, MA 02129 |
-| Five twenty-nine main street, boston, massachusetts, zero two one two nine | 529 Main Street, Boston, MA 02129 |
-| Five twenty-nine main street, boston, massachusetts, zero two one two nine | 529 Main St, Boston, MA 02129 |
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Full street + state name | `529 Main Street, Boston, Massachusetts 02129` | five twenty-nine main street, boston, massachusetts, zero two one two nine |
+| Abbreviated street + abbreviated state | `529 Main St., Boston, MA 02129` | five twenty-nine main street, boston, massachusetts, zero two one two nine |
+| Mixed | `529 Main St, Boston, MA 02129` | five twenty-nine main street, boston, massachusetts, zero two one two nine |
 
 ## URLs
 
-| Desired output | Input |
-| --- | --- |
-| Double-u double-u double-u dot example dot com | `www.example.com` |
-| H t t p s colon slash slash double-u double-u double-u dot rime dot ai slash dashboard | `https://app.rime.ai` |
+Schemes, `www.` prefixes, paths, and hyphens in domains are handled. Common TLDs (`.com`, `.org`, `.io`, `.ai`, etc.) are read letter-by-letter.
+
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Bare `www.` URL | `www.example.com` | double-u double-u double-u dot example dot com |
+| HTTPS URL | `https://app.rime.ai` | h t t p s colon slash slash app dot rime dot a i |
+| URL with path | `www.shop.com/archive` | www dot shop dot com slash archive |
+| URL with hyphenated domain | `https://worldprime.io/about` | HTTPS world prime dot i o slash about |
 
 ## Emails
 
-| Desired output | Input |
-| --- | --- |
-| Name at example dot com | `name@example.com` |
+| Format | Example | Reads as |
+| :---- | :---- | :---- |
+| Standard email | `name@example.com` | name at example dot com |
+| Email with digits | `cloud799@icloud.com` | cloud seven nine nine at i cloud dot com |
 
-> **Note:** Emails are handled by our custom segmentation model. This model breaks up compound words and also handles punctuations and most top-level domains. If you hear something off, let us know!
+<Note>
+  Emails are handled by Rime's custom segmentation model. It breaks up compound words and handles punctuation and most top-level domains. If you hear something off, [let us know](mailto:support@rime.ai).
+</Note>
+
+## Known gaps
+
+Internationalized domain names (non-ASCII characters in URLs) aren't supported. For the full list of normalization gaps and how to handle them, see [Pre-normalizing text](/docs/pre-normalization).
+
+## Related
+
+- [Numbers, currency, and measurements](/docs/numbers) for phone numbers and other numeric formats
+- [Spell function](/docs/spell) for forced letter-by-letter reading of unusual email addresses or vanity URLs

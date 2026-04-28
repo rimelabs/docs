@@ -1,0 +1,165 @@
+---
+title: 'Text Normalization'
+api: 'POST  https://optimize.rime.ai/textnorm'
+authMethod: "bearer"
+---
+
+## Overview
+
+This API endpoint returns the normalized form of an input string — the way Rime's TTS models interpret numbers, phone numbers, dates, and other non-standard words before synthesis.
+
+Use it to preview how a given input will be spoken, or to debug unexpected pronunciations of digits, sequences, and punctuation.
+
+<Note>
+  This endpoint covers Rime's English text normalization. For details on what's normalized natively, known gaps, and how to pre-normalize problematic patterns, see [Text normalization](/docs/text-normalization).
+</Note>
+
+## Example
+
+A request takes only the string `text`, for example:
+
+```bash
+curl -X POST https://optimize.rime.ai/textnorm \
+     -H "Authorization: Bearer $(rime key)" \
+     -H "Content-Type: application/json" \
+     -d '{"text":"1234 1,2,3,4 1-800-444-4141 "}'
+```
+
+The response includes the normalized string:
+
+```json
+{"normalized":"one two three four, one , two , three , four, one, eight hundred, four four four, four one four one"}
+```
+
+## Variable Parameters
+
+<ParamField body="text" type="string" required>
+  The string you'd like to normalize. Numbers, phone numbers, and other non-standard words will be expanded into their spoken form.
+</ParamField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://optimize.rime.ai/textnorm \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --fail \
+  --data '{
+  "text": "<string>"
+}'
+```
+
+```python Python
+import requests
+
+url = "https://optimize.rime.ai/textnorm"
+
+payload = {
+    "text": "<string>"
+}
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <authorization>",
+    "Content-Type": "application/json"
+}
+
+response = requests.request("POST", url, json=payload, headers=headers)
+
+print(response.text)
+```
+
+```javascript JavaScript
+const options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <authorization>',
+    'Content-Type': 'application/json'
+  },
+  body: '{"text":"<string>"}'
+};
+
+fetch('https://optimize.rime.ai/textnorm', options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+```
+
+```php PHP
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://optimize.rime.ai/textnorm",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\n  \"text\": \"<string>\"\n}",
+  CURLOPT_HTTPHEADER => [
+    "Accept: application/json",
+    "Authorization: Bearer <authorization>",
+    "Content-Type: application/json"
+  ],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+```
+
+```go Go
+package main
+
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+
+  url := "https://optimize.rime.ai/textnorm"
+
+  payload := strings.NewReader("{\n  \"text\": \"<string>\"\n}")
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Accept", "application/json")
+  req.Header.Add("Authorization", "Bearer <authorization>")
+  req.Header.Add("Content-Type", "application/json")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(res)
+  fmt.Println(string(body))
+
+}
+```
+
+```java Java
+HttpResponse<String> response = Unirest.post("https://optimize.rime.ai/textnorm")
+  .header("Accept", "application/json")
+  .header("Authorization", "Bearer <authorization>")
+  .header("Content-Type", "application/json")
+  .body("{\n  \"text\": \"<string>\"\n}")
+  .asString();
+```
+
+</RequestExample>

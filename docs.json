@@ -53,7 +53,7 @@
               "docs/models",
               {
                 "group": "Formatting Text",
-                "icon": "language",
+                "icon": "pen-to-square",
                 "pages": [
                   "docs/text-normalization",
                   "docs/punctuation",
@@ -61,7 +61,8 @@
                   "docs/dates",
                   "docs/abbreviations",
                   "docs/symbols",
-                  "docs/addresses"
+                  "docs/addresses",
+                  "docs/pre-normalization"
                 ]
               },
               "docs/spell",
@@ -189,7 +190,8 @@
           {
             "group": "Other APIs",
             "pages": [
-              "api-reference/mistv2/oov"
+              "api-reference/other/oov",
+              "api-reference/other/textnorm"
             ]
           }
         ]
@@ -280,7 +282,11 @@
     },
     {
       "source": "/api-reference/endpoint/oov",
-      "destination": "/api-reference/mistv2/oov"
+      "destination": "/api-reference/other/oov"
+    },
+    {
+      "source": "/api-reference/mistv2/oov",
+      "destination": "/api-reference/other/oov"
     },
     {
       "source": "/api-reference/endpoint/streaming-pcm",

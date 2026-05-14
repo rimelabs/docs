@@ -17,10 +17,10 @@ When providing text, `--speaker` and `--model-id` are required. When run without
 | Flag | Short | Default | Description |
 | ---- | ----- | ------- | ----------- |
 | `--speaker` | `-s` | `astra`* | Voice speaker to use |
-| `--model-id` | `-m` | `arcana`* | Model ID |
+| `--model-id` | `-m` | `coda`* | Model ID |
 | `--lang` | `-l` | `eng` | Language code |
 | `--speed-alpha` | -- | `1` | Speed multiplier — must be greater than 0 |
-| `--sampling-rate` | -- | -- | Output sampling rate in Hz. Arcana: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
+| `--sampling-rate` | -- | -- | Output sampling rate in Hz. Coda/Arcana: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
 | `--oneline` | -- | `false` | Output as a single line for easy copy-paste |
 | `--api-url` | -- | -- | API URL override |
 
@@ -59,8 +59,8 @@ These flags are only supported by `mist` and `mistv2`. They are not supported by
 rime curl
 
 # Generate curl for custom text
-rime curl "Hello from Rime" -s celeste -m arcana
+rime curl "Hello from Rime" -s celeste -m coda
 
 # Single-line output
-rime curl "Hello" -s astra -m arcana --oneline
+rime curl "Hello" -s astra -m coda --oneline
 ```

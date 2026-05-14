@@ -42,7 +42,8 @@
               "docs/regional-endpoints",
               "docs/quickstart-five-minute",
               "docs/quickstart-livekit",
-              "docs/quickstart-cli"
+              "docs/quickstart-cli",
+              "docs/api-authentication"
             ]
           },
           {
@@ -516,6 +517,291 @@
     {
       "source": "/api-reference/quickstart-python",
       "destination": "/docs/quickstart-five-minute"
+    },
+
+    {
+      "source": "/docs/quickstart",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/docs/api-quickstart",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/docs/tts-in-five-minutes",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/quickstart",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/quickstarts/five-minute-guide",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/core/quickstarts/five-minute-guide",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/docs/get-started",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/docs/getting-started",
+      "destination": "/docs/quickstart-five-minute"
+    },
+    {
+      "source": "/getting-started",
+      "destination": "/docs/quickstart-five-minute"
+    },
+
+    {
+      "source": "/reference/postrimetts",
+      "destination": "/api-reference/coda/http"
+    },
+    {
+      "source": "/reference/postrimetts-1",
+      "destination": "/api-reference/coda/http"
+    },
+    {
+      "source": "/reference/post_v1-rime-tts",
+      "destination": "/api-reference/coda/http"
+    },
+    {
+      "source": "/docs/rime-tts-http",
+      "destination": "/api-reference/coda/http"
+    },
+    {
+      "source": "/api/v1/rime-tts",
+      "destination": "/api-reference/coda/http"
+    },
+    {
+      "source": "/streaming-http",
+      "destination": "/api-reference/coda/http"
+    },
+    {
+      "source": "/http-streaming",
+      "destination": "/api-reference/coda/http"
+    },
+    {
+      "source": "/docs/streaming-http",
+      "destination": "/api-reference/coda/http"
+    },
+
+    {
+      "source": "/docs/oov",
+      "destination": "/api-reference/other/oov"
+    },
+    {
+      "source": "/api-reference/oov",
+      "destination": "/api-reference/other/oov"
+    },
+    {
+      "source": "/docs/utilities/coverage-checking",
+      "destination": "/api-reference/other/oov"
+    },
+
+    {
+      "source": "/api-reference/textnorm",
+      "destination": "/api-reference/other/textnorm"
+    },
+    {
+      "source": "/docs/utilities/text-normalization",
+      "destination": "/docs/text-normalization"
+    },
+    {
+      "source": "/docs/text-processing",
+      "destination": "/docs/text-normalization"
+    },
+
+    {
+      "source": "/docs/voice-selection",
+      "destination": "/docs/voices"
+    },
+    {
+      "source": "/features/voices",
+      "destination": "/docs/voices"
+    },
+
+    {
+      "source": "/features/models",
+      "destination": "/docs/models"
+    },
+    {
+      "source": "/mist-api",
+      "destination": "/docs/models"
+    },
+
+    {
+      "source": "/docs/websocket",
+      "destination": "/docs/websockets"
+    },
+    {
+      "source": "/docs/websocket-json",
+      "destination": "/docs/websockets"
+    },
+    {
+      "source": "/docs/streaming-websocket-json",
+      "destination": "/docs/websockets"
+    },
+    {
+      "source": "/reference/websockets-json",
+      "destination": "/docs/websockets"
+    },
+    {
+      "source": "/reference/websockets",
+      "destination": "/docs/websockets"
+    },
+    {
+      "source": "/docs/api-reference/websockets",
+      "destination": "/docs/websockets"
+    },
+
+    {
+      "source": "/docs/arcana/websockets",
+      "destination": "/api-reference/arcana/websockets"
+    },
+    {
+      "source": "/docs/arcana-websockets",
+      "destination": "/api-reference/arcana/websockets"
+    },
+    {
+      "source": "/reference/arcana-websockets",
+      "destination": "/api-reference/arcana/websockets"
+    },
+
+    {
+      "source": "/docs/mist-v3-websockets",
+      "destination": "/api-reference/mistv3/websockets"
+    },
+    {
+      "source": "/reference/mist-v3-websockets",
+      "destination": "/api-reference/mistv3/websockets"
+    },
+    {
+      "source": "/api/mist-v3/websockets",
+      "destination": "/api-reference/mistv3/websockets"
+    },
+
+    {
+      "source": "/docs/mist-v2-websockets",
+      "destination": "/api-reference/mistv2/websockets"
+    },
+    {
+      "source": "/reference/mist-v2-websockets",
+      "destination": "/api-reference/mistv2/websockets"
+    },
+
+    {
+      "source": "/docs/mist-websocket-json",
+      "destination": "/api-reference/mistv3/websockets-json"
+    },
+
+    {
+      "source": "/docs/arcana/streaming-http",
+      "destination": "/api-reference/arcana/http"
+    },
+    {
+      "source": "/arcana-api",
+      "destination": "/api-reference/arcana/http"
+    },
+
+    {
+      "source": "/api/mist-v3/streaming-http",
+      "destination": "/api-reference/mistv3/http"
+    },
+    {
+      "source": "/mist-v3",
+      "destination": "/api-reference/mistv3/http"
+    },
+    {
+      "source": "/v1/mist-v3",
+      "destination": "/api-reference/mistv3/http"
+    },
+    {
+      "source": "/api-reference/mist-v3",
+      "destination": "/api-reference/mistv3/http"
+    },
+    {
+      "source": "/api-reference/mist-v3/http",
+      "destination": "/api-reference/mistv3/http"
+    },
+    {
+      "source": "/docs/api-reference/mist-v3",
+      "destination": "/api-reference/mistv3/http"
+    },
+
+    {
+      "source": "/mist-v2-api",
+      "destination": "/api-reference/mistv2/http"
+    },
+    {
+      "source": "/api-reference/mist-v2",
+      "destination": "/api-reference/mistv2/http"
+    },
+    {
+      "source": "/api-reference/mist-v2/http",
+      "destination": "/api-reference/mistv2/http"
+    },
+
+    {
+      "source": "/api-reference/voices/all-v2",
+      "destination": "/api-reference/data/voices-v2"
+    },
+    {
+      "source": "/reference/data-voices-voice-details-json",
+      "destination": "/api-reference/data/voice-details"
+    },
+
+    {
+      "source": "/docs/api",
+      "destination": "/docs/api-reference"
+    },
+    {
+      "source": "/api",
+      "destination": "/docs/api-reference"
+    },
+    {
+      "source": "/reference",
+      "destination": "/docs/api-reference"
+    },
+    {
+      "source": "/reference/api",
+      "destination": "/docs/api-reference"
+    },
+    {
+      "source": "/docs/v1-api-reference",
+      "destination": "/docs/api-reference"
+    },
+    {
+      "source": "/docs/text-to-speech",
+      "destination": "/docs/api-reference"
+    },
+    {
+      "source": "/docs/rest",
+      "destination": "/docs/api-reference"
+    },
+    {
+      "source": "/docs/api-reference/utilities",
+      "destination": "/docs/api-reference"
+    },
+
+    {
+      "source": "/authentication",
+      "destination": "/docs/api-authentication"
+    },
+    {
+      "source": "/core/authentication",
+      "destination": "/docs/api-authentication"
+    },
+    {
+      "source": "/cli/authentication",
+      "destination": "/docs/api-authentication"
+    },
+    {
+      "source": "/reference/api-authentication",
+      "destination": "/docs/api-authentication"
     }
   ]
 }

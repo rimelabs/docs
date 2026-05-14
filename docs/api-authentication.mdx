@@ -1,0 +1,42 @@
+---
+title: API authentication
+icon: key
+description: How to authenticate with the Rime TTS API using a bearer token.
+---
+
+All requests to the Rime API are authenticated with a **bearer token** in the `Authorization` header.
+
+## Get an API key
+
+1. Sign in at [app.rime.ai](https://app.rime.ai).
+2. Open the [API Tokens page](https://app.rime.ai/tokens).
+3. Create a new token and copy the value. Treat it like a password — anyone with the token can synthesize speech against your account.
+
+## Use the token
+
+Set the `Authorization` header on every request:
+
+```bash
+curl --request POST \
+  --url https://users.rime.ai/v1/rime-tts \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: audio/mp3' \
+  --data '{"speaker":"astra","text":"hello","modelId":"coda","language":"en"}'
+```
+
+The same header is used for the HTTP endpoint, the WebSocket endpoints, and the metadata/utility endpoints.
+
+## CLI authentication
+
+The `rime` CLI manages your key for you. Run [`rime login`](/cli-reference/rime-auth) once and the CLI stores it at `~/.rime/rime.toml`. You can also set it explicitly via the `RIME_CLI_API_KEY` environment variable.
+
+## On-prem authentication
+
+On-prem deployments accept the same `Authorization: Bearer …` header. You can also pre-configure a key at the deployment level using the `RIME_API_KEY` environment variable, so callers don't need to send the header at all. See [the on-prem quickstart](/docs/on-prem/quickstart) for details.
+
+## Related
+
+- [Quickstart: TTS in five minutes](/docs/quickstart-five-minute)
+- [API reference index](/docs/api-reference)
+- [CLI authentication commands](/cli-reference/rime-auth)

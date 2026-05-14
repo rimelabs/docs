@@ -87,7 +87,7 @@ The audio will be a base64 encoded chunk of audio bytes in the audio format spec
 
 #### Timestamps
 
-Word timestamps are provided to better understand what precisely has been already said, in the event of an interruption.
+Word-level timestamps are emitted alongside the audio chunks so the client can tell exactly which words have been spoken at any point. This is especially useful for handling interruptions: when the user starts talking over the output, you can map the playback position back to the last word that was actually heard.
 
 ```typescript
 type TimestampsEvent = {
@@ -97,6 +97,23 @@ type TimestampsEvent = {
     start: number[],
     end: number[],
   },
+  contextId: string | null,
+}
+```
+
+The three arrays inside `word_timestamps` are the same length and index-aligned: for a given index `i`, `words[i]` is spoken from `start[i]` to `end[i]`. Times are in seconds, measured from the beginning of the audio for the current synthesis. If a context id was attached to the text that produced this audio, it is included on the event.
+
+Example payload:
+
+```json
+{
+  "type": "timestamps",
+  "word_timestamps": {
+    "words": ["Hello", "from", "a", "timestamps", "probe", "."],
+    "start": [0, 0.35991, 0.51084, 0.59211, 1.10295, 1.41642],
+    "end":   [0.35991, 0.51084, 0.59211, 1.10295, 1.41642, 1.5093]
+  },
+  "contextId": null
 }
 ```
 
@@ -154,6 +171,8 @@ type ErrorEvent = {
 
 <ParamField body="speedAlpha" type="float" default="1.0">
   Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
+
+  *Note: this is the legacy Mist v2 convention. Newer models (Coda, Arcana, Mist v3) invert it — for those, higher than 1.0 is faster.*
 </ParamField>
 
 <ParamField body="noTextNormalization" type="bool" default="false">

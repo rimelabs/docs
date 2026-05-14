@@ -22,15 +22,30 @@ Set the `Accept` header to one of the following values:
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
+  Must be one of the flagship Coda voices <a href="/docs/voices">listed in our documentation</a>.
 </ParamField>
-
 <ParamField body="text" type="string" required>
-  The text you'd like spoken. Character limit per request is 500 via the API and 1,000 in the dashboard UI.
+  The text you'd like spoken. Unlimited via API. Character limit per request is 3,000 in the dashboard UI.
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  Set to `mistv3`.
+  Choose `coda` for Rime's most realistic conversational voices.
+</ParamField>
+
+<ParamField body="language" type="string" default="en">
+  If provided, the language must match the language spoken by the provided speaker. Both the 2-letter ISO 639-1 and the 3-letter ISO 639-2/3 form are accepted:
+
+  | 639-1 | 639-2/3 | Language   |
+  |-------|---------|------------|
+  | `ar`  | `ara`   | Arabic     |
+  | `de`  | `deu`   | German     |
+  | `en`  | `eng`   | English    |
+  | `es`  | `spa`   | Spanish    |
+  | `fr`  | `fra`   | French     |
+  | `ja`  | `jpn`   | Japanese   |
+  | `pt`  | `por`   | Portuguese |
+
+  See <a href="/docs/voices">the voices documentation</a> for which speakers support each language.
 </ParamField>
 
 <ParamField body="samplingRate" type="number" default="24000">
@@ -43,27 +58,10 @@ Set the `Accept` header to one of the following values:
   A value above 1.0 slows down the audio, a value below 1.0 speeds up the audio.
 </ParamField>
 
-<ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Higher than 1.0 is faster and lower than 1.0 is slower.
-</ParamField>
+<ParamField body="speedAlpha" type="number" default="1.0">
+  Speech rate multiplier.
 
-<ParamField body="lang" type="string" default="en">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
-</ParamField>
-
-<ParamField body="pauseBetweenBrackets" type="bool" default="false">
-  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds.
-  Example: `Hi. <200> I'd love to have a conversation with you.` adds a 200ms pause. Learn more about [custom pauses](/docs/custom-pauses).
-</ParamField>
-
-<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
-  When set to true, you can specify the phonemes for a word enclosed in curly brackets.
-  Example: `{h'El.o} World` will pronounce "Hello" as expected. Learn more about [custom pronunciation](/docs/custom-pronunciation).
-</ParamField>
-
-<ParamField body="inlineSpeedAlpha" type="string">
-  Comma-separated list of speed values applied to words in square brackets. Values > 1.0 speed up speech, < 1.0 slow it down.
-  Example: "This is [slow] and [fast]", use "0.5, 3" to make "slow" slower and "fast" faster.
+  A value above 1.0 speeds up the audio, a value below 1.0 slows it down.
 </ParamField>
 
 <RequestExample>
@@ -78,9 +76,9 @@ curl --request POST \
   --fail \
   --data '{
   "text": "Hello from Rime!",
-  "modelId": "mistv3",
-  "speaker": "cove",
-  "lang": "en",
+  "modelId": "coda",
+  "speaker": "astra",
+  "language": "en",
   "samplingRate": 24000
 }'
 ```
@@ -91,9 +89,9 @@ import requests
 url = "https://users.rime.ai/v1/rime-tts"
 
 payload = {
-    "speaker": "cove",
+    "speaker": "astra",
     "text": "Hello from Rime!",
-    "modelId": "mistv3",
+    "modelId": "coda",
     "samplingRate": 24000
 }
 headers = {
@@ -120,7 +118,7 @@ const options = {
     Authorization: 'Bearer YOUR_API_KEY',
     'Content-Type': 'application/json'
   },
-  body: '{"speaker":"cove","text":"Hello from Rime!","modelId":"mistv3","samplingRate":24000}'
+  body: '{"speaker":"astra","text":"Hello from Rime!","modelId":"coda","samplingRate":24000}'
 };
 
 fetch('https://users.rime.ai/v1/rime-tts', options)
@@ -145,7 +143,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"cove\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv3\",\n  \"samplingRate\": 24000\n}",
+  CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"coda\",\n  \"samplingRate\": 24000\n}",
   CURLOPT_HTTPHEADER => [
     "Accept: audio/webm;codecs=opus",
     "Authorization: Bearer YOUR_API_KEY",
@@ -179,7 +177,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"cove\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv3\",\n  \"samplingRate\": 24000\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"coda\",\n  \"samplingRate\": 24000\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 
@@ -201,7 +199,7 @@ HttpResponse<byte[]> response = Unirest.post("https://users.rime.ai/v1/rime-tts"
   .header("Accept", "audio/webm;codecs=opus")
   .header("Authorization", "Bearer YOUR_API_KEY")
   .header("Content-Type", "application/json")
-  .body("{\n  \"speaker\": \"cove\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv3\",\n  \"samplingRate\": 24000\n}")
+  .body("{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"coda\",\n  \"samplingRate\": 24000\n}")
   .asBytes();
 Files.write(Paths.get("output.webm"), response.getBody());
 ```

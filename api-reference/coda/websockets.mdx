@@ -8,8 +8,6 @@ authMethod: "bearer"
 
 Rime's websocket implementation accepts bare text, and responds with audio bytes of the selected format. All synthesis arguments are provided as query parameters when establishing the connection.
 
-The websocket API buffers inputs up to on of the following punctuation characters: `.`, `,`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
-
 ## Messages
 
 ### Send
@@ -50,7 +48,7 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
+  Must be one of the voices <a href="/docs/voices">listed in our documentation</a> for `coda`.
 </ParamField>
 
 <ParamField body="text" type="string" required>
@@ -58,45 +56,42 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  Set to `mistv2`.
+  This value **must** be set to `coda` else the websockets server will default to `mistv2` for speech synthesis.
 </ParamField>
 
 <ParamField body="audioFormat" type="string">
-  One of `mp3`, `mulaw`, or `pcm`
+  One of `mp3`, `ogg`, `mulaw`, or `pcm`
 </ParamField>
 
-<ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
+<ParamField body="language" type="string" default="eng">
+  If provided, the language must match the language spoken by the provided speaker. Both the 2-letter ISO 639-1 and the 3-letter ISO 639-2/3 form are accepted:
+
+  | 639-1 | 639-2/3 | Language   |
+  |-------|---------|------------|
+  | `ar`  | `ara`   | Arabic     |
+  | `de`  | `deu`   | German     |
+  | `en`  | `eng`   | English    |
+  | `es`  | `spa`   | Spanish    |
+  | `fr`  | `fra`   | French     |
+  | `ja`  | `jpn`   | Japanese   |
+  | `pt`  | `por`   | Portuguese |
+
+  See <a href="/docs/voices">the voices documentation</a> for which speakers support each language.
 </ParamField>
 
-<ParamField body="pauseBetweenBrackets" type="bool" default="false">
-  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
-  Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences.
+<ParamField body="samplingRate" type="int" default="24000">
+  The sampling rate (Hz).
+
+  * **On-cloud**: Accepted values: 8000, 16000, 22050, 24000, 44100, 48000, 96000. Anything above 24000 is up sampling.
+  * **On-prem**: Any value is accepted.
 </ParamField>
 
-<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
-  When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
-  Example: "\{h'El.o} World" will pronounce "Hello" as expected. Learn more about <a href="/docs/custom-pronunciation">custom pronunciation</a>.
+<ParamField body="speedAlpha" type="number" default="1.0">
+  Speech rate multiplier.
+
+  A value above 1.0 speeds up the audio, a value below 1.0 slows it down.
 </ParamField>
 
-<ParamField body="inlineSpeedAlpha" type="string">
-  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
-  Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster..
-</ParamField>
-
-<ParamField body="samplingRate" type="int">
-  The value, if provided, must be between 4000 and 44100. Default: 22050
-</ParamField>
-
-<ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
-
-  *Note: this is the legacy Mist v2 convention. Newer models (Coda, Arcana, Mist v3) invert it — for those, higher than 1.0 is faster.*
-</ParamField>
-
-<ParamField body="noTextNormalization" type="bool" default="false">
-  **mist/mistv2 only.** Skips text normalization of the input text prior to synthesizing audio. This will reduce latency at the cost of some possible mispronunciation of digits and abbreviations.
-</ParamField>
 
 <ParamField body="segment" type="string" default="bySentence">
   Controls how text is segmented for synthesis. Available options:
@@ -107,21 +102,24 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 Note: For backward compatibility, setting `immediate=true` in query params is equivalent to `segment=immediate`. If a null value is provided, it will default to "bySentence".
 </ParamField>
 
-<ParamField body="saveOovs" type="bool" default="false">
-  **mist/mistv2 only.** If set to `true`, Rime shall save any currently OOV (out-of-vocabulary) words encountered in `text`, and save them for the User or Team to review on the
-  <a href="https://app.rime.ai/oov/">Speech QA dashboard</a>. <b>Note:</b> It may take up to 15 minutes for OOV words to appear on your dashboard.
-</ParamField>
-
-
 <RequestExample>
 
 ```python Python
 import asyncio
 import websockets
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.environ.get('RIME_API_KEY')
+if not api_key:
+    raise ValueError("RIME_API_KEY environment variable is not set")
+
+FILE_PATH = "coda_ws.wav"
 
 class RimeClient:
     def __init__(self, speaker, api_key):
-        self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=mistv2&audioFormat=mp3"
+        self.url = f"wss://users-ws.rime.ai/ws?speaker={speaker}&modelId=coda&audioFormat=wav"
         self.auth_headers = {
             "Authorization": f"Bearer {api_key}"
         }
@@ -155,25 +153,22 @@ message = [
     "is ",
     "a ",
     "test ",
-    "<CLEAR>",
-    "This ",
-    "is ",
-    "a ",
-    "sentence, ",
-    "that ",
-    "will ",
-    "produce ",
-    "audio ",
-    "across ",
-    "two ",
-    "messages.",
+    "of ",
+    "the ",
+    "coda ",
+    "model ",
+    "using ",
+    "websockets ",
+    "and ",
+    "python.",
     "<EOS>",
 ]
 
-client = RimeClient("cove", api_key="xxx")
+client = RimeClient("astra", api_key=api_key)
 asyncio.run(client.run(message))
 
-client.save_audio("output.mp3")
+print(f"Saving audio to {FILE_PATH}")
+client.save_audio(FILE_PATH)
 ```
 
 </RequestExample>

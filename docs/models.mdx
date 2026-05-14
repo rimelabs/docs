@@ -7,11 +7,21 @@ Models are constantly being trained and fine-tuned based on user and customer fe
 
 <Tip>Rime's API is available in multiple regions. Use the [regional endpoint](/docs/regional-endpoints) closest to your deployment for the lowest latency.</Tip>
 
-Rime currently has four models in production: `arcanav3`, `arcanav2`, `mistv3`, and `mistv2`.
+Rime currently has five models in production: `coda`, `arcanav3`, `arcanav2`, `mistv3`, and `mistv2`. All are available via the cloud API and on-premises.
+
+## Coda
+
+**Coda**, released May 2026, is Rime's new flagship TTS model and the successor to Arcana. It pairs Arcana's expressiveness and voice identity with real-time-conversational latency.
+
+* Highly expressive, natural-sounding speech with emotional nuance
+* Multilingual support for Arabic, English, French, German, Japanese, Portuguese, and Spanish using a shared voice lineup
+* Word-level timestamps for text-audio alignment and interruption handling
+* Supports the [`spell()` function](/docs/spell) for spelling out sequences letter by letter or number by number
+* Available via `modelId: coda` through Rime's API endpoints
 
 ## Arcana
 
-**Arcana**, released April 2025, is Rime’s most expressive and lifelike TTS model to date. It pushes the boundary of naturalness and emotional depth in synthesized speech.
+**Arcana**, released April 2025, is Rime's previous flagship TTS model — known for naturalness and emotional depth in synthesized speech.
 
 * Highly expressive, natural-sounding speech with emotional nuance  
 * Fine-grained control over prosody, pacing, and tone  

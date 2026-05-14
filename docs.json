@@ -66,12 +66,12 @@
                 ]
               },
               "docs/spell",
+              "docs/speed",
               {
                 "group": "Customizing Mist",
                 "icon": "wrench",
                 "pages": [
                   "docs/linguistics",
-                  "docs/speed",
                   "docs/homographs",
                   "docs/custom-pauses",
                   "docs/custom-pronunciation"
@@ -131,6 +131,19 @@
       {
         "tab": "API Reference",
         "groups": [
+          {
+            "group": "Coda API reference",
+            "pages": [
+              "api-reference/coda/http",
+              {
+                "group": "Websocket",
+                "pages": [
+                  "api-reference/coda/websockets",
+                  "api-reference/coda/websockets-json"
+                ]
+              }
+            ]
+          },
           {
             "group": "Arcana API reference",
             "pages": [

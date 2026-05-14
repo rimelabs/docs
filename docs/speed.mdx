@@ -1,5 +1,6 @@
 ---
-title: 'Speed control'
+title: 'Playback speed'
+icon: forward-fast
 ---
 
 Rime allows you to customize the speaking speed of your voice agents, enabling you to:
@@ -16,7 +17,7 @@ Overall speaking speed in Rime is controlled using the `speedAlpha` parameter.
 The direction of `speedAlpha` depends on the model:
 
 - **`mist`, `mistv2`:** Lower than 1.0 is faster; higher than 1.0 is slower.
-- **`mistv3`, `arcana`:** Higher than 1.0 is faster; lower than 1.0 is slower.
+- **`coda`, `arcana`, `mistv3`:** Higher than 1.0 is faster; lower than 1.0 is slower.
 
 ```js
 {
@@ -33,9 +34,9 @@ To adjust the speed of individual words or phrases, use the `inlineSpeedAlpha` p
 `inlineSpeedAlpha` takes a comma-separated list of speed values applied to words in square brackets. The direction of `inlineSpeedAlpha` depends on the model, matching `speedAlpha`:
 
 - **`mist`, `mistv2`:** Values < 1.0 speed up speech, > 1.0 slow it down.
-- **`mistv3`, `arcana`:** Values > 1.0 speed up speech, < 1.0 slow it down.
+- **`coda`, `arcana`, `mistv3`:** Values > 1.0 speed up speech, < 1.0 slow it down.
 
-For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” slow and “fast” fast on `mistv3`/`arcana`, or the reverse on `mist`/`mistv2`.
+For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” slow and “fast” fast on `coda`/`arcana`/`mistv3`, or the reverse on `mist`/`mistv2`.
 
 ```js
 {

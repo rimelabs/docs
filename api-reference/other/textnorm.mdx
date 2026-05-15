@@ -1,5 +1,6 @@
 ---
 title: 'Text Normalization'
+description: "Text normalization endpoint: returns the normalized form of input text — exactly what the TTS model sees before synthesis."
 api: 'POST  https://optimize.rime.ai/textnorm'
 authMethod: "bearer"
 ---
@@ -163,3 +164,13 @@ HttpResponse<String> response = Unirest.post("https://optimize.rime.ai/textnorm"
 ```
 
 </RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "normalized": "one two three four, one, eight hundred, four four four, four one four one"
+}
+```
+
+</ResponseExample>

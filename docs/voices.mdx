@@ -1,20 +1,62 @@
 ---
 title: Voices
+description: "Rime's voice catalog across Coda, Arcana, and Mist — and how to pick a starter voice."
 icon: microphone-lines
 ---
 
 Rime exposes a broad portfolio of production-ready voices across our models. Each voice is designed for real-time conversational performance, with distinct tonal identity, emotional range, and demographic diversity.
 
 As of 19 May 2026, Rime supports the following languages:
-- Arabic `lang=ara` or `lang=ar` (Coda, Arcana)
-- English `lang=eng` or `lang=en`
-- French `lang=fra` or `lang=fr`
-- German `lang=ger` or `lang=de`
-- Hebrew `lang=heb` or `lang=he` (Arcana only)
-- Hindi `lang=hin` or `lang=hi` (Arcana only)
-- Japanese `lang=jpn` or `lang=ja` (Coda, Arcana)
-- Portuguese `lang=por` or `lang=pt` (Coda, Arcana)
-- Spanish `lang=spa` or `lang=es`
+
+| Language | ISO codes | Notes |
+| :--- | :--- | :--- |
+| Arabic | `ara` / `ar` | Coda, Arcana |
+| English | `eng` / `en` | |
+| French | `fra` / `fr` | |
+| German | `ger` / `de` | |
+| Hebrew | `heb` / `he` | Arcana only |
+| Hindi | `hin` / `hi` | Arcana only |
+| Japanese | `jpn` / `ja` | Coda, Arcana |
+| Portuguese | `por` / `pt` | Coda, Arcana |
+| Spanish | `spa` / `es` | |
+
+<Tip>For the live voice list, fetch [`/data/voices/all-v2.json`](/api-reference/data/voices-v2) — it updates as new voices ship.</Tip>
+
+## Accessing Voices
+
+- Online: [/api-reference/data/voices](/api-reference/data/voices)
+- Via API: https://users.rime.ai/data/voices/all-v2.json
+
+Detailed voice metadata is available:
+
+- Online: [/api-reference/data/voice-details](/api-reference/data/voice-details)
+- Via API: https://users.rime.ai/data/voices/voice_details.json
+
+Use the `speaker` parameter in the TTS API to select a voice:
+
+```json
+{
+  "speaker": "astra",
+  "text": "Hello from Rime!",
+  "modelId": "coda",
+  "language": "en"
+}
+```
+
+## Starter voices to try
+
+If you're just getting started, these speakers are confirmed to work across the listed models:
+
+| Speaker | Sounds like | Works on |
+| :--- | :--- | :--- |
+| `astra` | Female, young adult, American Standard | Coda, Arcana, Mist v3, Mist v2 |
+| `luna` | Female, young adult, American | Coda, Arcana, Mist v3 |
+| `celeste` | Female, young adult, American | Coda, Arcana |
+| `orion` | Male, elder, American | Coda, Arcana |
+| `albion` | Male, young adult, English | Coda, Arcana |
+| `cove` | Female, young adult, African American | Mist v3, Mist v2 |
+
+For the complete catalog, fetch [`/data/voices/voice_details.json`](/api-reference/data/voice-details).
 
 ## Coda Voices (Flagship)
 
@@ -62,16 +104,3 @@ Mist voices are:
 - Designed to handle complex proper nouns, brand names, and domain-specific terminology cleanly  
 
 Mist v2 provides a curated set of dependable, production-stable voices that prioritize control and scalability.
-
-## Accessing Voices
-
-- Online: [/api-reference/data/voices](/api-reference/data/voices)
-- Via API: https://users.rime.ai/data/voices/all-v2.json
-
-Detailed voice metadata is available:
-
-- Online: [/api-reference/data/voice-details](/api-reference/data/voice-details)
-- Via API: https://users.rime.ai/data/voices/voice_details.json
-
-Use the `speaker` parameter in the TTS API to select a voice.
-

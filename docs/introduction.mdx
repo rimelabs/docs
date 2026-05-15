@@ -1,9 +1,29 @@
 ---
 title: Introduction
+description: "Get started with Rime's TTS API — Coda flagship, multilingual support, real-time conversational latency."
 icon: book
 ---
 
 Rime provides industry-leading text-to-speech (TTS) AI models built for **real-time conversational experiences at scale**. Our latest flagship model, **Coda**, delivers authentic, natural, and expressive speech with the speed and reliability required for production voice AI, whether you're building intelligent IVRs, multilingual voice agents, or anything in between.
+
+## Hello from Coda in 30 seconds
+
+```bash
+curl --request POST \
+  --url https://users.rime.ai/v1/rime-tts \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: audio/mp3' \
+  --output hello.mp3 \
+  --data '{
+    "speaker": "astra",
+    "text": "Hello from Coda.",
+    "modelId": "coda",
+    "language": "en"
+  }'
+```
+
+Get your `YOUR_API_KEY` from the [API Tokens page](https://app.rime.ai/tokens). For a full walkthrough, see the [five-minute quickstart](/docs/quickstart-five-minute).
 
 ## Rime's TTS Models
 
@@ -24,17 +44,27 @@ Rime now offers a suite of models tailored for different production needs:
 - **Mist v3**
     - `modelId: mistv3`
     - Major update to the Mist engine with **typical TTFB well below 100ms** — significantly faster than previous Mist versions while preserving quality and predictability.
-- **Mistv2**
+- **Mist v2**
     - `modelId: mistv2`
     - Optimized for **speed and fine-grained control**, giving you accurate pronunciation and high concurrency for use cases that demand quick synthesis and customization.
     - This is the highest precision and lowest WER model on the market; use this when perfect fidelity to text is needed.
 
 ## What Makes Coda Different
 
-- **Real-Time Conversational Performance:** Coda delivers TTS with industry-leading latency, enabling natural back-and-forth interactions without awkward pauses — fast enough for mid-utterance control and barge-in.
-- **Multilingual Support:** A single model speaks Arabic, English, French, German, Japanese, Portuguese, and Spanish using the same expressive voice lineup.
-- **Word-Level Timestamps:** Structural metadata enables text-audio alignment, real-time highlighting, better interruption handling, and smarter orchestration in voice applications.
-- **Enterprise-Grade Deployment:** Coda scales with high concurrency per machine and a robust suite of TTS-specific observability metrics, and is available on cloud and on-premises.
+<CardGroup cols={2}>
+  <Card title="Real-time conversational performance" icon="bolt">
+    Industry-leading latency enables natural back-and-forth interactions — fast enough for mid-utterance control and barge-in.
+  </Card>
+  <Card title="Multilingual support" icon="globe">
+    One model speaks Arabic, English, French, German, Japanese, Portuguese, and Spanish using a shared expressive voice lineup.
+  </Card>
+  <Card title="Word-level timestamps" icon="clock">
+    Structural metadata enables text-audio alignment, real-time highlighting, better interruption handling, and smarter orchestration.
+  </Card>
+  <Card title="Enterprise-grade deployment" icon="server">
+    Scales with high concurrency per machine, ships TTS-specific observability metrics, and runs on cloud or on-premises.
+  </Card>
+</CardGroup>
 
 ## Language & Voice Support
 

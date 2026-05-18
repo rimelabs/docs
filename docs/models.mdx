@@ -16,20 +16,37 @@ Rime currently has five models in production: `coda`, `arcanav3`, `arcanav2`, `m
 | :--- | :--- |
 | `coda` | Real-time conversational agents needing flagship realism. Good default for most apps. |
 | `arcana` | Multilingual code-switching across 10+ languages, including Hindi, Hebrew, and Tamil. |
-| `mistv3` | Sub-100ms TTFB with the classic Mist lineup; plus features like [`phonemizeBetweenBrackets`](/docs/custom-pronunciation), [`pauseBetweenBrackets`](/docs/custom-pauses), and OOV submission. |
+| `mistv3` | Fastest synthesis with the classic Mist lineup; plus features like [`phonemizeBetweenBrackets`](/docs/custom-pronunciation), [`pauseBetweenBrackets`](/docs/custom-pauses), and OOV submission. |
 | `mistv2` | Maximum pronunciation precision and lowest WER. Use when perfect fidelity to text is required. |
+
+For benchmarked latency and throughput numbers, see [Latency](/docs/latency#real-time-performance-benchmarks).
+
+## Feature matrix
+
+| Attribute | Coda | Arcana | Mist |
+| :---- | :----: | :----: | :----: |
+| Number of voices | 184 | 94 | 94 |
+| Multilingual | ✅ | ✅ | ❌ |
+| [Text normalization](/docs/text-normalization) | ✅ | ✅ | ✅ |
+| [`spell()` function](/docs/spell) | ✅ | ✅ | ✅ |
+| [Speed adjustment](/docs/speed) | ✅ | ✅ | ✅ |
+| [Custom pronunciation (Speech QA)](/platform/speech-qa) | ❌ | ❌ | ✅ |
+| [Custom pauses](/docs/custom-pauses) | ❌ | ❌ | ✅ |
 
 ## Coda
 
-**Coda**, released May 2026, is Rime's new flagship TTS model and the successor to Arcana. It pairs Arcana's expressiveness and voice identity with real-time-conversational latency.
+**Coda**, released May 2026, is Rime's new flagship TTS model and the successor to Arcana. It pairs a sophisticated LLM backbone with a dedicated speech inference engine, trained on the conversational full-duplex data preferred by production voice AI deployments.
 
-* Highly expressive, natural-sounding speech with emotional nuance
-* Multilingual support for Arabic, English, French, German, Japanese, Portuguese, and Spanish using a shared voice lineup
+* In human-led voice-quality evaluations, Coda surpasses both prior Rime models and competitor TTS offerings — including naturalness, prosody, and artifact-free output
+* **Sub-100ms model latency on the GPU engine** when self-hosted or on-prem. Cloud API users add roughly 25–50ms network round-trip from most of the continental US when routed to the closest [regional endpoint](/docs/regional-endpoints).
+* Multilingual support for English, French, German, Japanese, Portuguese, and Spanish using a shared voice lineup
 * Word-level timestamps for text-audio alignment and interruption handling
 * Supports the [`spell()` function](/docs/spell) for spelling out sequences letter by letter or number by number
 * Available via `modelId: coda` through Rime's API endpoints
 
 ## Arcana
+
+<Tip>Coda is meaningfully better than Arcana across naturalness, prosody, and artifact-free output. We recommend migrating all existing Arcana traffic to Coda — just swap `modelId: arcana` for `modelId: coda` in your requests.</Tip>
 
 **Arcana**, released April 2025, is Rime's previous flagship TTS model — known for naturalness and emotional depth in synthesized speech.
 

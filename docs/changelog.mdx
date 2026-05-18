@@ -10,10 +10,13 @@ icon: list
 
 <Update label="2026-05-19">
 * **Coda** is now available via `modelId: coda`:
-  * New flagship TTS model — successor to Arcana, with expressive voices and real-time conversational latency.
-  * Multilingual support across Arabic, English, French, German, Japanese, Portuguese, and Spanish.
+  * New flagship TTS model — sophisticated LLM backbone paired with a dedicated speech inference engine, trained on conversational full-duplex data.
+  * Surpasses prior Rime models and competitor offerings in human-led voice-quality evaluations across naturalness, prosody, and artifact-free output.
+  * Sub-100ms model latency on the GPU engine (self-hosted or on-prem); cloud API users add roughly 25–50ms network round-trip from most of the continental US — see [Regional endpoints](/docs/regional-endpoints).
+  * Multilingual support across English, French, German, Japanese, Portuguese, and Spanish.
   * Word-level timestamps over the JSON websocket endpoint for text-audio alignment and interruption handling.
   * Available via the cloud API and on-premises at launch.
+  * **Recommended successor to Arcana** for all existing Arcana traffic — swap `modelId: arcana` for `modelId: coda`.
   * See the [Coda API reference](/api-reference/coda/http) for details.
 </Update>
 

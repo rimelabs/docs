@@ -24,6 +24,24 @@ Use these endpoints for real-time streaming over WebSocket:
 | `wss://users-ws.rime.ai/ws3` | US West (us-west-2) |
 | `wss://users-east-ws.rime.ai/ws3` | US East (us-east-1) |
 
+## Typical network latency
+
+Use these rough round-trip times (RTT) — the back-and-forth network delay between your application and Rime — to pick the closest endpoint.
+
+| From metro | To US East | To US West |
+| :--- | :--- | :--- |
+| East Coast (NYC, DC, Boston, Atlanta) | 5–25 ms | 60–85 ms |
+| Midwest / South (Chicago, Dallas, Denver) | 25–55 ms | 35–65 ms |
+| West Coast (SF, LA, Seattle) | 60–85 ms | 5–25 ms |
+
+Rules of thumb:
+
+- **Same region** (your app and the Rime endpoint in the same AWS region): typically 1–10 ms.
+- **Coast-to-coast**: ~60 ms is the physical floor, set by the speed of light in fiber across ~2,500 miles. 60–85 ms is normal.
+- **Above 90 ms** between major US metros usually points to a suboptimal network route, not Rime.
+
+**For voice AI:** if you serve users nationwide from a single region, far-coast users will see 60–85 ms of network round-trip on top of Rime's inference time. To stay comfortably under 200 ms end-to-end, route East-coast users to US East and West-coast users to US West.
+
 ## Choosing a region
 
 Choose the endpoint in the region closest to where your application is deployed. For example:

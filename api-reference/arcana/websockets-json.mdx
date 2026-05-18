@@ -103,7 +103,7 @@ when the connection was established. If you provided any context id when sending
 
 #### Timestamps
 
-Word timestamps are provided to better understand what precisely has been already said, in the event of an interruption.
+Word-level timestamps are emitted alongside the audio chunks so the client can tell exactly which words have been spoken at any point. This is especially useful for handling interruptions: when the user starts talking over the output, you can map the playback position back to the last word that was actually heard.
 
 ```typescript
 type TimestampsEvent = {
@@ -113,6 +113,23 @@ type TimestampsEvent = {
     start: number[],
     end: number[],
   },
+  contextId: string | null,
+}
+```
+
+The three arrays inside `word_timestamps` are the same length and index-aligned: for a given index `i`, `words[i]` is spoken from `start[i]` to `end[i]`. Times are in seconds, measured from the beginning of the audio for the current synthesis. If a context id was attached to the text that produced this audio, it is included on the event.
+
+Example payload:
+
+```json
+{
+  "type": "timestamps",
+  "word_timestamps": {
+    "words": ["Hello", "from", "a", "timestamps", "probe."],
+    "start": [0, 0.32462, 0.48693, 0.64924, 0.97386],
+    "end":   [0.32462, 0.48693, 0.64924, 0.97386, 1.78541]
+  },
+  "contextId": null
 }
 ```
 
@@ -170,6 +187,12 @@ type ErrorEvent = {
 
   * **On-cloud**: Accepted values: 8000, 16000, 22050, 24000, 44100, 48000, 96000. Anything above 24000 is up sampling.
   * **On-prem**: Any value is accepted.
+</ParamField>
+
+<ParamField body="speedAlpha" type="number" default="1.0">
+  Speech rate multiplier.
+
+  A value above 1.0 speeds up the audio, a value below 1.0 slows it down.
 </ParamField>
 
 <ParamField body="segment" type="string" default="bySentence">

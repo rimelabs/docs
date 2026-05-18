@@ -6,7 +6,7 @@ authMethod: "bearer"
 
 ## Fixed Headers
 
-<ParamField header="Accept" type="text/eventstream" required></ParamField>
+<ParamField header="Accept" type="text/event-stream" required></ParamField>
 
 ## Variable Parameters
 
@@ -51,6 +51,8 @@ authMethod: "bearer"
 
 <ParamField body="speedAlpha" type="float" default="1.0">
   Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
+
+  *Note: this is the legacy Mist v2 convention. Newer models (Coda, Arcana, Mist v3) invert it — for those, higher than 1.0 is faster.*
 </ParamField>
 
 <ParamField body="noTextNormalization" type="bool" default="false">
@@ -116,7 +118,7 @@ payload = {
     "phonemizeBetweenBrackets": false
 }
 headers = {
-    "Accept": "text/eventstream",
+    "Accept": "text/event-stream",
     "Authorization": "Bearer <authorization>",
     "Content-Type": "application/json"
 }
@@ -140,7 +142,7 @@ print(response.text)
 const options = {
   method: 'POST',
   headers: {
-    Accept: 'text/eventstream',
+    Accept: 'text/event-stream',
     Authorization: 'Bearer <authorization>',
     'Content-Type': 'application/json'
   },
@@ -168,7 +170,7 @@ curl_setopt_array($curl, [
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\":\"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}",
   CURLOPT_HTTPHEADER => [
-    "Accept: text/eventstream",
+    "Accept: text/event-stream",
     "Authorization: Bearer <authorization>",
     "Content-Type: application/json"
   ],
@@ -204,7 +206,7 @@ func main() {
 
   req, _ := http.NewRequest("POST", url, payload)
 
-  req.Header.Add("Accept", "text/eventstream")
+  req.Header.Add("Accept", "text/event-stream")
   req.Header.Add("Authorization", "Bearer <authorization>")
   req.Header.Add("Content-Type", "application/json")
 
@@ -221,7 +223,7 @@ func main() {
 
 ```java Java
 HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
-  .header("Accept", "text/eventstream")
+  .header("Accept", "text/event-stream")
   .header("Authorization", "Bearer <authorization>")
   .header("Content-Type", "application/json")
   .body("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")

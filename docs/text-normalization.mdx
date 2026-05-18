@@ -24,7 +24,7 @@ Click any category for the full input/output reference.
 
 ## Forced letter-by-letter reading
 
-For account numbers, confirmation codes, SKUs, and acronyms the normalizer doesn't recognize, wrap the string in `spell(...)` to force letter-by-letter pronunciation. Works on both Arcana and Mist.
+For account numbers, confirmation codes, SKUs, and acronyms the normalizer doesn't recognize, wrap the string in `spell(...)` to force letter-by-letter pronunciation. Works on Coda, Arcana, and Mist.
 
 ```text
 Input:  Your confirmation code is spell(PRM423GDDML2354).
@@ -41,25 +41,23 @@ Rime's models may not nail uncommon brand or product names on the first try. Two
 2. **Use custom pronunciations inline** with Rime's phonetic alphabet and `phonemizeBetweenBrackets: true`. See [Custom pronunciation](/docs/custom-pronunciation) for the full reference.
 
 <Warning>
-  `phonemizeBetweenBrackets` works on the Mist family (v1, v2, v3). It does **not** work on Arcana. For brand or product name pronunciations on Arcana, submit the word to Rime to add to the dictionary, respell phonetically in plain English (accepting that this is approximate), or use Mist for flows where pronunciation control matters.
+  `phonemizeBetweenBrackets` works on the Mist family (v1, v2, v3). It does **not** work on Coda or Arcana. For brand or product name pronunciations on Coda or Arcana, submit the word to Rime to add to the dictionary, respell phonetically in plain English (accepting that this is approximate), or use Mist for flows where pronunciation control matters.
 </Warning>
 
 For full reference, see [Custom pronunciation](/docs/custom-pronunciation). To check whether a word is already in Rime's dictionary, use the [Coverage API](/api-reference/other/oov).
 
-## Feature availability: Arcana vs. Mist
+## Feature availability across models
 
-The features below apply to the Mist family (v1, v2, v3) unless otherwise noted.
+| Feature | Coda | Arcana | Mist |
+| :---- | :----: | :----: | :----: |
+| Native text normalization (numbers, currency, dates, etc.) | ✅ | ✅ | ✅ |
+| `spell()` for forced letter-by-letter | ✅ | ✅ | ✅ |
+| Punctuation-driven prosody | ✅ | ✅ | ✅ |
+| `pauseBetweenBrackets` (custom pause tags like `<750>`) | ❌ | ❌ | ✅ |
+| `phonemizeBetweenBrackets` (inline phonetic strings) | ❌ | ❌ | ✅ |
+| Deterministic per-term pronunciation config | ❌ | ❌ | ✅ |
 
-| Feature | Arcana | Mist |
-| :---- | :----: | :----: |
-| Native text normalization (numbers, currency, dates, etc.) | ✅ | ✅ |
-| `spell()` for forced letter-by-letter | ✅ | ✅ |
-| Punctuation-driven prosody | ✅ | ✅ |
-| `pauseBetweenBrackets` (custom pause tags like `<750>`) | ❌ | ✅ |
-| `phonemizeBetweenBrackets` (inline phonetic strings) | ❌ | ✅ |
-| Deterministic per-term pronunciation config | ❌ | ✅ |
-
-Arcana has parity with Mist for numbers, currency, and abbreviation expansion. If you tested Arcana early and saw normalization issues, re-test on the current model.
+Coda and Arcana both have parity with Mist for numbers, currency, and abbreviation expansion.
 
 For flows that need precise pause durations (legal disclaimers, regulated read-backs) or guaranteed pronunciation of brand and product names, Mist is the safer choice.
 

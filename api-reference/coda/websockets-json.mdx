@@ -6,9 +6,17 @@ authMethod: "bearer"
 
 ## Overview
 
-In addition to a plaintext websocket implementation, Rime also has an implementation that sends and receives events as JSON objects. Like the other implementation, all synthesis arguments are provided as query parameters when establishing the connection.
+In addition to a plaintext websocket implementation,
+Rime also has an implementation that sends and receives events as JSON objects.
+Like the other implementation, all synthesis arguments are provided as query
+parameters when establishing the connection.
 
-The websocket API buffers inputs up to one of the following punctuation characters: `.`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
+The websocket API buffers inputs up to on of the following punctuation
+characters: `.`, `?`, `!`. This is most pertinent for the initial messages
+sent to the API, as synthesis won't begin until there are sufficient
+tokens to generate audio with natural prosody. After the first synthesis
+of any given utterance, typically enough time has elapsed that subsequent
+audio contains multiple clauses, and the buffering becomes largely invisible.
 
 ## Messages
 
@@ -40,7 +48,14 @@ examples:
 }
 ```
 
-Context IDs can be provided, which will be attached to subsequent messages that the server sends back to the client. Rime will not maintain multiple simultaneous context ids.
+Context IDs can be provided, which will be attached to subsequent messages
+that the server sends back to the client. Rime will not maintain multiple s
+imultaneous context ids. The events will contain the most recent context ID
+at the time that audio was requested. In the above examples, even if both
+messages are received by the server before it sends any audio, the audio
+response for the first sentence will be tagged with `contextId: null`,
+and the audio for the second will be tagged with its UUID.
+
 
 #### Clear
 
@@ -60,7 +75,8 @@ This forces whatever buffer exists, if any, to be synthesized, and the generated
 
 #### EOS
 
-At times, your client would like to generate audio for whatever remains in the buffer, and then have the connection immediately closed.
+At times, your client would like to generate audio for whatever
+remains in the buffer, and then have the connection immediately closed.
 
 ```json
 { "operation" : "eos" }
@@ -82,7 +98,8 @@ type AudioChunkEvent = {
 }
 ```
 
-The audio will be a base64 encoded chunk of audio bytes in the audio format specified when the connection was established.
+The audio will be a base64 encoded chunk of audio bytes in the audio format specified
+when the connection was established. If you provided any context id when sending the relevant text, it'll be included here.
 
 #### Timestamps
 
@@ -108,9 +125,9 @@ Example payload:
 {
   "type": "timestamps",
   "word_timestamps": {
-    "words": ["Testing", "mistv3", "timestamps."],
-    "start": [0, 0.35396, 1.41584],
-    "end":   [0.35396, 1.41584, 3.18564]
+    "words": ["Hello", "from", "Coda", "over", "JSON", "websockets."],
+    "start": [0, 0.36106, 0.54159, 0.72212, 0.90265, 1.08318],
+    "end":   [0.36106, 0.54159, 0.72212, 0.90265, 1.08318, 2.88848]
   },
   "contextId": null
 }
@@ -131,7 +148,9 @@ When exactly `done` fires depends on the `segment` setting. See [Segmentation & 
 
 #### Error
 
-In the event of a malformed or unexpected input, the server will immediately respond with an error message. The server will _not_ close the connection, and will still accept subsequent well-formed messages.
+In the event of a malformed or unexpected input, the server will immediately respond with an error message.
+The server will _not_ close the connection, and will still accept subsequent well-formed messages.
+It's up to the client to decide if it wants to close upon receiving an error.
 
 ```typescript
 type ErrorEvent = {
@@ -143,42 +162,48 @@ type ErrorEvent = {
 ## Variable Parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
+  Must be one of the voices <a href="/api-reference/voices">listed in our documentation</a> for `coda`.
 </ParamField>
 
-<ParamField body="modelId" type="string" default="mistv3">
-  Set to `mistv3`.
+<ParamField body="text" type="string" required>
+  The text you'd like spoken. Character limit per request is 500 via the API and 1,000 in the dashboard UI.
+</ParamField>
+
+<ParamField body="modelId" type="string">
+  This value **must** be set to `coda` else the websockets server will default to `mistv2` for speech synthesis.
 </ParamField>
 
 <ParamField body="audioFormat" type="string">
-  One of `pcm`, `mulaw`, or `mp3`
+  One of `mp3`, `mulaw`, or `pcm`
 </ParamField>
 
-<ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
+<ParamField body="language" type="string" default="eng">
+  If provided, the language must match the language spoken by the provided speaker. Both the 2-letter ISO 639-1 and the 3-letter ISO 639-2/3 form are accepted:
+
+  | 639-1 | 639-2/3 | Language   |
+  |-------|---------|------------|
+  | `ar`  | `ara`   | Arabic     |
+  | `de`  | `deu`   | German     |
+  | `en`  | `eng`   | English    |
+  | `es`  | `spa`   | Spanish    |
+  | `fr`  | `fra`   | French     |
+  | `ja`  | `jpn`   | Japanese   |
+  | `pt`  | `por`   | Portuguese |
+
+  See <a href="/api-reference/voices">the voices documentation</a> for which speakers support each language.
 </ParamField>
 
-<ParamField body="pauseBetweenBrackets" type="bool" default="false">
-  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds.
-  Example: `Hi. <200> I'd love to have a conversation with you.` adds a 200ms pause. Learn more about [custom pauses](/docs/custom-pauses).
+<ParamField body="samplingRate" type="int" default="24000">
+  The sampling rate (Hz).
+
+  * **On-cloud**: Accepted values: 8000, 16000, 22050, 24000, 44100, 48000, 96000. Anything above 24000 is up sampling.
+  * **On-prem**: Any value is accepted.
 </ParamField>
 
-<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
-  When set to true, you can specify the phonemes for a word enclosed in curly brackets.
-  Example: `{h'El.o} World` will pronounce "Hello" as expected. Learn more about [custom pronunciation](/docs/custom-pronunciation).
-</ParamField>
+<ParamField body="speedAlpha" type="number" default="1.0">
+  Speech rate multiplier.
 
-<ParamField body="samplingRate" type="int">
-  The value, if provided, must be between 4000 and 44100. Default: 22050
-</ParamField>
-
-<ParamField body="inlineSpeedAlpha" type="string">
-  Comma-separated list of speed values applied to words in square brackets. Values > 1.0 speed up speech, < 1.0 slow it down.
-  Example: "This is [slow] and [fast]", use "0.5, 3" to make "slow" slower and "fast" faster.
-</ParamField>
-
-<ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Higher than 1.0 is faster and lower than 1.0 is slower.
+  A value above 1.0 speeds up the audio, a value below 1.0 slows it down.
 </ParamField>
 
 <ParamField body="segment" type="string" default="bySentence">
@@ -186,6 +211,8 @@ type ErrorEvent = {
   - "immediate" - Synthesizes text immediately without waiting for complete sentences
   - "never" - Never segments the text, waits for explicit flush or EOS
   - "bySentence" (default) - Waits for complete sentences before synthesis
+
+Note: For backward compatibility, setting `immediate=true` in query params is equivalent to `segment=immediate`. If a null value is provided, it will default to "bySentence".
 </ParamField>
 
 <RequestExample>
@@ -198,7 +225,7 @@ import base64
 
 class RimeClient:
     def __init__(self, speaker, api_key):
-        self.url = f"wss://users-ws.rime.ai/ws3?speaker={speaker}&modelId=mistv3&audioFormat=mp3"
+        self.url = f"wss://users-ws.rime.ai/ws3?speaker={speaker}&modelId=coda&audioFormat=mp3"
         self.auth_headers = {
             "Authorization": f"Bearer {api_key}"
         }
@@ -240,13 +267,18 @@ class RimeClient:
 message = [
     {"text": "This "},
     {"text": "is "},
+    {"text": "a "},
+    {"text": "test "},
+    {"operation":"clear"},
+    {"text": "This "},
+    {"text": "is "},
     {"text": "an "},
     {"text": "incomplete "},
     {"text": "sentence "},
     {"operation": "eos"},
 ]
 
-client = RimeClient("cove", api_key="YOUR_API_KEY")
+client = RimeClient("astra", api_key="xxx")
 asyncio.run(client.run(message))
 
 client.save_audio("output.mp3")

@@ -14,6 +14,7 @@ Rime offers three WebSocket endpoints. Here's how they compare:
 | | `/ws3` | `/ws2` | `/ws` |
 |---|---|---|---|
 | **Message format** | JSON | JSON | Raw binary audio |
+| **Coda** | ✅ | ❌ | ✅ |
 | **Arcana** | ✅ | ❌ | ✅ |
 | **Mist v1** | ✅ | ✅ | ✅ |
 | **Mist v2** | ✅ | ✅ | ✅ |
@@ -32,6 +33,7 @@ wss://users-ws.rime.ai/ws3
 This is the endpoint Rime actively invests in. It supports all current and upcoming Rime TTS models and streams audio as base64-encoded JSON chunks. TTFB is minimized by streaming model responses directly from the engine as they are produced.
 
 **Supported models:**
+- `coda`
 - `arcana` (all versions)
 - `mistv1`, `mistv2`
 - All future Rime TTS models
@@ -70,6 +72,7 @@ wss://users-ws.rime.ai/ws
 **Supported models:**
 - `mistv1`, `mistv2`
 - `arcana`
+- `coda`
 
 <Warning>
   `/ws` returns raw audio bytes with no JSON framing. It does not support word-level timestamps, context IDs, or structured error events. If you need any of these features, use `/ws3` or `/ws2` instead.
@@ -91,6 +94,7 @@ type TimestampsEvent = {
     start: number[],
     end: number[],
   },
+  contextId: string | null,
 }
 ```
 

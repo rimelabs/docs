@@ -2,6 +2,13 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Rime Docs",
+  "errors": {
+    "404": {
+      "redirect": false,
+      "title": "We can't find that page.",
+      "description": "The page you're looking for doesn't exist — but it might have moved. Try one of these starting points:\n\n- **[API reference](/docs/api-reference)** — every TTS, WebSocket, and utility endpoint\n- **[WebSocket overview](/docs/websockets)** — pick the right WebSocket endpoint for your use case\n- **[Five-minute quickstart](/docs/quickstart-five-minute)** — generate your first audio clip\n- **[Models](/docs/models)** — Coda, Arcana, Mist family\n- **[Voices](/docs/voices)** — the full voice catalog\n- **[API authentication](/docs/api-authentication)** — how API keys work\n- **[Changelog](/docs/changelog)** — recent changes and release notes\n\nIf you're an AI agent, a machine-friendly index of every page is available at [/llms.txt](/llms.txt).\n\nThink something is genuinely broken? [Report a broken link](mailto:support@rime.ai)."
+    }
+  },
   "colors": {
     "primary": "#B2321A",
     "light": "#E68732",

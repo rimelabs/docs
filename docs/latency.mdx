@@ -5,9 +5,25 @@ icon: gauge-simple-max
 ---
 
 ## tl;dr: Rime is really fast. 
-Sub-200ms latency is standard; [contact us](mailto:info@rime.ai) to optimize further.
+Sub-200ms end-to-end latency is standard via the cloud API. Coda, Rime's flagship model, achieves **sub-100ms model latency on the GPU engine** when self-hosted or on-prem.
 
-[On-premises deployments](/docs/on-prem) are available and have sub-100ms latency.
+Via the cloud API, the total time you measure also includes network round-trip — typically 25–50ms from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints). [Contact us](mailto:info@rime.ai) to optimize further.
+
+## Real-time performance benchmarks
+
+<Note>
+  These numbers were measured on a single Lambda H100 SXM machine — H100 SXM5 GPU, 26 vCPUs, 221 GiB RAM, Ubuntu 24.04, NVIDIA driver `595.58.03`.
+</Note>
+
+| Metric | Coda | Arcana v3 | Mist v3 |
+| :---- | :---- | :---- | :---- |
+| TTFA (P50) @ 1 Concurrency | 96 ms | 118 ms | 37 ms |
+| TTFA (P90) @ 1 Concurrency | 98 ms | 119 ms | 56 ms |
+| TTFA (P50) @ 12 Concurrency | 150 ms | 168 ms | 37 ms |
+| TTFA (P90) @ 12 Concurrency | 181 ms | 182 ms | 56 ms |
+| RTF (P99) | 0.33 | 0.29 | 0.004 |
+
+**TTFA** = Time-to-First-Audio. **RTF** = Real-Time Factor (synthesis time ÷ audio duration; values below 1.0 mean synthesis is faster than playback).
 
 ## TTS and latency
 

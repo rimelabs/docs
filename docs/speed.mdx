@@ -1,5 +1,6 @@
 ---
 title: 'Playback speed'
+description: "Control speaking speed in Rime synthesis using speedAlpha and inlineSpeedAlpha."
 icon: forward-fast
 ---
 
@@ -16,8 +17,10 @@ Overall speaking speed in Rime is controlled using the `speedAlpha` parameter.
 
 The direction of `speedAlpha` depends on the model:
 
-- **`mist`, `mistv2`:** Lower than 1.0 is faster; higher than 1.0 is slower.
-- **`coda`, `arcana`, `mistv3`:** Higher than 1.0 is faster; lower than 1.0 is slower.
+| Models | Direction |
+| :--- | :--- |
+| `coda`, `arcana`, `mistv3` | Higher than 1.0 is faster; lower than 1.0 is slower. |
+| `mist`, `mistv2` | Lower than 1.0 is faster; higher than 1.0 is slower. |
 
 ```js
 {
@@ -33,8 +36,10 @@ To adjust the speed of individual words or phrases, use the `inlineSpeedAlpha` p
 
 `inlineSpeedAlpha` takes a comma-separated list of speed values applied to words in square brackets. The direction of `inlineSpeedAlpha` depends on the model, matching `speedAlpha`:
 
-- **`mist`, `mistv2`:** Values < 1.0 speed up speech, > 1.0 slow it down.
-- **`coda`, `arcana`, `mistv3`:** Values > 1.0 speed up speech, < 1.0 slow it down.
+| Models | Direction |
+| :--- | :--- |
+| `coda`, `arcana`, `mistv3` | Values > 1.0 speed up speech, < 1.0 slow it down. |
+| `mist`, `mistv2` | Values < 1.0 speed up speech, > 1.0 slow it down. |
 
 For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” slow and “fast” fast on `coda`/`arcana`/`mistv3`, or the reverse on `mist`/`mistv2`.
 

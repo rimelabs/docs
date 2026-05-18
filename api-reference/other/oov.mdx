@@ -1,5 +1,6 @@
 ---
 title: 'Coverage'
+description: "Coverage endpoint: check which input words are not yet in Rime's pronunciation dictionary."
 api: 'POST  https://users.rime.ai/oov'
 authMethod: "bearer"
 ---
@@ -162,3 +163,15 @@ HttpResponse<String> response = Unirest.post("https://users.rime.ai/oov")
 ```
 
 </RequestExample>
+
+<ResponseExample>
+
+```json 200 — words not in dictionary
+["testt", "testtt"]
+```
+
+```json 200 — all words covered
+[]
+```
+
+</ResponseExample>

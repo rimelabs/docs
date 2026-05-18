@@ -35,6 +35,17 @@ The `rime` CLI manages your key for you. Run [`rime login`](/cli-reference/rime-
 
 On-prem deployments accept the same `Authorization: Bearer …` header. You can also pre-configure a key at the deployment level using the `RIME_API_KEY` environment variable, so callers don't need to send the header at all. See [the on-prem quickstart](/docs/on-prem/quickstart) for details.
 
+## Common auth errors
+
+If your request fails authentication, the API returns `401 Unauthorized` with a short plain-text body explaining why:
+
+| Status | Body | Cause |
+| :--- | :--- | :--- |
+| `401` | `missing headers` | No `Authorization` header was sent. |
+| `401` | `invalid api key` | The token is not recognized, or it was sent without the `Bearer` scheme. |
+
+Always send the header as `Authorization: Bearer <token>` (capital `B`). The token alone, without `Bearer`, is rejected.
+
 ## Related
 
 - [Quickstart: TTS in five minutes](/docs/quickstart-five-minute)

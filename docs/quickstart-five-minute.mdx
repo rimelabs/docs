@@ -1,5 +1,6 @@
 ---
 title: TTS in five minutes
+description: "Generate your first Rime TTS audio clip in five minutes using Python or JavaScript."
 icon: rocket
 ---
 
@@ -260,7 +261,9 @@ Browse all available voices on the [Voices](/docs/voices) page.
 
 ## Custom pronunciation
 
-The `mistv2` and `mistv3` models let you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/docs/custom-pronunciation). Add the custom pronunciation in curly brackets and set `phonemizeBetweenBrackets` to `true`:
+<Note>Custom pronunciation is a Mist-family feature. Coda and Arcana do not support [`phonemizeBetweenBrackets`](/docs/custom-pronunciation).</Note>
+
+The `mistv2` and `mistv3` models let you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/docs/custom-pronunciation). Add the custom pronunciation in curly brackets and set [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) to `true`:
 
 <CodeGroup>
 ```python Python

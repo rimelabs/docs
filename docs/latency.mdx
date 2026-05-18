@@ -1,5 +1,6 @@
 ---
 title: Latency
+description: "How Rime achieves sub-200ms TTS latency, factors that affect response time, and tips to reduce it further."
 icon: gauge-simple-max
 ---
 
@@ -38,11 +39,37 @@ curl -X POST http://users.rime.ai/v1/rime-tts \
   -d '{"text": "I love the book that she gave me. And I was so happy that she gave it to me.", "speaker": "cove",  "modelId": "mistv3"}'
 ```
 
+To actually consume a streaming response in Python, iterate over the response body as it arrives instead of buffering the whole thing:
+
+```python Python
+import requests
+
+with requests.post(
+    "https://users.rime.ai/v1/rime-tts",
+    headers={
+        "Authorization": f"Bearer {RIME_API_KEY}",
+        "Content-Type": "application/json",
+        "Accept": "audio/mp3",
+    },
+    json={
+        "speaker": "astra",
+        "text": "Hello from Coda.",
+        "modelId": "coda",
+        "language": "en",
+    },
+    stream=True,
+) as response:
+    response.raise_for_status()
+    with open("hello.mp3", "wb") as f:
+        for chunk in response.iter_content(chunk_size=4096):
+            f.write(chunk)
+```
+
 ### Recommendations for reducing response time
 
 <Tip>For the lowest cloud latency, use `mistv3` — typical TTFB is well below 100ms.</Tip>
 
-- Use the API parameter `noTextNormalization`, which turns off text normalization, to reduce the amount of computation needed to prepare input text for TTS inference. This can safely be used in cases where there are no digits, abbreviations, or tricky punctuation, such as in `Yes, I grew up on one twenty-three Main Street in Oakland, California.` instead of `Yes, I grew up on 123 Main St. in Oakland, CA.`.
+- Use the API parameter [`noTextNormalization`](/docs/text-normalization), which turns off text normalization, to reduce the amount of computation needed to prepare input text for TTS inference. This can safely be used in cases where there are no digits, abbreviations, or tricky punctuation, such as in `Yes, I grew up on one twenty-three Main Street in Oakland, California.` instead of `Yes, I grew up on 123 Main St. in Oakland, CA.`.
 - Request audio that meets the needs of your application. Remember: Smaller payloads move across the network more quickly. For example, if you're building an application for telephony, request 8000kHz-sampled audio using the `samplingRate` parameter.
 <Info>Rime's models produce PCM audio by default, and conversion and downsampling must take place for sampling rates other than 22kHz. Still, the reduction in payload size and therefore network overhead more than makes up for increased server processing time.</Info>
 

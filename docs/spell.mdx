@@ -1,7 +1,10 @@
 ---
 title: 'Spell function'
+description: "Force letter-by-letter pronunciation of codes, IDs, and acronyms using the spell() function."
 icon: 'font'
 ---
+
+<Note>The `spell()` function works on Coda, Arcana, and the Mist family.</Note>
 
 ## When to use `spell()`
 
@@ -28,85 +31,119 @@ Let’s see how this works:
 
 ## `spell()` applied to words
 
-If I want the sentence to read:  
+If I want the sentence to read:
 > “The name is spelled J O N, A T H, A N.”
 
-**Input:**  
+**Input:**
 `the name is spelled spell(jonathan).`
 
-```json
-{
-   "speaker": "tibur",
-   "modelId": "mistv3",
-   "text": "the name is spelled spell(jonathan)."
-}
-```
+<audio controls src="https://rime.ai/sounds/docs/jonathan.mp3"></audio>
 
-|  Audio clip  |
-|--------------|
-|  <audio controls src="https://rime.ai/sounds/docs/jonathan.mp3"></audio>
-
-The `spell()` function also works with the `coda` model:
-
-```json
-{
-   "speaker": "astra",
-   "modelId": "coda",
-   "text": "the name is spelled spell(jonathan)."
-}
-```
+<Tabs>
+  <Tab title="Coda">
+    ```json
+    {
+       "speaker": "astra",
+       "modelId": "coda",
+       "text": "the name is spelled spell(jonathan)."
+    }
+    ```
+  </Tab>
+  <Tab title="Arcana">
+    ```json
+    {
+       "speaker": "astra",
+       "modelId": "arcana",
+       "text": "the name is spelled spell(jonathan)."
+    }
+    ```
+  </Tab>
+  <Tab title="Mist v3">
+    ```json
+    {
+       "speaker": "tibur",
+       "modelId": "mistv3",
+       "text": "the name is spelled spell(jonathan)."
+    }
+    ```
+  </Tab>
+</Tabs>
 
 ## `spell()` applied to numbers
 
 For number sequences, if I want the sentence to read:
 > “The number is 4 2 5, 2 5 2, 8 9, 2 9.”
 
-**Input:**  
+**Input:**
 ` the number is spell(4252528929).`
 
-```json
-{
-   "speaker": "tibur",
-   "modelId": "mistv3",
-   "text": "the number is spell(4252528929)."
-}
-```
-
-With the `coda` model:
-
-```json
-{
-   "speaker": "astra",
-   "modelId": "coda",
-   "text": "the number is spell(4252528929)."
-}
-```
+<Tabs>
+  <Tab title="Coda">
+    ```json
+    {
+       "speaker": "astra",
+       "modelId": "coda",
+       "text": "the number is spell(4252528929)."
+    }
+    ```
+  </Tab>
+  <Tab title="Arcana">
+    ```json
+    {
+       "speaker": "astra",
+       "modelId": "arcana",
+       "text": "the number is spell(4252528929)."
+    }
+    ```
+  </Tab>
+  <Tab title="Mist v3">
+    ```json
+    {
+       "speaker": "tibur",
+       "modelId": "mistv3",
+       "text": "the number is spell(4252528929)."
+    }
+    ```
+  </Tab>
+</Tabs>
 
 ## `spell()` applied to alphanumeric sequences
 
 The same goes for mixed alphanumerics. If I want the sentence to be read:
 > the account is r f, 5 4 3, d c, 2
 
-**Input:**  
+**Input:**
 `the account is spell(rf543dc2).`
 
-```json
-{
-   "speaker": "tibur",
-   "modelId": "mistv3",
-   "text": "the account is spell(rf543dc2)."
-}
-```
-
-With the `coda` model:
-
-```json
-{
-   "speaker": "astra",
-   "modelId": "coda",
-   "text": "the account is spell(rf543dc2)."
-}
-```
+<Tabs>
+  <Tab title="Coda">
+    ```json
+    {
+       "speaker": "astra",
+       "modelId": "coda",
+       "text": "the account is spell(rf543dc2)."
+    }
+    ```
+  </Tab>
+  <Tab title="Arcana">
+    ```json
+    {
+       "speaker": "astra",
+       "modelId": "arcana",
+       "text": "the account is spell(rf543dc2)."
+    }
+    ```
+  </Tab>
+  <Tab title="Mist v3">
+    ```json
+    {
+       "speaker": "tibur",
+       "modelId": "mistv3",
+       "text": "the account is spell(rf543dc2)."
+    }
+    ```
+  </Tab>
+</Tabs>
 
 ## `spell()` applied to typographical symbols
 
@@ -123,22 +160,32 @@ Spell also works with common symbols. For example:
 **Input:**
 `the email address is spell(help@rime.ai).`
 
-```json
-{
-   "speaker": "tibur",
-   "modelId": "mistv3",
-   "text": "the email address is spell(help@rime.ai)."
-}
-```
-
-With the `coda` model:
-
-```json
-{
-   "speaker": "astra",
-   "modelId": "coda",
-   "text": "the email address is spell(help@rime.ai)."
-}
-```
-
-
+<Tabs>
+  <Tab title="Coda">
+    ```json
+    {
+       "speaker": "astra",
+       "modelId": "coda",
+       "text": "the email address is spell(help@rime.ai)."
+    }
+    ```
+  </Tab>
+  <Tab title="Arcana">
+    ```json
+    {
+       "speaker": "astra",
+       "modelId": "arcana",
+       "text": "the email address is spell(help@rime.ai)."
+    }
+    ```
+  </Tab>
+  <Tab title="Mist v3">
+    ```json
+    {
+       "speaker": "tibur",
+       "modelId": "mistv3",
+       "text": "the email address is spell(help@rime.ai)."
+    }
+    ```
+  </Tab>
+</Tabs>

@@ -4,7 +4,11 @@ description: "Get started with Rime's TTS API — Coda flagship, multilingual su
 icon: book
 ---
 
-Rime provides industry-leading text-to-speech (TTS) AI models built for **real-time conversational experiences at scale**. Our latest flagship model, **Coda**, pairs a sophisticated LLM backbone with a dedicated speech inference engine and is trained on the conversational full-duplex data that powers production voice AI — whether you're building intelligent IVRs, multilingual voice agents, or anything in between.
+Rime provides industry-leading text-to-speech (TTS) AI models built for **real-time conversational experiences at scale**.
+
+Our latest flagship model, **Coda**, pairs a sophisticated LLM backbone with a dedicated speech inference engine.
+
+It's trained on Rime's massive proprietary data set of full-duplex conversational speech between real people — not voice actors, audiobook narrators, or YouTube influencers — which means it's perfect for production voice AI agents, whether you're building intelligent IVRs, multilingual voice agents, or anything in between.
 
 ## Hello from Coda in 30 seconds
 
@@ -23,34 +27,9 @@ curl --request POST \
   }'
 ```
 
-Get your `YOUR_API_KEY` from the [API Tokens page](https://app.rime.ai/tokens). For a full walkthrough, see the [five-minute quickstart](/docs/quickstart-five-minute).
+Get your `YOUR_API_KEY` from the [API Tokens page](https://app.rime.ai/tokens).
 
-## Rime's TTS Models
-
-Rime now offers a suite of models tailored for different production needs:
-
-- **Coda**
-    - `modelId: coda`
-    - Our flagship TTS model. LLM backbone with a dedicated speech inference engine, trained on conversational full-duplex data.
-    - Surpasses prior Rime models and competitor offerings in human-led voice-quality evaluations.
-    - **Sub-100ms model latency on the GPU engine** when self-hosted or running on-prem. Via the cloud API, expect roughly 25–50ms additional network round-trip from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints).
-    - Native multilingual support across English, French, German, Japanese, Portuguese, and Spanish.
-    - Word-level timestamps for fine-grained text-audio alignment and interruption handling.
-- **Arcana v3**
-    - `modelId: arcana`
-    - The previous-generation flagship: ultra-realistic, expressive voices with **low latency (~120ms TTFB out of engine)** and **native multilingual code-switching** across more than 10 languages.
-    - Coda is the recommended successor for all Arcana traffic — see the [migration tip below](#migrating-from-arcana).
-- **Arcana v2**
-    - `modelId: arcanav2`
-    - **Ultra-realistic and expressive voices** (including laughter and whispering) with low latency (~250 ms TTFB out of the engine).
-    - Built for high-volume conversational applications.
-- **Mist v3**
-    - `modelId: mistv3`
-    - Major update to the Mist engine with **typical TTFB well below 100ms** — significantly faster than previous Mist versions while preserving quality and predictability.
-- **Mist v2**
-    - `modelId: mistv2`
-    - Optimized for **speed and fine-grained control**, giving you accurate pronunciation and high concurrency for use cases that demand quick synthesis and customization.
-    - This is the highest precision and lowest WER model on the market; use this when perfect fidelity to text is needed.
+The [Rime CLI](/docs/quickstart-cli) wraps this same endpoint behind a `rime tts` command if you'd rather not write the request yourself.
 
 ## What Makes Coda Different
 
@@ -62,12 +41,41 @@ Rime now offers a suite of models tailored for different production needs:
     In human-led evaluations, Coda surpasses both prior Rime models and competitor TTS offerings on naturalness, prosody, and artifact-free output.
   </Card>
   <Card title="Multilingual support" icon="globe">
-    One model speaks English, French, German, Japanese, Portuguese, and Spanish using a shared expressive voice lineup.
+    One model speaks English, Spanish, French, Portuguese, German, and Japanese using a shared expressive voice lineup.
   </Card>
   <Card title="Word-level timestamps" icon="clock">
     Structural metadata enables text-audio alignment, real-time highlighting, better interruption handling, and smarter orchestration.
   </Card>
 </CardGroup>
+
+## Rime's TTS Models
+
+Rime now offers a suite of models tailored for different production needs:
+
+- **Coda**
+    - `modelId: coda`
+    - Our flagship TTS model. LLM backbone with a dedicated speech inference engine, trained on conversational full-duplex data.
+    - Surpasses prior Rime models and competitor offerings in human-led voice-quality evaluations. [See the announcement](https://rime.ai/resources/coda-tts).
+    - **Sub-100ms model latency on the GPU engine** when self-hosted or running on-prem.
+        - Via the cloud API, expect roughly 25–50ms additional network round-trip from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints).
+    - Native multilingual support across English, Spanish, French, Portuguese, German, and Japanese.
+    - Word-level timestamps for fine-grained text-audio alignment and interruption handling.
+- **Arcana v3**
+    - `modelId: arcana`
+    - The previous-generation flagship: ultra-realistic, expressive voices with **low latency (~120ms TTFB out of engine)** and **native multilingual code-switching** across more than 10 languages.
+    - **Coda is the recommended successor for all Arcana traffic.**
+- **Arcana v2**
+    - `modelId: arcanav2`
+    - **Ultra-realistic and expressive voices** (including laughter and whispering) with low latency (~250 ms TTFB out of the engine).
+    - Built for high-volume conversational applications.
+- **Mist v3**
+    - `modelId: mistv3`
+    - Major update to the Mist engine — **TTFA around 37 ms (P50)** on the GPU engine, significantly faster than Coda or Arcana while preserving Mist's pronunciation control and predictability.
+- **Mist v2**
+    - `modelId: mistv2`
+    - Previous-generation Mist model. For new projects, prefer Mist v3.
+
+For full details on each model — including the latency benchmarks, voice counts, and feature matrix — see [Models](/docs/models).
 
 ## Migrating from Arcana
 
@@ -75,13 +83,13 @@ Rime now offers a suite of models tailored for different production needs:
 
 ## Language & Voice Support
 
-Coda supports global voice experiences across English, French, German, Japanese, Portuguese, and Spanish, with a shared voice identity across languages.
+Coda supports global voice experiences across English, Spanish, French, Portuguese, German, and Japanese, with a shared voice identity across languages.
 
 Rime exposes a rich set of **demographically diverse voices** you can select via API to match your brand, audience, and use case.
 
 ## Flexible Deployment
 
-Rime supports flexible infrastructure options — from cloud API and virtual private cloud to on-premises deployments — without artificial concurrency limits. Whether your application must run close to users for real-time responsiveness or within secure enterprise environments, Rime fits your architecture.
+Rime supports flexible infrastructure options — from the [cloud API](/docs/api-reference) and virtual private cloud to [on-premises deployments](/docs/on-prem/quickstart) — without artificial concurrency limits. Whether your application must run close to users for real-time responsiveness or within secure enterprise environments, Rime fits your architecture.
 
 ## Ready to Get Started?
 

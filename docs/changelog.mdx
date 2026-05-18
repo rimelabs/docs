@@ -57,12 +57,12 @@ icon: list
 <Update label="2026-02-23">
 * Arcana release `20260223`:
   * v3 (multilingual)
-    * Supported languages: `ar`, `de`, `en`, `es`, `fr`, `he`, `hi`, `ja`, `pt`, `si`, `ta`.
+    * Supported languages: `de`, `en`, `es`, `fr`, `he`, `hi`, `ja`, `pt`, `si`, `ta`.
   * General performance improvements and bug fixes.
 </Update>
 
 <Update label="2026-02-11">
- * Api on-prem image `20260212`:
+ * API on-prem image `20260212`:
     * Exposes a new json websockets endpoint with WLT (equivalent to the cloud api's `ws3` endpoint) on port 8003
 </Update>
 
@@ -71,7 +71,6 @@ icon: list
 
   | 639-1 | 639-2/639-3 | Language   |
   |-------|-------------|------------|
-  | ar    | ara         | Arabic     |
   | de    | deu, ger    | German     |
   | en    | eng         | English    |
   | es    | spa         | Spanish    |
@@ -81,7 +80,7 @@ icon: list
   | ja    | jpn         | Japanese   |
   | pt    | por         | Portuguese |
 
-  Any valid ISO 639-1, 639-2, or 639-3 code that maps to one of these 11 languages is accepted.
+  Any valid ISO 639-1, 639-2, or 639-3 code that maps to one of these languages is accepted.
 </Update>
 
 <Update label="2026-02-04">
@@ -95,8 +94,8 @@ icon: list
 * Arcana now supports JSON websockets with Word-Level-Timestamps:
   * `wss://users-ws.rime.ai/ws3` and `wss://users-east-ws.rime.ai/ws3` serve the JSON websockets api that now supports both `mist` and `arcana` model classes.
 * Arcana release `20260204` (Arcana v3):
-  * Added support for 11 languages: Arabic (`lang=ara`), English (`lang=eng`), French (`lang=fra`), German (`lang=ger`), Hebrew (`lang=heb`), Hindi (`lang=hin`), Japanese (`lang=jpn`), Portuguese (`lang=por`), Spanish (`lang=spa`).
-  * Languages can be specified using either 2-character codes (`ar`, `en`, `fr`, `de`, `he`, `hi`, `ja`, `pt`, `es`) or 3-character codes (`ara`, `eng`, `fra`, `ger`, `heb`, `hin`, `jpn`, `por`, `spa`).
+  * Added support for languages: English (`lang=eng`), French (`lang=fra`), German (`lang=ger`), Hebrew (`lang=heb`), Hindi (`lang=hin`), Japanese (`lang=jpn`), Portuguese (`lang=por`), Spanish (`lang=spa`).
+  * Languages can be specified using either 2-character codes (`en`, `fr`, `de`, `he`, `hi`, `ja`, `pt`, `es`) or 3-character codes (`eng`, `fra`, `ger`, `heb`, `hin`, `jpn`, `por`, `spa`).
 </Update>
 
 <Update label="2026-02-03">
@@ -117,7 +116,6 @@ icon: list
 <Update label="2026-01-23">
  * API on-prem image `20260123`:
     * Exposes the binary websockets API on port 8002. This API is equivalent to the [cloud websockets API](/api-reference/endpoint/websockets).
-    * Supports specifying an Arabic language model backend via the env var `ARCANA_ARA_MODEL_URL`.
 </Update>
 
 <Update label="2026-01-22">
@@ -205,7 +203,6 @@ icon: list
 <Update label="2025-11-03">
  * Arcana on-prem model images tagged `20251101` release
    * Added `hi` models for Hindi.
-   * Diacritization support for the Arabic image.
 </Update>
 
 <Update label="2025-10-29">
@@ -227,7 +224,6 @@ icon: list
 </Update>
 
 <Update label="2025-10-13">
- * Arcana on-prem images with tag `20251013`: Arabic support.
  * Arcana on-prem images with tag `20251013`: General performance improvements.
 </Update>
 

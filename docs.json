@@ -42,7 +42,8 @@
               "docs/regional-endpoints",
               "docs/quickstart-five-minute",
               "docs/quickstart-livekit",
-              "docs/quickstart-cli"
+              "docs/quickstart-cli",
+              "docs/api-authentication"
             ]
           },
           {
@@ -516,6 +517,358 @@
     {
       "source": "/api-reference/quickstart-python",
       "destination": "/docs/quickstart-five-minute"
+    },
+
+    {
+      "source": "/docs/quickstart",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-quickstart",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/docs/tts-in-five-minutes",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/quickstart",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/quickstarts/five-minute-guide",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/core/quickstarts/five-minute-guide",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/docs/get-started",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/docs/getting-started",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/getting-started",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+
+    {
+      "source": "/reference/postrimetts",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/reference/postrimetts-1",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/reference/post_v1-rime-tts",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/rime-tts-http",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api/v1/rime-tts",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/streaming-http",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/http-streaming",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/streaming-http",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/oov",
+      "destination": "/api-reference/other/oov",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/oov",
+      "destination": "/api-reference/other/oov",
+      "permanent": false
+    },
+    {
+      "source": "/docs/utilities/coverage-checking",
+      "destination": "/api-reference/other/oov",
+      "permanent": false
+    },
+
+    {
+      "source": "/api-reference/textnorm",
+      "destination": "/api-reference/other/textnorm",
+      "permanent": false
+    },
+    {
+      "source": "/docs/utilities/text-normalization",
+      "destination": "/docs/text-normalization",
+      "permanent": false
+    },
+    {
+      "source": "/docs/text-processing",
+      "destination": "/docs/text-normalization",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/voice-selection",
+      "destination": "/docs/voices",
+      "permanent": false
+    },
+    {
+      "source": "/features/voices",
+      "destination": "/docs/voices",
+      "permanent": false
+    },
+
+    {
+      "source": "/features/models",
+      "destination": "/docs/models",
+      "permanent": false
+    },
+    {
+      "source": "/mist-api",
+      "destination": "/docs/models",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/websocket",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/docs/websocket-json",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/docs/streaming-websocket-json",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/reference/websockets-json",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/reference/websockets",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/websockets",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/arcana/websockets",
+      "destination": "/api-reference/arcana/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/docs/arcana-websockets",
+      "destination": "/api-reference/arcana/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/reference/arcana-websockets",
+      "destination": "/api-reference/arcana/websockets",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/mist-v3-websockets",
+      "destination": "/api-reference/mistv3/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/reference/mist-v3-websockets",
+      "destination": "/api-reference/mistv3/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api/mist-v3/websockets",
+      "destination": "/api-reference/mistv3/websockets",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/mist-v2-websockets",
+      "destination": "/api-reference/mistv2/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/reference/mist-v2-websockets",
+      "destination": "/api-reference/mistv2/websockets",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/mist-websocket-json",
+      "destination": "/api-reference/mistv3/websockets-json",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/arcana/streaming-http",
+      "destination": "/api-reference/arcana/http",
+      "permanent": false
+    },
+    {
+      "source": "/arcana-api",
+      "destination": "/api-reference/arcana/http",
+      "permanent": false
+    },
+
+    {
+      "source": "/api/mist-v3/streaming-http",
+      "destination": "/api-reference/mistv3/http",
+      "permanent": false
+    },
+    {
+      "source": "/mist-v3",
+      "destination": "/api-reference/mistv3/http",
+      "permanent": false
+    },
+    {
+      "source": "/v1/mist-v3",
+      "destination": "/api-reference/mistv3/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist-v3",
+      "destination": "/api-reference/mistv3/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist-v3/http",
+      "destination": "/api-reference/mistv3/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/mist-v3",
+      "destination": "/api-reference/mistv3/http",
+      "permanent": false
+    },
+
+    {
+      "source": "/mist-v2-api",
+      "destination": "/api-reference/mistv2/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist-v2",
+      "destination": "/api-reference/mistv2/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist-v2/http",
+      "destination": "/api-reference/mistv2/http",
+      "permanent": false
+    },
+
+    {
+      "source": "/api-reference/voices/all-v2",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/reference/data-voices-voice-details-json",
+      "destination": "/api-reference/data/voice-details",
+      "permanent": false
+    },
+
+    {
+      "source": "/docs/api",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/api",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/reference",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/reference/api",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/docs/v1-api-reference",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/docs/text-to-speech",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/docs/rest",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/utilities",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+
+    {
+      "source": "/authentication",
+      "destination": "/docs/api-authentication",
+      "permanent": false
+    },
+    {
+      "source": "/core/authentication",
+      "destination": "/docs/api-authentication",
+      "permanent": false
+    },
+    {
+      "source": "/cli/authentication",
+      "destination": "/docs/api-authentication",
+      "permanent": false
+    },
+    {
+      "source": "/reference/api-authentication",
+      "destination": "/docs/api-authentication",
+      "permanent": false
     }
   ]
 }

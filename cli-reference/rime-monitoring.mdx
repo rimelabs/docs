@@ -16,7 +16,7 @@ rime speedtest
 
 | Flag | Short | Default | Description |
 | ---- | ----- | ------- | ----------- |
-| `--model` | `-m` | `arcana` | Model ID for the test request |
+| `--model` | `-m` | `coda` | Model ID for the test request |
 | `--runs` | -- | `1` | Number of requests per endpoint — reports mean/min/max when greater than 1 |
 | `--timeout` | -- | `10s` | Per-request timeout (`0` disables timeout) |
 | `--url` | -- | -- | Additional URL to test, not in config (repeatable) |
@@ -61,7 +61,7 @@ When `--runs` is greater than 1, the JSON output includes `ttfb_min_ms` and `ttf
 
 ## `rime usage`
 
-Display daily character usage history for the past week, broken down by Mist and Arcana models.
+Display daily character usage history for the past week, broken down by Mist, Arcana, and Coda models.
 
 ```bash
 rime usage
@@ -78,10 +78,10 @@ Also supports the global `--json` flag.
 ### Example output
 
 ```
-       Day  Mist Chars  Arcana Chars       Total
-----------  ----------  ------------  ----------
-2026-02-24           0         1,234       1,234
-2026-02-23         500         2,100       2,600
+       Day  Mist Chars  Arcana Chars  Coda Chars       Total
+----------  ----------  ------------  ----------  ----------
+2026-05-19           0           500       3,400       3,900
+2026-05-18         500         2,100           0       2,600
 ```
 
 ---

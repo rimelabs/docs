@@ -46,7 +46,7 @@ auth_header_prefix = "Api-Key"
 Select an environment with the `--env` flag:
 
 ```bash
-rime tts "Hello" -s astra -m arcana --env staging
+rime tts "Hello" -s astra -m coda --env staging
 ```
 
 **Resolution order:** Environment variables override config file values, which override defaults. Within the config file, named environment values override top-level values.
@@ -55,7 +55,7 @@ rime tts "Hello" -s astra -m arcana --env staging
 
 | Format | Extension | Default for | Notes |
 | ------ | --------- | ----------- | ----- |
-| WAV | `.wav` | `arcana`, `arcanav2`, `mistv3` | Uncompressed, higher quality, larger files |
+| WAV | `.wav` | `coda`, `arcana`, `arcanav2`, `mistv3` | Uncompressed, higher quality, larger files |
 | MP3 | `.mp3` | `mistv2`, `mist` | Compressed, smaller files. Default for `mistv2` and `mist` |
 
 ## Metadata embedding

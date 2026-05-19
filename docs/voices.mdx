@@ -10,15 +10,13 @@ As of 19 May 2026, Rime supports the following languages:
 
 | Language | ISO codes | Notes |
 | :--- | :--- | :--- |
-| Arabic | `ara` / `ar` | Arcana only |
 | English | `eng` / `en` | |
-| French | `fra` / `fr` | |
-| German | `ger` / `de` | |
-| Hebrew | `heb` / `he` | Arcana only |
-| Hindi | `hin` / `hi` | Arcana only |
-| Japanese | `jpn` / `ja` | Coda, Arcana |
-| Portuguese | `por` / `pt` | Coda, Arcana |
 | Spanish | `spa` / `es` | |
+| French | `fra` / `fr` | |
+| Portuguese | `por` / `pt` | Coda, Arcana |
+| German | `ger` / `de` | |
+| Japanese | `jpn` / `ja` | Coda, Arcana |
+| Hebrew | `heb` / `he` | Arcana only |
 
 <Tip>For the live voice list, fetch [`/data/voices/all-v2.json`](/api-reference/data/voices-v2) — it updates as new voices ship.</Tip>
 
@@ -52,7 +50,7 @@ If you're just getting started, these speakers are confirmed to work across the 
 | `astra` | Female, young adult, American Standard | Coda, Arcana, Mist v3, Mist v2 |
 | `luna` | Female, young adult, American | Coda, Arcana, Mist v3 |
 | `celeste` | Female, young adult, American | Coda, Arcana |
-| `orion` | Male, elder, American | Coda, Arcana |
+| `masonry` | Male, middle-aged, Southern | Coda, Arcana |
 | `albion` | Male, young adult, English | Coda, Arcana |
 | `cove` | Female, young adult, African American | Mist v3, Mist v2 |
 
@@ -60,49 +58,66 @@ For the complete catalog, fetch [`/data/voices/voice_details.json`](/api-referen
 
 ## Coda Voices (Flagship)
 
-Coda is Rime's new flagship model, succeeding Arcana. It carries over the same expressive voice lineup with real-time conversational latency, and supports English, French, German, Japanese, Portuguese, and Spanish.
+Coda is Rime's new flagship model. Its featured voices in the [Rime dashboard](https://app.rime.ai) are organized into four styles. Each style includes both female and male options.
 
-See the [full voice list](/api-reference/data/voices) for available Coda speakers.
+### Professional
+
+| Speaker | Gender | Age | Description |
+| :--- | :--- | :--- | :--- |
+| `lyra` | Female | 18–30 | A warm young American voice — bright and lively. |
+| `clementine` | Female | 30–50 | A warm, lively middle-aged American voice — both polished and energetic. |
+| `masonry` | Male | 30–50 | A confident, low Southern voice — authoritative without being loud. |
+| `walnut` | Male | 18–30 | A fast, confident young Southern voice — authoritative and steady. |
+
+### Formal
+
+| Speaker | Gender | Age | Description |
+| :--- | :--- | :--- | :--- |
+| `lintel` | Female | 18–30 | A warm young American voice — both polished and lively. |
+| `eyre` | Female | 18–30 | A warm, friendly American voice — calm and easy to listen to. |
+| `bancroft` | Male | 60+ | A composed American voice — strong on professional and formal contexts. |
+| `marlu` | Male | 30–50 | An older Australian voice; low, mature, unhurried. |
+
+### Casual
+
+| Speaker | Gender | Age | Description |
+| :--- | :--- | :--- | :--- |
+| `hesse` | Female | 18–30 | A relaxed, easygoing female voice. |
+| `luna` | Female | 18–30 | A bright, lively female voice — energetic with a casual core. |
+| `beatty` | Male | 18–30 | An easygoing, distinctly casual American male voice. |
+| `godfrey` | Male | 18–30 | An easygoing, lively American male voice — casual at heart. |
+
+### Energetic
+
+| Speaker | Gender | Age | Description |
+| :--- | :--- | :--- | :--- |
+| `astra` | Female | 18–30 | Bright, lively Californian — quick and expressive. |
+| `vespera` | Female | 18–30 | A friendly, lively young Californian voice — bright and adaptable. |
+| `parapet` | Male | 30–50 | A fast, lively Southern voice — energetic and grounded. |
+| `cupola` | Male | 30–50 | A confident, energetic American voice — professional with warmth. |
+
+All voices above are confirmed-working with `modelId: coda`. For the complete catalog including non-English languages, fetch [`/data/voices/voice_details.json`](/api-reference/data/voice-details).
 
 ## Arcana v3 Voices
 
 <Tip>Coda is meaningfully better than Arcana across naturalness, prosody, and artifact-free output. For new projects, prefer Coda; for existing Arcana traffic, we recommend migrating to Coda — see [Migrating from Arcana](/docs/introduction#migrating-from-arcana).</Tip>
 
-Arcana v3 is Rime’s most expressive and human-realistic text-to-speech model. The voices in Arcana are designed to sound natural in live conversation — capturing pacing, rhythm, breath, subtle emotional shifts, and multilingual fluency without sacrificing responsiveness.
+Arcana v3 is Rime's previous flagship — a multilingual model with 94 expressive voices spanning age groups, regional accents, cultural backgrounds, and energy profiles.
 
-Arcana v3 supports native multilingual speech and code-switching.
-
+See the [full voice list](/api-reference/data/voices) and [voice details](/api-reference/data/voice-details) for available Arcana speakers.
 
 ### The 94 Arcana Flagship Voices
 
-Arcana v3 includes 94 flagship voices spanning a wide tonal and demographic spectrum. Rather than optimizing for a single “neutral assistant” sound, Arcana voices are intentionally distinct and characterful.
-
-At a high level, the range includes:
-
-- **Age diversity** — young adult through older adult voices
-- **Regional variety** — American regional accents (Southern, Midwestern, West Coast, East Coast), as well as international English and native speakers across supported languages
-- **Cultural representation** — African American, Latina/o, Asian American, and other globally representative identities
-- **Gender spectrum** — balanced representation across male and female voices, including stylistic variation within each
-- **Energy profiles** — from calm and grounded to upbeat, playful, warm, authoritative, or highly conversational
-- **Use-case fit** — voices well-suited for IVR, customer support, healthcare, fintech, education, media narration, and expressive AI companions
-
-Arcana voices are built to maintain voice identity even when switching languages mid-utterance, making them especially powerful for global conversational applications.
+Arcana v3 includes 94 flagship voices across English (US regional, international) plus the other [supported Arcana languages](#languages). See [`/data/voices/voice_details.json`](/api-reference/data/voice-details) for the full catalog with demographics.
 
 ## Mist v3 Voices
 
-Mist v3 is a major engine update that delivers sub-100ms cloud TTFB while preserving the clarity and predictability that Mist is known for. It supports our most popular Mist speakers.
+Mist v3 supports the same popular speaker lineup as Mist v2 with significantly lower TTFA.
 
 See the [full voice list](/api-reference/data/voices) for available Mist v3 speakers.
 
 ## Mist v2 Voices
 
-Mist v2 is optimized for speed, precision, and control. While Arcana emphasizes expressive realism, Mist focuses on clarity, pronunciation accuracy, and high-throughput production environments.
+Mist v2 prioritizes clarity, pronunciation accuracy, and high-throughput production. For new projects, prefer Mist v3.
 
-Mist voices are:
-
-- Highly intelligible and consistent  
-- Well-suited for structured IVR systems and high-volume applications  
-- Optimized for fast synthesis and predictable delivery  
-- Designed to handle complex proper nouns, brand names, and domain-specific terminology cleanly  
-
-Mist v2 provides a curated set of dependable, production-stable voices that prioritize control and scalability.
+See the [full voice list](/api-reference/data/voices) for available Mist v2 speakers.

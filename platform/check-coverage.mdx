@@ -56,6 +56,21 @@ If a predicted pronunciation is incorrect:
 
 ---
 
+## Generating a pronunciation string
+
+For Mist-family models, you can specify a custom pronunciation directly in your TTS request by passing a phonetic string in curly brackets (see [Custom pronunciation](/docs/custom-pronunciation) for the API mechanic). The [**Pronunciation tool**](https://app.rime.ai/pronunciation) in the dashboard generates these phonetic strings for you so you don't have to write them by hand.
+
+To generate one:
+
+1. Type the word and record yourself speaking it.
+2. Click **Generate** — Rime's pronunciation model returns a phonetic string in the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet).
+3. Listen to the result spoken by any Rime voice and tweak the phonetic string if needed.
+4. Paste the final string into your TTS request inside `{}` and set `phonemizeBetweenBrackets: true`.
+
+For the phonetic-alphabet symbol reference, see [Rime phonetic alphabet](/platform/rime-phonetic-alphabet).
+
+---
+
 ## Tips
 
 - Check words regularly when working with new or domain-specific content.

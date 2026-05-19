@@ -13,41 +13,60 @@ Learn how to adjust the speaking speed using Rime's APIs.
 
 ## Adjusting the overall speed
 
-Overall speaking speed in Rime is controlled using the `speedAlpha` parameter.
+How you adjust overall speaking speed depends on the model.
 
-The direction of `speedAlpha` depends on the model:
+### Coda, Arcana, and Mist v3
 
-| Models | Direction |
-| :--- | :--- |
-| `coda`, `arcana`, `mistv3` | Higher than 1.0 is faster; lower than 1.0 is slower. |
-| `mist`, `mistv2` | Lower than 1.0 is faster; higher than 1.0 is slower. |
+Use the `timeScaleFactor` parameter. A value **above 1.0 slows the audio**; a value **below 1.0 speeds it up**.
 
 ```js
 {
     ...otherParams,
     "text": "Hello, world!",
-    "speedAlpha": 1.2
+    "modelId": "coda",
+    "timeScaleFactor": 0.85
+}
+```
+
+<Note>
+Coda, Arcana, and Mist v3 also accept `speedAlpha`, but it works in the **opposite direction** from `timeScaleFactor` (higher than 1.0 is faster, lower is slower). Going forward we recommend `timeScaleFactor` for these models — it's the parameter we'll continue to support across future flagship models.
+</Note>
+
+<Note>
+`timeScaleFactor` works over the HTTP API only. On the WebSocket endpoints (`/ws`, `/ws2`, `/ws3`), the parameter is silently ignored — use `speedAlpha` instead.
+</Note>
+
+### Mist v2
+
+Use the `speedAlpha` parameter. **Lower** than 1.0 is faster; **higher** than 1.0 is slower.
+
+```js
+{
+    ...otherParams,
+    "text": "Hello, world!",
+    "modelId": "mistv2",
+    "speedAlpha": 0.85
 }
 ```
 
 ## Adjusting the speed of individual words
 
-To adjust the speed of individual words or phrases, use the `inlineSpeedAlpha` parameter.
+<Note>Per-word speed adjustment via `inlineSpeedAlpha` is a Mist-family feature. Coda and Arcana do not support it.</Note>
 
-`inlineSpeedAlpha` takes a comma-separated list of speed values applied to words in square brackets. The direction of `inlineSpeedAlpha` depends on the model, matching `speedAlpha`:
+To adjust the speed of individual words or phrases on the Mist family, use the `inlineSpeedAlpha` parameter. It takes a comma-separated list of speed values applied to words in square brackets.
 
-| Models | Direction |
-| :--- | :--- |
-| `coda`, `arcana`, `mistv3` | Values > 1.0 speed up speech, < 1.0 slow it down. |
-| `mist`, `mistv2` | Values < 1.0 speed up speech, > 1.0 slow it down. |
+On `mistv2` and `mistv3`, values **< 1.0 speed up** speech and values **> 1.0 slow it down**.
 
-For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” slow and “fast” fast on `coda`/`arcana`/`mistv3`, or the reverse on `mist`/`mistv2`.
+<Note>On Mist v3, `inlineSpeedAlpha` and `speedAlpha` go in opposite directions — `speedAlpha` follows the modern flagship direction (higher = faster), but `inlineSpeedAlpha` follows the legacy Mist direction (lower = faster). Don't infer one from the other.</Note>
+
+For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” fast and “fast” slow on the Mist family.
 
 ```js
 {
     ...otherParams,
-    “text”: “This sentence is [really] [fast]”,
-    “inlineSpeedAlpha”: “0.5, 3”
+    "modelId": "mistv2",
+    "text": "This sentence is [really] [fast]",
+    "inlineSpeedAlpha": "0.5, 3"
 }
 ```
 
@@ -56,7 +75,7 @@ For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5
 By effectively utilizing Rime's speed control features, you can create more varied conversational AI experiences.
 
 - Use `speedAlpha` to adjust the overall speed of the speech.
-- Use `inlineSpeedAlpha` to adjust the speed of individual words or phrases.
+- Use `inlineSpeedAlpha` (Mist family only) to adjust the speed of individual words or phrases.
 - Experiment with different values to find the best fit for your use case.
 - Be mindful that large speed adjustments may impact the naturalness and clarity of the synthesized speech.
 

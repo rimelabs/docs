@@ -7,7 +7,7 @@ icon: gauge-simple-max
 ## tl;dr: Rime is really fast. 
 Sub-200ms end-to-end latency is standard via the cloud API. Coda, Rime's flagship model, achieves **sub-100ms model latency on the GPU engine** when self-hosted or on-prem.
 
-Via the cloud API, the total time you measure also includes network round-trip — typically 25–50ms from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints). [Contact us](mailto:info@rime.ai) to optimize further.
+Via the cloud API, the total time you measure also includes network round-trip — typically 25–50ms from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints). [Contact us](mailto:support@rime.ai) to optimize further.
 
 ## Real-time performance benchmarks
 
@@ -89,16 +89,24 @@ with requests.post(
 - Request audio that meets the needs of your application. Remember: Smaller payloads move across the network more quickly. For example, if you're building an application for telephony, request 8000kHz-sampled audio using the `samplingRate` parameter.
 <Info>Rime's models produce PCM audio by default, and conversion and downsampling must take place for sampling rates other than 22kHz. Still, the reduction in payload size and therefore network overhead more than makes up for increased server processing time.</Info>
 
-## Regional endpoints
+## Network latency by region
 
-Rime provides regional API endpoints so you can route requests to the data center closest to your application's deployment:
+Rime serves the API from multiple regions so you can route requests to the data center closest to your application. Picking the closest endpoint typically shaves tens of milliseconds off round-trip time.
 
-| Endpoint | Region |
-| -------- | ------ |
-| `https://users.rime.ai/v1/rime-tts` | US West (us-west-1) — default |
-| `https://users-east.rime.ai/v1/rime-tts` | US East (us-east-1) |
-| `https://users-west.rime.ai/v1/rime-tts` | US West (us-west-1) |
+These are rough round-trip times (RTT) — the back-and-forth network delay between your application and Rime — from major US metros to each region:
 
-WebSocket equivalents follow the same pattern: `wss://users-east-ws.rime.ai/ws` and `wss://users-west-ws.rime.ai/ws`.
+| From metro | To US East | To US West |
+| :--- | :--- | :--- |
+| East Coast (NYC, DC, Boston, Atlanta) | 5–25 ms | 60–85 ms |
+| Midwest / South (Chicago, Dallas, Denver) | 25–55 ms | 35–65 ms |
+| West Coast (SF, LA, Seattle) | 60–85 ms | 5–25 ms |
 
-Choosing the endpoint closest to your deployment typically reduces round-trip time compared to using the default URL from a distant region. Use the [`rime speedtest`](/cli-reference/rime-monitoring) command to measure TTFB against each endpoint from your machine.
+Rules of thumb:
+
+- **Same region** (your app and the Rime endpoint in the same AWS region): typically 1–10 ms.
+- **Coast-to-coast**: ~60 ms is the physical floor, set by the speed of light in fiber across ~2,500 miles. 60–85 ms is normal.
+- **Above 90 ms** between major US metros usually points to a suboptimal network route, not Rime.
+
+**For voice AI:** if you serve users nationwide from a single region, far-coast users will see 60–85 ms of network round-trip on top of Rime's inference time. To stay comfortably under 200 ms end-to-end, route East-coast users to US East and West-coast users to US West.
+
+For the full endpoint URLs and routing guidance, see [Regional endpoints](/docs/regional-endpoints). To measure TTFB against each endpoint from your own machine, run [`rime speedtest`](/cli-reference/rime-monitoring).

@@ -14,10 +14,10 @@ Rime currently has five models in production: `coda`, `arcanav3`, `arcanav2`, `m
 
 | Pick this | When |
 | :--- | :--- |
-| `coda` | Real-time conversational agents needing flagship realism. Good default for most apps. |
-| `arcana` | Multilingual code-switching across 10+ languages, including Hindi, Hebrew, and Tamil. |
-| `mistv3` | Fastest synthesis with the classic Mist lineup; plus features like [`phonemizeBetweenBrackets`](/docs/custom-pronunciation), [`pauseBetweenBrackets`](/docs/custom-pauses), and OOV submission. |
-| `mistv2` | Maximum pronunciation precision and lowest WER. Use when perfect fidelity to text is required. |
+| `coda` | **Default for most new apps.** Rime's flagship — top-rated voice quality in human evaluations, sub-100ms model latency, and the recommended replacement for all Arcana traffic. |
+| `arcana` | You need multilingual code-switching across languages that Coda doesn't yet support. Otherwise, prefer Coda. |
+| `mistv3` | You need the fastest TTFA (~37 ms P50). |
+| `mistv2` | You need [custom pronunciation control](/docs/custom-pronunciation) for brand names and uncommon words (not yet on Mist v3). For other use cases, prefer Mist v3. |
 
 For benchmarked latency and throughput numbers, see [Latency](/docs/latency#real-time-performance-benchmarks).
 
@@ -38,8 +38,9 @@ For benchmarked latency and throughput numbers, see [Latency](/docs/latency#real
 **Coda**, released May 2026, is Rime's new flagship TTS model and the successor to Arcana. It pairs a sophisticated LLM backbone with a dedicated speech inference engine, trained on the conversational full-duplex data preferred by production voice AI deployments.
 
 * In human-led voice-quality evaluations, Coda surpasses both prior Rime models and competitor TTS offerings — including naturalness, prosody, and artifact-free output
-* **Sub-100ms model latency on the GPU engine** when self-hosted or on-prem. Cloud API users add roughly 25–50ms network round-trip from most of the continental US when routed to the closest [regional endpoint](/docs/regional-endpoints).
-* Multilingual support for English, French, German, Japanese, Portuguese, and Spanish using a shared voice lineup
+* **Sub-100ms model latency on the GPU engine** when self-hosted or on-prem.
+    * Cloud API users add roughly 25–50ms network round-trip from most of the continental US when routed to the closest [regional endpoint](/docs/regional-endpoints).
+* Multilingual support for English, Spanish, French, Portuguese, German, and Japanese using a shared voice lineup
 * Word-level timestamps for text-audio alignment and interruption handling
 * Supports the [`spell()` function](/docs/spell) for spelling out sequences letter by letter or number by number
 * Available via `modelId: coda` through Rime's API endpoints
@@ -82,7 +83,7 @@ For benchmarked latency and throughput numbers, see [Latency](/docs/latency#real
 
 **Model v1 was released in April 2022 and has been deprecated.**
 
-## Additional controls
+## Additional controls (Arcana only)
 
 <Note>The controls in this section apply to Arcana only. Coda, Mist v3, and Mist v2 do not expose `temperature`, `top_p`, or `repetition_penalty`.</Note>
 

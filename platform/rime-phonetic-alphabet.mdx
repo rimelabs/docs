@@ -1,0 +1,74 @@
+---
+title: Rime phonetic alphabet
+description: "Reference for Rime's phonetic alphabet used to specify custom pronunciations on Mist v1 and Mist v2."
+---
+
+<Note>Custom pronunciation is supported on **Mist v1 and v2** only. Coda, Arcana, and Mist v3 do not yet support `phonemizeBetweenBrackets`.</Note>
+
+Rime uses its own phonetic alphabet, inspired by the International Phonetic Alphabet (IPA), to let you specify exactly how a word should sound. You provide a phonetic string inside curly brackets and set `phonemizeBetweenBrackets: true` on the request. For the full request mechanic, see [Custom pronunciation](/docs/custom-pronunciation).
+
+For example, the word `custom` is represented as `{k1Ast0xm}`. Even made-up words work — `gorbulets` becomes `{g1orby0ul2Ets}`.
+
+## Vowels
+
+|   Symbol     |   Use in an English word     |
+|--------------|------------------------------|
+| @            | b**a**t                      |
+| a            | h**o**t                      |
+| A            | b**u**tt                     |
+| W            | ab**ou**t                    |
+| x            | comm**a**                    |
+| Y            | b**i**te                     |
+| E            | b**e**t                      |
+| R            | b**ir**d, forew**or**d       |
+| e            | b**ai**t                     |
+| I            | b**i**t                      |
+| i            | b**ea**t                     |
+| o            | b**oa**t                     |
+| O            | b**oy**                      |
+| U            | b**oo**k                     |
+| u            | b**oo**t                     |
+| N            | butt**on**                   |
+
+## Consonants
+
+|   Symbol     |   Use in an English word |
+|--------------|--------------------------|
+| b            | **b**uy                  |
+| C            | **Ch**ina                |
+| d            | **d**ie                  |
+| D            | **th**y                  |
+| f            | **f**ight                |
+| g            | **g**uy                  |
+| h            | **h**igh                 |
+| J            | **j**ive                 |
+| k            | **k**ite                 |
+| l            | **l**ie                  |
+| m            | **m**y                   |
+| n            | **n**igh                 |
+| G            | si**ng**                 |
+| p            | **p**ie                  |
+| r            | **r**ye                  |
+| s            | **s**igh                 |
+| S            | **sh**y                  |
+| t            | **t**ie                  |
+| T            | **th**igh                |
+| v            | **v**ie                  |
+| w            | **w**ise                 |
+| y            | **y**acht                |
+| z            | **z**oo                  |
+| Z            | plea**s**ure             |
+
+## Stress
+
+For **primary stress**, put `1` before the relevant vowel. For example, `comma` is `{k1am0x}`.
+
+For **secondary stress**, put `2` in front of the relevant vowel. For example, `auctioneer` is `{2akS0In1ir}`.
+
+All other vowels should have a `0` in front of them.
+
+## Related
+
+- [Custom pronunciation](/docs/custom-pronunciation) — how to use phonetic strings in API requests
+- [Check coverage](/platform/check-coverage) — verify whether words are in Rime's dictionary before generating a custom pronunciation
+- [Generating a pronunciation string](/platform/check-coverage#generating-a-pronunciation-string) — the dashboard tool that produces phonetic strings for you

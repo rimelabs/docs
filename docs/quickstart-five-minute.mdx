@@ -1,6 +1,6 @@
 ---
 title: TTS in five minutes
-description: "Generate your first Rime TTS audio clip in five minutes using Python or JavaScript."
+description: "Generate your first Rime TTS audio clip in five minutes using cURL, Python, JavaScript, or TypeScript."
 icon: rocket
 ---
 
@@ -11,11 +11,13 @@ This guide shows you how to generate your first audio clip with Rime's text-to-s
 To follow this guide, you need:
 
 - **A Rime API token:** Create a free [Rime account](https://app.rime.ai/signup/) and copy your API key from the [API Tokens](https://app.rime.ai/tokens/) page.
-- A language runtime:
-  - **[Python 3.10](https://www.python.org/downloads/release/python-3100/) or later**, or
-  - **[Node.js 18](https://nodejs.org/) or later**
+- A language runtime, depending on which tab you follow:
+  - **cURL** — just a terminal (preinstalled on macOS and Linux).
+  - **Python** — [Python 3.10](https://www.python.org/downloads/release/python-3100/) or later.
+  - **JavaScript** — [Node.js 18](https://nodejs.org/) or later.
+  - **TypeScript** — Node.js 18+ plus [tsx](https://github.com/privatenumber/tsx) (`npm install -g tsx`).
 
-Code blocks in this guide are tabbed. Pick Python or JavaScript in each block to follow your preferred language.
+Code blocks in this guide are tabbed. Pick cURL, Python, JavaScript, or TypeScript in each block to follow your preferred language.
 
 ## Create your script
 
@@ -23,10 +25,24 @@ If you'd rather paste a working file and read along, grab the full script below.
 
 ### Full script
 
-Create a file called `rime_hello_world.py` or `rime_hello_world.js` and paste the full script:
+Create a file called `rime_hello_world.py`, `rime_hello_world.js`, or `rime_hello_world.ts` (or run the cURL version directly in your terminal) and paste the full script:
 
 <Accordion title="Full script (copy/paste)">
 <CodeGroup>
+```bash cURL
+curl --request POST \
+  --url https://users.rime.ai/v1/rime-tts \
+  --header 'Authorization: Bearer your_api_key_here' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: audio/wav' \
+  --output output.wav \
+  --data '{
+    "text": "Hello! This is Rime speaking.",
+    "speaker": "celeste",
+    "modelId": "coda"
+  }'
+```
+
 ```python Python
 import json
 import urllib.request
@@ -34,7 +50,7 @@ import urllib.request
 RIME_API_KEY = "your_api_key_here"
 
 headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": f"Bearer {RIME_API_KEY}",
     "Content-Type": "application/json"
 }
@@ -55,11 +71,11 @@ request = urllib.request.Request(
 )
 
 with urllib.request.urlopen(request) as response:
-    with open("output.mp3", "wb") as f:
+    with open("output.wav", "wb") as f:
         while chunk := response.read(4096):
             f.write(chunk)
 
-print("Audio saved to output.mp3")
+print("Audio saved to output.wav")
 ```
 
 ```javascript JavaScript
@@ -68,7 +84,7 @@ const fs = require("fs");
 const RIME_API_KEY = "your_api_key_here";
 
 const headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": `Bearer ${RIME_API_KEY}`,
     "Content-Type": "application/json"
 };
@@ -91,8 +107,44 @@ async function generateSpeech() {
     }
 
     const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.mp3", Buffer.from(buffer));
-    console.log("Audio saved to output.mp3");
+    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    console.log("Audio saved to output.wav");
+}
+
+generateSpeech();
+```
+
+```typescript TypeScript
+import * as fs from "fs";
+
+const RIME_API_KEY: string = "your_api_key_here";
+
+const headers: Record<string, string> = {
+    "Accept": "audio/wav",
+    "Authorization": `Bearer ${RIME_API_KEY}`,
+    "Content-Type": "application/json"
+};
+
+const payload = {
+    text: "Hello! This is Rime speaking.",
+    speaker: "celeste",
+    modelId: "coda"
+};
+
+async function generateSpeech(): Promise<void> {
+    const response = await fetch("https://users.rime.ai/v1/rime-tts", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const buffer = await response.arrayBuffer();
+    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    console.log("Audio saved to output.wav");
 }
 
 generateSpeech();
@@ -102,7 +154,7 @@ generateSpeech();
 
 ### Step-by-step code
 
-Create a file called `rime_hello_world.py` or `rime_hello_world.js` and import the required library modules:
+Create a file called `rime_hello_world.py`, `rime_hello_world.js`, or `rime_hello_world.ts` and import the required library modules:
 
 <CodeGroup>
 ```python Python
@@ -112,6 +164,10 @@ import urllib.request
 
 ```javascript JavaScript
 const fs = require("fs");
+```
+
+```typescript TypeScript
+import * as fs from "fs";
 ```
 </CodeGroup>
 
@@ -124,7 +180,7 @@ Set the request headers, specifying the Rime API key that you copied:
 RIME_API_KEY = "your_api_key_here"
 
 headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": f"Bearer {RIME_API_KEY}",
     "Content-Type": "application/json"
 }
@@ -134,7 +190,17 @@ headers = {
 const RIME_API_KEY = "your_api_key_here";
 
 const headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
+    "Authorization": `Bearer ${RIME_API_KEY}`,
+    "Content-Type": "application/json"
+};
+```
+
+```typescript TypeScript
+const RIME_API_KEY: string = "your_api_key_here";
+
+const headers: Record<string, string> = {
+    "Accept": "audio/wav",
     "Authorization": `Bearer ${RIME_API_KEY}`,
     "Content-Type": "application/json"
 };
@@ -153,6 +219,14 @@ payload = {
 ```
 
 ```javascript JavaScript
+const payload = {
+    text: "Hello! This is Rime speaking.",
+    speaker: "celeste",
+    modelId: "coda"
+};
+```
+
+```typescript TypeScript
 const payload = {
     text: "Hello! This is Rime speaking.",
     speaker: "celeste",
@@ -183,11 +257,11 @@ request = urllib.request.Request(
 )
 
 with urllib.request.urlopen(request) as response:
-    with open("output.mp3", "wb") as f:
+    with open("output.wav", "wb") as f:
         while chunk := response.read(4096):
             f.write(chunk)
 
-print("Audio saved to output.mp3")
+print("Audio saved to output.wav")
 ```
 
 ```javascript JavaScript
@@ -203,8 +277,28 @@ async function generateSpeech() {
     }
 
     const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.mp3", Buffer.from(buffer));
-    console.log("Audio saved to output.mp3");
+    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    console.log("Audio saved to output.wav");
+}
+
+generateSpeech();
+```
+
+```typescript TypeScript
+async function generateSpeech(): Promise<void> {
+    const response = await fetch("https://users.rime.ai/v1/rime-tts", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const buffer = await response.arrayBuffer();
+    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    console.log("Audio saved to output.wav");
 }
 
 generateSpeech();
@@ -227,12 +321,16 @@ python rime_hello_world.py
 ```bash JavaScript
 node rime_hello_world.js
 ```
+
+```bash TypeScript
+npx tsx rime_hello_world.ts
+```
 </CodeGroup>
 
 On a successful run, the terminal displays a confirmation that your audio file has been saved:
 
 ```bash
-'Audio saved to output.mp3'
+'Audio saved to output.wav'
 ```
 
 ## Choose a voice
@@ -255,15 +353,23 @@ const payload = {
     modelId: "coda"
 };
 ```
+
+```typescript TypeScript
+const payload = {
+    text: "Hello! This is Rime speaking.",
+    speaker: "orion",  // Try different voices here
+    modelId: "coda"
+};
+```
 </CodeGroup>
 
 Browse all available voices on the [Voices](/docs/voices) page.
 
 ## Custom pronunciation
 
-<Note>Custom pronunciation is a Mist-family feature. Coda and Arcana do not support [`phonemizeBetweenBrackets`](/docs/custom-pronunciation).</Note>
+<Note>Custom pronunciation is supported on **Mist v1 and v2** only. Coda, Arcana, and Mist v3 do not support [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) yet.</Note>
 
-The `mistv2` and `mistv3` models let you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/docs/custom-pronunciation). Add the custom pronunciation in curly brackets and set [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) to `true`:
+The `mistv2` model lets you specify the pronunciation of brand names or uncommon words using Rime's [phonetic alphabet](/docs/custom-pronunciation). Add the custom pronunciation in curly brackets and set [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) to `true`:
 
 <CodeGroup>
 ```python Python
@@ -276,6 +382,15 @@ payload = {
 ```
 
 ```javascript JavaScript
+const payload = {
+    text: "Welcome to {r1Ym} labs.",
+    speaker: "peak",
+    modelId: "mistv2",
+    phonemizeBetweenBrackets: true
+};
+```
+
+```typescript TypeScript
 const payload = {
     text: "Welcome to {r1Ym} labs.",
     speaker: "peak",

@@ -4,7 +4,7 @@ description: "Optional patterns you can pre-expand in your application before se
 ---
 
 <Warning>
-  **Most applications shouldn't pre-normalize.** Rime handles common patterns — currency with symbols, dates with years, clock times, phone numbers, standard measurements, and most numeric formats — natively. Pre-normalizing adds latency and engineering complexity for behavior you usually get for free. Before adding a pre-processing layer, review the [formats Rime handles natively](/docs/text-normalization#whats-handled-at-a-glance) and verify any specific input with the [`/textnorm` endpoint](/docs/text-normalization#debugging-with-the-textnorm-endpoint).
+  **Most applications shouldn't pre-normalize.** Rime handles common patterns — currency with symbols, dates with years, clock times, phone numbers, standard measurements, and most numeric formats — natively. Pre-normalizing adds latency and engineering complexity for behavior you usually get for free. Before adding a pre-processing layer, review the [formats Rime handles natively](/docs/text-normalization#handled-at-a-glance) and verify any specific input with the [`/textnorm` endpoint](/docs/text-normalization#debugging-with-the-textnorm-endpoint).
 </Warning>
 
 If you've reviewed the native handling and still need to pre-normalize specific patterns, this page documents the known gaps and provides a prompt template you can drop into the layer that generates your text.

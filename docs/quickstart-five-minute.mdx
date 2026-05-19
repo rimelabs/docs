@@ -34,8 +34,8 @@ curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
   --header 'Authorization: Bearer your_api_key_here' \
   --header 'Content-Type: application/json' \
-  --header 'Accept: audio/mp3' \
-  --output output.mp3 \
+  --header 'Accept: audio/wav' \
+  --output output.wav \
   --data '{
     "text": "Hello! This is Rime speaking.",
     "speaker": "celeste",
@@ -50,7 +50,7 @@ import urllib.request
 RIME_API_KEY = "your_api_key_here"
 
 headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": f"Bearer {RIME_API_KEY}",
     "Content-Type": "application/json"
 }
@@ -71,11 +71,11 @@ request = urllib.request.Request(
 )
 
 with urllib.request.urlopen(request) as response:
-    with open("output.mp3", "wb") as f:
+    with open("output.wav", "wb") as f:
         while chunk := response.read(4096):
             f.write(chunk)
 
-print("Audio saved to output.mp3")
+print("Audio saved to output.wav")
 ```
 
 ```javascript JavaScript
@@ -84,7 +84,7 @@ const fs = require("fs");
 const RIME_API_KEY = "your_api_key_here";
 
 const headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": `Bearer ${RIME_API_KEY}`,
     "Content-Type": "application/json"
 };
@@ -107,8 +107,8 @@ async function generateSpeech() {
     }
 
     const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.mp3", Buffer.from(buffer));
-    console.log("Audio saved to output.mp3");
+    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    console.log("Audio saved to output.wav");
 }
 
 generateSpeech();
@@ -120,7 +120,7 @@ import * as fs from "fs";
 const RIME_API_KEY: string = "your_api_key_here";
 
 const headers: Record<string, string> = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": `Bearer ${RIME_API_KEY}`,
     "Content-Type": "application/json"
 };
@@ -143,8 +143,8 @@ async function generateSpeech(): Promise<void> {
     }
 
     const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.mp3", Buffer.from(buffer));
-    console.log("Audio saved to output.mp3");
+    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    console.log("Audio saved to output.wav");
 }
 
 generateSpeech();
@@ -180,7 +180,7 @@ Set the request headers, specifying the Rime API key that you copied:
 RIME_API_KEY = "your_api_key_here"
 
 headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": f"Bearer {RIME_API_KEY}",
     "Content-Type": "application/json"
 }
@@ -190,7 +190,7 @@ headers = {
 const RIME_API_KEY = "your_api_key_here";
 
 const headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": `Bearer ${RIME_API_KEY}`,
     "Content-Type": "application/json"
 };
@@ -200,7 +200,7 @@ const headers = {
 const RIME_API_KEY: string = "your_api_key_here";
 
 const headers: Record<string, string> = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/wav",
     "Authorization": `Bearer ${RIME_API_KEY}`,
     "Content-Type": "application/json"
 };
@@ -257,11 +257,11 @@ request = urllib.request.Request(
 )
 
 with urllib.request.urlopen(request) as response:
-    with open("output.mp3", "wb") as f:
+    with open("output.wav", "wb") as f:
         while chunk := response.read(4096):
             f.write(chunk)
 
-print("Audio saved to output.mp3")
+print("Audio saved to output.wav")
 ```
 
 ```javascript JavaScript
@@ -277,8 +277,8 @@ async function generateSpeech() {
     }
 
     const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.mp3", Buffer.from(buffer));
-    console.log("Audio saved to output.mp3");
+    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    console.log("Audio saved to output.wav");
 }
 
 generateSpeech();
@@ -297,8 +297,8 @@ async function generateSpeech(): Promise<void> {
     }
 
     const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.mp3", Buffer.from(buffer));
-    console.log("Audio saved to output.mp3");
+    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    console.log("Audio saved to output.wav");
 }
 
 generateSpeech();
@@ -330,7 +330,7 @@ npx tsx rime_hello_world.ts
 On a successful run, the terminal displays a confirmation that your audio file has been saved:
 
 ```bash
-'Audio saved to output.mp3'
+'Audio saved to output.wav'
 ```
 
 ## Choose a voice

@@ -36,7 +36,7 @@ Coda, Arcana, and Mist v3 also accept `speedAlpha`, but it works in the **opposi
 `timeScaleFactor` works over the HTTP API only. On the WebSocket endpoints (`/ws`, `/ws2`, `/ws3`), the parameter is silently ignored — use `speedAlpha` instead.
 </Note>
 
-### Mist and Mist v2
+### Mist v2
 
 Use the `speedAlpha` parameter. **Lower** than 1.0 is faster; **higher** than 1.0 is slower.
 
@@ -55,7 +55,7 @@ Use the `speedAlpha` parameter. **Lower** than 1.0 is faster; **higher** than 1.
 
 To adjust the speed of individual words or phrases on the Mist family, use the `inlineSpeedAlpha` parameter. It takes a comma-separated list of speed values applied to words in square brackets.
 
-Across all Mist versions (`mist`, `mistv2`, `mistv3`), values **< 1.0 speed up** speech and values **> 1.0 slow it down**.
+On `mistv2` and `mistv3`, values **< 1.0 speed up** speech and values **> 1.0 slow it down**.
 
 <Note>On Mist v3, `inlineSpeedAlpha` and `speedAlpha` go in opposite directions — `speedAlpha` follows the modern flagship direction (higher = faster), but `inlineSpeedAlpha` follows the legacy Mist direction (lower = faster). Don't infer one from the other.</Note>
 

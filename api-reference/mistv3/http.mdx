@@ -44,10 +44,6 @@ Set the `Accept` header to one of the following values:
   A value above 1.0 slows down the audio, a value below 1.0 speeds up the audio.
 </ParamField>
 
-<ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Higher than 1.0 is faster and lower than 1.0 is slower.
-</ParamField>
-
 <ParamField body="lang" type="string" default="en">
   If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
 </ParamField>
@@ -55,11 +51,6 @@ Set the `Accept` header to one of the following values:
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">
   When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds.
   Example: `Hi. <200> I'd love to have a conversation with you.` adds a 200ms pause. Learn more about [custom pauses](/docs/custom-pauses).
-</ParamField>
-
-<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
-  When set to true, you can specify the phonemes for a word enclosed in curly brackets.
-  Example: `{h'El.o} World` will pronounce "Hello" as expected. Learn more about [custom pronunciation](/docs/custom-pronunciation).
 </ParamField>
 
 <ParamField body="inlineSpeedAlpha" type="string">

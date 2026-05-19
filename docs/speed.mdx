@@ -13,20 +13,39 @@ Learn how to adjust the speaking speed using Rime's APIs.
 
 ## Adjusting the overall speed
 
-Overall speaking speed in Rime is controlled using the `speedAlpha` parameter.
+How you adjust overall speaking speed depends on the model.
 
-The direction of `speedAlpha` depends on the model:
+### Coda, Arcana, and Mist v3
 
-| Models | Direction |
-| :--- | :--- |
-| `coda`, `arcana`, `mistv3` | Higher than 1.0 is faster; lower than 1.0 is slower. |
-| `mist`, `mistv2` | Lower than 1.0 is faster; higher than 1.0 is slower. |
+Use the `timeScaleFactor` parameter. A value **above 1.0 slows the audio**; a value **below 1.0 speeds it up**.
 
 ```js
 {
     ...otherParams,
     "text": "Hello, world!",
-    "speedAlpha": 1.2
+    "modelId": "coda",
+    "timeScaleFactor": 0.85
+}
+```
+
+<Note>
+Coda, Arcana, and Mist v3 also accept `speedAlpha`, but it works in the **opposite direction** from `timeScaleFactor` (higher than 1.0 is faster, lower is slower). Going forward we recommend `timeScaleFactor` for these models — it's the parameter we'll continue to support across future flagship models.
+</Note>
+
+<Note>
+`timeScaleFactor` works over the HTTP API only. On the WebSocket endpoints (`/ws`, `/ws2`, `/ws3`), the parameter is silently ignored — use `speedAlpha` instead.
+</Note>
+
+### Mist and Mist v2
+
+Use the `speedAlpha` parameter. **Lower** than 1.0 is faster; **higher** than 1.0 is slower.
+
+```js
+{
+    ...otherParams,
+    "text": "Hello, world!",
+    "modelId": "mistv2",
+    "speedAlpha": 0.85
 }
 ```
 

@@ -37,11 +37,11 @@ For full reference, see [Spell function](/docs/spell).
 
 Rime's models may not nail uncommon brand or product names on the first try. Two options:
 
-1. **Submit the word to Rime** to add to the dictionary (around 24 hours). The fastest way is the [Speech QA dashboard](/platform/speech-qa), which surfaces out-of-vocabulary words from your traffic and lets you approve or correct them in one place. You can also reach the team directly at [support@rime.ai](mailto:support@rime.ai) or via your shared Slack channel.
+1. **Submit the word to Rime** to add to the dictionary (typically about a week — [contact us](mailto:support@rime.ai) if you need faster turnaround or have an SLA). The fastest way is the [Speech QA dashboard](/platform/speech-qa), which surfaces out-of-vocabulary words from your traffic and lets you approve or correct them in one place. You can also reach the team directly at [support@rime.ai](mailto:support@rime.ai) or via your shared Slack channel.
 2. **Use custom pronunciations inline** with Rime's phonetic alphabet and `phonemizeBetweenBrackets: true`. See [Custom pronunciation](/docs/custom-pronunciation) for the full reference.
 
 <Warning>
-  [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) works on the Mist family (v1, v2, v3). It does **not** work on Coda or Arcana. For brand or product name pronunciations on Coda or Arcana, submit the word to Rime to add to the dictionary, respell phonetically in plain English (accepting that this is approximate), or use Mist for flows where pronunciation control matters.
+  [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) works on **Mist v1 and v2** only. It is not yet supported on Mist v3, Coda, or Arcana. For brand or product name pronunciations on those models, submit the word to Rime to add to the dictionary, respell phonetically in plain English (accepting that this is approximate), or use Mist v1/v2 for flows where pronunciation control matters.
 </Warning>
 
 For full reference, see [Custom pronunciation](/docs/custom-pronunciation). To check whether a word is already in Rime's dictionary, use the [Coverage API](/api-reference/other/oov).
@@ -54,7 +54,7 @@ For full reference, see [Custom pronunciation](/docs/custom-pronunciation). To c
 | `spell()` for forced letter-by-letter | ✅ | ✅ | ✅ |
 | Punctuation-driven prosody | ✅ | ✅ | ✅ |
 | [`pauseBetweenBrackets`](/docs/custom-pauses) (custom pause tags like `<750>`) | ❌ | ❌ | ✅ |
-| [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) (inline phonetic strings) | ❌ | ❌ | ✅ |
+| [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) (inline phonetic strings) | ❌ | ❌ | v1, v2 only |
 | Deterministic per-term pronunciation config | ❌ | ❌ | ✅ |
 
 Coda and Arcana both have parity with Mist for numbers, currency, and abbreviation expansion.
@@ -63,7 +63,9 @@ For flows that need precise pause durations (legal disclaimers, regulated read-b
 
 ## Debugging with the textnorm endpoint
 
-Rime exposes a `/textnorm` endpoint that returns the normalized form of an input string — exactly what the TTS model receives before synthesis. It's the fastest way to separate normalization issues from synthesis issues.
+The fastest way to spot-check normalization without writing code is the [Generate page in the Rime web app](https://app.rime.ai/generate/): paste any input string and it shows you the normalized version Rime will synthesize from.
+
+For programmatic debugging, Rime also exposes a `/textnorm` endpoint that returns the normalized form of an input string — exactly what the TTS model receives before synthesis. It's the fastest way to separate normalization issues from synthesis issues in scripts and pipelines.
 
 ```bash
 curl -X POST https://optimize.rime.ai/textnorm \

@@ -179,7 +179,7 @@ def synthesize(text, voice, speed, lang, api_key, model="arcana"):
         data=json.dumps(body).encode(),
         headers={
             "Authorization": f"Bearer {api_key}",
-            "Accept": "audio/pcm",
+            "Accept": "audio/L16",
             "Content-Type": "application/json",
         },
         method="POST",

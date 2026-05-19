@@ -385,7 +385,7 @@ Sample response file: [`result.txt`](https://drive.google.com/file/d/1GW2D8pm5wi
 **Request:**
 
 ```bash Request example
-curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Content-Type: application/json" -H "Accept: audio/mp3" -d '{
+curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Content-Type: application/json" -H "Accept: audio/mpeg" -d '{
   "text": "I would love to have a conversation with you.",
   "speaker": "joy",
   "modelId": "mist"
@@ -401,7 +401,7 @@ Sample response file: [`result.mp3`](https://drive.google.com/file/d/1iwmWB1byBX
 **Request:**
 
 ```bash Request example
-curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Content-Type: application/json" -H "Accept: audio/pcm" -d '{
+curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY>" -H "Content-Type: application/json" -H "Accept: audio/L16" -d '{
   "text": "I would love to have a conversation with you.",
   "speaker": "joy",
   "modelId": "mist"

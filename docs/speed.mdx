@@ -53,14 +53,16 @@ Use the `speedAlpha` parameter. **Lower** than 1.0 is faster; **higher** than 1.
 
 To adjust the speed of individual words or phrases, use the `inlineSpeedAlpha` parameter.
 
-`inlineSpeedAlpha` takes a comma-separated list of speed values applied to words in square brackets. The direction of `inlineSpeedAlpha` depends on the model, matching `speedAlpha`:
+`inlineSpeedAlpha` takes a comma-separated list of speed values applied to words in square brackets. The direction depends on the model:
 
 | Models | Direction |
 | :--- | :--- |
-| `coda`, `arcana`, `mistv3` | Values > 1.0 speed up speech, < 1.0 slow it down. |
-| `mist`, `mistv2` | Values < 1.0 speed up speech, > 1.0 slow it down. |
+| `coda`, `arcana` | Values > 1.0 speed up speech, < 1.0 slow it down. |
+| `mist`, `mistv2`, `mistv3` | Values < 1.0 speed up speech, > 1.0 slow it down. |
 
-For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” slow and “fast” fast on `coda`/`arcana`/`mistv3`, or the reverse on `mist`/`mistv2`.
+<Note>Mist v3 is the one model where `inlineSpeedAlpha` and `speedAlpha` go in opposite directions — `speedAlpha` follows Coda/Arcana ("higher is faster"), while `inlineSpeedAlpha` follows the legacy Mist direction ("lower is faster"). Use the table above; don't infer.</Note>
+
+For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” slow and “fast” fast on `coda`/`arcana`, or the reverse on the Mist family.
 
 ```js
 {

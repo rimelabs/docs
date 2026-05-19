@@ -51,24 +51,22 @@ Use the `speedAlpha` parameter. **Lower** than 1.0 is faster; **higher** than 1.
 
 ## Adjusting the speed of individual words
 
-To adjust the speed of individual words or phrases, use the `inlineSpeedAlpha` parameter.
+<Note>Per-word speed adjustment via `inlineSpeedAlpha` is a Mist-family feature. Coda and Arcana do not support it.</Note>
 
-`inlineSpeedAlpha` takes a comma-separated list of speed values applied to words in square brackets. The direction depends on the model:
+To adjust the speed of individual words or phrases on the Mist family, use the `inlineSpeedAlpha` parameter. It takes a comma-separated list of speed values applied to words in square brackets.
 
-| Models | Direction |
-| :--- | :--- |
-| `coda`, `arcana` | Values > 1.0 speed up speech, < 1.0 slow it down. |
-| `mist`, `mistv2`, `mistv3` | Values < 1.0 speed up speech, > 1.0 slow it down. |
+Across all Mist versions (`mist`, `mistv2`, `mistv3`), values **< 1.0 speed up** speech and values **> 1.0 slow it down**.
 
-<Note>Mist v3 is the one model where `inlineSpeedAlpha` and `speedAlpha` go in opposite directions — `speedAlpha` follows Coda/Arcana ("higher is faster"), while `inlineSpeedAlpha` follows the legacy Mist direction ("lower is faster"). Use the table above; don't infer.</Note>
+<Note>On Mist v3, `inlineSpeedAlpha` and `speedAlpha` go in opposite directions — `speedAlpha` follows the modern flagship direction (higher = faster), but `inlineSpeedAlpha` follows the legacy Mist direction (lower = faster). Don't infer one from the other.</Note>
 
-For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” slow and “fast” fast on `coda`/`arcana`, or the reverse on the Mist family.
+For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5, 3” will make “really” fast and “fast” slow on the Mist family.
 
 ```js
 {
     ...otherParams,
-    “text”: “This sentence is [really] [fast]”,
-    “inlineSpeedAlpha”: “0.5, 3”
+    "modelId": "mistv2",
+    "text": "This sentence is [really] [fast]",
+    "inlineSpeedAlpha": "0.5, 3"
 }
 ```
 
@@ -77,7 +75,7 @@ For example: “This sentence is [really] [fast]” with inlineSpeedAlpha “0.5
 By effectively utilizing Rime's speed control features, you can create more varied conversational AI experiences.
 
 - Use `speedAlpha` to adjust the overall speed of the speech.
-- Use `inlineSpeedAlpha` to adjust the speed of individual words or phrases.
+- Use `inlineSpeedAlpha` (Mist family only) to adjust the speed of individual words or phrases.
 - Experiment with different values to find the best fit for your use case.
 - Be mindful that large speed adjustments may impact the naturalness and clarity of the synthesized speech.
 

@@ -1,6 +1,6 @@
 ---
 title: 'Text normalization'
-description: "Rime automatically normalizes English text — numbers, dates, currency, phone numbers, measurements, and more — before synthesis."
+description: "Rime automatically normalizes text — numbers, dates, currency, phone numbers, measurements, and more — before synthesis."
 ---
 
 When you send text to Rime's TTS models, a normalization layer runs first. It expands numbers, dates, currency, phone numbers, measurements, and other non-standard words into their spoken form before the model synthesizes audio.
@@ -87,7 +87,7 @@ curl -X POST https://optimize.rime.ai/textnorm \
     -d '{"text":"Tengo 2 perros","lang":"es"}'
 ```
 
-Output is the same regardless of which model you'll synthesize with. For the full request and response reference, see the [Text Normalization API](/api-reference/other/textnorm).
+See [Languages](/docs/voices#languages) for the full list of supported languages. Output is the same regardless of which model you'll synthesize with. For the full request and response reference, see the [Text Normalization API](/api-reference/other/textnorm).
 
 ### Triage workflow
 

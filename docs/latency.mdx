@@ -50,7 +50,7 @@ The image above contains a plot of both response time and TTFB for the following
 
 ```bash
 curl -X POST http://users.rime.ai/v1/rime-tts \
-  -H 'Accept: audio/pcm' \
+  -H 'Accept: audio/L16' \
   -H 'Authorization: Bearer $RIME_API_KEY' \
   -d '{"text": "I love the book that she gave me. And I was so happy that she gave it to me.", "speaker": "cove",  "modelId": "mistv3"}'
 ```
@@ -65,7 +65,7 @@ with requests.post(
     headers={
         "Authorization": f"Bearer {RIME_API_KEY}",
         "Content-Type": "application/json",
-        "Accept": "audio/mp3",
+        "Accept": "audio/mpeg",
     },
     json={
         "speaker": "astra",

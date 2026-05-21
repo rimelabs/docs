@@ -15,10 +15,20 @@ Set the `Accept` header to one of the following values:
 |---|---|---|
 | Opus (WebM) | `audio/webm;codecs=opus` | Recommended. Opus offers excellent compression. WebM streams natively in browsers. |
 | Opus (OGG) | `audio/ogg;codecs=opus` | Opus offers excellent compression. OGG container. |
-| MP3 | `audio/mp3` | Lower compression rate than Opus. Highest compatibility across devices and players. |
+| MP3 | `audio/mpeg` | Lower compression rate than Opus. Highest compatibility across devices and players. |
 | WAV | `audio/wav` | Uncompressed. RIFF WAVE header with 16-bit little-endian linear PCM samples. Streams natively in browsers. |
-| PCM | `audio/pcm` | Headerless 16-bit little-endian linear PCM. |
-| G.711 μ-law | `audio/x-mulaw` | Headerless stream of audio bytes. |
+| PCM | `audio/L16` | Headerless 16-bit little-endian linear PCM. |
+| G.711 μ-law | `audio/PCMU` | Headerless stream of audio bytes. |
+
+### Deprecated aliases
+
+Still accepted for backwards compatibility; new code should use the RFC types above.
+
+| Deprecated | Use instead |
+|---|---|
+| `audio/mp3` | `audio/mpeg` |
+| `audio/pcm` | `audio/L16` |
+| `audio/x-mulaw` | `audio/PCMU` |
 
 ## Variable Parameters
 

@@ -13,9 +13,19 @@ Set the `Accept` header to one of the following values:
 
 | Format | Accept Header | Default Sampling Rate | Notes |
 |---|---|---|---|
-| MP3 | `audio/mp3` | 22050 | |
-| PCM | `audio/pcm` | 16000 | Headerless 16-bit little-endian linear PCM. |
-| G.711 μ-law | `audio/x-mulaw` | 8000 | Headerless stream of audio bytes. |
+| MP3 | `audio/mpeg` | 22050 | |
+| PCM | `audio/L16` | 16000 | Headerless 16-bit little-endian linear PCM. |
+| G.711 μ-law | `audio/PCMU` | 8000 | Headerless stream of audio bytes. |
+
+### Deprecated aliases
+
+Still accepted for backwards compatibility; new code should use the RFC types above.
+
+| Deprecated | Use instead |
+|---|---|
+| `audio/mp3` | `audio/mpeg` |
+| `audio/pcm` | `audio/L16` |
+| `audio/x-mulaw` | `audio/PCMU` |
 
 ## Variable Parameters
 
@@ -73,7 +83,7 @@ Set the `Accept` header to one of the following values:
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
-  --header 'Accept: audio/mp3' \
+  --header 'Accept: audio/mpeg' \
   --header 'Authorization: Bearer YOUR_API_KEY' \
   --header 'Content-Type: application/json' \
   --output output.mp3 \
@@ -102,7 +112,7 @@ payload = {
     "speedAlpha": 1.0
 }
 headers = {
-    "Accept": "audio/mp3",
+    "Accept": "audio/mpeg",
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
 }
@@ -119,7 +129,7 @@ with requests.post(url, headers=headers, json=payload, stream=True) as response:
 const options = {
   method: 'POST',
   headers: {
-    Accept: 'audio/mp3',
+    Accept: 'audio/mpeg',
     Authorization: 'Bearer YOUR_API_KEY',
     'Content-Type': 'application/json'
   },
@@ -150,7 +160,7 @@ curl_setopt_array($curl, [
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => "{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv2\",\n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0\n}",
   CURLOPT_HTTPHEADER => [
-    "Accept: audio/mp3",
+    "Accept: audio/mpeg",
     "Authorization: Bearer YOUR_API_KEY",
     "Content-Type: application/json"
   ],
@@ -186,7 +196,7 @@ func main() {
 
   req, _ := http.NewRequest("POST", url, payload)
 
-  req.Header.Add("Accept", "audio/mp3")
+  req.Header.Add("Accept", "audio/mpeg")
   req.Header.Add("Authorization", "Bearer YOUR_API_KEY")
   req.Header.Add("Content-Type", "application/json")
 
@@ -201,7 +211,7 @@ func main() {
 
 ```java Java
 HttpResponse<String> response = Unirest.post("https://users.rime.ai/v1/rime-tts")
-  .header("Accept", "audio/mp3")
+  .header("Accept", "audio/mpeg")
   .header("Authorization", "Bearer YOUR_API_KEY")
   .header("Content-Type", "application/json")
   .body("{\n  \"speaker\": \"astra\",\n  \"text\": \"Hello from Rime!\",\n  \"modelId\": \"mistv2\",\n  \"lang\": \"eng\",\n  \"samplingRate\": 22050,\n  \"speedAlpha\": 1.0\n}")

@@ -59,6 +59,7 @@
               "docs/changelog",
               "docs/voices",
               "docs/models",
+              "docs/prompting",
               {
                 "group": "Formatting Text",
                 "icon": "pen-to-square",

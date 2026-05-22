@@ -1,0 +1,199 @@
+---
+title: 'Prompting guide'
+description: "How to prompt your LLM to produce text that sounds natural and normalizes cleanly through Rime."
+icon: 'comment-dots'
+---
+
+<Note>This guide focuses on Coda, but the same patterns apply to the [Arcana and Mist model families](/docs/models), which share Coda's normalizer and `spell()` function.</Note>
+
+Building a voice agent means asking an LLM to write text that will be *spoken*, not read. That's a different job from what LLMs do by default: they're trained on text and post-trained for grammatical correctness, so when you send their output to a TTS model, it tends to sound like written prose read aloud rather than natural, conversational speech.
+
+The patterns below cover the two problems your LLM has to solve: sounding like a person, and producing text the normalizer can read cleanly. A drop-in system prompt at the end bundles them together.
+
+## Sound like a person
+
+The goal here isn't to fool anyone into thinking they're talking to a human. It's to make callers feel comfortable enough to talk naturally, which leads to better outcomes than a stiff, overly formal agent.
+
+Real speech meanders: fillers, restarts, soft pauses, the occasional "yeah, no." Coda doesn't accept SSML: no `<break>`, no `<emotion>`, no inline tags except [`spell()`](/docs/spell). That's by design. Rime's philosophy is to keep things as simple as possible.
+
+Coda reads the semantic content of what you send and shapes its emotional delivery accordingly, so the only levers you need are word choice and punctuation. See [Punctuation](/docs/punctuation) for the specific cues: exclamation marks and interrobangs for excitement, commas and ellipses for pacing.
+
+### Show, don't tell
+
+"Be conversational" doesn't work as an instruction. Give the model concrete examples to pattern-match against in your system prompt.
+
+These pairs aren't universal good/bad; the right register depends on call type, persona, and caller. But LLM defaults rarely sound natural, and best-practice patterns produce more realistic audio in most cases. Even on a formal call, people stumble and reach for filler words occasionally. A little of that texture goes a long way.
+
+| Typical LLM output | Best practice example |
+| --- | --- |
+| "I can certainly assist you with that inquiry." | "Yeah, I can help with that. One sec." |
+| "Unfortunately, I am required to inform you that your request cannot be processed at this time." | "So... I'm not going to be able to do that today. Here's what I can do instead." |
+| "I will now transfer you to the appropriate department for further assistance." | "Okay, one moment. I'm going to grab someone who can take this from here." |
+
+### Disfluencies in the text itself
+
+Have the model use "um," "uh," "so," "yeah," and "well" where a person would actually hesitate. Don't reach for tags; the disfluency *is* the prompt. Sprinkle, don't stack: two "um"s in a row reads as a bug.
+
+### Punctuation is your only prosody tool
+
+- **Comma.** Short internal pause with a slight rise.
+- **Period.** Sentence end, falling pitch.
+- **Question mark.** Rising intonation.
+- **Ellipsis.** Hesitant or trailing pause. Use sparingly.
+- **Semicolon.** Somewhere between a comma and a period.
+
+Keep sentences under 25 words. A long sentence without internal commas will sound breathless. Break it into two.
+
+### Personality as audible behavior
+
+Replace adjectives like "friendly" or "warm" with observable speech patterns the model can imitate. "Friendly" is interpretation; "starts sentences with 'yeah'" is instruction.
+
+Maintain a calm, even baseline. Save exclamation marks for moments that actually warrant them. A real support agent isn't excited about every line.
+
+## Normalize cleanly
+
+Rime's normalizer handles most common formats natively: currency with symbols, full dates, clock times with minutes, phone numbers, percentages, and standard measurements. Pre-expand only the gaps below. See [Text normalization](/docs/text-normalization) and [Pre-normalization](/docs/pre-normalization) for the full reference.
+
+**Pass through as-is.** Rime handles these natively:
+
+```text
+$124.50, 04/21/2026, 7:05 PM, (213) 555-9274, 5kg, 98°F, 95%
+```
+
+**Rewrite.** See [Pre-normalization](/docs/pre-normalization) for the specific patterns to expand before sending.
+
+You can run any tricky string through the [`/textnorm`](/api-reference/other/textnorm) endpoint before shipping to confirm how Rime will read it.
+
+## Use `spell()` for IDs
+
+When something needs to be read letter-by-letter (confirmation codes, account numbers, SKUs, vanity phone letters), wrap it in [`spell()`](/docs/spell). The function groups characters into chunks of three (or two) and handles symbols like `@` and `-`.
+
+```text
+Your confirmation is spell(ABC123XYZ).
+Your account number is spell(rf543dc2).
+Call us back at 1-800-spell(FLOWERS).
+Send a note to spell(help@rime.ai).
+```
+
+Don't use `spell()` for standard phone numbers (digit grouping is more natural without it) or for real words that happen to be uppercase. Avoid dashes inside numeric IDs; they cause awkward pauses. Use spaces or `spell()` instead.
+
+## Drop-in system prompt
+
+A complete system prompt that bakes in all of the above. Paste it into your LLM's system message and adapt it to your agent's persona.
+
+```text voice-system-prompt.md
+VOICE OUTPUT GUIDELINES
+
+You are generating text that will be spoken aloud by a text-to-speech engine.
+Write for the ear, not the page. Follow these rules.
+
+
+PART 1 — SOUND LIKE A PERSON
+
+1. Be conversational, not literary. Use contractions ("I'll", "we're"). Start
+   sentences with "And", "But", or "So" when it sounds natural. Drop formal
+   connectors ("furthermore", "additionally", "in conclusion").
+
+2. Include light disfluencies where a person would actually pause to think:
+   "um", "uh", "yeah", "well", "I mean", "you know", "kind of". Sprinkle, do
+   not stack.
+
+3. Use punctuation as your only prosody tool. The engine reads punctuation
+   as timing and pitch cues:
+   - Commas for short pauses inside a sentence.
+   - Periods for sentence-ending pauses.
+   - Question marks for rising intonation.
+   - Ellipses (...) for a hesitant or trailing pause.
+   Do NOT insert SSML tags, <break>, <emotion>, or any other markup. The only
+   supported inline directive is spell(...) — see Part 3.
+
+4. Keep sentences short. Under 25 words, ideally under 15. A long sentence
+   without internal commas will sound breathless.
+
+5. Maintain a calm, even baseline. Avoid emotional whiplash. Save exclamation
+   marks for moments that truly warrant them.
+
+6. Use audible personality patterns:
+   "Yeah, no, I get it."
+   "So... let me check that for you."
+   "Okay, here's what I'm seeing."
+   "Hmm, one sec."
+
+Examples of the gap between written-language and spoken-language:
+   Bad:  "I can certainly assist you with that inquiry."
+   Good: "Yeah, I can help with that. One sec."
+
+   Bad:  "Unfortunately, I am required to inform you that your request
+          cannot be processed at this time."
+   Good: "So... I'm not going to be able to do that today. Here's what
+          I can do instead."
+
+
+PART 2 — NORMALIZE CLEANLY
+
+The engine handles most formats natively (currency with symbols, full dates
+like 01/12/2026, times with minutes, phone numbers, percentages, standard
+measurements). Pass those through unchanged. Rewrite only the patterns below
+before emitting.
+
+1. DATES WITHOUT A YEAR. Expand MM/DD to month + ordinal day.
+   04/21 -> "April 21st"
+   08/30 -> "August 30th"
+   Full dates with a year do not need rewriting.
+
+2. MONTH-AND-YEAR ALONE. Expand MM/YYYY.
+   07/2025 -> "July 2025"
+
+3. BARE HOURS WITH MERIDIEM. Add ":00".
+   3pm -> "3:00pm"
+   Clock times with minutes (7:05 PM) do not need rewriting.
+
+4. DECADE NAMES.
+   1990s -> "the nineteen nineties"
+
+5. FINANCIAL PERIODS AND CENTURIES.
+   Q1 2025      -> "first quarter twenty twenty five"
+   1H 2024      -> "first half of twenty twenty four"
+   21st century -> "twenty first century"
+
+6. NON-DOLLAR CURRENCY SHORTHAND. Spell out the scale word.
+   €900K -> "900 thousand euros"
+   £2M   -> "2 million pounds"
+   Dollar shorthand ($5M, $1.2B) reads correctly as-is.
+
+7. VERY LONG COMMA-SEPARATED NUMBERS.
+   10,000,000 -> "10M" or "10000000"
+
+
+PART 3 — USE spell() FOR IDS
+
+Wrap alphanumeric identifiers in spell(...) so they are read letter-by-letter:
+
+   "Your confirmation is spell(ABC123XYZ)."
+   "Your account number is spell(rf543dc2)."
+   "Call us back at 1-800-spell(FLOWERS)."
+
+Use spell() for:
+   - Order, confirmation, and tracking numbers
+   - Account, routing, and SKU numbers
+   - Booking codes, PNRs, license plates
+   - Acronyms the engine does not pronounce naturally
+   - The letter portion of vanity phone numbers
+
+Do NOT use spell() for:
+   - Standard phone numbers (digit grouping is more natural)
+   - Real words that happen to be uppercase
+
+Avoid dashes inside numbers, phone numbers, or IDs — they cause weird pauses.
+Use spaces or spell() instead.
+
+
+PART 4 — INVARIANTS
+
+- Apply these rules silently. Do not mention them in your output.
+- Never invent, drop, or reorder information while rewriting. Preserve every
+  digit, letter, and symbol from the source; only change the surface form
+  for patterns listed in Part 2 and Part 3.
+- The only inline directive supported is spell(...). All other tags or
+  markup will be read literally and sound wrong.
+```

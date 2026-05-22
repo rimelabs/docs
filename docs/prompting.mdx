@@ -1,84 +1,72 @@
 ---
 title: 'Prompting guide'
-description: "How to prompt your LLM so its output sounds natural and normalizes cleanly when spoken by Rime."
+description: "How to prompt your LLM to produce text that sounds natural and normalizes cleanly through Rime."
 icon: 'comment-dots'
 ---
 
-<Note>This guide is written with Coda in mind, but the patterns apply across Arcana and the Mist family — they share the same normalizer and the same `spell()` function.</Note>
+<Note>This guide focuses on Coda, but the same patterns apply to the [Arcana and Mist model families](/docs/models), which share Coda's normalizer and `spell()` function.</Note>
 
-Building a voice agent means asking an LLM to write text that will be *spoken*, not read. That's a different job from what LLMs do by default — they're trained on text and post-trained for grammatical correctness, so they tend to produce written language read out loud. The patterns below cover the two problems your LLM is solving every turn: sounding like a person, and producing text the normalizer can read cleanly. A drop-in system prompt at the end bundles them all together.
+Building a voice agent means asking an LLM to write text that will be *spoken*, not read. That's a different job from what LLMs do by default: they're trained on text and post-trained for grammatical correctness, so when you send their output to a TTS model, it tends to sound like written prose read aloud rather than natural, conversational speech.
+
+The patterns below cover the two problems your LLM has to solve: sounding like a person, and producing text the normalizer can read cleanly. A drop-in system prompt at the end bundles them together.
 
 ## Sound like a person
 
-Real speech meanders — fillers, restarts, soft pauses, the occasional "yeah, no." Coda doesn't accept SSML — no `<break>`, no `<emotion>`, no inline tags except [`spell()`](/docs/spell). Every prosody decision is made in plain text via word choice and punctuation. It sounds limiting; it's a forcing function.
+The goal here isn't to fool anyone into thinking they're talking to a human. It's to make callers feel comfortable enough to talk naturally, which leads to better outcomes than a stiff, overly formal agent.
+
+Real speech meanders: fillers, restarts, soft pauses, the occasional "yeah, no." Coda doesn't accept SSML: no `<break>`, no `<emotion>`, no inline tags except [`spell()`](/docs/spell). That's by design. Rime's philosophy is to keep things as simple as possible.
+
+Coda reads the semantic content of what you send and shapes its emotional delivery accordingly, so the only levers you need are word choice and punctuation. See [Punctuation](/docs/punctuation) for the specific cues: exclamation marks and interrobangs for excitement, commas and ellipses for pacing.
 
 ### Show, don't tell
 
-"Be conversational" doesn't work as a prompt instruction. The model needs concrete before/after examples it can pattern-match against. Include them directly in your system prompt:
+"Be conversational" doesn't work as an instruction. Give the model concrete examples to pattern-match against in your system prompt.
 
-```text
-Bad:  "I can certainly assist you with that inquiry."
-Good: "Yeah, I can help with that. One sec."
+These pairs aren't universal good/bad; the right register depends on call type, persona, and caller. But LLM defaults rarely sound natural, and best-practice patterns produce more realistic audio in most cases. Even on a formal call, people stumble and reach for filler words occasionally. A little of that texture goes a long way.
 
-Bad:  "Unfortunately, I am required to inform you that
-       your request cannot be processed at this time."
-Good: "So... I'm not going to be able to do that today.
-       Here's what I can do instead."
-
-Bad:  "I will now transfer you to the appropriate
-       department for further assistance."
-Good: "Okay, one moment. I'm going to grab someone
-       who can take this from here."
-```
+| Typical LLM output | Best practice example |
+| --- | --- |
+| "I can certainly assist you with that inquiry." | "Yeah, I can help with that. One sec." |
+| "Unfortunately, I am required to inform you that your request cannot be processed at this time." | "So... I'm not going to be able to do that today. Here's what I can do instead." |
+| "I will now transfer you to the appropriate department for further assistance." | "Okay, one moment. I'm going to grab someone who can take this from here." |
 
 ### Disfluencies in the text itself
 
-Write "um," "uh," "so," "yeah," "well" into the LLM output where a person would actually hesitate. Don't reach for tags — the disfluency *is* the prompt. Sprinkle, don't stack: two "um"s in a row reads as a bug.
+Have the model use "um," "uh," "so," "yeah," and "well" where a person would actually hesitate. Don't reach for tags; the disfluency *is* the prompt. Sprinkle, don't stack: two "um"s in a row reads as a bug.
 
 ### Punctuation is your only prosody tool
 
-- **Comma** — short internal pause with a slight rise.
-- **Period** — sentence end, falling pitch.
-- **Question mark** — rising intonation.
-- **Ellipsis** — hesitant or trailing pause. Use sparingly.
-- **Semicolon** — somewhere between a comma and a period.
+- **Comma.** Short internal pause with a slight rise.
+- **Period.** Sentence end, falling pitch.
+- **Question mark.** Rising intonation.
+- **Ellipsis.** Hesitant or trailing pause. Use sparingly.
+- **Semicolon.** Somewhere between a comma and a period.
 
-Keep sentences under 25 words. A long sentence without internal commas will sound breathless — break it into two.
+Keep sentences under 25 words. A long sentence without internal commas will sound breathless. Break it into two.
 
 ### Personality as audible behavior
 
 Replace adjectives like "friendly" or "warm" with observable speech patterns the model can imitate. "Friendly" is interpretation; "starts sentences with 'yeah'" is instruction.
 
-Maintain a calm, even baseline. Save exclamation marks for moments that actually warrant them — a real support agent isn't excited about every line.
+Maintain a calm, even baseline. Save exclamation marks for moments that actually warrant them. A real support agent isn't excited about every line.
 
 ## Normalize cleanly
 
-Rime's normalizer handles most common formats natively: currency with symbols, full dates, clock times with minutes, phone numbers, percentages, and standard measurements all pass through. Pre-expand only the gaps below. See [Text normalization](/docs/text-normalization) and [Pre-normalization](/docs/pre-normalization) for the full reference.
+Rime's normalizer handles most common formats natively: currency with symbols, full dates, clock times with minutes, phone numbers, percentages, and standard measurements. Pre-expand only the gaps below. See [Text normalization](/docs/text-normalization) and [Pre-normalization](/docs/pre-normalization) for the full reference.
 
-**Pass through as-is** — Rime handles these natively:
+**Pass through as-is.** Rime handles these natively:
 
 ```text
 $124.50, 04/21/2026, 7:05 PM, (213) 555-9274, 5kg, 98°F, 95%
 ```
 
-**Rewrite** — known gaps in the normalizer:
+**Rewrite.** See [Pre-normalization](/docs/pre-normalization) for the specific patterns to expand before sending.
 
-| Input         | Rewrite as                            |
-| ------------- | ------------------------------------- |
-| `04/21`       | `April 21st`                          |
-| `07/2025`     | `July 2025`                           |
-| `3pm`         | `3:00pm`                              |
-| `1990s`       | `the nineteen nineties`               |
-| `Q1 2025`     | `first quarter twenty twenty five`    |
-| `21st century`| `twenty first century`                |
-| `€900K`       | `900 thousand euros`                  |
-| `10,000,000`  | `10M`                                 |
-
-You can verify any tricky string against the [`/textnorm`](/api-reference/other/textnorm) endpoint before shipping.
+You can run any tricky string through the [`/textnorm`](/api-reference/other/textnorm) endpoint before shipping to confirm how Rime will read it.
 
 ## Use `spell()` for IDs
 
-When something needs to be read letter-by-letter — confirmation codes, account numbers, SKUs, vanity phone letters — wrap it in [`spell()`](/docs/spell). The function groups characters into chunks of three (or two) and handles symbols like `@` and `-`.
+When something needs to be read letter-by-letter (confirmation codes, account numbers, SKUs, vanity phone letters), wrap it in [`spell()`](/docs/spell). The function groups characters into chunks of three (or two) and handles symbols like `@` and `-`.
 
 ```text
 Your confirmation is spell(ABC123XYZ).
@@ -87,11 +75,11 @@ Call us back at 1-800-spell(FLOWERS).
 Send a note to spell(help@rime.ai).
 ```
 
-Don't use `spell()` for standard phone numbers — digit grouping is more natural without it — or for real words that happen to be uppercase. Avoid dashes inside numeric IDs; they cause awkward pauses. Use spaces or `spell()` instead.
+Don't use `spell()` for standard phone numbers (digit grouping is more natural without it) or for real words that happen to be uppercase. Avoid dashes inside numeric IDs; they cause awkward pauses. Use spaces or `spell()` instead.
 
 ## Drop-in system prompt
 
-A complete system prompt that bakes in all of the above. Paste it into your LLM's system message and adapt to your agent's persona.
+A complete system prompt that bakes in all of the above. Paste it into your LLM's system message and adapt it to your agent's persona.
 
 ```text voice-system-prompt.md
 VOICE OUTPUT GUIDELINES

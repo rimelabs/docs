@@ -49,8 +49,8 @@ With an on-premises deployment, all sensitive data remains within your corporate
   - Debian 12 (`bookworm`), x86_64
   - Ubuntu Server 24.04 (`jammy`), x86_64
 - NVIDIA drivers
-  - Minimum: `525.60.13`
-  - Recommended: `570.133.20` or higher
+  - Minimum: R545 (`545.23.08` or higher)
+  - Recommended: R580 (`580.95.05` or higher)
 - Docker
 - NVIDIA Container Toolkit
 
@@ -59,6 +59,9 @@ With an on-premises deployment, all sensitive data remains within your corporate
 #### NVIDIA drivers
 
 Follow https://www.nvidia.com/en-us/drivers to install the latest NVIDIA drivers, or use the following instructions on Debian-based systems:
+
+R545 is the minimum supported driver branch for Rime on-prem containers. For production deployments, use R580 or a newer NVIDIA-supported branch.
+NVIDIA marks older data center driver branches that are not listed in its [supported drivers and CUDA toolkit versions](https://docs.nvidia.com/datacenter/tesla/drivers/595/supported-drivers-and-cuda-toolkit-versions.html) matrix as end of life.
 
 ```bash NVIDIA Driver Installation (Debian-based)
 # Update packages
@@ -207,9 +210,19 @@ services:
               capabilities: [gpu]
               count: all
     restart: unless-stopped
+    environment:
+      - RIME_CUDA_COMPAT_MODE=native
 ```
 
 > When running on Kubernetes, ensure that `MODEL_URL` points to `http://0.0.0.0:8080/invocations` instead of the Docker Compose service name.
+
+### CUDA compatibility mode
+
+Set `RIME_CUDA_COMPAT_MODE` on each model container to choose how the image loads NVIDIA driver libraries:
+
+- `native` (default): use the driver libraries provided by the host through NVIDIA Container Toolkit.
+- `compat`: prepend the CUDA compatibility libraries included in the image before starting the model.
+  Use this when the host driver is older than the CUDA user-mode libraries in the image but is still covered by NVIDIA's [CUDA forward compatibility](https://docs.nvidia.com/deploy/cuda-compatibility/forward-compatibility.html) support matrix.
 
 ### Multi-model backend
 

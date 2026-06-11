@@ -213,6 +213,7 @@
             "group": "Other APIs",
             "pages": [
               "api-reference/other/oov",
+              "api-reference/other/phonemize",
               "api-reference/other/textnorm"
             ]
           }

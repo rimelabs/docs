@@ -34,6 +34,10 @@ Before writing a custom pronunciation by hand, check whether the word is already
 
 For an overview of all the ways to control pronunciation, see [Pronunciation control](/platform/pronunciation-control).
 
+## Generate a pronunciation string from audio
+
+If you know how a word should sound, you don't have to write the phonetic string by hand. Record the word and post the audio to the [Phonemize API](/api-reference/other/phonemize) — it returns a string in the Rime phonetic alphabet that you can paste into your TTS request inside `{}`.
+
 ## The Rime phonetic alphabet
 
 The Rime phonetic alphabet is inspired by IPA and covers vowels, consonants, and syllabic stress. The full symbol reference lives on its own page: [Rime phonetic alphabet](/platform/rime-phonetic-alphabet).

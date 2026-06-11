@@ -8,7 +8,7 @@ This repo is the source for [docs.rime.ai](https://docs.rime.ai), built with [Mi
 docs/           # Guides, changelog, on-prem docs, integrations
 api-reference/  # API reference (Mist v2, Mist v3, Arcana)
 cli-reference/  # CLI reference
-platform/       # Voice cloning, teams, speech QA
+platform/       # Voice cloning, teams, pronunciation
 snippets/       # Reusable MDX snippets
 ```
 

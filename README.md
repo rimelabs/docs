@@ -8,7 +8,7 @@ Source for [docs.rime.ai](https://docs.rime.ai), built with [Mintlify](https://m
 docs/           # Main documentation pages (guides, changelog, on-prem, integrations)
 api-reference/  # API reference pages (Mist v2, Mist v3, Arcana)
 cli-reference/  # CLI reference pages
-platform/       # Platform pages (voice cloning, teams, speech QA)
+platform/       # Platform pages (voice cloning, teams, pronunciation)
 snippets/       # Reusable MDX snippets
 ```
 

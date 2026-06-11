@@ -1,0 +1,40 @@
+---
+title: Pronunciation control
+description: "Check dictionary coverage, specify custom pronunciations, and request dictionary additions to control exactly how Rime speaks your words."
+---
+
+Rime's models power the voice of your product, and pronunciation control makes sure brand names, product names, and domain-specific words sound right before they reach your users.
+
+There are three ways to control pronunciation:
+
+1. **Check dictionary coverage** to see whether a word is already pronounced correctly out of the box.
+2. **Specify a custom pronunciation inline** using the Rime phonetic alphabet.
+3. **Request a dictionary addition** from the Rime team.
+
+---
+
+## Check dictionary coverage
+
+Use the [Coverage API](/api-reference/other/oov) to determine which words in your text are not yet in Rime's pronunciation dictionary. Words that aren't covered will still be spoken — the model predicts a pronunciation, which is often suitable when the spelling follows typical linguistic patterns — but it's worth verifying uncommon words before they reach end users.
+
+## Specify a custom pronunciation inline
+
+For Mist-family models, you can specify a custom pronunciation directly in your TTS request by passing a phonetic string in curly brackets and setting `phonemizeBetweenBrackets: true`. The strings use the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet), which is inspired by IPA.
+
+See [Custom pronunciation](/docs/custom-pronunciation) for the full reference.
+
+<Warning>
+  [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) works on **Mist v1 and v2** only. It is not yet supported on Mist v3, Coda, or Arcana. For brand or product name pronunciations on those models, request a dictionary addition, or respell phonetically in plain English (accepting that this is approximate).
+</Warning>
+
+## Request a dictionary addition
+
+If a word is mispronounced and you'd like it fixed at the dictionary level, reach out to your account manager via Slack or email, or contact [sales@rime.ai](mailto:sales@rime.ai). Our linguists typically review and add new words within one week.
+
+---
+
+## Tips
+
+- Check coverage regularly when working with new or domain-specific content.
+- Brand names, technical terms, and made-up words are the most common sources of mispronunciation — verify these first.
+- For flows where pronunciation control matters most, use Mist v1/v2 so you can correct pronunciations inline.

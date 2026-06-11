@@ -67,8 +67,23 @@ For **secondary stress**, put `2` in front of the relevant vowel. For example, `
 
 All other vowels should have a `0` in front of them.
 
+## Generating a string automatically
+
+You don't have to compose phonetic strings symbol by symbol. Post a recording of the word to the [Phonemize API](/api-reference/other/phonemize) and it returns a transcription in this alphabet, stress markers included:
+
+```bash
+curl -X POST https://optimize.rime.ai/phonemize \
+     -H "Authorization: Bearer $RIME_API_KEY" \
+     -H "Content-Type: audio/wav" \
+     --data-binary @speech.wav
+# => {"audioId": "...", "phonemeString": "h0El1o !", "authed": 1}
+```
+
+Strip any trailing punctuation token from `phonemeString`, then use the symbol tables above to fine-tune the result if a vowel or stress placement isn't quite right.
+
 ## Related
 
 - [Custom pronunciation](/docs/custom-pronunciation) — how to use phonetic strings in API requests
 - [Pronunciation control](/platform/pronunciation-control) — overview of checking coverage, custom pronunciations, and dictionary additions
 - [Coverage API](/api-reference/other/oov) — check whether words are in Rime's dictionary before writing a custom pronunciation
+- [Phonemize API](/api-reference/other/phonemize) — generate a phonetic string from an audio recording of the word

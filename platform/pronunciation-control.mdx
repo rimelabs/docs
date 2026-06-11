@@ -23,6 +23,29 @@ For Mist-family models, you can specify a custom pronunciation directly in your 
 
 See [Custom pronunciation](/docs/custom-pronunciation) for the full reference.
 
+### Generate the phonetic string from audio
+
+You can write phonetic strings by hand from the alphabet reference, or let Rime generate one for you: record the word (or synthesize it) and post the raw audio to the [Phonemize API](/api-reference/other/phonemize).
+
+```bash
+curl -X POST https://optimize.rime.ai/phonemize \
+     -H "Authorization: Bearer $RIME_API_KEY" \
+     -H "Content-Type: audio/wav" \
+     --data-binary @speech.wav
+```
+
+The response contains the phonetic transcription of the audio:
+
+```json
+{
+  "audioId": "9b2d8ad2-0618-4e96-b255-98b2f7488061",
+  "phonemeString": "h0El1o !",
+  "authed": 1
+}
+```
+
+Drop any trailing punctuation token and paste the string into your TTS request inside curly brackets — here, `{h0El1o}` — with `phonemizeBetweenBrackets: true`.
+
 <Warning>
   [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) works on **Mist v1 and v2** only. It is not yet supported on Mist v3, Coda, or Arcana. For brand or product name pronunciations on those models, request a dictionary addition, or respell phonetically in plain English (accepting that this is approximate).
 </Warning>

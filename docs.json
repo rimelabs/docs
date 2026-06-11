@@ -126,11 +126,10 @@
               "platform/voice-cloning",
               "platform/teams",
               {
-                "group": "Speech QA",
-                "icon": "magnifying-glass-chart",
+                "group": "Pronunciation",
+                "icon": "lips",
                 "pages": [
-                  "platform/speech-qa",
-                  "platform/check-coverage",
+                  "platform/pronunciation-control",
                   "platform/rime-phonetic-alphabet"
                 ]
               }
@@ -271,6 +270,16 @@
     }
   },
   "redirects": [
+    {
+      "source": "/platform/speech-qa",
+      "destination": "/platform/pronunciation-control",
+      "permanent": false
+    },
+    {
+      "source": "/platform/check-coverage",
+      "destination": "/platform/pronunciation-control",
+      "permanent": false
+    },
     {
       "source": "/api-reference/endpoint/http",
       "destination": "/api-reference/mistv2/http"

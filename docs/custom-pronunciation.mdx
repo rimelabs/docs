@@ -7,9 +7,9 @@ description: "Specify pronunciations for uncommon words in Mist family synthesis
 
 For uncommon words, such as unique brand names or product names, Rime's speech synthesis model may not always pronounce them correctly out of the box.
 
-While the Rime team can add new words to the dictionary in about a week (contact us if you need faster turnaround or have an SLA), if you want to specify the pronunciation yourself, you can input a custom pronunciation string within curly brackets.
+While the Rime team can add new words to the dictionary in about a week (reach out to your account manager via Slack or email, or contact [sales@rime.ai](mailto:sales@rime.ai), if you need faster turnaround or have an SLA), if you want to specify the pronunciation yourself, you can input a custom pronunciation string within curly brackets.
 
-Tools exist both to [check the dictionary coverage](#check-coverage) and to [generate a custom pronunciation string](#get-pronunciation).
+Before writing a pronunciation string by hand, you can [check the dictionary coverage](#check-coverage) to see whether the word is already covered.
 
 Custom pronunciations use [Rime's phonetic alphabet](/platform/rime-phonetic-alphabet), which is inspired by the International Phonetic Alphabet (IPA). For example, the word `custom` would be represented as `{k1Ast0xm}`. This even works for made-up words, like `gorbulets`, which would be `{g1orby0ul2Ets}`.
 
@@ -30,15 +30,9 @@ Custom pronunciations use [Rime's phonetic alphabet](/platform/rime-phonetic-alp
 
 ## Check coverage
 
-Before writing a custom pronunciation by hand, check whether the word is already in Rime's dictionary using the [**Check Coverage**](https://app.rime.ai/coverage/) tool. You can also check coverage [via the API](/api-reference/other/oov).
+Before writing a custom pronunciation by hand, check whether the word is already in Rime's dictionary using the [Coverage API](/api-reference/other/oov).
 
-For the full walkthrough — uploading word lists, listening to predicted pronunciations, and requesting dictionary additions — see [Check coverage](/platform/check-coverage).
-
-## Get pronunciation
-
-If the word is uncovered, the [**Pronunciation tool**](https://app.rime.ai/pronunciation) in the dashboard generates a phonetic string for you. Type the word, record yourself saying it, click Generate, and the tool returns a string in the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet) that you can paste into your TTS request inside `{}`.
-
-For the full walkthrough, see [Generating a pronunciation string](/platform/check-coverage#generating-a-pronunciation-string).
+For an overview of all the ways to control pronunciation, see [Pronunciation control](/platform/pronunciation-control).
 
 ## The Rime phonetic alphabet
 

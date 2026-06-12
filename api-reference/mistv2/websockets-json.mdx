@@ -5,6 +5,8 @@ api: 'GET wss://users-ws.rime.ai/ws2'
 authMethod: "bearer"
 ---
 
+All requests require authentication with a bearer token in the `Authorization` header: `Authorization: Bearer YOUR_API_KEY`. See [API authentication](/docs/api-authentication) for how to create a key.
+
 ## Overview
 
 In addition to a plaintext websocket implementation, Rime also has an implementation that sends and receives events as JSON objects. Like the other implementation, all synthesis arguments are provided as query parameters when establishing the connection.
@@ -117,6 +119,24 @@ Example payload:
   "contextId": null
 }
 ```
+
+#### Done
+
+After the last audio chunk for a synthesis batch has been sent, the server emits a `done` event. This signals that the current synthesis is fully complete. If the client sends more text and triggers further synthesis, another `done` will follow. The `eos` operation always emits a final `done` before the server closes the connection.
+
+```typescript
+type DoneEvent = {
+  type: "done",
+  done: true,
+  contextId: string | null,
+}
+```
+
+<Note>
+  On `/ws2`, the `done` event carries an extra boolean `done: true` field in addition to `type: "done"`. On `/ws3` the event contains only `type` and `contextId`. Match on `type === "done"` to handle both.
+</Note>
+
+When exactly `done` fires depends on the `segment` setting. See [Segmentation & Behavior Settings](/docs/websockets-segment) for full details.
 
 #### Error
 

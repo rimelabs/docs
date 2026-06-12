@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: "Get started with Rime's TTS API"
+description: "Rime's text-to-speech API for real-time voice agents and IVR: low-latency streaming TTS with Coda, Arcana, and Mist models across English, Spanish, French, Portuguese, German, Japanese, and Hebrew."
 icon: book
 ---
 
@@ -35,7 +35,7 @@ The [Rime CLI](/docs/quickstart-cli) wraps this same endpoint behind a `rime tts
 
 <CardGroup cols={2}>
   <Card title="Real-time conversational performance" icon="bolt">
-    Sub-100ms latency, fast enough for mid-utterance control and barge-in without awkward silences.
+    Sub-100ms model latency on the GPU engine and sub-200ms end-to-end via the cloud API — fast enough for mid-utterance control and barge-in without awkward silences. See [Latency](/docs/latency) for benchmarks.
   </Card>
   <Card title="Top-rated voice quality" icon="trophy">
     In human-led evaluations, Coda surpasses both prior Rime models and competitor TTS offerings on naturalness, prosody, and artifact-free output.
@@ -94,3 +94,18 @@ Rime supports flexible infrastructure options — from the [cloud API](/docs/api
 ## Ready to Get Started?
 
 Follow the [quickstart guide](/docs/quickstart-five-minute) to begin generating text-to-speech with Rime's models — including Coda — in under five minutes.
+
+<CardGroup cols={2}>
+  <Card title="Streaming TTS" icon="wave-sine" href="/docs/streaming">
+    Stream audio over HTTP, WebSockets, or SSE — and how to choose for your voice agent.
+  </Card>
+  <Card title="WebSocket API" icon="plug" href="/docs/websockets">
+    Persistent connections, incremental text input, word-level timestamps, and interruption handling.
+  </Card>
+  <Card title="Latency" icon="gauge-simple-max" href="/docs/latency">
+    Measured benchmarks per model and how to minimize time-to-first-audio.
+  </Card>
+  <Card title="Voices" icon="microphone-lines" href="/docs/voices">
+    Browse Rime's voice catalog across models and languages.
+  </Card>
+</CardGroup>

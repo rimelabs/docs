@@ -118,6 +118,24 @@ Example payload:
 }
 ```
 
+#### Done
+
+After the last audio chunk for a synthesis batch has been sent, the server emits a `done` event. This signals that the current synthesis is fully complete. If the client sends more text and triggers further synthesis, another `done` will follow. The `eos` operation always emits a final `done` before the server closes the connection.
+
+```typescript
+type DoneEvent = {
+  type: "done",
+  done: true,
+  contextId: string | null,
+}
+```
+
+<Note>
+  On `/ws2`, the `done` event carries an extra boolean `done: true` field in addition to `type: "done"`. On `/ws3` the event contains only `type` and `contextId`. Match on `type === "done"` to handle both.
+</Note>
+
+When exactly `done` fires depends on the `segment` setting. See [Segmentation & Behavior Settings](/docs/websockets-segment) for full details.
+
 #### Error
 
 In the event of a malformed or unexpected input, the server will immediately respond with an error message. The server will _not_ close the connection, and will still accept subsequent well-formed messages. It's up to the client to decide if it wants to close upon receiving an error.

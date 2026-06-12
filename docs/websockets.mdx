@@ -111,7 +111,7 @@ On `/ws3` and `/ws2`, you can attach a `contextId` to any text message and it wi
 ```
 
 <Info>
-  Rime does not maintain multiple simultaneous context IDs. The audio chunk event will carry the most recent context ID that was active at the time the audio was requested. If you send two messages before any audio is synthesized, only the later context ID will be reflected on the first audio chunk.
+  Rime does not maintain multiple simultaneous context IDs. The audio chunk event will carry the most recent context ID that was active at the time the audio was requested. If you send two messages before any audio is synthesized, only the later context ID will be reflected on the first audio chunk. Once set, a context ID also persists across subsequent messages that don't provide one — events keep carrying the previous ID until you send a new one.
 </Info>
 
 ---
@@ -158,6 +158,8 @@ type DoneEvent = {
   contextId: string | null,
 }
 ```
+
+On `/ws2`, the event additionally carries a boolean `done: true` field; match on `type === "done"` to handle both endpoints uniformly.
 
 `done` fires at different points depending on the `segment` setting:
 

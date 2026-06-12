@@ -5,6 +5,8 @@ api: 'GET wss://users-ws.rime.ai/ws'
 authMethod: "bearer"
 ---
 
+All requests require authentication with a bearer token in the `Authorization` header: `Authorization: Bearer YOUR_API_KEY`. See [API authentication](/docs/api-authentication) for how to create a key.
+
 ## Overview
 
 Rime's websocket implementation accepts bare text, and responds with audio bytes of the selected format. All synthesis arguments are provided as query parameters when establishing the connection.

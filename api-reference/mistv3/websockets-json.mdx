@@ -5,6 +5,8 @@ api: 'GET wss://users-ws.rime.ai/ws3'
 authMethod: "bearer"
 ---
 
+All requests require authentication with a bearer token in the `Authorization` header: `Authorization: Bearer YOUR_API_KEY`. See [API authentication](/docs/api-authentication) for how to create a key.
+
 ## Overview
 
 In addition to a plaintext websocket implementation, Rime also has an implementation that sends and receives events as JSON objects. Like the other implementation, all synthesis arguments are provided as query parameters when establishing the connection.

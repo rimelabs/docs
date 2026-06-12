@@ -115,6 +115,7 @@
                   "docs/daily",
                   "docs/livekit",
                   "docs/lovable",
+                  "docs/pipecat",
                   "docs/replit",
                   "docs/signalwire",
                   "docs/together-ai",
@@ -432,7 +433,13 @@
     },
     {
       "source": "/api-reference/hathora",
-      "destination": "/docs/hathora"
+      "destination": "/docs/on-prem/quickstart",
+      "permanent": false
+    },
+    {
+      "source": "/docs/hathora",
+      "destination": "/docs/on-prem/quickstart",
+      "permanent": false
     },
     {
       "source": "/api-reference/homographs",

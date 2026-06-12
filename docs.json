@@ -86,6 +86,7 @@
                   "docs/custom-pronunciation"
                 ]
               },
+              "docs/streaming",
               {
                 "group": "WebSocket API",
                 "icon": "plug",

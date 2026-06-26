@@ -111,6 +111,7 @@
                 "group": "Integrations",
                 "icon": "puzzle-piece",
                 "pages": [
+                  "docs/baseten",
                   "docs/cerebrium",
                   "docs/daily",
                   "docs/livekit",

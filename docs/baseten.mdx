@@ -1,0 +1,62 @@
+---
+title: Baseten
+description: "Deploy Rime TTS on Baseten's serverless GPU infrastructure."
+---
+
+import { IntegrationHeader } from '/snippets/integration-header.mdx'
+
+<IntegrationHeader
+  partnerLogo="/images/baseten.svg"
+  partnerAlt="Baseten logo"
+/>
+
+[Baseten](https://www.baseten.co/) is a platform for deploying and serving AI models on autoscaling GPU infrastructure. Rime's text-to-speech engine images run on Baseten as single-container deployments — the engine validates its own license and serves TTS directly, with no separate router.
+
+### Get started
+
+Ready-to-use deploy configs for Rime's models live in the [`rimelabs/rime-baseten-deploy`](https://github.com/rimelabs/rime-baseten-deploy) repository. Each model directory contains a Baseten/[Truss](https://truss.baseten.co/) `config.yaml` plus a README with full deploy, secrets, and invocation steps.
+
+| Model | Directory |
+|---|---|
+| Rime Coda v1 — flagship expressive TTS | [`rime-coda-v1/`](https://github.com/rimelabs/rime-baseten-deploy/tree/main/rime-coda-v1) |
+| Rime Arcana v3 — multilingual expressive | [`rime-arcana-v3/`](https://github.com/rimelabs/rime-baseten-deploy/tree/main/rime-arcana-v3) |
+| Rime Arcana v2 (English) — expressive | [`rime-arcana-v2-en/`](https://github.com/rimelabs/rime-baseten-deploy/tree/main/rime-arcana-v2-en) |
+| Rime Mist v3 — low-latency conversational | [`rime-mist-v3/`](https://github.com/rimelabs/rime-baseten-deploy/tree/main/rime-mist-v3) |
+
+To deploy:
+
+1. Clone the repo and `cd` into the model directory you want.
+2. Set three secrets on your Baseten workspace — `gcp_rime_service_account` (pulls Rime's private engine image), `rime_license`, and `rime_api_key`. The per-model README walks through each. Engine images are license-gated; contact help@rime.ai for access.
+3. Push the config with the [Truss CLI](https://truss.baseten.co/):
+
+```bash
+truss push .
+```
+
+4. Set the autoscaling concurrency target (each replica handles ~10 concurrent requests before a new one is added). See the model README for the exact Management API call.
+
+### Invoke
+
+Once deployed, send inference requests to your model's sync endpoint. The Rime API key is baked in via the `rime_api_key` secret, so callers authenticate to Baseten only:
+
+```python
+import requests
+
+resp = requests.post(
+    "https://model-<model-id>.api.baseten.co/environments/production/sync",
+    headers={
+        "Authorization": f"Api-Key {BASETEN_API_KEY}",
+        "Accept": "audio/webm;codecs=opus",   # or audio/pcm, audio/mpeg
+    },
+    json={
+        "text": "Natural-sounding, accurately-pronouncing AI TTS built for high-stakes enterprise conversations.",
+        "speaker": "luna",
+        "lang": "en",
+    },
+)
+resp.raise_for_status()
+with open("output.webm", "wb") as f:
+    f.write(resp.content)
+```
+
+For full setup instructions, including secrets and autoscaling, see the [`rime-baseten-deploy`](https://github.com/rimelabs/rime-baseten-deploy) README for your chosen model.

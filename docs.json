@@ -2550,6 +2550,336 @@
       "source": "/ws3",
       "destination": "/api-reference/coda/websockets-json",
       "permanent": false
+    },
+    {
+      "source": "/api-reference-streaming",
+      "destination": "/docs/streaming",
+      "permanent": false
+    },
+    {
+      "source": "/reference/stream",
+      "destination": "/docs/streaming",
+      "permanent": false
+    },
+    {
+      "source": "/reference/streaming",
+      "destination": "/docs/streaming",
+      "permanent": false
+    },
+    {
+      "source": "/reference/streaming-tts",
+      "destination": "/docs/streaming",
+      "permanent": false
+    },
+    {
+      "source": "/docs/streaming-tts",
+      "destination": "/docs/streaming",
+      "permanent": false
+    },
+    {
+      "source": "/guide/streaming",
+      "destination": "/docs/streaming",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/arcana/streaming-http",
+      "destination": "/api-reference/arcana/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/arcana/streaming-http-1",
+      "destination": "/api-reference/arcana/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/coda/streaming-http",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/streaming-http",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist/streaming-http",
+      "destination": "/api-reference/mistv2/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist-v2/streaming-http",
+      "destination": "/api-reference/mistv2/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/coda-streaming-http",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api/http-streaming",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/http",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/http",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/text-to-speech-api",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/endpoint/text-to-speech",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/endpoint/speech-synthesis",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/rime-tts-api",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/reference/postv1rimetts",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/parameters",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/coda",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/websocket-connection",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/docs/websockets/overview",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/websocket",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websockets-json",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket-json",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist-v2-websockets-json",
+      "destination": "/api-reference/mistv2/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/docs/mist-websockets",
+      "destination": "/api-reference/mistv2/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/base64",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/docs/coda-ws3",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/docs/arcana-ws3",
+      "destination": "/api-reference/arcana/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket-plaintext",
+      "destination": "/api-reference/arcana/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/sse",
+      "destination": "/api-reference/mistv2/sse",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/coda/voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/voices/list-voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/endpoint/list-voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/list-all-voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/list-voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/voice-voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/voices-metadata",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/data/voices/all-v2.json",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/data/voice_details",
+      "destination": "/api-reference/data/voice-details",
+      "permanent": false
+    },
+    {
+      "source": "/reference/get_data-voices-voice_details-json",
+      "destination": "/api-reference/data/voice-details",
+      "permanent": false
+    },
+    {
+      "source": "/openapi/oov",
+      "destination": "/api-reference/other/oov",
+      "permanent": false
+    },
+    {
+      "source": "/reference/postv1-oov",
+      "destination": "/api-reference/other/oov",
+      "permanent": false
+    },
+    {
+      "source": "/reference/textnorm_textnorm_post",
+      "destination": "/api-reference/other/textnorm",
+      "permanent": false
+    },
+    {
+      "source": "/reference/openapi.json",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/quick-start",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/docs/quick-start",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/get-started/quickstart",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/getting-started/quickstart",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/start",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/intro",
+      "destination": "/docs/introduction",
+      "permanent": false
+    },
+    {
+      "source": "/docs/sdks",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/docs/python",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/docs/javascript",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/nodejs-sdk",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/coda-model",
+      "destination": "/docs/models",
+      "permanent": false
+    },
+    {
+      "source": "/arcana",
+      "destination": "/docs/models",
+      "permanent": false
+    },
+    {
+      "source": "/auth",
+      "destination": "/docs/api-authentication",
+      "permanent": false
+    },
+    {
+      "source": "/docs/auth",
+      "destination": "/docs/api-authentication",
+      "permanent": false
+    },
+    {
+      "source": "/api-keys",
+      "destination": "/docs/api-authentication",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-keys",
+      "destination": "/docs/api-authentication",
+      "permanent": false
     }
   ]
 }

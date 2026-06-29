@@ -8,6 +8,16 @@ icon: plug
 
 `/ws3` is Rime's flagship WebSocket endpoint. It supports all current and future Rime TTS models, delivers the lowest possible TTFB via direct model streaming, and returns audio as structured JSON messages. Unless you have a specific reason to use a legacy endpoint, start here.
 
+## Authentication
+
+All WebSocket endpoints (`/ws`, `/ws2`, `/ws3`) use the same bearer token as the rest of the Rime API. Send `Authorization: Bearer YOUR_API_KEY` as a connection header when establishing the connection, and pass synthesis arguments (`speaker`, `modelId`, `audioFormat`, `lang`, …) as query parameters on the connection URL. See [API authentication](/docs/api-authentication) for how to create a key, and the per-endpoint reference pages below for complete, runnable connection code.
+
+<Warning>
+  The token **must** be sent in the `Authorization` header. The API key cannot be passed as a query parameter (`?api_key=…`) — a connection without the header is rejected with `401 missing headers`.
+
+  Because the browser `WebSocket` API can't set request headers, you cannot connect to these endpoints directly from browser JavaScript. Connect from a server-side process (Node, Python, etc.), or proxy the connection through your own backend — which keeps your API key off the client anyway.
+</Warning>
+
 ## Choosing an endpoint
 
 Rime offers three WebSocket endpoints. Here's how they compare:
@@ -170,6 +180,16 @@ On `/ws2`, the event additionally carries a boolean `done: true` field; match on
 See [Segmentation & Behavior Settings](/docs/websockets-segment) for details on each mode.
 
 ---
+
+## Reference & code examples
+
+Each endpoint has a reference page with full message schemas and runnable connection code (Python `websockets`):
+
+| Endpoint | Coda | Arcana | Mist v3 | Mist v2 |
+|---|---|---|---|---|
+| **`/ws3`** (JSON) | [Coda](/api-reference/coda/websockets-json) | [Arcana](/api-reference/arcana/websockets-json) | [Mist v3](/api-reference/mistv3/websockets-json) | — |
+| **`/ws2`** (JSON) | — | — | — | [Mist v2](/api-reference/mistv2/websockets-json) |
+| **`/ws`** (binary) | [Coda](/api-reference/coda/websockets) | [Arcana](/api-reference/arcana/websockets) | [Mist v3](/api-reference/mistv3/websockets) | [Mist v2](/api-reference/mistv2/websockets) |
 
 ## Next steps
 

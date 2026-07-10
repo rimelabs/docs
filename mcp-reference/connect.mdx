@@ -1,6 +1,6 @@
 ---
 title: "Connecting"
-description: "Connect Claude Code, Claude.ai, Claude Desktop, or any MCP-compatible client to Rime's hosted MCP server."
+description: "Connect Claude Code, Claude.ai, Claude Desktop, OpenAI Codex, or any MCP-compatible client to Rime's hosted MCP server."
 icon: "plug"
 ---
 
@@ -20,6 +20,23 @@ Omit the `--header` flag to connect without a key.
 ## Claude.ai and Claude Desktop
 
 Add `https://mcp.rime.ai` as a custom connector: **Settings → Connectors → Add custom connector**.
+
+## OpenAI Codex
+
+```bash
+codex mcp add rime --url https://mcp.rime.ai \
+  --bearer-token-env-var RIME_API_KEY
+```
+
+Or add the server to `~/.codex/config.toml` directly — the Codex IDE extension reads the same file:
+
+```toml
+[mcp_servers.rime]
+url = "https://mcp.rime.ai"
+bearer_token_env_var = "RIME_API_KEY"
+```
+
+Codex reads the key from the `RIME_API_KEY` environment variable rather than storing it in the config. Omit `--bearer-token-env-var` (or the `bearer_token_env_var` line) to connect without a key.
 
 ## Other MCP clients
 

@@ -1,0 +1,114 @@
+---
+title: MCP Server
+description: "Connect Claude and other AI assistants to Rime's voice catalog and TTS through the hosted Model Context Protocol server at mcp.rime.ai."
+icon: plug-circle-bolt
+---
+
+Rime hosts a first-party [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server at **[mcp.rime.ai](https://mcp.rime.ai)**. Connect it to Claude, your IDE, or any MCP-compatible client to browse the voice catalog, check pronunciation coverage, preview text normalization, generate speech samples, and scaffold voice-agent integration code — all from a conversation.
+
+## Server URL
+
+The server speaks stateless Streamable HTTP. The connector URL is:
+
+```
+https://mcp.rime.ai
+```
+
+Both the root URL and `https://mcp.rime.ai/mcp` serve the MCP endpoint — use whichever your client expects.
+
+## Connect
+
+### Claude Code
+
+```bash
+claude mcp add --transport http rime https://mcp.rime.ai \
+  --header "Authorization: Bearer $RIME_API_KEY"
+```
+
+Omit the `--header` flag to connect without a key — you can still browse the voice catalog and generate integration code (see [Authentication](#authentication)).
+
+### Claude.ai and Claude Desktop
+
+Add `https://mcp.rime.ai` as a custom connector: **Settings → Connectors → Add custom connector**.
+
+### Other MCP clients
+
+For clients that use a JSON configuration (Cursor, Windsurf, and others):
+
+```json
+{
+  "mcpServers": {
+    "rime": {
+      "url": "https://mcp.rime.ai",
+      "headers": {
+        "Authorization": "Bearer YOUR_RIME_API_KEY"
+      }
+    }
+  }
+}
+```
+
+## Authentication
+
+The server is stateless and never stores your credentials — your API key is read from each request and forwarded to the Rime API. Two headers are accepted:
+
+- `Authorization: Bearer <key>` (preferred)
+- `X-Rime-Api-Key: <key>`
+
+Get a key from the [API Tokens page](https://app.rime.ai/tokens) — the same key you use for the [REST API](/docs/api-authentication).
+
+No key is required to explore: `list_voices`, `get_voice_details`, and `generate_integration` work without one. Tools that call the Rime API (`check_dictionary`, `normalize_text`, `synthesize_speech`) need a key; without one they respond with a pointer to sign up rather than an error.
+
+<Note>`synthesize_speech` calls the Rime API with your key, so generated samples consume credits like any other API request.</Note>
+
+## Tools
+
+| Tool | What it does | API key |
+|---|---|---|
+| `list_voices` | List the voice catalog, filterable by model and language | Not required |
+| `get_voice_details` | Voice metadata — gender, age, accent, country, and the `lang` value to pass to synthesis | Not required |
+| `check_dictionary` | Find words not in Rime's [pronunciation dictionary](/api-reference/other/oov) | Required |
+| `normalize_text` | Preview exactly what the TTS model will speak — numbers, dates, currency, abbreviations | Required |
+| `synthesize_speech` | Generate an MP3 sample (up to 2,000 characters) with an inline audio player | Required |
+| `generate_integration` | Emit ready-to-run [Pipecat](/docs/pipecat) or [LiveKit](/docs/livekit) integration code | Not required |
+
+`synthesize_speech` defaults to the `lyra` voice on **Coda**, Rime's flagship model, so calling it with no arguments plays a sample immediately. Pick a different `speaker` and `modelId` (`coda`, `mistv3`, `arcana`) from `list_voices` and `get_voice_details`.
+
+## Hearing the audio
+
+`synthesize_speech` delivers audio three ways, so it plays regardless of the host:
+
+1. **Inline player** — hosts that support MCP Apps (such as Claude) render an audio player directly in the conversation.
+2. **Play URL** — every result includes a short-lived link (`structuredContent.audioUrl`) that terminal and agent hosts can download and play with a local audio player.
+3. **Audio content block** — pass `include_audio: true` to also receive a standard MCP audio block for hosts that play audio natively.
+
+## Starter prompts
+
+Clients that surface MCP prompts show three optional shortcuts:
+
+- **`find_a_voice`** — explore the catalog and audition voices for a use case
+- **`check_script_pronunciation`** — run a script through dictionary and normalization checks
+- **`build_voice_agent`** — pick a voice and generate Pipecat or LiveKit starter code
+
+Nothing is gated behind them — every tool works from a plain conversation.
+
+## Production use
+
+The MCP server is built for exploration and prototyping — it generates complete audio samples rather than streaming. For production voice agents, use the [streaming APIs](/docs/streaming) directly, or ask `generate_integration` for working [Pipecat](/docs/pipecat) or [LiveKit](/docs/livekit) code as a starting point.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Voices" icon="microphone-lines" href="/docs/voices">
+    Browse the full voice catalog across models and languages
+  </Card>
+  <Card title="API authentication" icon="key" href="/docs/api-authentication">
+    How Rime API keys work
+  </Card>
+  <Card title="Streaming TTS" icon="wave-sine" href="/docs/streaming">
+    Production streaming over HTTP, WebSockets, or SSE
+  </Card>
+  <Card title="CLI Quickstart" icon="terminal" href="/docs/quickstart-cli">
+    Prefer the terminal? Synthesize audio with the Rime CLI
+  </Card>
+</CardGroup>

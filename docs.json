@@ -50,6 +50,7 @@
               "docs/api-authentication",
               "docs/quickstart-five-minute",
               "docs/quickstart-livekit",
+              "docs/mcp",
               "docs/regional-endpoints"
             ]
           },
@@ -274,6 +275,26 @@
     }
   },
   "redirects": [
+    {
+      "source": "/mcp",
+      "destination": "/docs/mcp",
+      "permanent": false
+    },
+    {
+      "source": "/mcp-server",
+      "destination": "/docs/mcp",
+      "permanent": false
+    },
+    {
+      "source": "/docs/mcp-server",
+      "destination": "/docs/mcp",
+      "permanent": false
+    },
+    {
+      "source": "/docs/model-context-protocol",
+      "destination": "/docs/mcp",
+      "permanent": false
+    },
     {
       "source": "/platform/speech-qa",
       "destination": "/platform/pronunciation-control",

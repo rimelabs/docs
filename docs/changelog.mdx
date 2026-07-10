@@ -8,6 +8,13 @@ icon: list
 
 <Tip>Subscribe to the [RSS feed](https://docs.rime.ai/docs/changelog/rss.xml) to get notified of new releases.</Tip>
 
+<Update label="2026-07-10">
+* Rime now hosts a first-party MCP (Model Context Protocol) server at [mcp.rime.ai](https://mcp.rime.ai):
+  * Connect Claude, your IDE, or any MCP-compatible client to browse the voice catalog, check dictionary coverage, preview text normalization, generate speech samples, and scaffold Pipecat or LiveKit integration code.
+  * Catalog and integration tools work without an API key; synthesis and linguistics tools authenticate with your existing Rime API key, sent per request.
+  * See the [MCP server docs](/docs/mcp) to get connected.
+</Update>
+
 <Update label="2026-06-11">
 * The Speech QA dashboard has been retired from the Rime web app.
   * Pronunciation features remain fully supported via the API: check dictionary coverage with the [Coverage API](/api-reference/other/oov) and specify custom pronunciations inline with the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet) and `phonemizeBetweenBrackets` (Mist v1/v2).

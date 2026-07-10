@@ -12,7 +12,7 @@ Hosts that support MCP Apps (such as Claude) render an audio player directly in 
 
 ## 2. Play URL
 
-Every result includes a short-lived link, also available at `structuredContent.audioUrl`. Terminal and agent hosts (such as Claude Code) can download and play it with a system audio player:
+Every result includes a short-lived link, also available at `structuredContent.audioUrl`. Terminal and agent hosts (such as Claude Code or OpenAI Codex) can download and play it with a system audio player:
 
 ```bash
 curl -s <audioUrl> -o /tmp/rime.mp3 && \

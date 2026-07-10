@@ -1,6 +1,6 @@
 ---
 title: MCP Quickstart
-description: "Connect Claude or your IDE to Rime's hosted MCP server and hear your first voice."
+description: "Connect Claude, Codex, or your IDE to Rime's hosted MCP server and hear your first voice."
 icon: plug-circle-bolt
 ---
 
@@ -18,6 +18,13 @@ claude mcp add --transport http rime https://mcp.rime.ai \
 ```
 
 **Claude.ai and Claude Desktop:** add `https://mcp.rime.ai` as a custom connector under **Settings → Connectors → Add custom connector**.
+
+**OpenAI Codex:**
+
+```bash
+codex mcp add rime --url https://mcp.rime.ai \
+  --bearer-token-env-var RIME_API_KEY
+```
 
 For other clients — and connecting without an API key — see [Connecting](/mcp-reference/connect).
 

@@ -1,0 +1,37 @@
+---
+title: "synthesize_speech"
+description: "Generate an MP3 speech sample with Rime TTS via the MCP server, rendered in an inline audio player."
+icon: "waveform"
+---
+
+Generate an MP3 speech sample from text. All arguments are optional: with none, it plays a default sample in the demo voice (`lyra` on **Coda**, Rime's flagship model) — the fastest way to hear Rime. Choose a `speaker` and `modelId` from [`list_voices`](/mcp-reference/list-voices) and [`get_voice_details`](/mcp-reference/get-voice-details).
+
+**API key:** Required — see [Authentication](/mcp-reference/authentication). Samples consume credits like any other API request, so keep sample text short.
+
+## Parameters
+
+| Parameter | Type | Required | Default | Description |
+| --------- | ---- | -------- | ------- | ----------- |
+| `text` | string | No | A short demo line | Text to synthesize (max 2,000 characters) |
+| `speaker` | string | No | `lyra` | Voice name from [`list_voices`](/mcp-reference/list-voices) |
+| `modelId` | string | No | `coda` | Model ID: `coda` (flagship), `mistv3`, or `arcana` |
+| `language` | string | No | — | Sent as `lang` only if provided (e.g. `eng`, the value from [`get_voice_details`](/mcp-reference/get-voice-details)). Omit to let Rime infer the language from the speaker |
+| `include_audio` | boolean | No | `false` | Also return the audio as a standard MCP audio content block (base64), for hosts that play audio natively. Adds the audio to the model's context |
+
+## Returns
+
+Audio is delivered three ways so it plays regardless of the host — an inline player in UI hosts, a short-lived play URL (`structuredContent.audioUrl`) for terminal hosts, and an optional audio content block. See [Playing audio](/mcp-reference/audio).
+
+## Example
+
+Ask your assistant:
+
+```
+Play me a sample of the astra voice saying "Thanks for calling, how can I help?"
+```
+
+## Related
+
+- [Playing audio](/mcp-reference/audio) — how samples reach your speakers in each host
+- [Models](/docs/models) — compare Coda, Mist v3, and Arcana
+- [Streaming APIs](/docs/streaming) — production synthesis

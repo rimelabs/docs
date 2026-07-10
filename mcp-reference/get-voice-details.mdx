@@ -1,0 +1,33 @@
+---
+title: "get_voice_details"
+description: "Get detailed Rime voice metadata — gender, age, accent, country, genre, model, and language — via the MCP server."
+icon: "circle-info"
+---
+
+Return detailed metadata for Rime voices: gender, age, accent/dialect, country, genre, model, and language. This is where the `lang` value for [`synthesize_speech`](/mcp-reference/synthesize-speech) comes from, and it carries the demographic metadata used to choose a voice. All filters are optional.
+
+**API key:** Not required.
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| `speaker` | string | No | Filter to a speaker name, e.g. `astra` |
+| `model` | string | No | Filter to a model ID, e.g. `coda` |
+| `gender` | string | No | Filter by gender, e.g. `female` |
+| `language` | string | No | Filter by language; matches either the `language` or `lang` field, e.g. `eng` |
+
+## Example
+
+Ask your assistant:
+
+```
+Find me a warm, conversational female voice for a customer support agent.
+```
+
+The assistant filters the catalog with `get_voice_details`, compares the demographic metadata, and can audition candidates with [`synthesize_speech`](/mcp-reference/synthesize-speech).
+
+## Related
+
+- [`list_voices`](/mcp-reference/list-voices) — the catalog grouped by model and language
+- [Voice details API](/api-reference/data/voice-details) — the underlying REST endpoint

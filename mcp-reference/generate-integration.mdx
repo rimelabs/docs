@@ -1,0 +1,34 @@
+---
+title: "generate_integration"
+description: "Generate ready-to-run Pipecat or LiveKit voice-agent code wired to Rime TTS via the MCP server."
+icon: "code"
+---
+
+Generate a ready-to-run code snippet for wiring Rime TTS into a voice-agent framework ([Pipecat](/docs/pipecat) or [LiveKit](/docs/livekit)). Returns install commands, working code, and `.env` notes. Runs entirely on the server — no network call, no credits consumed.
+
+**API key:** Not required.
+
+## Parameters
+
+| Parameter | Type | Required | Default | Description |
+| --------- | ---- | -------- | ------- | ----------- |
+| `framework` | string | Yes | — | `pipecat` or `livekit` |
+| `language` | string | No | `python` | `python` or `node`. Only affects LiveKit; Pipecat is Python-only |
+| `model` | string | No | `arcana` | Rime model ID for the generated config |
+| `speaker` | string | No | `celeste` | Rime speaker name for the generated config |
+| `mode` | string | No | `plugin` | LiveKit only: `plugin` uses your own Rime key; `inference` runs on LiveKit Cloud with no Rime key |
+
+## Example
+
+Ask your assistant:
+
+```
+Generate LiveKit starter code for a voice agent using the coda model and the astra voice.
+```
+
+The assistant emits a complete, runnable agent — or use the [`build_voice_agent`](/mcp-reference/prompts) starter prompt to have it pick the voice with you first.
+
+## Related
+
+- [Pipecat integration guide](/docs/pipecat)
+- [LiveKit integration guide](/docs/livekit) and the [LiveKit quickstart](/docs/quickstart-livekit)

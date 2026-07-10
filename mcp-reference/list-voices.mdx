@@ -1,0 +1,32 @@
+---
+title: "list_voices"
+description: "List Rime's voice catalog by model and language via the MCP server."
+icon: "list"
+---
+
+List Rime's voice catalog as JSON keyed by model and language: `{ modelId: { langCode: [speaker, ...] } }`. Optionally filter by model and/or language. Use [`get_voice_details`](/mcp-reference/get-voice-details) for demographics and the exact `lang` value to pass to [`synthesize_speech`](/mcp-reference/synthesize-speech).
+
+**API key:** Not required.
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| `model` | string | No | Filter to a single model ID, e.g. `coda` |
+| `language` | string | No | Filter to an ISO 639-2 language key, e.g. `eng` |
+
+## Example
+
+Ask your assistant:
+
+```
+What Spanish-speaking Coda voices does Rime have?
+```
+
+The assistant calls `list_voices` with `model: "coda"` and `language: "spa"` and reads the speaker names from the result.
+
+## Related
+
+- [`get_voice_details`](/mcp-reference/get-voice-details) — demographics for choosing between voices
+- [Voices guide](/docs/voices) — the full catalog with audio samples
+- [Voices API](/api-reference/data/voices-v2) — the underlying REST endpoint

@@ -1,0 +1,30 @@
+---
+title: "Playing audio"
+description: "How audio from synthesize_speech reaches your speakers — inline player, play URL, or MCP audio block."
+icon: "volume-high"
+---
+
+[`synthesize_speech`](/mcp-reference/synthesize-speech) delivers audio three ways, so samples play regardless of the host:
+
+## 1. Inline player
+
+Hosts that support MCP Apps (such as Claude) render an audio player directly in the conversation. The MP3 travels outside the model's context, so playback is free of token overhead. This is the default experience — nothing to configure.
+
+## 2. Play URL
+
+Every result includes a short-lived link, also available at `structuredContent.audioUrl`. Terminal and agent hosts (such as Claude Code) can download and play it with a system audio player:
+
+```bash
+curl -s <audioUrl> -o /tmp/rime.mp3 && \
+  (afplay /tmp/rime.mp3 || ffplay -nodisp -autoexit /tmp/rime.mp3 || mpv /tmp/rime.mp3)
+```
+
+`afplay` ships with macOS; on Linux use `ffplay`, `mpv`, `aplay`, or `paplay`. The link expires shortly after generation, so play it promptly — if it has expired, just synthesize again.
+
+## 3. MCP audio block
+
+Pass `include_audio: true` to also receive a standard MCP `audio` content block (base64 MP3) for hosts that play audio natively. This adds the audio to the model's context, so prefer the inline player or play URL when either works.
+
+## Hosts without audio support
+
+Hosts that render none of these still get a text summary and the structured result, so the tool never fails outright — you just won't hear the sample.

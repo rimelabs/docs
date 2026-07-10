@@ -50,6 +50,7 @@
               "docs/api-authentication",
               "docs/quickstart-five-minute",
               "docs/quickstart-livekit",
+              "docs/mcp",
               "docs/regional-endpoints"
             ]
           },
@@ -260,6 +261,42 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "MCP Server",
+        "groups": [
+          {
+            "group": "MCP Server",
+            "pages": [
+              "mcp-reference/overview"
+            ]
+          },
+          {
+            "group": "Connection & Auth",
+            "pages": [
+              "mcp-reference/connect",
+              "mcp-reference/authentication"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "mcp-reference/list-voices",
+              "mcp-reference/get-voice-details",
+              "mcp-reference/check-dictionary",
+              "mcp-reference/normalize-text",
+              "mcp-reference/synthesize-speech",
+              "mcp-reference/generate-integration"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "mcp-reference/audio",
+              "mcp-reference/prompts"
+            ]
+          }
+        ]
       }
     ]
   },
@@ -274,6 +311,31 @@
     }
   },
   "redirects": [
+    {
+      "source": "/mcp",
+      "destination": "/docs/mcp",
+      "permanent": false
+    },
+    {
+      "source": "/mcp-server",
+      "destination": "/docs/mcp",
+      "permanent": false
+    },
+    {
+      "source": "/docs/mcp-server",
+      "destination": "/docs/mcp",
+      "permanent": false
+    },
+    {
+      "source": "/docs/model-context-protocol",
+      "destination": "/docs/mcp",
+      "permanent": false
+    },
+    {
+      "source": "/mcp-reference",
+      "destination": "/mcp-reference/overview",
+      "permanent": false
+    },
     {
       "source": "/platform/speech-qa",
       "destination": "/platform/pronunciation-control",

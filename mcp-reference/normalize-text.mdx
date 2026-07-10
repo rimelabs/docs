@@ -1,0 +1,30 @@
+---
+title: "normalize_text"
+description: "Preview how Rime normalizes text before synthesis via the MCP server."
+icon: "text"
+---
+
+Preview how Rime normalizes text before synthesis — exactly what the TTS model will speak. Useful for debugging numbers, dates, phone numbers, currency, and abbreviations. Returns the normalized string.
+
+**API key:** Required — see [Authentication](/mcp-reference/authentication).
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| `text` | string | Yes | The text to normalize |
+
+## Example
+
+Ask your assistant:
+
+```
+How will Rime read "Your appointment is on 3/4 at 2:30pm, call 555-0123 to reschedule"?
+```
+
+The assistant calls `normalize_text` and shows the spoken form, so you can catch surprises (like `3/4` reading as a date versus a fraction) before synthesis.
+
+## Related
+
+- [Text normalization guide](/docs/text-normalization) — how Rime handles numbers, dates, and more
+- [Normalization API](/api-reference/other/textnorm) — the underlying REST endpoint

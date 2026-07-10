@@ -1,0 +1,32 @@
+---
+title: "Starter prompts"
+description: "Optional MCP prompts that drive Rime's tools — find a voice, check a script, or scaffold a voice agent."
+icon: "wand-magic-sparkles"
+---
+
+Clients that surface MCP prompts (notably Claude.ai) show three starters that drive the [tools](/mcp-reference/overview#tools). They're optional shortcuts — every tool works from a plain conversation, and nothing is gated behind them.
+
+## find_a_voice
+
+Recommend and sample Rime voices for a use case.
+
+| Argument | Required | Description |
+| -------- | -------- | ----------- |
+| `description` | No | e.g. "warm female American, conversational" |
+
+## check_script_pronunciation
+
+Flag out-of-dictionary words and preview normalization for a script, using [`check_dictionary`](/mcp-reference/check-dictionary) and [`normalize_text`](/mcp-reference/normalize-text).
+
+| Argument | Required | Description |
+| -------- | -------- | ----------- |
+| `text` | Yes | The script to check |
+
+## build_voice_agent
+
+Scaffold a real-time voice agent using Rime TTS, via [`generate_integration`](/mcp-reference/generate-integration).
+
+| Argument | Required | Description |
+| -------- | -------- | ----------- |
+| `framework` | No | `livekit` or `pipecat` |
+| `use_case` | No | What the agent is for |

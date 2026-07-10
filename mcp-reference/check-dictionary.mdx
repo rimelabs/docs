@@ -1,0 +1,30 @@
+---
+title: "check_dictionary"
+description: "Check which words are not in Rime's pronunciation dictionary via the MCP server."
+icon: "spell-check"
+---
+
+Check which words are **not** in Rime's pronunciation dictionary. Returns the list of out-of-dictionary words; an empty list means all words are covered. Out-of-dictionary words still synthesize, but you may want to add [custom pronunciations](/docs/custom-pronunciation) for them.
+
+**API key:** Required — see [Authentication](/mcp-reference/authentication).
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --------- | ---- | -------- | ----------- |
+| `text` | string | Yes | Words to check; separate by spaces, commas, or newlines |
+
+## Example
+
+Ask your assistant:
+
+```
+Which words in this IVR script aren't in Rime's dictionary?
+```
+
+The assistant runs the script through `check_dictionary` and flags anything out-of-dictionary. Pair it with [`normalize_text`](/mcp-reference/normalize-text) to preview how the rest of the script will be spoken — or use the [`check_script_pronunciation`](/mcp-reference/prompts) starter prompt, which does both.
+
+## Related
+
+- [Pronunciation control](/platform/pronunciation-control) — all the ways to control pronunciation
+- [Coverage API](/api-reference/other/oov) — the underlying REST endpoint

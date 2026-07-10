@@ -1,0 +1,31 @@
+---
+title: "Authentication"
+description: "How Rime's MCP server resolves API keys — accepted headers, per-request handling, and which tools work without a key."
+icon: "key"
+---
+
+The MCP server is stateless and never stores your credentials — your API key is read from each request and forwarded to the Rime API. Get a key from the [API Tokens page](https://app.rime.ai/tokens); it's the same key you use for the [REST API](/docs/api-authentication).
+
+## Accepted headers
+
+Two headers are accepted, checked in this order:
+
+| Header | Notes |
+| ------ | ----- |
+| `Authorization: Bearer <key>` | Preferred |
+| `X-Rime-Api-Key: <key>` | Convenience alternative for clients that reserve the `Authorization` header |
+
+## Tools that work without a key
+
+| Tool | API key |
+| ---- | ------- |
+| [`list_voices`](/mcp-reference/list-voices) | Not required |
+| [`get_voice_details`](/mcp-reference/get-voice-details) | Not required |
+| [`generate_integration`](/mcp-reference/generate-integration) | Not required |
+| [`check_dictionary`](/mcp-reference/check-dictionary) | Required |
+| [`normalize_text`](/mcp-reference/normalize-text) | Required |
+| [`synthesize_speech`](/mcp-reference/synthesize-speech) | Required |
+
+If a key-gated tool is called without a key, it responds with a pointer to [sign up](https://app.rime.ai/signup/) rather than an error — so a keyless connection is still useful for exploring the catalog and generating integration code.
+
+<Note>[`synthesize_speech`](/mcp-reference/synthesize-speech) calls the Rime API with your key, so generated samples consume credits like any other API request.</Note>

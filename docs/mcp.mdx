@@ -1,0 +1,65 @@
+---
+title: MCP Quickstart
+description: "Connect Claude or your IDE to Rime's hosted MCP server and hear your first voice."
+icon: plug-circle-bolt
+---
+
+Connect an AI assistant to Rime's hosted [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server and hear a Rime voice in 60 seconds. Once connected, your assistant can browse the voice catalog, check pronunciation, generate speech samples, and scaffold voice-agent code — all from a conversation.
+
+## Step 1: Connect
+
+The connector URL is `https://mcp.rime.ai`.
+
+**Claude Code:**
+
+```bash
+claude mcp add --transport http rime https://mcp.rime.ai \
+  --header "Authorization: Bearer $RIME_API_KEY"
+```
+
+**Claude.ai and Claude Desktop:** add `https://mcp.rime.ai` as a custom connector under **Settings → Connectors → Add custom connector**.
+
+For other clients — and connecting without an API key — see [Connecting](/mcp-reference/connect).
+
+<Note>No key is needed to browse voices or generate integration code. Synthesis and the linguistics tools use your regular [Rime API key](https://app.rime.ai/tokens), sent per request and never stored — see [Authentication](/mcp-reference/authentication).</Note>
+
+## Step 2: Hear your first voice
+
+Ask your assistant:
+
+```
+Play me a sample of a Rime voice.
+```
+
+With no arguments, [`synthesize_speech`](/mcp-reference/synthesize-speech) plays a short demo in the `lyra` voice on **Coda**, Rime's flagship model.
+
+## Try more
+
+```
+Find me a warm, conversational voice for a customer support agent.
+```
+
+```
+Which words in this script aren't in Rime's dictionary, and how will the numbers be read aloud?
+```
+
+```
+Generate Pipecat starter code for a voice agent using the astra voice.
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="MCP Reference" icon="plug-circle-bolt" href="/mcp-reference/overview">
+    All six tools, connection setup, authentication, and audio playback
+  </Card>
+  <Card title="Voices" icon="microphone-lines" href="/docs/voices">
+    Browse the full voice catalog across models and languages
+  </Card>
+  <Card title="Models" icon="microchip" href="/docs/models">
+    Compare models: Coda, Arcana, Mist v3, Mist v2
+  </Card>
+  <Card title="Streaming TTS" icon="wave-sine" href="/docs/streaming">
+    Production streaming over HTTP, WebSockets, or SSE
+  </Card>
+</CardGroup>

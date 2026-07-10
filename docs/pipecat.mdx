@@ -39,7 +39,7 @@ Create an [OpenAI account](https://platform.openai.com/signup) and generate an A
 
 ### 1.3 Python
 
-Install [Python 3.10 or later](https://www.python.org/downloads/). Verify your installation by running the following command in your terminal:
+Install [Python 3.11 or later](https://www.python.org/downloads/) (required by Pipecat 1.x). Verify your installation by running the following command in your terminal:
 
 ```bash
 python --version
@@ -93,11 +93,10 @@ Create a `pyproject.toml` file and add the following dependencies to it:
 [project]
 name = "rime-pipecat-agent"
 version = "0.1.0"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "python-dotenv>=1.1.1",
-    "pipecat-ai[openai,rime,silero,webrtc,runner]>=0.0.100",
-    "pipecat-ai-small-webrtc-prebuilt>=2.0.4",
+    "pipecat-ai[openai,rime,silero,webrtc,runner]>=1.5.0,<2",
 ]
 ```
 
@@ -106,9 +105,9 @@ Pipecat uses a plugin system where each service integration is a separate packag
 - `rime` adds a TTS service for synthesizing speech.
 - `silero` adds VAD for detecting when the user starts and stops speaking.
 - `webrtc` provides the transport for browser-based audio via WebRTC.
-- `runner` adds a development runner that handles server setup and WebRTC connections.
+- `runner` adds a development runner that handles server setup and WebRTC connections, and includes a ready-to-use browser client for talking to your agent.
 
-The `pipecat-ai-small-webrtc-prebuilt` package provides a ready-to-use browser client that connects to your agent.
+<Note>This guide targets Pipecat 1.x (verified against 1.5.0). Several APIs were renamed or moved in the 1.0 release, so code written for `pipecat-ai` 0.x won't run unchanged.</Note>
 
 Then, install the dependencies by running this command:
 
@@ -128,32 +127,36 @@ Add the following imports and initialization code to `agent.py`:
 import os
 from dotenv import load_dotenv
 
+from pipecat.audio.vad.silero import SileroVADAnalyzer
+from pipecat.frames.frames import LLMRunFrame
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
-from pipecat.pipeline.task import PipelineParams, PipelineTask
-from pipecat.frames.frames import LLMMessagesAppendFrame
-from pipecat.services.openai.stt import OpenAISTTService
-from pipecat.services.openai.llm import OpenAILLMService
-from pipecat.services.rime.tts import RimeNonJsonTTSService
-from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
-from pipecat.audio.vad.silero import SileroVADAnalyzer
-from pipecat.transports.base_transport import TransportParams
-from pipecat.transports.smallwebrtc.transport import SmallWebRTCTransport
+from pipecat.pipeline.task import PipelineParams, PipelineWorker
+from pipecat.processors.aggregators.llm_context import LLMContext
+from pipecat.processors.aggregators.llm_response_universal import (
+    LLMContextAggregatorPair,
+    LLMUserAggregatorParams,
+)
 from pipecat.runner.run import main
-from pipecat.runner.types import SmallWebRTCRunnerArguments
+from pipecat.runner.types import RunnerArguments
+from pipecat.runner.utils import create_transport
+from pipecat.services.openai.llm import OpenAILLMService
+from pipecat.services.openai.stt import OpenAISTTService
+from pipecat.services.rime.tts import RimeTTSService
+from pipecat.transports.base_transport import TransportParams
 
 load_dotenv()
 ```
 
 Each import corresponds to a frame processor or utility:
 - `Pipeline` chains processors together in sequence.
-- `PipelineRunner` manages the event loop and runs the pipeline.
-- `LLMMessagesAppendFrame` triggers the LLM to respond when queued.
-- Services like `OpenAISTTService`, `OpenAILLMService`, and `RimeNonJsonTTSService` are the frame processors that do the actual work.
-- `OpenAILLMContext` maintains conversation history across turns.
+- `PipelineRunner` and `PipelineWorker` manage the event loop and run the pipeline.
+- `LLMRunFrame` triggers the LLM to respond when queued.
+- Services like `OpenAISTTService`, `OpenAILLMService`, and `RimeTTSService` are the frame processors that do the actual work.
+- `LLMContext` maintains conversation history across turns, and `LLMContextAggregatorPair` keeps it updated from both sides of the conversation.
 - `SileroVADAnalyzer` detects speech boundaries so the agent knows when you've finished talking.
-- `SmallWebRTCTransport` handles peer-to-peer WebRTC connections for browser-based audio.
-- `SmallWebRTCRunnerArguments` provides connection details when a user connects to the agent.
+- `create_transport` and `TransportParams` set up the WebRTC transport for browser-based audio.
+- `RunnerArguments` provides connection details when a user connects to the agent.
 
 ### 3.2 Define the system prompt
 
@@ -169,61 +172,72 @@ This system prompt defines your agent's personality. It can be as simple or comp
 
 ### 3.3 Code the conversation pipeline
 
-Add the following `bot` function to `agent.py`:
+First, tell the runner how to configure the transport. Add the following below the system prompt:
 
 ```python
-async def bot(runner_args: SmallWebRTCRunnerArguments):
+transport_params = {
+    "webrtc": lambda: TransportParams(
+        audio_in_enabled=True,
+        audio_out_enabled=True,
+    ),
+}
+```
+
+This dictionary maps transport names to their configuration. The `webrtc` entry enables audio input and output for the browser-based WebRTC transport that this guide uses.
+
+Next, add the following `bot` function to `agent.py`:
+
+```python
+async def bot(runner_args: RunnerArguments):
 ```
 
 The Pipecat runner automatically discovers any function named `bot` in your module. When a user connects via WebRTC, the runner calls this function and passes connection details through `runner_args`.
 
-Inside the `bot` function, add the WebRTC transport configuration:
+Inside the `bot` function, create the transport:
 
 ```python
-    transport = SmallWebRTCTransport(
-        runner_args.webrtc_connection,
-        TransportParams(
-            audio_in_enabled=True,
-            audio_out_enabled=True,
-            vad_analyzer=SileroVADAnalyzer(),
-        ),
-    )
+    transport = await create_transport(runner_args, transport_params)
 ```
 
-This creates the WebRTC transport and enables audio I/O as well as Silero VAD for detecting when the user starts and stops speaking.
+`create_transport` matches the incoming connection against your `transport_params` dictionary and builds the right transport for it.
 
 Next, add the AI services for transcription, response generation, and speech synthesis:
 
 ```python
     stt = OpenAISTTService(
         api_key=os.getenv("OPENAI_API_KEY"),
-        model="gpt-4o-transcribe",
+        settings=OpenAISTTService.Settings(model="gpt-4o-transcribe"),
     )
 
     llm = OpenAILLMService(
         api_key=os.getenv("OPENAI_API_KEY"),
-        model="gpt-4o-mini",
+        settings=OpenAILLMService.Settings(model="gpt-4o-mini"),
     )
 
-    tts = RimeNonJsonTTSService(
+    tts = RimeTTSService(
         api_key=os.getenv("RIME_API_KEY"),
-        voice_id="atrium",
-        model="arcana",
+        settings=RimeTTSService.Settings(
+            voice="lyra",
+            model="coda",
+        ),
     )
 ```
 
-These configure OpenAI for STT and LLM responses, and the Rime `arcana` model for TTS.
+These configure OpenAI for STT and LLM responses, and Rime's flagship `coda` model for TTS. `RimeTTSService` works with all current Rime models (`coda`, `arcana`, `mistv3`, `mistv2`).
 
 Add the conversation context:
 
 ```python
-    context = OpenAILLMContext(
+    context = LLMContext(
         messages=[{"role": "system", "content": SYSTEM_PROMPT}]
     )
-    context_aggregator = llm.create_context_aggregator(context)
+    context_aggregator = LLMContextAggregatorPair(
+        context,
+        user_params=LLMUserAggregatorParams(vad_analyzer=SileroVADAnalyzer()),
+    )
 ```
 
-This maintains the conversation history, so the LLM can reference previous messages.
+This maintains the conversation history, so the LLM can reference previous messages. The user-side aggregator also runs Silero VAD to detect when the user starts and stops speaking.
 
 Add the pipeline that connects all the components:
 
@@ -251,26 +265,26 @@ Frames flow through the processors in order.
 
 The context aggregator appears twice to capture both sides of the conversation.
 
-Finally, add the task runner and an event handler for greeting the user:
+Finally, add the pipeline worker and an event handler for greeting the user:
 
 ```python
-    task = PipelineTask(
+    worker = PipelineWorker(
         pipeline,
         params=PipelineParams(enable_metrics=True),
     )
 
     @transport.event_handler("on_client_connected")
     async def on_client_connected(transport, client):
-        await task.queue_frames([LLMMessagesAppendFrame(
-            messages=[{"role": "system", "content": "Say hello and introduce yourself."}],
-            run_llm=True
-        )])
+        context.add_message(
+            {"role": "system", "content": "Say hello and introduce yourself."}
+        )
+        await worker.queue_frames([LLMRunFrame()])
 
     runner = PipelineRunner(handle_sigint=runner_args.handle_sigint)
-    await runner.run(task)
+    await runner.run(worker)
 ```
 
-The `on_client_connected` event fires when a user connects to the agent. It appends a system message prompting the LLM to greet the user and triggers an immediate response with `run_llm=True`.
+The `on_client_connected` event fires when a user connects to the agent. It appends a system message prompting the LLM to greet the user, then queues an `LLMRunFrame` to trigger an immediate response.
 
 ### 3.4 Create the main entrypoint
 
@@ -298,19 +312,23 @@ At this point, your `agent.py` file should look like the complete example below:
 import os
 from dotenv import load_dotenv
 
+from pipecat.audio.vad.silero import SileroVADAnalyzer
+from pipecat.frames.frames import LLMRunFrame
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
-from pipecat.pipeline.task import PipelineParams, PipelineTask
-from pipecat.frames.frames import LLMMessagesAppendFrame
-from pipecat.services.openai.stt import OpenAISTTService
-from pipecat.services.openai.llm import OpenAILLMService
-from pipecat.services.rime.tts import RimeNonJsonTTSService
-from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
-from pipecat.audio.vad.silero import SileroVADAnalyzer
-from pipecat.transports.base_transport import TransportParams
-from pipecat.transports.smallwebrtc.transport import SmallWebRTCTransport
+from pipecat.pipeline.task import PipelineParams, PipelineWorker
+from pipecat.processors.aggregators.llm_context import LLMContext
+from pipecat.processors.aggregators.llm_response_universal import (
+    LLMContextAggregatorPair,
+    LLMUserAggregatorParams,
+)
 from pipecat.runner.run import main
-from pipecat.runner.types import SmallWebRTCRunnerArguments
+from pipecat.runner.types import RunnerArguments
+from pipecat.runner.utils import create_transport
+from pipecat.services.openai.llm import OpenAILLMService
+from pipecat.services.openai.stt import OpenAISTTService
+from pipecat.services.rime.tts import RimeTTSService
+from pipecat.transports.base_transport import TransportParams
 
 load_dotenv()
 
@@ -318,37 +336,42 @@ SYSTEM_PROMPT = """You are a helpful voice assistant.
 Keep your responses short and conversational - no more than 2-3 sentences.
 Be friendly and natural."""
 
+transport_params = {
+    "webrtc": lambda: TransportParams(
+        audio_in_enabled=True,
+        audio_out_enabled=True,
+    ),
+}
 
-async def bot(runner_args: SmallWebRTCRunnerArguments):
-    transport = SmallWebRTCTransport(
-        runner_args.webrtc_connection,
-        TransportParams(
-            audio_in_enabled=True,
-            audio_out_enabled=True,
-            vad_analyzer=SileroVADAnalyzer(),
-        ),
-    )
+
+async def bot(runner_args: RunnerArguments):
+    transport = await create_transport(runner_args, transport_params)
 
     stt = OpenAISTTService(
         api_key=os.getenv("OPENAI_API_KEY"),
-        model="gpt-4o-transcribe",
+        settings=OpenAISTTService.Settings(model="gpt-4o-transcribe"),
     )
 
     llm = OpenAILLMService(
         api_key=os.getenv("OPENAI_API_KEY"),
-        model="gpt-4o-mini",
+        settings=OpenAILLMService.Settings(model="gpt-4o-mini"),
     )
 
-    tts = RimeNonJsonTTSService(
+    tts = RimeTTSService(
         api_key=os.getenv("RIME_API_KEY"),
-        voice_id="atrium",
-        model="arcana",
+        settings=RimeTTSService.Settings(
+            voice="lyra",
+            model="coda",
+        ),
     )
 
-    context = OpenAILLMContext(
+    context = LLMContext(
         messages=[{"role": "system", "content": SYSTEM_PROMPT}]
     )
-    context_aggregator = llm.create_context_aggregator(context)
+    context_aggregator = LLMContextAggregatorPair(
+        context,
+        user_params=LLMUserAggregatorParams(vad_analyzer=SileroVADAnalyzer()),
+    )
 
     pipeline = Pipeline([
         transport.input(),
@@ -360,20 +383,20 @@ async def bot(runner_args: SmallWebRTCRunnerArguments):
         context_aggregator.assistant(),
     ])
 
-    task = PipelineTask(
+    worker = PipelineWorker(
         pipeline,
         params=PipelineParams(enable_metrics=True),
     )
 
     @transport.event_handler("on_client_connected")
     async def on_client_connected(transport, client):
-        await task.queue_frames([LLMMessagesAppendFrame(
-            messages=[{"role": "system", "content": "Say hello and introduce yourself."}],
-            run_llm=True
-        )])
+        context.add_message(
+            {"role": "system", "content": "Say hello and introduce yourself."}
+        )
+        await worker.queue_frames([LLMRunFrame()])
 
     runner = PipelineRunner(handle_sigint=runner_args.handle_sigint)
-    await runner.run(task)
+    await runner.run(worker)
 
 
 if __name__ == "__main__":
@@ -410,10 +433,12 @@ Now that your agent is running, you can experiment with different voices and per
 Update the `tts` initialization in your `bot` function to try a different voice:
 
 ```python
-tts = RimeNonJsonTTSService(
+tts = RimeTTSService(
     api_key=os.getenv("RIME_API_KEY"),
-    voice_id="celest",
-    model="arcana",
+    settings=RimeTTSService.Settings(
+        voice="astra",
+        model="coda",
+    ),
 )
 ```
 
@@ -466,10 +491,10 @@ Then update the `on_client_connected` handler to use your custom intro message:
 ```python
 @transport.event_handler("on_client_connected")
 async def on_client_connected(transport, client):
-    await task.queue_frames([LLMMessagesAppendFrame(
-        messages=[{"role": "system", "content": f"Say: {INTRO_MESSAGE}"}],
-        run_llm=True
-    )])
+    context.add_message(
+        {"role": "system", "content": f"Say: {INTRO_MESSAGE}"}
+    )
+    await worker.queue_frames([LLMRunFrame()])
 ```
 
 Storing your system prompt in a separate file keeps your personality configuration separate from your agent logic, making it easy to experiment with different characters.
@@ -491,8 +516,12 @@ If you encounter problems while following this guide, consult the quick fixes be
 
 ### No audio output and other TTS errors
 
-- **Check your TTS service class:** The `arcana` model requires `RimeNonJsonTTSService`. If you see WebSocket HTTP `400` errors in the logs, you may be using `RimeTTSService` (which is only compatible with models like `mistv2`).
+- **Check your TTS service class:** Use `RimeTTSService` — it supports all current Rime models (`coda`, `arcana`, `mistv3`, `mistv2`). The older `RimeNonJsonTTSService` is deprecated and will be removed in Pipecat 2.0.
 - **Verify your Rime API key:** Ensure the key is valid and has TTS permissions.
+
+### Import errors when starting the agent
+
+- **Check your Pipecat version:** Errors like `No module named 'pipecat.processors.aggregators.openai_llm_context'` mean you're running code written for Pipecat 0.x on a 1.x install (or vice versa). This guide requires `pipecat-ai` 1.5 or later — the 1.0 release renamed `OpenAILLMContext` to `LLMContext`, replaced `llm.create_context_aggregator()` with `LLMContextAggregatorPair`, and moved VAD configuration from `TransportParams` to `LLMUserAggregatorParams`.
 
 ### The agent doesn't respond to speech
 

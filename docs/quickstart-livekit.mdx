@@ -419,6 +419,27 @@ await session.say(INTRO_MESSAGE)
 
 Storing your system prompt in a separate file keeps your personality configuration separate from your agent logic, making it easy to experiment with different characters.
 
+### 5.3 Adjust TTS chunking
+
+For non-streaming TTS, LiveKit uses `StreamAdapter` to split streamed text into chunks before synthesis.
+Smaller chunks improve latency; larger chunks can improve prosody for multi-sentence text.
+
+```python
+from livekit.agents import tokenize, tts
+from livekit.plugins import rime
+
+tts = tts.StreamAdapter(
+    tts=rime.TTS(model="coda", speaker="wawona"),
+    sentence_tokenizer=tokenize.blingfire.SentenceTokenizer(
+        retain_format=False,
+        min_token_len=250,
+    ),
+)
+```
+
+Increase `min_token_len` to batch more text into each TTS request. For example, set it above the length
+of a scripted greeting to send the greeting as one request.
+
 ## Troubleshooting
 
 If something is not behaving as expected, check out the quick fixes below.
@@ -439,7 +460,3 @@ If something is not behaving as expected, check out the quick fixes below.
 - **Enable noise cancellation:** Verify `noise_cancellation.BVC()` is included in your `RoomInputOptions`.
 - **Check your microphone:** Test with a different input device or headset
 - **Reduce background noise:** The VAD may struggle to detect speech in noisy environments.
-
-
-
-

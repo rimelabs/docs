@@ -421,8 +421,9 @@ Storing your system prompt in a separate file keeps your personality configurati
 
 ### 5.3 Adjust TTS chunking
 
-For non-streaming TTS, LiveKit uses `StreamAdapter` to split streamed text into chunks before synthesis.
-Smaller chunks improve latency; larger chunks can improve prosody for multi-sentence text.
+By default, `rime.TTS(...)` uses Rime's HTTP synthesis path. LiveKit wraps non-streaming TTS providers so streamed LLM output can be sent to TTS in sentence-aligned chunks.
+
+If you want to tune those chunks, wrap Rime explicitly:
 
 ```python
 from livekit.agents import tokenize, tts
@@ -431,14 +432,20 @@ from livekit.plugins import rime
 tts = tts.StreamAdapter(
     tts=rime.TTS(model="coda", speaker="wawona"),
     sentence_tokenizer=tokenize.blingfire.SentenceTokenizer(
-        retain_format=False,
+        retain_format=True,
         min_token_len=250,
+        max_token_len=500,
     ),
 )
 ```
 
-Increase `min_token_len` to batch more text into each TTS request. For example, set it above the length
-of a scripted greeting to send the greeting as one request.
+Chunking options:
+
+- `min_token_len`: Batches sentences until the chunk reaches this size. Increase it for smoother multi-sentence prosody.
+- `max_token_len`: Caps chunk size. Use it to avoid very large TTS requests.
+- `retain_format`: Keeps original whitespace and newlines. `True` matches LiveKit's default wrapper behavior.
+
+Tuning chunk size is a prosody/latency tradeoff: larger chunks usually sound better, while smaller chunks usually start faster.
 
 ## Troubleshooting
 

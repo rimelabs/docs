@@ -59,6 +59,8 @@
             "pages": [
               "docs/voice-agent-nextjs",
               "docs/voice-agent-vite",
+              "docs/voice-agent-express",
+              "docs/voice-agent-node",
               "docs/voice-agent-fastapi"
             ]
           },

@@ -3255,6 +3255,196 @@
       "source": "/mist/streaming-http",
       "destination": "/api-reference/mistv2/http",
       "permanent": false
+    },
+    {
+      "source": "/api-reference/arcana-v3",
+      "destination": "/api-reference/arcana/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/arcana-websocket",
+      "destination": "/api-reference/arcana/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/arcana/list-voice-details",
+      "destination": "/api-reference/data/voice-details",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/endpoint/instant-voice-synthesis",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist-v3/websocket",
+      "destination": "/api-reference/mistv3/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist-v3/websockets",
+      "destination": "/api-reference/mistv3/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/rest-api",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/rest/synthesize-speech",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/rime-tts/stream-speech",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/rime-tts/synthesize-speech",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/speech-synthesis/arcana-v3",
+      "destination": "/api-reference/arcana/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/speech-synthesis/json-wrapped-audio/mp3",
+      "destination": "/api-reference/mistv2/json-mp3",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/speech-synthesis/streaming-http/arcana",
+      "destination": "/api-reference/arcana/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/streaming/stream-speech-http-streaming",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/streaming/stream-speech-streaming",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/tts/arcana-streaming-http",
+      "destination": "/api-reference/arcana/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/tts/mist-v3-streaming-http",
+      "destination": "/api-reference/mistv3/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/voices/list-all-voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket/initialize-connection",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket/send-text",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket/stream-speech-websocket",
+      "destination": "/api-reference/coda/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket/stream-speech-websocket-1",
+      "destination": "/api-reference/coda/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket/stream-speech-ws3",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websockets/stream-speech-websocket",
+      "destination": "/api-reference/coda/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api/v1",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/data/list-all-voices",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/docs/integrations",
+      "destination": "/docs/introduction",
+      "permanent": false
+    },
+    {
+      "source": "/docs/speakers",
+      "destination": "/docs/voices",
+      "permanent": false
+    },
+    {
+      "source": "/en/api-reference",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/en/quickstart",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/en/voices",
+      "destination": "/docs/voices",
+      "permanent": false
+    },
+    {
+      "source": "/guides/text-to-speech",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/integrations/livekit",
+      "destination": "/docs/livekit",
+      "permanent": false
+    },
+    {
+      "source": "/text-to-speech",
+      "destination": "/docs/introduction",
+      "permanent": false
+    },
+    {
+      "source": "/tts",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/voices-arcana",
+      "destination": "/docs/voices",
+      "permanent": false
+    },
+    {
+      "source": "/voices-mist",
+      "destination": "/docs/voices",
+      "permanent": false
+    },
+    {
+      "source": "/websocket-configuration",
+      "destination": "/docs/websockets",
+      "permanent": false
     }
   ]
 }

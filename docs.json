@@ -3445,6 +3445,21 @@
       "source": "/websocket-configuration",
       "destination": "/docs/websockets",
       "permanent": false
+    },
+    {
+      "source": "/coda-ws3",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/docs/coda-streaming",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/platform/check-coverage",
+      "destination": "/platform/pronunciation-control",
+      "permanent": false
     }
   ]
 }

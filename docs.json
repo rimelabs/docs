@@ -40,7 +40,8 @@
           {
             "group": "Introduction",
             "pages": [
-              "docs/introduction"
+              "docs/introduction",
+              "docs/api-cheat-sheet"
             ]
           },
           {

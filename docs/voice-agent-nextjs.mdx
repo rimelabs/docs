@@ -171,9 +171,19 @@ wss.on("connection", (client) => {
     { headers: { Authorization: `Bearer ${process.env.RIME_API_KEY}` } },
   );
 
-  // Browser → Rime: {text: "..."} to speak, {operation: "clear"} to interrupt
+  // Browser → Rime: {text: "..."} to speak, {operation: "clear"} to interrupt.
+  // Queue anything that arrives before the upstream connection finishes opening —
+  // the browser side is usually connected first, and ws drops sends on a
+  // CONNECTING socket.
+  const pending = [];
   client.on("message", (data) => {
-    if (rime.readyState === WebSocket.OPEN) rime.send(data.toString());
+    const msg = data.toString();
+    if (rime.readyState === WebSocket.OPEN) rime.send(msg);
+    else pending.push(msg);
+  });
+  rime.on("open", () => {
+    for (const msg of pending) rime.send(msg);
+    pending.length = 0;
   });
 
   // Rime → browser: {type: "chunk", data: <base64 mp3>}, {type: "timestamps", ...},
@@ -212,22 +222,29 @@ On the client, connect to your bridge and play chunks as they arrive:
 ```typescript
 const ws = new WebSocket(`ws://${location.host}/ws/tts`);
 
+// Collect base64 MP3 chunks per utterance, play on "done".
+// (For true chunk-by-chunk playback, feed them to a MediaSource instead.)
+let chunks: Uint8Array[] = [];
+
 ws.onmessage = async (e) => {
   const msg = JSON.parse(e.data);
   if (msg.type === "chunk") {
-    // base64 MP3 chunk → queue it for playback
-    const bytes = Uint8Array.from(atob(msg.data), (c) => c.charCodeAt(0));
-    enqueue(new Blob([bytes], { type: "audio/mpeg" }));
+    chunks.push(Uint8Array.from(atob(msg.data), (c) => c.charCodeAt(0)));
   }
-  if (msg.type === "done") console.log("utterance complete");
+  if (msg.type === "done") {
+    const url = URL.createObjectURL(new Blob(chunks, { type: "audio/mpeg" }));
+    chunks = [];
+    await new Audio(url).play();
+  }
 };
 
 // Speak: sentences synthesize as they complete (segment=bySentence default)
 ws.onopen = () => ws.send(JSON.stringify({ text: "Hello from Rime over WebSockets." }));
 
-// Interrupt (barge-in): drop whatever is still buffered
+// Interrupt (barge-in): drop whatever is still buffered server-side
 function interrupt() {
   ws.send(JSON.stringify({ operation: "clear" }));
+  chunks = [];
 }
 ```
 

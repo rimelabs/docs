@@ -55,6 +55,14 @@
             ]
           },
           {
+            "group": "Build a voice agent",
+            "pages": [
+              "docs/voice-agent-nextjs",
+              "docs/voice-agent-vite",
+              "docs/voice-agent-fastapi"
+            ]
+          },
+          {
             "group": "Documentation",
             "pages": [
               "docs/changelog",

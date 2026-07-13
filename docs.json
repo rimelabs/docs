@@ -2223,17 +2223,17 @@
     },
     {
       "source": "/openapi",
-      "destination": "/api-reference/openapi.json",
+      "destination": "/docs/api-reference",
       "permanent": false
     },
     {
       "source": "/openapi.json",
-      "destination": "/api-reference/openapi.json",
+      "destination": "/docs/api-reference",
       "permanent": false
     },
     {
       "source": "/openapi.yaml",
-      "destination": "/api-reference/openapi.json",
+      "destination": "/docs/api-reference",
       "permanent": false
     },
     {
@@ -2944,6 +2944,176 @@
     {
       "source": "/docs/api-keys",
       "destination": "/docs/api-authentication",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/arcana/list-speakers",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/coda/websocket-ws3",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/coda/websockets-plaintext",
+      "destination": "/api-reference/coda/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/endpoint/generate-audio",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/endpoint/tts-http-streaming",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mist/websockets-json",
+      "destination": "/api-reference/mistv2/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/mistv2/websockets-plaintext",
+      "destination": "/api-reference/mistv2/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/voices/get-voice-details",
+      "destination": "/api-reference/data/voice-details",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket/ws",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websocket/ws3",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/websockets/websocket-json",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/data/voice-details",
+      "destination": "/api-reference/data/voice-details",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/endpoint/tts-api",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/list-voice-details",
+      "destination": "/api-reference/data/voice-details",
+      "permanent": false
+    },
+    {
+      "source": "/docs/api-reference/mist-v2/websockets",
+      "destination": "/api-reference/mistv2/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/docs/coverage",
+      "destination": "/docs/voices",
+      "permanent": false
+    },
+    {
+      "source": "/docs/low-latency-streaming",
+      "destination": "/docs/streaming",
+      "permanent": false
+    },
+    {
+      "source": "/docs/pronunciation-dictionary",
+      "destination": "/docs/custom-pronunciation",
+      "permanent": false
+    },
+    {
+      "source": "/docs/quickstart-tts",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/docs/text-to-speech-tts",
+      "destination": "/docs/introduction",
+      "permanent": false
+    },
+    {
+      "source": "/docs/tts",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/docs/tts-websocket",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/docs/websocket/ws3",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/docs/websockets/ws3",
+      "destination": "/api-reference/coda/websockets-json",
+      "permanent": false
+    },
+    {
+      "source": "/reference/api-reference",
+      "destination": "/docs/api-reference",
+      "permanent": false
+    },
+    {
+      "source": "/reference/get_data-voices-all-v2-json",
+      "destination": "/api-reference/data/voices-v2",
+      "permanent": false
+    },
+    {
+      "source": "/reference/get_data-voices-voice_detailsjson",
+      "destination": "/api-reference/data/voice-details",
+      "permanent": false
+    },
+    {
+      "source": "/reference/getting-started-with-your-api",
+      "destination": "/docs/quickstart-five-minute",
+      "permanent": false
+    },
+    {
+      "source": "/reference/postv1rimettssync",
+      "destination": "/api-reference/coda/http",
+      "permanent": false
+    },
+    {
+      "source": "/reference/synthesize-speech-websocket",
+      "destination": "/api-reference/coda/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/reference/text-normalization",
+      "destination": "/docs/text-normalization",
+      "permanent": false
+    },
+    {
+      "source": "/reference/textnorm-post",
+      "destination": "/api-reference/other/textnorm",
+      "permanent": false
+    },
+    {
+      "source": "/reference/websockets-ws",
+      "destination": "/docs/websockets",
+      "permanent": false
+    },
+    {
+      "source": "/reference/websockets-ws3",
+      "destination": "/api-reference/coda/websockets-json",
       "permanent": false
     }
   ]

@@ -173,7 +173,7 @@ type ErrorEvent = {
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  This value **must** be set to `coda` else the websockets server will default to `mistv2` for speech synthesis.
+  This value **must** be set to `coda` — without it, the server routes to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
 </ParamField>
 
 <ParamField body="audioFormat" type="string">

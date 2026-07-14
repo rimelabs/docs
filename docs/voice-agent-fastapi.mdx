@@ -1,0 +1,168 @@
+---
+title: Build a voice agent (FastAPI)
+description: "Build a voice agent with Rime TTS in a FastAPI app: a Python endpoint proxies synthesis with httpx while the browser records speech and plays back Rime audio."
+icon: python
+---
+
+This guide builds a working voice agent on FastAPI: the browser captures speech, your Python backend decides what to say, and Rime speaks the reply.
+
+There is no Rime PyPI package to install — and you don't need one. Rime is a single HTTPS API; the endpoint below is a plain `httpx` call.
+
+```
+Browser (mic + playback)  →  POST /api/tts (FastAPI)  →  POST https://users.rime.ai/v1/rime-tts
+```
+
+## Prerequisites
+
+- A Rime API key from the [API Tokens page](https://app.rime.ai/tokens), exported as `RIME_API_KEY`
+- Python 3.10+ with `pip install fastapi uvicorn httpx`
+
+## 1. Server: FastAPI app with a TTS endpoint
+
+Create `main.py`:
+
+```python main.py
+import os
+
+import httpx
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse, Response
+from pydantic import BaseModel
+
+app = FastAPI()
+
+RIME_API_KEY = os.environ["RIME_API_KEY"]
+RIME_TTS_URL = "https://users.rime.ai/v1/rime-tts"
+
+
+class TTSRequest(BaseModel):
+    text: str
+    speaker: str = "astra"
+    modelId: str = "coda"
+
+
+@app.post("/api/tts")
+async def tts(req: TTSRequest) -> Response:
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        rime_res = await client.post(
+            RIME_TTS_URL,
+            headers={
+                "Authorization": f"Bearer {RIME_API_KEY}",
+                "Content-Type": "application/json",
+                # MP3; see the API reference for Opus, WAV, PCM, μ-law
+                "Accept": "audio/mpeg",
+            },
+            json=req.model_dump(),
+        )
+
+    if rime_res.status_code != 200:
+        raise HTTPException(
+            status_code=rime_res.status_code,
+            detail=f"Rime API error: {rime_res.text}",
+        )
+
+    return Response(content=rime_res.content, media_type="audio/mpeg")
+
+
+@app.get("/")
+async def index() -> FileResponse:
+    return FileResponse("index.html")
+```
+
+Verify it works before touching the frontend:
+
+```bash
+uvicorn main:app --reload --port 8000
+curl -X POST http://localhost:8000/api/tts \
+  -H 'Content-Type: application/json' \
+  -d '{"text": "Hello from my FastAPI voice agent."}' \
+  --output test.mp3
+```
+
+`test.mp3` should be playable audio. A `KeyError: 'RIME_API_KEY'` at startup means the environment variable isn't set.
+
+## 2. Client: mic in, Rime audio out
+
+Create `index.html` next to `main.py`. It uses the browser's built-in `SpeechRecognition` for input (Chrome/Edge/Safari), a stub `respond()` function as the agent brain, and your `/api/tts` endpoint for the voice:
+
+```html index.html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Rime voice agent</title>
+    <style>
+      main { max-width: 480px; margin: 4rem auto; font-family: sans-serif; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Rime voice agent</h1>
+      <button id="speak">🎤 Speak</button>
+      <ul id="messages"></ul>
+      <audio id="player" hidden></audio>
+    </main>
+    <script>
+      // Replace this stub with a call to your LLM of choice.
+      function respond(userText) {
+        return `You said: ${userText}. This voice is Rime's Coda model.`;
+      }
+
+      async function speak(text) {
+        const res = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        });
+        if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
+        const player = document.getElementById("player");
+        player.src = URL.createObjectURL(await res.blob());
+        await player.play();
+      }
+
+      function log(line) {
+        const li = document.createElement("li");
+        li.textContent = line;
+        document.getElementById("messages").appendChild(li);
+      }
+
+      document.getElementById("speak").addEventListener("click", () => {
+        const SR = window.SpeechRecognition ?? window.webkitSpeechRecognition;
+        if (!SR) return alert("SpeechRecognition not supported in this browser.");
+        const rec = new SR();
+        rec.onresult = async (e) => {
+          const userText = e.results[0][0].transcript;
+          const reply = respond(userText);
+          log(`You: ${userText}`);
+          log(`Agent: ${reply}`);
+          await speak(reply);
+        };
+        rec.start();
+      });
+    </script>
+  </body>
+</html>
+```
+
+Open `http://localhost:8000`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
+
+## Want streaming?
+
+For incremental synthesis — audio starts playing while later sentences are still generating — connect your **server** to `wss://users-ws.rime.ai/ws3` with the Python [`websockets`](https://pypi.org/project/websockets/) library and relay events to the browser (FastAPI's own WebSocket support works well as the browser-facing side). Rime's WebSocket endpoints authenticate with an `Authorization` header, which browser WebSockets cannot send, so the bridge always lives server-side. Runnable Python connection code and the full `/ws3` message schema are in the [Coda WebSocket reference](/api-reference/coda/websockets-json).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
+    Endpoints, word-level timestamps, context IDs, and interruption handling.
+  </Card>
+  <Card title="Voices" icon="waveform-lines" href="/docs/voices">
+    Swap `astra` for any Coda voice across six languages.
+  </Card>
+  <Card title="Streaming formats" icon="bolt" href="/docs/streaming">
+    Choose between Opus, MP3, WAV, PCM, and μ-law for your latency budget.
+  </Card>
+  <Card title="Pipecat" icon="puzzle-piece" href="/docs/pipecat">
+    Building a full Python voice pipeline? Use the ready-made Rime plugin.
+  </Card>
+</CardGroup>

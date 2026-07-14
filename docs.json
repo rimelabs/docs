@@ -40,27 +40,53 @@
           {
             "group": "Introduction",
             "pages": [
-              "docs/introduction"
+              "docs/introduction",
+              "docs/api-cheat-sheet"
             ]
           },
           {
             "group": "Getting started",
             "pages": [
-              "docs/quickstart-cli",
-              "docs/api-authentication",
               "docs/quickstart-five-minute",
+              "docs/api-authentication",
+              {
+                "group": "Build a voice agent",
+                "pages": [
+                  "docs/voice-agent-nextjs",
+                  "docs/voice-agent-vite",
+                  "docs/voice-agent-express",
+                  "docs/voice-agent-node",
+                  "docs/voice-agent-fastapi"
+                ]
+              },
+              "docs/quickstart-cli",
               "docs/quickstart-livekit",
               "docs/mcp",
               "docs/regional-endpoints"
             ]
           },
           {
-            "group": "Documentation",
+            "group": "Voices & models",
             "pages": [
-              "docs/changelog",
               "docs/voices",
               "docs/models",
+              "platform/voice-cloning",
+              {
+                "group": "Pronunciation",
+                "icon": "lips",
+                "pages": [
+                  "platform/pronunciation-control",
+                  "platform/rime-phonetic-alphabet"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Customizing speech",
+            "pages": [
               "docs/prompting",
+              "docs/spell",
+              "docs/speed",
               {
                 "group": "Formatting Text",
                 "icon": "pen-to-square",
@@ -74,8 +100,6 @@
                   "docs/pre-normalization"
                 ]
               },
-              "docs/spell",
-              "docs/speed",
               {
                 "group": "Customizing Mist",
                 "icon": "wrench",
@@ -85,7 +109,12 @@
                   "docs/custom-pauses",
                   "docs/custom-pronunciation"
                 ]
-              },
+              }
+            ]
+          },
+          {
+            "group": "Streaming & performance",
+            "pages": [
               "docs/streaming",
               {
                 "group": "WebSocket API",
@@ -95,47 +124,45 @@
                   "docs/websockets-segment"
                 ]
               },
-              "docs/latency",
-              {
-                "group": "On-prem",
-                "icon": "server",
-                "pages": [
-                  "docs/on-prem/quickstart",
-                  "docs/on-prem/metrics",
-                  "docs/on-prem/load-balancing",
-                  "docs/on-prem/performance",
-                  "docs/on-prem/prometheus"
-                ]
-              },
-              {
-                "group": "Integrations",
-                "icon": "puzzle-piece",
-                "pages": [
-                  "docs/baseten",
-                  "docs/cerebrium",
-                  "docs/daily",
-                  "docs/livekit",
-                  "docs/lovable",
-                  "docs/pipecat",
-                  "docs/replit",
-                  "docs/signalwire",
-                  "docs/together-ai",
-                  "docs/vapi",
-                  "docs/videosdk",
-                  "docs/openclaw"
-                ]
-              },
+              "docs/latency"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "icon": "puzzle-piece",
+            "pages": [
+              "docs/baseten",
+              "docs/cerebrium",
+              "docs/daily",
+              "docs/livekit",
+              "docs/lovable",
+              "docs/pipecat",
+              "docs/replit",
+              "docs/signalwire",
+              "docs/together-ai",
+              "docs/vapi",
+              "docs/videosdk",
+              "docs/openclaw"
+            ]
+          },
+          {
+            "group": "On-prem",
+            "icon": "server",
+            "pages": [
+              "docs/on-prem/quickstart",
+              "docs/on-prem/helmcharts",
+              "docs/on-prem/metrics",
+              "docs/on-prem/load-balancing",
+              "docs/on-prem/performance",
+              "docs/on-prem/prometheus"
+            ]
+          },
+          {
+            "group": "Account & updates",
+            "pages": [
+              "docs/changelog",
               "docs/privacy-compliance",
-              "platform/voice-cloning",
-              "platform/teams",
-              {
-                "group": "Pronunciation",
-                "icon": "lips",
-                "pages": [
-                  "platform/pronunciation-control",
-                  "platform/rime-phonetic-alphabet"
-                ]
-              }
+              "platform/teams"
             ]
           }
         ]
@@ -143,6 +170,12 @@
       {
         "tab": "API Reference",
         "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "docs/api-reference"
+            ]
+          },
           {
             "group": "Coda API reference",
             "pages": [
@@ -3459,6 +3492,11 @@
     {
       "source": "/docs/platform/check-coverage",
       "destination": "/platform/pronunciation-control",
+      "permanent": false
+    },
+    {
+      "source": "/api-reference/data/voices",
+      "destination": "/api-reference/data/voices-v2",
       "permanent": false
     }
   ]

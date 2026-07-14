@@ -1,0 +1,175 @@
+---
+title: Build a voice agent (Node, no framework)
+description: "Build a voice agent with Rime TTS in plain Node.js with zero dependencies: node:http and built-in fetch proxy synthesis server-side while the browser records speech and plays back Rime audio."
+icon: terminal
+---
+
+This guide builds a working voice agent with **zero dependencies** — no framework, no packages, no `npm install`. Just `node:http` and Node's built-in `fetch`. If you want the same agent on a framework, see the [Next.js](/docs/voice-agent-nextjs), [Vite](/docs/voice-agent-vite), [Express](/docs/voice-agent-express), or [FastAPI](/docs/voice-agent-fastapi) guides.
+
+There is no Rime npm package — and you don't need one. Rime is a single HTTPS API.
+
+```
+Browser (mic + playback)  →  POST /api/tts (node:http)  →  POST https://users.rime.ai/v1/rime-tts
+```
+
+## Prerequisites
+
+- A Rime API key from the [API Tokens page](https://app.rime.ai/tokens), exported as `RIME_API_KEY`
+- Node.js 20.11 or later — nothing else
+
+## 1. Server
+
+Create `server.mjs`:
+
+```javascript server.mjs
+import { createServer } from "node:http";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
+const INDEX_HTML = readFileSync(path.join(import.meta.dirname, "index.html"));
+
+async function handleTts(req, res) {
+  let body = "";
+  for await (const chunk of req) body += chunk;
+
+  let text, speaker, modelId;
+  try {
+    ({ text, speaker = "astra", modelId = "coda" } = JSON.parse(body || "{}"));
+  } catch {
+    res.writeHead(400, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ error: "invalid JSON body" }));
+  }
+  if (!text) {
+    res.writeHead(400, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ error: "text is required" }));
+  }
+
+  const rimeRes = await fetch("https://users.rime.ai/v1/rime-tts", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.RIME_API_KEY}`,
+      "Content-Type": "application/json",
+      Accept: "audio/mpeg", // MP3; see the API reference for Opus, WAV, PCM, μ-law
+    },
+    body: JSON.stringify({ text, speaker, modelId }),
+  });
+
+  if (!rimeRes.ok) {
+    res.writeHead(rimeRes.status, { "Content-Type": "application/json" });
+    return res.end(
+      JSON.stringify({ error: `Rime API error ${rimeRes.status}`, detail: await rimeRes.text() }),
+    );
+  }
+
+  res.writeHead(200, { "Content-Type": "audio/mpeg" });
+  res.end(Buffer.from(await rimeRes.arrayBuffer()));
+}
+
+createServer(async (req, res) => {
+  if (req.method === "POST" && req.url === "/api/tts") return handleTts(req, res);
+  if (req.method === "GET" && req.url === "/") {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    return res.end(INDEX_HTML);
+  }
+  res.writeHead(404, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ error: "not found" }));
+}).listen(3000, () => console.log("Rime voice agent on http://localhost:3000"));
+```
+
+Verify it works before touching the frontend (create an empty `index.html` first if you're testing the API route alone):
+
+```bash
+RIME_API_KEY=your_key node server.mjs &
+curl -X POST http://localhost:3000/api/tts \
+  -H 'Content-Type: application/json' \
+  -d '{"text": "Hello from my plain Node voice agent."}' \
+  --output test.mp3
+```
+
+`test.mp3` should be playable audio. A 401 means `RIME_API_KEY` isn't visible to the server process.
+
+## 2. Client: mic in, Rime audio out
+
+Create `index.html` next to `server.mjs`. It uses the browser's built-in `SpeechRecognition` for input (Chrome/Edge/Safari), a stub `respond()` function as the agent brain, and your `/api/tts` route for the voice:
+
+```html index.html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Rime voice agent</title>
+    <style>
+      main { max-width: 480px; margin: 4rem auto; font-family: sans-serif; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Rime voice agent</h1>
+      <button id="speak">🎤 Speak</button>
+      <ul id="messages"></ul>
+      <audio id="player" hidden></audio>
+    </main>
+    <script>
+      // Replace this stub with a call to your LLM of choice.
+      function respond(userText) {
+        return `You said: ${userText}. This voice is Rime's Coda model.`;
+      }
+
+      async function speak(text) {
+        const res = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        });
+        if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
+        const player = document.getElementById("player");
+        player.src = URL.createObjectURL(await res.blob());
+        await player.play();
+      }
+
+      function log(line) {
+        const li = document.createElement("li");
+        li.textContent = line;
+        document.getElementById("messages").appendChild(li);
+      }
+
+      document.getElementById("speak").addEventListener("click", () => {
+        const SR = window.SpeechRecognition ?? window.webkitSpeechRecognition;
+        if (!SR) return alert("SpeechRecognition not supported in this browser.");
+        const rec = new SR();
+        rec.onresult = async (e) => {
+          const userText = e.results[0][0].transcript;
+          const reply = respond(userText);
+          log(`You: ${userText}`);
+          log(`Agent: ${reply}`);
+          await speak(reply);
+        };
+        rec.start();
+      });
+    </script>
+  </body>
+</html>
+```
+
+Restart the server (it reads `index.html` at startup), open `http://localhost:3000`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
+
+## Want streaming?
+
+For incremental synthesis — audio starts playing while later sentences are still generating — connect your server to `wss://users-ws.rime.ai/ws3` and relay events to the browser. Rime's WebSocket endpoints authenticate with an `Authorization` header, which browser WebSockets cannot send, so the bridge always lives server-side; the browser-facing side needs the `ws` package (the one dependency streaming adds). The complete bridge implementation is in the [Next.js guide](/docs/voice-agent-nextjs#3-optional-stream-over-websockets) and works with this same `createServer` instance. The `/ws3` message schema is in the [Coda WebSocket reference](/api-reference/coda/websockets-json).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
+    Endpoints, word-level timestamps, context IDs, and interruption handling.
+  </Card>
+  <Card title="Voices" icon="waveform-lines" href="/docs/voices">
+    Swap `astra` for any Coda voice across six languages.
+  </Card>
+  <Card title="Streaming formats" icon="bolt" href="/docs/streaming">
+    Choose between Opus, MP3, WAV, PCM, and μ-law for your latency budget.
+  </Card>
+  <Card title="TTS in five minutes" icon="rocket" href="/docs/quickstart-five-minute">
+    The core API walkthrough in cURL, Python, JavaScript, and TypeScript.
+  </Card>
+</CardGroup>

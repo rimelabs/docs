@@ -55,11 +55,11 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 </ParamField>
 
 <ParamField body="text" type="string" required>
-  The text you'd like spoken. Character limit per request is 500 via the API and 1,000 in the dashboard UI.
+  The text you'd like spoken. Character limit per request is 1,000 via the API and in the dashboard UI.
 </ParamField>
 
 <ParamField body="modelId" type="string">
-  This value **must** be set to `coda` else the websockets server will default to `mistv2` for speech synthesis.
+  This value **must** be set to `coda` — without it, the server routes to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
 </ParamField>
 
 <ParamField body="audioFormat" type="string">

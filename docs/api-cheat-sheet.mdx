@@ -1,0 +1,128 @@
+---
+title: API cheat sheet
+description: "The complete Rime API on one page: base URLs, bearer auth, and a runnable snippet for every endpoint — HTTP TTS, WebSocket streaming, voice listing, vocabulary coverage, and text normalization."
+icon: list-check
+---
+
+Everything you need to integrate Rime, on one page. Every snippet below is complete and runnable — substitute your API key from the [API Tokens page](https://app.rime.ai/tokens).
+
+## Hosts and authentication
+
+| What | Where |
+|---|---|
+| REST API (TTS, voices, coverage) | `https://users.rime.ai` |
+| WebSocket API | `wss://users-ws.rime.ai` |
+| Text normalization | `https://optimize.rime.ai` |
+| Docs (this site, plus `/llms.txt` and per-page `.md` exports) | `https://docs.rime.ai` |
+
+<Warning>
+  The API host is `users.rime.ai` — **not `api.rime.ai`**, which exists but serves Rime-internal infrastructure: TTS requests there fail with `404`. Every authenticated endpoint takes the same header: `Authorization: Bearer YOUR_API_KEY`. On WebSocket connections, send it as a connection header — and because your key is a secret (and browser `WebSocket` objects can't set headers), connect from a server-side process rather than from browser code. There is no official Rime SDK on npm or PyPI, and none is needed — any similarly named packages in those registries are unrelated third-party projects, not Rime.
+</Warning>
+
+## Synthesize speech (HTTP)
+
+`POST /v1/rime-tts` returns audio bytes in the format named by your `Accept` header (`audio/mpeg`, `audio/wav`, `audio/webm;codecs=opus`, `audio/ogg;codecs=opus`, `audio/L16`, `audio/PCMU`):
+
+```bash
+curl -X POST https://users.rime.ai/v1/rime-tts \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: audio/mpeg' \
+  --output hello.mp3 \
+  -d '{"text": "Hello from Rime.", "speaker": "astra", "modelId": "coda"}'
+```
+
+Full parameters and streaming variants: [Coda HTTP reference](/api-reference/coda/http) · [Streaming guide](/docs/streaming)
+
+## Stream speech (WebSocket `/ws3`)
+
+Synthesis arguments go in the query string; auth goes in the connection header. Send `{"text": ...}` messages (buffered by sentence by default) and operations (`{"operation": "flush" | "clear" | "eos"}`); receive JSON events: `chunk` (base64 audio), `timestamps` (word-level), `done`, `error`.
+
+```python
+import asyncio, base64, json, os
+import websockets  # pip install websockets
+
+async def main():
+    url = "wss://users-ws.rime.ai/ws3?speaker=astra&modelId=coda&audioFormat=mp3"
+    headers = {"Authorization": f"Bearer {os.environ['RIME_API_KEY']}"}
+    async with websockets.connect(url, additional_headers=headers) as ws:
+        await ws.send(json.dumps({"text": "Hello from Rime over WebSockets."}))
+        await ws.send(json.dumps({"operation": "eos"}))  # synthesize what's buffered, then close
+        audio = b""
+        async for raw in ws:
+            event = json.loads(raw)
+            if event["type"] == "chunk":
+                audio += base64.b64decode(event["data"])
+            elif event["type"] == "timestamps":
+                print("words:", event["word_timestamps"]["words"])
+            elif event["type"] == "done":
+                break
+    with open("output.mp3", "wb") as f:
+        f.write(audio)
+    print(f"saved {len(audio)} bytes to output.mp3")
+
+asyncio.run(main())
+```
+
+Set `modelId` explicitly on `/ws3` — without it, requests are served by the **Mist v3** backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error. Message schemas: [Coda WebSocket reference](/api-reference/coda/websockets-json) · Buffering control: [Segmentation](/docs/websockets-segment) · Web-app bridge pattern: [Next.js voice-agent guide](/docs/voice-agent-nextjs#3-optional-stream-over-websockets)
+
+## List voices
+
+Both voice endpoints are public — no API key required.
+
+```bash
+# Voice names, keyed by modelId then ISO 639-2 language code
+curl https://users.rime.ai/data/voices/all-v2.json
+
+# Full metadata per voice (gender, age, dialect, language, flagship flag, …)
+curl https://users.rime.ai/data/voices/voice_details.json
+```
+
+Choosing a voice: [Voices guide](/docs/voices) · Reference: [List All Voices](/api-reference/data/voices-v2) · [List Voice Details](/api-reference/data/voice-details)
+
+## Check vocabulary coverage (`/oov`)
+
+Returns the input words that are **not** in Rime's pronunciation dictionary:
+
+```bash
+curl -X POST https://users.rime.ai/oov \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"text": "hello kubectl blorbify"}'
+# → ["kubectl","blorbify"]
+```
+
+Out-of-dictionary words still get a best-effort pronunciation; to control them, see [Custom pronunciation](/docs/custom-pronunciation). Reference: [Vocabulary Coverage](/api-reference/other/oov)
+
+## Normalize text (`/textnorm`)
+
+Preview exactly how numbers, dates, and phone numbers will be spoken. Note the host: `optimize.rime.ai`.
+
+```bash
+curl -X POST https://optimize.rime.ai/textnorm \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"text": "Call 1-800-444-4141 on 3/4/2026"}'
+# → {"normalized":"Call one, eight hundred, four four four, four one four one on march fourth twenty twenty six"}
+```
+
+Guide: [Text normalization](/docs/text-normalization) · Reference: [Text Normalization](/api-reference/other/textnorm)
+
+## Common parameters
+
+| Parameter | Values | Notes |
+|---|---|---|
+| `speaker` | See [voices](/docs/voices) | Required. Must match the model and language. |
+| `modelId` | `coda` (flagship), `arcana`, `mistv3`, `mistv2`, `mist` (legacy) | Set it explicitly — without one, `/ws3` serves only the Mist v3 voice catalog. |
+| `text` | string | Up to 1,000 characters per request (HTTP returns `400` "text is too long" beyond that). |
+| `language` | `en`/`eng`, `es`/`spa`, `fr`/`fra`, `pt`/`por`, `de`/`deu`, `ja`/`jpn` | Must match the speaker's language. |
+| `audioFormat` (WS) | `mp3`, `mulaw`, `pcm` | HTTP uses the `Accept` header instead. |
+| `segment` (WS) | `bySentence` (default), `immediate`, `never` | When synthesis triggers; see [Segmentation](/docs/websockets-segment). |
+| `samplingRate` | `8000`–`96000`, default `24000` | Values above 24000 are upsampling. |
+
+## Where to go deeper
+
+- [API reference index](/docs/api-reference) — every endpoint across every model
+- [WebSocket API overview](/docs/websockets) — endpoint comparison, timestamps, interruption handling
+- [Build a voice agent](/docs/voice-agent-nextjs) — complete apps in Next.js, Vite, Express, plain Node, and FastAPI
+- [Rime CLI](/docs/quickstart-cli) and the [hosted MCP server](/docs/mcp) — tooling around this same API

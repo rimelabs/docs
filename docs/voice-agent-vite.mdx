@@ -1,0 +1,172 @@
+---
+title: Build a voice agent (Vite)
+description: "Build a voice agent with Rime TTS in a Vite + React app: a tiny Node proxy keeps your API key server-side while the browser records speech and plays back Rime audio."
+icon: bolt
+---
+
+This guide builds a working voice agent in a Vite + React project. Vite serves only static assets, so the one extra piece is a tiny Node server that proxies TTS requests — your Rime API key must never ship to the browser.
+
+There is no Rime npm package to install — and you don't need one. Rime is a single HTTPS API; the proxy below is plain `fetch`.
+
+```
+Browser (mic + playback)  →  /api/tts (Vite dev proxy)  →  Node proxy :3001  →  https://users.rime.ai/v1/rime-tts
+```
+
+## Prerequisites
+
+- A Rime API key from the [API Tokens page](https://app.rime.ai/tokens), exported as `RIME_API_KEY`
+- A Vite + React project (`npm create vite@latest -- --template react-ts` defaults work)
+- Express for the proxy: `npm install express`
+
+## 1. The TTS proxy server
+
+Create `server.mjs` in the project root:
+
+```javascript server.mjs
+import express from "express";
+
+const app = express();
+app.use(express.json());
+
+app.post("/api/tts", async (req, res) => {
+  const { text, speaker = "astra", modelId = "coda" } = req.body ?? {};
+  if (!text) return res.status(400).json({ error: "text is required" });
+
+  const rimeRes = await fetch("https://users.rime.ai/v1/rime-tts", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.RIME_API_KEY}`,
+      "Content-Type": "application/json",
+      Accept: "audio/mpeg", // MP3; see the API reference for Opus, WAV, PCM, μ-law
+    },
+    body: JSON.stringify({ text, speaker, modelId }),
+  });
+
+  if (!rimeRes.ok) {
+    return res
+      .status(rimeRes.status)
+      .json({ error: `Rime API error ${rimeRes.status}`, detail: await rimeRes.text() });
+  }
+
+  res.setHeader("Content-Type", "audio/mpeg");
+  res.send(Buffer.from(await rimeRes.arrayBuffer()));
+});
+
+app.listen(3001, () => console.log("Rime TTS proxy on http://localhost:3001"));
+```
+
+Wire the Vite dev server to it in `vite.config.ts`, so the browser can call a same-origin `/api/tts`:
+
+```typescript vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      "/api": "http://localhost:3001",
+    },
+  },
+});
+```
+
+Run both and verify the proxy before touching the UI:
+
+```bash
+RIME_API_KEY=your_key node server.mjs &
+npm run dev
+curl -X POST http://localhost:5173/api/tts \
+  -H 'Content-Type: application/json' \
+  -d '{"text": "Hello from my Vite voice agent."}' \
+  --output test.mp3
+```
+
+`test.mp3` should be playable audio. A 401 means `RIME_API_KEY` isn't visible to `server.mjs`.
+
+## 2. Client: mic in, Rime audio out
+
+Replace `src/App.tsx`. It uses the browser's built-in `SpeechRecognition` for input (Chrome/Edge/Safari), a stub `respond()` function as the agent brain, and the proxy for the voice:
+
+```tsx src/App.tsx
+import { useRef, useState } from "react";
+
+// Replace this stub with a call to your LLM of choice.
+function respond(userText: string): string {
+  return `You said: ${userText}. This voice is Rime's Coda model.`;
+}
+
+export default function App() {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [listening, setListening] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  async function speak(text: string) {
+    const res = await fetch("/api/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
+    const url = URL.createObjectURL(await res.blob());
+    audioRef.current!.src = url;
+    await audioRef.current!.play();
+  }
+
+  async function handleUserText(userText: string) {
+    const reply = respond(userText);
+    setMessages((m) => [...m, `You: ${userText}`, `Agent: ${reply}`]);
+    await speak(reply);
+  }
+
+  function listen() {
+    const SR =
+      (window as any).SpeechRecognition ??
+      (window as any).webkitSpeechRecognition;
+    if (!SR) return alert("SpeechRecognition not supported in this browser.");
+    const rec = new SR();
+    rec.onresult = (e: any) => handleUserText(e.results[0][0].transcript);
+    rec.onend = () => setListening(false);
+    setListening(true);
+    rec.start();
+  }
+
+  return (
+    <main style={{ maxWidth: 480, margin: "4rem auto", fontFamily: "sans-serif" }}>
+      <h1>Rime voice agent</h1>
+      <button onClick={listen} disabled={listening}>
+        {listening ? "Listening…" : "🎤 Speak"}
+      </button>
+      <ul>{messages.map((m, i) => <li key={i}>{m}</li>)}</ul>
+      <audio ref={audioRef} hidden />
+    </main>
+  );
+}
+```
+
+Open `http://localhost:5173`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
+
+<Info>
+  In production, deploy `server.mjs` (or fold the route into whatever backend you already have) and serve Vite's built assets from it — the same-origin `/api/tts` path keeps working. The API key lives only in the server environment.
+</Info>
+
+## Want streaming?
+
+For incremental synthesis — audio starts playing while later sentences are still generating — connect your **server** to Rime's WebSocket API and relay events to the browser. Rime's WebSocket endpoints authenticate with an `Authorization` header, which browser WebSockets cannot send, so the bridge always lives server-side. The bridge pattern is identical to the one in the [Next.js guide](/docs/voice-agent-nextjs#3-optional-stream-over-websockets); the `/ws3` message schema is in the [Coda WebSocket reference](/api-reference/coda/websockets-json).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
+    Endpoints, word-level timestamps, context IDs, and interruption handling.
+  </Card>
+  <Card title="Voices" icon="waveform-lines" href="/docs/voices">
+    Swap `astra` for any Coda voice across six languages.
+  </Card>
+  <Card title="Streaming formats" icon="bolt" href="/docs/streaming">
+    Choose between Opus, MP3, WAV, PCM, and μ-law for your latency budget.
+  </Card>
+  <Card title="TTS in five minutes" icon="rocket" href="/docs/quickstart-five-minute">
+    The core API walkthrough in cURL, Python, JavaScript, and TypeScript.
+  </Card>
+</CardGroup>

@@ -1,0 +1,268 @@
+---
+title: Build a voice agent (Next.js)
+description: "Build a voice agent with Rime TTS in a Next.js app: a server-side API route keeps your key safe, the browser records speech and plays Rime audio, and an optional WebSocket bridge streams synthesis in real time."
+icon: react
+---
+
+This guide builds a working voice agent in a Next.js (App Router) project: the browser captures speech, your server decides what to say, and Rime speaks the reply.
+
+There is no Rime npm package to install — and you don't need one. Rime is a single HTTPS/WebSocket API, so the only new dependency in this guide is `ws` (and only for the optional WebSocket variant).
+
+**Architecture:** the browser never talks to Rime directly. Your API key stays server-side, and the browser calls your own `/api/tts` route:
+
+```
+Browser (mic + playback)  →  POST /api/tts (Next.js route)  →  POST https://users.rime.ai/v1/rime-tts
+```
+
+## Prerequisites
+
+- A Rime API key from the [API Tokens page](https://app.rime.ai/tokens) — put it in `.env.local` as `RIME_API_KEY=...`
+- A Next.js 14+ project using the App Router (`npx create-next-app@latest` defaults work)
+
+## 1. Server: the TTS proxy route
+
+Create `app/api/tts/route.ts` (or `src/app/api/tts/route.ts` if your project uses `src/`):
+
+```typescript app/api/tts/route.ts
+export async function POST(req: Request) {
+  const { text, speaker = "astra", modelId = "coda" } = await req.json();
+
+  if (!text) {
+    return Response.json({ error: "text is required" }, { status: 400 });
+  }
+
+  const rimeRes = await fetch("https://users.rime.ai/v1/rime-tts", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.RIME_API_KEY}`,
+      "Content-Type": "application/json",
+      Accept: "audio/mpeg", // MP3; see the API reference for Opus, WAV, PCM, μ-law
+    },
+    body: JSON.stringify({ text, speaker, modelId }),
+  });
+
+  if (!rimeRes.ok) {
+    const detail = await rimeRes.text();
+    return Response.json(
+      { error: `Rime API error ${rimeRes.status}`, detail },
+      { status: rimeRes.status },
+    );
+  }
+
+  // Stream the audio straight through to the browser
+  return new Response(rimeRes.body, {
+    headers: { "Content-Type": "audio/mpeg" },
+  });
+}
+```
+
+Verify it works before touching the frontend:
+
+```bash
+npm run dev
+curl -X POST http://localhost:3000/api/tts \
+  -H 'Content-Type: application/json' \
+  -d '{"text": "Hello from my Next.js voice agent."}' \
+  --output test.mp3
+```
+
+`test.mp3` should be playable audio. If you get a 401, check that `RIME_API_KEY` is set in `.env.local` and the dev server was restarted after adding it.
+
+## 2. Client: mic in, Rime audio out
+
+Create `app/voice-agent/page.tsx`. It uses the browser's built-in `SpeechRecognition` for input (Chrome/Edge/Safari), a stub `respond()` function as the agent brain, and your `/api/tts` route for the voice:
+
+```tsx app/voice-agent/page.tsx
+"use client";
+
+import { useRef, useState } from "react";
+
+// Replace this stub with a call to your LLM of choice.
+function respond(userText: string): string {
+  return `You said: ${userText}. This voice is Rime's Coda model.`;
+}
+
+export default function VoiceAgent() {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [listening, setListening] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  async function speak(text: string) {
+    const res = await fetch("/api/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    if (!res.ok) throw new Error(`TTS failed: ${res.status}`);
+    const url = URL.createObjectURL(await res.blob());
+    audioRef.current!.src = url;
+    await audioRef.current!.play();
+  }
+
+  async function handleUserText(userText: string) {
+    const reply = respond(userText);
+    setMessages((m) => [...m, `You: ${userText}`, `Agent: ${reply}`]);
+    await speak(reply);
+  }
+
+  function listen() {
+    const SR =
+      (window as any).SpeechRecognition ??
+      (window as any).webkitSpeechRecognition;
+    if (!SR) return alert("SpeechRecognition not supported in this browser.");
+    const rec = new SR();
+    rec.onresult = (e: any) => handleUserText(e.results[0][0].transcript);
+    rec.onend = () => setListening(false);
+    setListening(true);
+    rec.start();
+  }
+
+  return (
+    <main style={{ maxWidth: 480, margin: "4rem auto", fontFamily: "sans-serif" }}>
+      <h1>Rime voice agent</h1>
+      <button onClick={listen} disabled={listening}>
+        {listening ? "Listening…" : "🎤 Speak"}
+      </button>
+      <ul>{messages.map((m, i) => <li key={i}>{m}</li>)}</ul>
+      <audio ref={audioRef} hidden />
+    </main>
+  );
+}
+```
+
+Open `http://localhost:3000/voice-agent`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
+
+## 3. Optional: stream over WebSockets
+
+The HTTP route above is the right default for most apps. Switch to WebSockets when you want **incremental synthesis** — audio starts playing while the rest of the sentence is still being generated — or barge-in handling with [word-level timestamps](/docs/websockets).
+
+Two things make the WebSocket setup different:
+
+1. Rime's WebSocket endpoints authenticate with an `Authorization` header, which **browser WebSockets cannot send** — so the bridge must live on your server. (This is also what keeps your key off the client.)
+2. Next.js route handlers can't hold WebSocket connections, so you need a small custom server.
+
+```
+Browser WS (/ws/tts)  →  server.mjs bridge  →  wss://users-ws.rime.ai/ws3  (Authorization header)
+```
+
+Install `ws`, then create `server.mjs` in the project root:
+
+```bash
+npm install ws
+```
+
+```javascript server.mjs
+import { createServer } from "node:http";
+import next from "next";
+import { WebSocketServer, WebSocket } from "ws";
+
+const app = next({ dev: process.env.NODE_ENV !== "production" });
+await app.prepare();
+const handle = app.getRequestHandler();
+
+const server = createServer(handle);
+const wss = new WebSocketServer({ server, path: "/ws/tts" });
+
+wss.on("connection", (client) => {
+  // One upstream Rime connection per browser client.
+  // speaker/modelId/audioFormat are query params; auth is a header.
+  const rime = new WebSocket(
+    "wss://users-ws.rime.ai/ws3?speaker=astra&modelId=coda&audioFormat=mp3",
+    { headers: { Authorization: `Bearer ${process.env.RIME_API_KEY}` } },
+  );
+
+  // Browser → Rime: {text: "..."} to speak, {operation: "clear"} to interrupt.
+  // Queue anything that arrives before the upstream connection finishes opening —
+  // the browser side is usually connected first, and ws drops sends on a
+  // CONNECTING socket.
+  const pending = [];
+  client.on("message", (data) => {
+    const msg = data.toString();
+    if (rime.readyState === WebSocket.OPEN) rime.send(msg);
+    else pending.push(msg);
+  });
+  rime.on("open", () => {
+    for (const msg of pending) rime.send(msg);
+    pending.length = 0;
+  });
+
+  // Rime → browser: {type: "chunk", data: <base64 mp3>}, {type: "timestamps", ...},
+  // {type: "done"} — relay verbatim and let the client decode
+  rime.on("message", (data) => {
+    if (client.readyState === WebSocket.OPEN) client.send(data.toString());
+  });
+
+  const closeBoth = () => { rime.close(); client.close(); };
+  client.on("close", closeBoth);
+  rime.on("close", closeBoth);
+  rime.on("error", (err) => {
+    client.send(JSON.stringify({ type: "error", message: String(err) }));
+  });
+});
+
+server.listen(3000, () => {
+  console.log("Next.js + Rime WS bridge on http://localhost:3000");
+});
+```
+
+Point your `dev`/`start` scripts at it:
+
+```json package.json
+{
+  "scripts": {
+    "dev": "node server.mjs",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.mjs"
+  }
+}
+```
+
+On the client, connect to your bridge and play chunks as they arrive:
+
+```typescript
+const ws = new WebSocket(`ws://${location.host}/ws/tts`);
+
+// Collect base64 MP3 chunks per utterance, play on "done".
+// (For true chunk-by-chunk playback, feed them to a MediaSource instead.)
+let chunks: Uint8Array[] = [];
+
+ws.onmessage = async (e) => {
+  const msg = JSON.parse(e.data);
+  if (msg.type === "chunk") {
+    chunks.push(Uint8Array.from(atob(msg.data), (c) => c.charCodeAt(0)));
+  }
+  if (msg.type === "done") {
+    const url = URL.createObjectURL(new Blob(chunks, { type: "audio/mpeg" }));
+    chunks = [];
+    await new Audio(url).play();
+  }
+};
+
+// Speak: sentences synthesize as they complete (segment=bySentence default)
+ws.onopen = () => ws.send(JSON.stringify({ text: "Hello from Rime over WebSockets." }));
+
+// Interrupt (barge-in): drop whatever is still buffered server-side
+function interrupt() {
+  ws.send(JSON.stringify({ operation: "clear" }));
+  chunks = [];
+}
+```
+
+The full `/ws3` message schema — `chunk`, `timestamps`, `done`, `error` events and the `flush`/`clear`/`eos` operations — is in the [Coda WebSocket reference](/api-reference/coda/websockets-json), and the [WebSocket overview](/docs/websockets) explains segmentation and interruption patterns.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
+    Endpoints, word-level timestamps, context IDs, and interruption handling.
+  </Card>
+  <Card title="Voices" icon="waveform-lines" href="/docs/voices">
+    Swap `astra` for any Coda voice across six languages.
+  </Card>
+  <Card title="Streaming formats" icon="bolt" href="/docs/streaming">
+    Choose between Opus, MP3, WAV, PCM, and μ-law for your latency budget.
+  </Card>
+  <Card title="LiveKit & Pipecat" icon="puzzle-piece" href="/docs/livekit">
+    Building on an agent framework? Use the ready-made Rime plugins instead.
+  </Card>
+</CardGroup>

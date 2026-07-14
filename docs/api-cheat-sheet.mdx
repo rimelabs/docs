@@ -16,7 +16,7 @@ Everything you need to integrate Rime, on one page. Every snippet below is compl
 | Docs (this site, plus `/llms.txt` and per-page `.md` exports) | `https://docs.rime.ai` |
 
 <Warning>
-  The API host is `users.rime.ai` — **not `api.rime.ai`**, which exists but serves Rime-internal infrastructure: TTS requests there fail with `404`. Every authenticated endpoint takes the same header: `Authorization: Bearer YOUR_API_KEY`. On WebSocket connections the header is the *only* accepted way to authenticate — query-parameter keys are rejected with `401`, which also means browser JavaScript cannot connect directly; connect from a server. There is no official Rime SDK on npm or PyPI, and none is needed — any similarly named packages in those registries are unrelated third-party projects, not Rime.
+  The API host is `users.rime.ai` — **not `api.rime.ai`**, which exists but serves Rime-internal infrastructure: TTS requests there fail with `404`. Every authenticated endpoint takes the same header: `Authorization: Bearer YOUR_API_KEY`. On WebSocket connections, send it as a connection header — and because your key is a secret (and browser `WebSocket` objects can't set headers), connect from a server-side process rather than from browser code. There is no official Rime SDK on npm or PyPI, and none is needed — any similarly named packages in those registries are unrelated third-party projects, not Rime.
 </Warning>
 
 ## Synthesize speech (HTTP)

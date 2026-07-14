@@ -13,9 +13,9 @@ icon: plug
 All WebSocket endpoints (`/ws`, `/ws2`, `/ws3`) use the same bearer token as the rest of the Rime API. Send `Authorization: Bearer YOUR_API_KEY` as a connection header when establishing the connection, and pass synthesis arguments (`speaker`, `modelId`, `audioFormat`, `lang`, …) as query parameters on the connection URL. See [API authentication](/docs/api-authentication) for how to create a key, and the per-endpoint reference pages below for complete, runnable connection code.
 
 <Warning>
-  The token **must** be sent in the `Authorization` header. The API key cannot be passed as a query parameter (`?api_key=…`) — a connection without the header is rejected with `401 missing headers`.
+  Send the token in the `Authorization` header — connections without valid credentials are rejected with `401`.
 
-  Because the browser `WebSocket` API can't set request headers, you cannot connect to these endpoints directly from browser JavaScript. Connect from a server-side process (Node, Python, etc.), or proxy the connection through your own backend — which keeps your API key off the client anyway.
+  Your API key is a secret: keep it out of client-side code. The browser `WebSocket` API can't set request headers, so connect from a server-side process (Node, Python, etc.), or proxy the connection through your own backend. The [voice-agent guides](/docs/voice-agent-nextjs#3-optional-stream-over-websockets) show a complete browser ↔ server ↔ Rime bridge.
 </Warning>
 
 ## Choosing an endpoint

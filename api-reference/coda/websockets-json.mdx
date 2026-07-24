@@ -14,7 +14,7 @@ Rime also has an implementation that sends and receives events as JSON objects.
 Like the other implementation, all synthesis arguments are provided as query
 parameters when establishing the connection.
 
-The websocket API buffers inputs up to on of the following punctuation
+The WebSocket API buffers inputs up to one of the following punctuation
 characters: `.`, `?`, `!`. This is most pertinent for the initial messages
 sent to the API, as synthesis won't begin until there are sufficient
 tokens to generate audio with natural prosody. After the first synthesis
@@ -52,8 +52,8 @@ examples:
 ```
 
 Context IDs can be provided, which will be attached to subsequent messages
-that the server sends back to the client. Rime will not maintain multiple s
-imultaneous context ids. The events will contain the most recent context ID
+that the server sends back to the client. Rime will not maintain multiple
+simultaneous context IDs. The events will contain the most recent context ID
 at the time that audio was requested. In the above examples, even if both
 messages are received by the server before it sends any audio, the audio
 response for the first sentence will be tagged with `contextId: null`,
@@ -180,7 +180,7 @@ type ErrorEvent = {
   One of `mp3`, `mulaw`, or `pcm`
 </ParamField>
 
-<ParamField body="language" type="string" default="eng">
+<ParamField body="lang" type="string" default="eng">
   If provided, the language must match the language spoken by the provided speaker. Both the 2-letter ISO 639-1 and the 3-letter ISO 639-2/3 form are accepted:
 
   | 639-1 | 639-2/3 | Language   |

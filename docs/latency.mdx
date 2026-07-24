@@ -72,7 +72,7 @@ with requests.post(
         "speaker": "astra",
         "text": "Hello from Coda.",
         "modelId": "coda",
-        "language": "en",
+        "lang": "en",
     },
     stream=True,
 ) as response:
@@ -87,7 +87,7 @@ with requests.post(
 <Tip>For the lowest cloud latency, use `mistv3` — typical TTFB is well below 100ms.</Tip>
 
 - Use the API parameter [`noTextNormalization`](/docs/text-normalization), which turns off text normalization, to reduce the amount of computation needed to prepare input text for TTS inference. This can safely be used in cases where there are no digits, abbreviations, or tricky punctuation, such as in `Yes, I grew up on one twenty-three Main Street in Oakland, California.` instead of `Yes, I grew up on 123 Main St. in Oakland, CA.`.
-- Request audio that meets the needs of your application. Remember: Smaller payloads move across the network more quickly. For example, if you're building an application for telephony, request 8000kHz-sampled audio using the `samplingRate` parameter.
+- Request audio that meets the needs of your application. Remember: Smaller payloads move across the network more quickly. For example, if you're building an application for telephony, request 8 kHz (8,000 Hz) audio using the `samplingRate` parameter.
 <Info>Rime's models produce PCM audio by default, and conversion and downsampling must take place for sampling rates other than 22kHz. Still, the reduction in payload size and therefore network overhead more than makes up for increased server processing time.</Info>
 
 ## Network latency by region

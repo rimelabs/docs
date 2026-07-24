@@ -47,7 +47,7 @@ With an on-premises deployment, all sensitive data remains within your corporate
 
 - Supported Linux Distributions
   - Debian 12 (`bookworm`), x86_64
-  - Ubuntu Server 24.04 (`jammy`), x86_64
+  - Ubuntu Server 24.04 (`noble`), x86_64
 - NVIDIA drivers
   - Minimum: `525.60.13`
   - Recommended: `570.133.20` or higher
@@ -217,8 +217,8 @@ If you want to serve multiple Arcana languages via a single API instance, you ca
 
 ```yaml compose.yml
 services:
-  en-api: us-docker.pkg.dev/rime-labs/api/service:<tag>
-    image:
+  en-api:
+    image: us-docker.pkg.dev/rime-labs/api/service:<tag>
     depends_on:
       - en-model
       - es-model
@@ -357,10 +357,10 @@ curl http://localhost:8000/health
 This should return:
 ```json
 {
-    "apiStatus":"ok",
-    "timestamp":timestamp,
-    "licenseStatus":"valid"/"expired-or-not-set",
-    "modelReachable":true/false
+  "apiStatus": "ok",
+  "timestamp": "2026-07-24T18:00:00.000Z",
+  "licenseStatus": "valid",
+  "modelReachable": true
 }
 ```
 
@@ -415,14 +415,12 @@ Sample response file: [`result.pcm`](https://drive.google.com/file/d/1pwkGW9jCe1
 ### WebSocket endpoints
 
 #### JSON websockets
-The JSON WebSocket endpoint compatible with both `arcana` models as well as `mist` will be served at port `8003`.  For example, `ws://localhost:8003`, which will be equivalent to our [cloud websockets-json API.
-See the [arcana json websockets docs](/api-reference/arcana/websockets-json) and the [mist json websockets docs](/api-reference/endpoint/websockets-json) depending
+The JSON WebSocket endpoint compatible with both `arcana` models as well as `mist` will be served at port `8003`. For example, `ws://localhost:8003`, which is equivalent to our [cloud JSON WebSocket API](/docs/websockets).
+See the [Arcana JSON WebSocket docs](/api-reference/arcana/websockets-json) and the [Mist JSON WebSocket docs](/api-reference/mistv2/websockets-json) depending
 on which model backend you have configured.
 
 #### Non-JSON websockets
+The non-JSON WebSocket endpoint will be served at port `8002`. For example, `ws://localhost:8002`, which is equivalent to our [cloud WebSocket API](/docs/websockets).
 
-The non-JSON WebSocket endpoint will be served at port `8002`.  For example, `ws://localhost:8002`, which will be equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).
-`
 #### Deprecated
-
-A **deprecated** websockets endpoint will be served on port `8001` that is **only** compatible with the mist model lines, and is equivalent to our [cloud websockets-json API](/api-reference/endpoint/websockets-json).
+A **deprecated** WebSocket endpoint is served on port `8001`. It is **only** compatible with the Mist model family; use the [current WebSocket endpoints](/docs/websockets) for new integrations.

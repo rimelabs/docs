@@ -83,11 +83,11 @@ For benchmarked latency and throughput numbers, see [Latency](/docs/latency#real
 
 **Model v1 was released in April 2022 and has been deprecated.**
 
-## Additional controls (Arcana only)
+## Additional controls (Coda and Arcana)
 
-<Note>The controls in this section apply to Arcana only. Coda, Mist v3, and Mist v2 do not expose `temperature`, `top_p`, or `repetition_penalty`.</Note>
+<Note>The controls in this section apply to Coda and Arcana. Mist v3 and Mist v2 do not expose `temperature`, `top_p`, or `repetition_penalty`.</Note>
 
-Arcana also supports several additional controls due to its LLM backbone. We recommend leaving these on the default values.
+Coda and Arcana support several additional controls due to their LLM backbones. We recommend leaving these on the default values.
 
 * `temperature`: Controls the randomness of the generated speech.
   * **Low** (0): Produces more predictable and focused speech.
@@ -99,4 +99,4 @@ Arcana also supports several additional controls due to its LLM backbone. We rec
   * **Low** (0): Restricts the model to the most probable sounds, resulting in more monotonic speech.
   * **High** (1): Allows for a broader range of sound choices, enhancing the naturalness and variability of speech.
 
-See the [Arcana API reference pages](/api-reference/arcana/streaming-mp3) for more details.
+See the [API reference](/docs/api-reference) for endpoint-specific details.

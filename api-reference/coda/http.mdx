@@ -38,14 +38,14 @@ Still accepted for backwards compatibility; new code should use the RFC types ab
   Must be one of the flagship Coda voices <a href="/docs/voices">listed in our documentation</a>.
 </ParamField>
 <ParamField body="text" type="string" required>
-  The text you'd like spoken. Unlimited via API. Character limit per request is 3,000 in the dashboard UI.
+  The text you'd like spoken. The API accepts up to 1,000 characters per request.
 </ParamField>
 
 <ParamField body="modelId" type="string">
   Choose `coda` for Rime's most realistic conversational voices.
 </ParamField>
 
-<ParamField body="language" type="string" default="en">
+<ParamField body="lang" type="string" default="en">
   If provided, the language must match the language spoken by the provided speaker. Both the 2-letter ISO 639-1 and the 3-letter ISO 639-2/3 form are accepted:
 
   | 639-1 | 639-2/3 | Language   |
@@ -84,7 +84,7 @@ curl --request POST \
   "text": "Hello from Rime!",
   "modelId": "coda",
   "speaker": "astra",
-  "language": "en",
+  "lang": "en",
   "samplingRate": 24000
 }'
 ```

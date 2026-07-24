@@ -33,7 +33,7 @@ Coda, Arcana, and Mist v3 also accept `speedAlpha`, but it works in the **opposi
 </Note>
 
 <Note>
-`timeScaleFactor` works over the HTTP API only. On the WebSocket endpoints (`/ws`, `/ws2`, `/ws3`), the parameter is silently ignored — use `speedAlpha` instead.
+`timeScaleFactor` works over both HTTP and WebSocket endpoints. For `/ws`, `/ws2`, and `/ws3`, pass it as a query parameter when opening the connection.
 </Note>
 
 ### Mist v2

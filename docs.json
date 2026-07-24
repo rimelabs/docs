@@ -334,7 +334,14 @@
   },
   "contextual": {
     "options": [
-      "copy"
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "cursor",
+      "vscode",
+      "mcp",
+      "add-mcp"
     ]
   },
   "api": {

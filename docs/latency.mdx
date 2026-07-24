@@ -50,7 +50,7 @@ Assuming the client is able to stream audio, whether on-device or through a tele
 The image above contains a plot of both response time and TTFB for the following request body to our streaming PCM endpoint:
 
 ```bash
-curl -X POST http://users.rime.ai/v1/rime-tts \
+curl -X POST https://users.rime.ai/v1/rime-tts \
   -H 'Accept: audio/L16' \
   -H 'Authorization: Bearer $RIME_API_KEY' \
   -d '{"text": "I love the book that she gave me. And I was so happy that she gave it to me.", "speaker": "cove",  "modelId": "mistv3"}'

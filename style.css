@@ -1,4 +1,13 @@
-/* Keep the assistant available from the navbar without covering page content. */
+/* Remove Mintlify's assistant UI and reclaim any reserved panel space. */
+html {
+  --assistant-sheet-width: 0px !important;
+}
+
+#assistant-entry,
+#assistant-entry-mobile,
+#ask-assistant-code-block-button,
+#chat-assistant-sheet,
+chat-assistant-sheet,
 chat-assistant-floating-input {
   display: none !important;
 }

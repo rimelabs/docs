@@ -8,6 +8,7 @@ html {
 #ask-assistant-code-block-button,
 #chat-assistant-sheet,
 chat-assistant-sheet,
+.chat-assistant-floating-input,
 chat-assistant-floating-input {
   display: none !important;
 }

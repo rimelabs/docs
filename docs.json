@@ -17,7 +17,8 @@
   "favicon": "/rime-social-logo.png",
   "logo": {
     "light": "/logo/light.png",
-    "dark": "/logo/dark.png"
+    "dark": "/logo/dark.png",
+    "href": "/"
   },
   "navbar": {
     "links": [

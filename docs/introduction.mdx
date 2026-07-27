@@ -1,209 +1,80 @@
 ---
-title: Rime documentation
-description: "Build real-time voice experiences with Rime—from your first text-to-speech request to production streaming, voice agents, and private deployments."
-mode: custom
+title: Introduction
+description: "A beginner-friendly introduction to Rime and the basic ideas you need before generating your first audio."
 ---
 
-<div className="mx-auto max-w-5xl px-6 py-16 lg:py-24">
-  <div className="mx-auto max-w-3xl text-center">
-    <p className="text-sm font-semibold uppercase tracking-wider text-orange-700 dark:text-orange-400">
-      Rime documentation
-    </p>
-    <h1 className="mt-4 text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-5xl">
-      Build real-time voice experiences
-    </h1>
-    <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-      Everything you need to generate natural speech, build responsive voice agents, and run Rime in production.
-    </p>
-    <div className="mt-8 flex flex-wrap justify-center gap-3">
-      <a className="rounded-lg bg-orange-700 px-5 py-3 text-sm font-semibold text-white no-underline transition-colors hover:bg-orange-800 dark:bg-orange-600 dark:hover:bg-orange-500" href="/docs/quickstart-five-minute">
-        Generate your first audio
-      </a>
-      <a className="rounded-lg border border-zinc-300 px-5 py-3 text-sm font-semibold text-zinc-900 no-underline transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-900" href="/docs/quickstart-livekit">
-        Build a voice agent
-      </a>
-      <a className="rounded-lg border border-zinc-300 px-5 py-3 text-sm font-semibold text-zinc-900 no-underline transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-900" href="/docs/api-reference">
-        API reference
-      </a>
-    </div>
-    <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-500">
-      Need a key? <a href="https://app.rime.ai/tokens">Create an API token</a> in the Rime dashboard.
-    </p>
-  </div>
+Rime turns written text into natural-sounding speech.
 
-  <div className="mt-16">
-    <div className="mb-6">
-      <p className="text-sm font-semibold uppercase tracking-wider text-orange-700 dark:text-orange-400">First request</p>
-      <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Go from text to audio</h2>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-        Set <code>RIME_API_KEY</code>, run one of these examples, and play the generated <code>hello.mp3</code> file.
-      </p>
-    </div>
+You provide the words and choose a voice. Rime returns audio that your application can play, save, or stream as it is generated. You do not need previous experience with speech synthesis or audio engineering to get started.
 
-    <CodeGroup>
-    ```bash cURL
-    curl --request POST \
-      --url https://users.rime.ai/v1/rime-tts \
-      --header "Authorization: Bearer $RIME_API_KEY" \
-      --header "Content-Type: application/json" \
-      --header "Accept: audio/mpeg" \
-      --output hello.mp3 \
-      --data '{
-        "speaker": "astra",
-        "text": "Hello from Rime.",
-        "modelId": "coda",
-        "lang": "en"
-      }'
-    ```
+## What can you build with Rime?
 
-    ```python Python
-    import os
-    import requests
+<Columns cols={3}>
+  <Card title="Add a voice to an application" icon="wave-sine">
+    Turn messages, articles, lessons, notifications, or any other text into speech.
+  </Card>
 
-    response = requests.post(
-        "https://users.rime.ai/v1/rime-tts",
-        headers={
-            "Authorization": f"Bearer {os.environ['RIME_API_KEY']}",
-            "Accept": "audio/mpeg",
-        },
-        json={
-            "speaker": "astra",
-            "text": "Hello from Rime.",
-            "modelId": "coda",
-            "lang": "en",
-        },
-    )
-    response.raise_for_status()
+  <Card title="Create a conversational voice agent" icon="microphone-lines">
+    Give an AI assistant a voice so it can respond naturally during a conversation.
+  </Card>
 
-    with open("hello.mp3", "wb") as audio:
-        audio.write(response.content)
-    ```
+  <Card title="Generate and stream audio" icon="bolt">
+    Create complete audio files or start playing speech while the rest is still being generated.
+  </Card>
+</Columns>
 
-    ```javascript JavaScript
-    import { writeFile } from "node:fs/promises";
+## How Rime works
 
-    const response = await fetch("https://users.rime.ai/v1/rime-tts", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.RIME_API_KEY}`,
-        "Content-Type": "application/json",
-        Accept: "audio/mpeg",
-      },
-      body: JSON.stringify({
-        speaker: "astra",
-        text: "Hello from Rime.",
-        modelId: "coda",
-        lang: "en",
-      }),
-    });
+<Steps>
+  <Step title="Provide the words">
+    Start with any text you want your listener to hear.
+  </Step>
 
-    if (!response.ok) throw new Error(`Rime API error: ${response.status}`);
-    await writeFile("hello.mp3", Buffer.from(await response.arrayBuffer()));
-    ```
-    </CodeGroup>
+  <Step title="Choose how it should sound">
+    Select a **voice** for the speaker and a **model** for the speech-generation behavior. The quickstart gives you working defaults, so you do not need to make these decisions immediately.
+  </Step>
 
-    <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-500">
-      Want the complete walkthrough? Follow <a href="/docs/quickstart-five-minute">TTS in five minutes</a>. Prefer the terminal? Try the <a href="/docs/quickstart-cli">Rime CLI</a>.
-    </p>
-  </div>
+  <Step title="Receive the audio">
+    Rime generates speech that your application can save, play, or stream to a listener.
+  </Step>
+</Steps>
 
-  <div className="mt-20">
-    <p className="text-sm font-semibold uppercase tracking-wider text-orange-700 dark:text-orange-400">Choose what you're building</p>
-    <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Start with the path that matches your application</h2>
-    <p className="mt-3 max-w-3xl text-zinc-600 dark:text-zinc-400">
-      Rime exposes one HTTP and WebSocket API surface. Choose a workflow, then move into the implementation and reference material you need.
-    </p>
+## A few terms you will see
 
-    <div className="mt-8">
-      <Columns cols={3}>
-        <Card title="Add speech to an application" icon="wave-sine" href="/docs/quickstart-five-minute">
-          Generate speech over HTTP, stream the response, and play it in your application.
-        </Card>
-        <Card title="Build a real-time voice agent" icon="microphone-lines" href="/docs/quickstart-livekit">
-          Connect Rime to an STT, LLM, and audio transport for responsive conversations.
-        </Card>
-        <Card title="Deploy on your infrastructure" icon="server" href="/docs/on-prem/quickstart">
-          Run Rime privately with Docker Compose or Kubernetes.
-        </Card>
-      </Columns>
-    </div>
-  </div>
+<Columns cols={2}>
+  <Card title="Text-to-speech (TTS)" icon="comment-audio">
+    Converting written words into spoken audio.
+  </Card>
 
-  <div className="mt-20">
-    <p className="text-sm font-semibold uppercase tracking-wider text-orange-700 dark:text-orange-400">Developer journey</p>
-    <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">From first audio to production</h2>
-    <p className="mt-3 max-w-3xl text-zinc-600 dark:text-zinc-400">
-      Follow the lifecycle or jump directly to the problem you're solving.
-    </p>
+  <Card title="Voice" icon="headphones">
+    The individual speaker your listeners hear.
+  </Card>
 
-    <div className="mt-8">
-      <Columns cols={4}>
-        <Card title="Get started" icon="rocket">
-          - [Generate your first audio](/docs/quickstart-five-minute)
-          - [Create an API token](https://app.rime.ai/tokens)
-          - [Authenticate requests](/docs/api-authentication)
-          - [Choose a voice](/docs/voices)
-        </Card>
-        <Card title="Build" icon="code">
-          - [Stream audio over HTTP](/docs/streaming)
-          - [Use WebSockets](/docs/websockets)
-          - [Build with LiveKit](/docs/quickstart-livekit)
-          - [Integrate with Pipecat](/docs/pipecat)
-        </Card>
-        <Card title="Customize" icon="sliders">
-          - [Choose a model](/docs/models)
-          - [Guide delivery with prompts](/docs/prompting)
-          - [Control pronunciation](/platform/pronunciation-control)
-          - [Format text](/docs/text-normalization)
-        </Card>
-        <Card title="Operate" icon="gauge-simple-max">
-          - [Reduce latency](/docs/latency)
-          - [Select a region](/docs/regional-endpoints)
-          - [Deploy on-prem](/docs/on-prem/quickstart)
-          - [Review privacy and compliance](/docs/privacy-compliance)
-        </Card>
-      </Columns>
-    </div>
-  </div>
+  <Card title="Model" icon="layer-group">
+    The speech engine that determines capabilities such as language support and control.
+  </Card>
 
-  <div className="mt-20">
-    <p className="text-sm font-semibold uppercase tracking-wider text-orange-700 dark:text-orange-400">Models and voices</p>
-    <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Choose the right sound for your application</h2>
-    <p className="mt-3 max-w-3xl text-zinc-600 dark:text-zinc-400">
-      Compare model capabilities, then browse voices by model and language before choosing what to put into production.
-    </p>
+  <Card title="Streaming" icon="signal-stream">
+    Playing the beginning of the audio before the complete response has finished generating.
+  </Card>
+</Columns>
 
-    <div className="mt-8">
-      <Columns cols={2}>
-        <Card title="Compare models" icon="layer-group" href="/docs/models">
-          Understand the tradeoffs across Coda, Arcana, and Mist before choosing a model ID.
-        </Card>
-        <Card title="Browse voices" icon="headphones" href="/docs/voices">
-          Explore the voice catalog and find voices available for your model and language.
-        </Card>
-      </Columns>
-    </div>
-  </div>
+## Start with one sentence
 
-  <div className="mt-20 border-t border-zinc-200 pt-12 dark:border-zinc-800">
-    <p className="text-sm font-semibold uppercase tracking-wider text-orange-700 dark:text-orange-400">Resources</p>
-    <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Keep building</h2>
+Your first milestone is simply to turn a sentence into an audio file. The five-minute guide walks through creating an API token, sending your first request, and playing the result.
 
-    <div className="mt-8">
-      <Columns cols={4}>
-        <Card title="API reference" icon="brackets-curly" href="/docs/api-reference">
-          Endpoints, parameters, formats, and examples.
-        </Card>
-        <Card title="API cheat sheet" icon="rectangle-list" href="/docs/api-cheat-sheet">
-          Common requests and endpoints on one page.
-        </Card>
-        <Card title="CLI" icon="terminal" href="/docs/quickstart-cli">
-          Generate and inspect audio from your terminal.
-        </Card>
-        <Card title="MCP server" icon="robot" href="/docs/mcp">
-          Use Rime from Claude, Codex, and compatible IDEs.
-        </Card>
-      </Columns>
-    </div>
-  </div>
-</div>
+<Columns cols={2}>
+  <Card title="Generate your first audio" icon="rocket" href="/docs/quickstart-five-minute">
+    Follow the beginner walkthrough from account setup to a working audio file.
+  </Card>
+
+  <Card title="Build a voice agent" icon="microphone" href="/docs/quickstart-livekit">
+    Start here if your goal is a real-time conversational assistant.
+  </Card>
+</Columns>
+
+<Tip>
+  Whether you write code yourself or work with an AI coding assistant, you can follow the quickstarts as written. They include the commands, examples, and links you need for the first working result.
+</Tip>
+
+After your first request, return to the [documentation home](/) to choose a model, customize speech, explore integrations, or prepare your application for production.

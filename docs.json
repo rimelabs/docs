@@ -52,8 +52,20 @@
             "pages": [
               "docs/quickstart-five-minute",
               "docs/api-authentication",
+              "docs/quickstart-cli",
+              "docs/mcp",
+              "docs/regional-endpoints"
+            ]
+          },
+          {
+            "group": "Voice agents",
+            "icon": "messages",
+            "root": "docs/voice-agents",
+            "pages": [
+              "docs/quickstart-livekit",
               {
-                "group": "Build a voice agent",
+                "group": "Direct API starters",
+                "icon": "code",
                 "pages": [
                   "docs/voice-agent-nextjs",
                   "docs/voice-agent-vite",
@@ -61,11 +73,7 @@
                   "docs/voice-agent-node",
                   "docs/voice-agent-fastapi"
                 ]
-              },
-              "docs/quickstart-cli",
-              "docs/quickstart-livekit",
-              "docs/mcp",
-              "docs/regional-endpoints"
+              }
             ]
           },
           {

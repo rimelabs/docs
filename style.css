@@ -1,0 +1,18 @@
+/* Keep the assistant available from the navbar without covering page content. */
+chat-assistant-floating-input {
+  display: none !important;
+}
+
+/* The standalone homepage is not part of any visible documentation section. */
+html[data-current-path="/"] .nav-tabs-item[data-active="true"] {
+  color: rgb(75 85 99);
+  text-shadow: none;
+}
+
+html.dark[data-current-path="/"] .nav-tabs-item[data-active="true"] {
+  color: rgb(156 163 175);
+}
+
+html[data-current-path="/"] .nav-tabs-item[data-active="true"] > div {
+  background-color: transparent !important;
+}

@@ -1,80 +1,74 @@
 ---
 title: Introduction
-description: "A beginner-friendly introduction to Rime and the basic ideas you need before generating your first audio."
+description: "An overview of Rime's speech platform, product capabilities, and developer interfaces."
 ---
 
-Rime turns written text into natural-sounding speech.
+Rime is a speech platform for turning text into natural, responsive audio. It powers spoken content, conversational agents, telephony, accessibility features, games, and any product that needs a voice.
 
-You provide the words and choose a voice. Rime returns audio that your application can play, save, or stream as it is generated. You do not need previous experience with speech synthesis or audio engineering to get started.
+The [Rime dashboard](https://app.rime.ai/) provides a visual workspace for exploring voices and generating speech. The same speech capabilities are available to applications and developer tools through Rime's APIs.
 
-## What can you build with Rime?
-
-<Columns cols={3}>
-  <Card title="Add a voice to an application" icon="wave-sine">
-    Turn messages, articles, lessons, notifications, or any other text into speech.
-  </Card>
-
-  <Card title="Create a conversational voice agent" icon="microphone-lines">
-    Give an AI assistant a voice so it can respond naturally during a conversation.
-  </Card>
-
-  <Card title="Generate and stream audio" icon="bolt">
-    Create complete audio files or start playing speech while the rest is still being generated.
-  </Card>
-</Columns>
-
-## How Rime works
-
-<Steps>
-  <Step title="Provide the words">
-    Start with any text you want your listener to hear.
-  </Step>
-
-  <Step title="Choose how it should sound">
-    Select a **voice** for the speaker and a **model** for the speech-generation behavior. The quickstart gives you working defaults, so you do not need to make these decisions immediately.
-  </Step>
-
-  <Step title="Receive the audio">
-    Rime generates speech that your application can save, play, or stream to a listener.
-  </Step>
-</Steps>
-
-## A few terms you will see
+## What you can do with Rime
 
 <Columns cols={2}>
-  <Card title="Text-to-speech (TTS)" icon="comment-audio">
-    Converting written words into spoken audio.
+  <Card title="Generate speech" icon="waveform" href="/docs/quickstart-five-minute">
+    Turn text into playable or downloadable audio in formats suited to web, mobile, telephony, and media workflows.
   </Card>
 
-  <Card title="Voice" icon="headphones">
-    The individual speaker your listeners hear.
+  <Card title="Stream speech in real time" icon="signal-stream" href="/docs/streaming">
+    Play audio as it is generated, or send text incrementally for low-latency conversations and voice agents.
   </Card>
 
-  <Card title="Model" icon="layer-group">
-    The speech engine that determines capabilities such as language support and control.
+  <Card title="Choose voices, models, and languages" icon="microphone-lines" href="/docs/voices">
+    Browse distinct speakers and select the speech model, language, and sound that fit your application.
   </Card>
 
-  <Card title="Streaming" icon="signal-stream">
-    Playing the beginning of the audio before the complete response has finished generating.
+  <Card title="Shape how speech sounds" icon="sliders" href="/docs/prompting">
+    Guide delivery, pacing, spelling, pauses, pronunciation, and the way numbers, dates, and other text are spoken.
+  </Card>
+
+  <Card title="Build voice agents" icon="messages" href="/docs/quickstart-livekit">
+    Use Rime as the speech layer in conversational AI, customer support, telephony, and interactive assistants.
+  </Card>
+
+  <Card title="Connect voice platforms" icon="puzzle-piece" href="/docs/livekit">
+    Integrate with LiveKit, Pipecat, Vapi, Daily, SignalWire, VideoSDK, and other voice application frameworks.
+  </Card>
+
+  <Card title="Create a custom voice" icon="clone" href="/platform/voice-cloning">
+    Make a branded enterprise voice available to the same speech API as Rime's voice catalog.
+  </Card>
+
+  <Card title="Run Rime in your environment" icon="server" href="/docs/on-prem/quickstart">
+    Use Rime's regional cloud endpoints or deploy supported models on your own infrastructure.
   </Card>
 </Columns>
 
-## Start with one sentence
-
-Your first milestone is simply to turn a sentence into an audio file. The five-minute guide walks through creating an API token, sending your first request, and playing the result.
+## Work with Rime
 
 <Columns cols={2}>
-  <Card title="Generate your first audio" icon="rocket" href="/docs/quickstart-five-minute">
-    Follow the beginner walkthrough from account setup to a working audio file.
+  <Card title="Dashboard" icon="browser" href="https://app.rime.ai/">
+    Audition voices, generate audio, inspect normalized text, create API tokens, manage teams, and review billing.
   </Card>
 
-  <Card title="Build a voice agent" icon="microphone" href="/docs/quickstart-livekit">
-    Start here if your goal is a real-time conversational assistant.
+  <Card title="HTTP and WebSocket APIs" icon="brackets-curly" href="/docs/api-reference">
+    Generate complete audio responses, stream audio, receive word timestamps, list voices, and use Rime's language tools.
+  </Card>
+
+  <Card title="Application code" icon="code" href="/docs/quickstart-five-minute">
+    Use standard HTTP and WebSocket clients from Python, JavaScript, Go, or any server-side language; no Rime-specific SDK is required.
+  </Card>
+
+  <Card title="CLI" icon="terminal" href="/docs/quickstart-cli">
+    Log in, generate, play, save, and inspect speech from a terminal or automation script.
+  </Card>
+
+  <Card title="MCP server" icon="robot" href="/docs/mcp">
+    Let Claude, Codex, and compatible tools browse voices, generate samples, inspect pronunciation and text normalization, and scaffold integrations.
+  </Card>
+
+  <Card title="Application integrations" icon="plug" href="/docs/pipecat">
+    Add Rime to existing voice-agent frameworks, web applications, communication platforms, and AI development tools.
   </Card>
 </Columns>
 
-<Tip>
-  Whether you write code yourself or work with an AI coding assistant, you can follow the quickstarts as written. They include the commands, examples, and links you need for the first working result.
-</Tip>
-
-After your first request, return to the [documentation home](/) to choose a model, customize speech, explore integrations, or prepare your application for production.
+One Rime API token authenticates the API, CLI, MCP tools, and supported integrations. Tokens, team access, and billing are managed in the [Rime dashboard](https://app.rime.ai/).

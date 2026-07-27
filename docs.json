@@ -36,6 +36,14 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Home",
+        "hidden": true,
+        "searchable": true,
+        "pages": [
+          "index"
+        ]
+      },
+      {
         "tab": "Documentation",
         "groups": [
           {

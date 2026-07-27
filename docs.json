@@ -38,7 +38,7 @@
         "tab": "Documentation",
         "groups": [
           {
-            "group": "Introduction",
+            "group": "Start here",
             "pages": [
               "docs/introduction",
               "docs/api-cheat-sheet"

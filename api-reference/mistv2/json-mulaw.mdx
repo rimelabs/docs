@@ -89,9 +89,9 @@ payload = {
     "lang": "eng",
     "audioFormat": "mulaw",
     "speedAlpha": 1.0,
-    "noTextNormalization": False
-    "pauseBetweenBrackets": false,
-    "phonemizeBetweenBrackets": false
+    "noTextNormalization": False,
+    "pauseBetweenBrackets": False,
+    "phonemizeBetweenBrackets": False
 }
 headers = {
     "Accept": "application/json",
@@ -168,7 +168,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\: \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"mulaw\",\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"mulaw\",\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 

@@ -41,7 +41,7 @@ curl --request POST \
   "text": "Streaming audio from Rime, as it is generated.",
   "modelId": "coda",
   "speaker": "astra",
-  "language": "en"
+  "lang": "en"
 }'
 ```
 
@@ -59,7 +59,7 @@ with requests.post(
         "text": "Streaming audio from Rime, as it is generated.",
         "modelId": "coda",
         "speaker": "astra",
-        "language": "en",
+        "lang": "en",
     },
     stream=True,
 ) as response:

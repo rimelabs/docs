@@ -174,7 +174,7 @@ func main() {
 
   url := "https://users.rime.ai/v1/rime-tts"
 
-  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\: \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"ogg\",\n  \"samplingRate\": 24000,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
+  payload := strings.NewReader("{\n  \"speaker\": \"<string>\",\n  \"text\": \"<string>\",\n  \"modelId\": \"<string>\",\n  \"lang\": \"eng\",\n  \"audioFormat\": \"ogg\",\n  \"samplingRate\": 24000,\n  \"speedAlpha\": 1.0,\n  \"noTextNormalization\": false\n}")
 
   req, _ := http.NewRequest("POST", url, payload)
 

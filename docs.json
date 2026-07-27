@@ -21,12 +21,6 @@
     "href": "/"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Homepage",
-        "href": "https://rime.ai/"
-      }
-    ],
     "primary": {
       "type": "button",
       "label": "Dashboard",

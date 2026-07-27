@@ -12,6 +12,26 @@ chat-assistant-floating-input {
   display: none !important;
 }
 
+/* Pair the Rime wordmark with the documentation label. */
+a[href="/"]:has(> .nav-logo) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+a[href="/"]:has(> .nav-logo)::after {
+  color: rgb(24 24 27);
+  content: "docs" / "";
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+html.dark a[href="/"]:has(> .nav-logo)::after {
+  color: rgb(244 244 245);
+}
+
 /* The standalone homepage is not part of any visible documentation section. */
 html[data-current-path="/"] .nav-tabs-item[data-active="true"] {
   color: rgb(75 85 99);

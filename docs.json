@@ -1848,11 +1848,6 @@
       "permanent": false
     },
     {
-      "source": "/docs/voice-agents",
-      "destination": "/docs/quickstart-livekit",
-      "permanent": false
-    },
-    {
       "source": "/docs/voice-details",
       "destination": "/api-reference/data/voice-details",
       "permanent": false

@@ -1,12 +1,12 @@
 ---
 title: Build a voice agent (Express)
-description: "Build a voice agent with Rime TTS on an Express server: one route proxies synthesis so your API key stays server-side while the browser records speech and plays back Rime audio."
+description: "Build a minimal voice-agent loop on Express while one server-side route protects your Rime API key."
 icon: node-js
 ---
 
-This guide builds a working voice agent on Express: the browser captures speech, your Express server decides what to say, and Rime speaks the reply.
+Build a minimal voice-agent loop on one Express server: the browser captures speech, your server decides what to say, and Rime speaks the reply. This starter uses browser speech recognition and a stub response function; replace both with production components.
 
-There is no Rime npm package to install — and you don't need one. Rime is a single HTTPS API; the route below is plain `fetch`, and Express is the only dependency.
+Keep `RIME_API_KEY` on the server and call Rime over HTTPS with `fetch`. No Rime-specific npm package is required; Express is the only dependency.
 
 ```
 Browser (mic + playback)  →  POST /api/tts (Express)  →  POST https://users.rime.ai/v1/rime-tts
@@ -136,13 +136,13 @@ Create `index.html` next to `server.mjs`. It uses the browser's built-in `Speech
 
 Open `http://localhost:3000`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
 
-## Want streaming?
+## Add streaming when latency matters
 
-For incremental synthesis — audio starts playing while later sentences are still generating — attach a WebSocket bridge to the same HTTP server: browser WS ↔ Express server ↔ `wss://users-ws.rime.ai/ws3` with header auth. Rime's WebSocket endpoints authenticate with an `Authorization` header, which browser WebSockets cannot send, so the bridge always lives server-side. The complete bridge implementation (using the `ws` package with `new WebSocketServer({ server })`) is in the [Next.js guide](/docs/voice-agent-nextjs#3-optional-stream-over-websockets) — it works unchanged with Express's underlying HTTP server via `const server = app.listen(3000)`. The `/ws3` message schema is in the [Coda WebSocket reference](/api-reference/coda/websockets-json).
+For incremental synthesis, attach a WebSocket bridge to the same HTTP server: browser WS ↔ Express server ↔ `wss://users-ws.rime.ai/ws3` with header authentication. Audio can then start while later sentences are still generating. Browser WebSockets cannot send the required `Authorization` header, so the bridge stays server-side. The [Next.js guide](/docs/voice-agent-nextjs#3-stream-over-websockets-when-latency-matters) provides the complete bridge; it works with Express's HTTP server through `const server = app.listen(3000)`. The [Coda WebSocket reference](/api-reference/coda/websockets-json) defines the `/ws3` schema.
 
-## Next steps
+## Production building blocks
 
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
     Endpoints, word-level timestamps, context IDs, and interruption handling.
   </Card>
@@ -153,6 +153,6 @@ For incremental synthesis — audio starts playing while later sentences are sti
     Choose between Opus, MP3, WAV, PCM, and μ-law for your latency budget.
   </Card>
   <Card title="Plain Node (no framework)" icon="terminal" href="/docs/voice-agent-node">
-    The same agent with zero dependencies — just node:http and built-in fetch.
+    Build the same starter with only `node:http` and built-in `fetch`.
   </Card>
-</CardGroup>
+</Columns>

@@ -11,7 +11,7 @@ All requests require authentication with a bearer token in the `Authorization` h
 
 In addition to a plaintext websocket implementation, Rime also has an implementation that sends and receives events as JSON objects. Like the other implementation, all synthesis arguments are provided as query parameters when establishing the connection.
 
-The websocket API buffers inputs up to on of the following punctuation characters: `.`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
+The WebSocket API buffers inputs up to one of the following punctuation characters: `.`, `?`, `!`. This is most pertinent for the initial messages sent to the API, as synthesis won't begin until there are sufficient tokens to generate audio with natural prosody. After the first synthesis of any given utterance, typically enough time has elapsed that subsequent audio contains multiple clauses, and the buffering becomes largely invisible.
 
 ## Messages
 
@@ -193,7 +193,7 @@ type ErrorEvent = {
 <ParamField body="speedAlpha" type="float" default="1.0">
   Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
 
-  *Note: this is the legacy Mist v2 convention. Newer models (Coda, Arcana, Mist v3) invert it — for those, higher than 1.0 is faster.*
+  *Note: this is the legacy Mist v2 convention. Newer models (Coda, Arcana, Mist v3) invert it; for those, higher than 1.0 is faster.*
 </ParamField>
 
 <ParamField body="noTextNormalization" type="bool" default="false">

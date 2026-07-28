@@ -1,12 +1,12 @@
 ---
 title: Build a voice agent (Next.js)
-description: "Build a voice agent with Rime TTS in a Next.js app: a server-side API route keeps your key safe, the browser records speech and plays Rime audio, and an optional WebSocket bridge streams synthesis in real time."
+description: "Build a minimal voice-agent loop in Next.js while a server-side route protects your Rime API key."
 icon: react
 ---
 
-This guide builds a working voice agent in a Next.js (App Router) project: the browser captures speech, your server decides what to say, and Rime speaks the reply.
+Build a minimal voice-agent loop in Next.js: the browser captures speech, a server route decides what to say, and Rime speaks the reply. This starter uses browser speech recognition and a stub response function; replace both with production components.
 
-There is no Rime npm package to install — and you don't need one. Rime is a single HTTPS/WebSocket API, so the only new dependency in this guide is `ws` (and only for the optional WebSocket variant).
+Keep `RIME_API_KEY` on the server. Call Rime over HTTPS with `fetch`; no Rime-specific npm package is required. The optional WebSocket bridge adds the only new dependency, `ws`.
 
 **Architecture:** the browser never talks to Rime directly. Your API key stays server-side, and the browser calls your own `/api/tts` route:
 
@@ -16,7 +16,7 @@ Browser (mic + playback)  →  POST /api/tts (Next.js route)  →  POST https://
 
 ## Prerequisites
 
-- A Rime API key from the [API Tokens page](https://app.rime.ai/tokens) — put it in `.env.local` as `RIME_API_KEY=...`
+- A Rime API key from the [API Tokens page](https://app.rime.ai/tokens). Put it in `.env.local` as `RIME_API_KEY=...`
 - A Next.js 14+ project using the App Router (`npx create-next-app@latest` defaults work)
 
 ## 1. Server: the TTS proxy route
@@ -132,13 +132,13 @@ export default function VoiceAgent() {
 
 Open `http://localhost:3000/voice-agent`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
 
-## 3. Optional: stream over WebSockets
+## 3. Stream over WebSockets when latency matters
 
-The HTTP route above is the right default for most apps. Switch to WebSockets when you want **incremental synthesis** — audio starts playing while the rest of the sentence is still being generated — or barge-in handling with [word-level timestamps](/docs/websockets).
+The HTTP route above is the right default for most apps. Switch to WebSockets for **incremental synthesis**, where audio starts while the rest of the sentence is still being generated, or for barge-in handling with [word-level timestamps](/docs/websockets).
 
 Two things make the WebSocket setup different:
 
-1. Rime's WebSocket endpoints authenticate with an `Authorization` header, which **browser WebSockets cannot send** — so the bridge must live on your server. (This is also what keeps your key off the client.)
+1. Rime's WebSocket endpoints authenticate with an `Authorization` header, which **browser WebSockets cannot send**. The bridge must live on your server, where it also keeps the API key off the client.
 2. Next.js route handlers can't hold WebSocket connections, so you need a small custom server.
 
 ```
@@ -172,7 +172,7 @@ wss.on("connection", (client) => {
   );
 
   // Browser → Rime: {text: "..."} to speak, {operation: "clear"} to interrupt.
-  // Queue anything that arrives before the upstream connection finishes opening —
+  // Queue anything that arrives before the upstream connection finishes opening;
   // the browser side is usually connected first, and ws drops sends on a
   // CONNECTING socket.
   const pending = [];
@@ -187,7 +187,7 @@ wss.on("connection", (client) => {
   });
 
   // Rime → browser: {type: "chunk", data: <base64 mp3>}, {type: "timestamps", ...},
-  // {type: "done"} — relay verbatim and let the client decode
+  // {type: "done"}. Relay verbatim and let the client decode.
   rime.on("message", (data) => {
     if (client.readyState === WebSocket.OPEN) client.send(data.toString());
   });
@@ -248,11 +248,11 @@ function interrupt() {
 }
 ```
 
-The full `/ws3` message schema — `chunk`, `timestamps`, `done`, `error` events and the `flush`/`clear`/`eos` operations — is in the [Coda WebSocket reference](/api-reference/coda/websockets-json), and the [WebSocket overview](/docs/websockets) explains segmentation and interruption patterns.
+The [Coda WebSocket reference](/api-reference/coda/websockets-json) defines the full `/ws3` schema, including `chunk`, `timestamps`, `done`, and `error` events plus the `flush`, `clear`, and `eos` operations. The [WebSocket overview](/docs/websockets) covers segmentation and interruption patterns.
 
-## Next steps
+## Production building blocks
 
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
     Endpoints, word-level timestamps, context IDs, and interruption handling.
   </Card>
@@ -263,6 +263,6 @@ The full `/ws3` message schema — `chunk`, `timestamps`, `done`, `error` events
     Choose between Opus, MP3, WAV, PCM, and μ-law for your latency budget.
   </Card>
   <Card title="LiveKit & Pipecat" icon="puzzle-piece" href="/docs/livekit">
-    Building on an agent framework? Use the ready-made Rime plugins instead.
+    Use the ready-made Rime plugins when a framework should own transport and orchestration.
   </Card>
-</CardGroup>
+</Columns>

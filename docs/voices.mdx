@@ -1,10 +1,39 @@
 ---
 title: Voices
-description: "Rime's TTS voice catalog across Coda, Arcana, and Mist — voices in English, Spanish, French, Portuguese, German, and Japanese, and how to pick a starter voice."
+description: "Rime's TTS voice catalog across Coda, Arcana, and Mist: voices in English, Spanish, French, Portuguese, German, and Japanese, and how to pick a starter voice."
 icon: microphone-lines
 ---
 
-Rime exposes a broad portfolio of production-ready voices across our models. Each voice is designed for real-time conversational performance, with distinct tonal identity, emotional range, and demographic diversity.
+Set `speaker` on every TTS request. For a first Coda request, try `astra`; use the live catalog endpoints for the complete, current lineup.
+
+```json
+{
+  "speaker": "astra",
+  "text": "Hello from Rime!",
+  "modelId": "coda",
+  "lang": "en"
+}
+```
+
+## Starter voices to try
+
+These speakers are confirmed to work across the listed models:
+
+| Speaker | Sounds like | Works on |
+| :--- | :--- | :--- |
+| `astra` | Female, young adult, American Standard | Coda, Arcana, Mist v3, Mist v2 |
+| `luna` | Female, young adult, American | Coda, Arcana, Mist v3 |
+| `celeste` | Female, young adult, American | Coda, Arcana |
+| `masonry` | Male, middle-aged, Southern | Coda, Arcana |
+| `albion` | Male, young adult, English | Coda, Arcana |
+| `cove` | Female, young adult, African American | Mist v3, Mist v2 |
+
+## Browse the live catalog
+
+- Voice names by model and language: [`/data/voices/all-v2.json`](/api-reference/data/voices-v2)
+- Demographics and other metadata: [`/data/voices/voice_details.json`](/api-reference/data/voice-details)
+
+Both endpoints are public and update as voices ship.
 
 ## Languages
 
@@ -20,64 +49,26 @@ As of 19 May 2026, Rime supports the following languages:
 | Japanese | `jpn` / `ja` | Coda, Arcana |
 | Hebrew | `heb` / `he` | Arcana only |
 
-<Tip>For the live voice list, fetch [`/data/voices/all-v2.json`](/api-reference/data/voices-v2) — it updates as new voices ship.</Tip>
-
-## Accessing Voices
-
-- Online: [/api-reference/data/voices](/api-reference/data/voices)
-- Via API: https://users.rime.ai/data/voices/all-v2.json
-
-Detailed voice metadata is available:
-
-- Online: [/api-reference/data/voice-details](/api-reference/data/voice-details)
-- Via API: https://users.rime.ai/data/voices/voice_details.json
-
-Use the `speaker` parameter in the TTS API to select a voice:
-
-```json
-{
-  "speaker": "astra",
-  "text": "Hello from Rime!",
-  "modelId": "coda",
-  "lang": "en"
-}
-```
-
-## Starter voices to try
-
-If you're just getting started, these speakers are confirmed to work across the listed models:
-
-| Speaker | Sounds like | Works on |
-| :--- | :--- | :--- |
-| `astra` | Female, young adult, American Standard | Coda, Arcana, Mist v3, Mist v2 |
-| `luna` | Female, young adult, American | Coda, Arcana, Mist v3 |
-| `celeste` | Female, young adult, American | Coda, Arcana |
-| `masonry` | Male, middle-aged, Southern | Coda, Arcana |
-| `albion` | Male, young adult, English | Coda, Arcana |
-| `cove` | Female, young adult, African American | Mist v3, Mist v2 |
-
-For the complete catalog, fetch [`/data/voices/voice_details.json`](/api-reference/data/voice-details).
-
 ## Coda Voices (Flagship)
 
-Coda is Rime's new flagship model. Its featured voices in the [Rime dashboard](https://app.rime.ai) are organized into four styles. Each style includes both female and male options.
+Coda is Rime's flagship model. Its featured voices in the [Rime dashboard](https://app.rime.ai) are organized into four styles, each with female and male options.
 
 ### Professional
 
 | Speaker | Gender | Age | Description |
 | :--- | :--- | :--- | :--- |
-| `lyra` | Female | 18–30 | A warm young American voice — bright and lively. |
-| `clementine` | Female | 30–50 | A warm, lively middle-aged American voice — both polished and energetic. |
-| `masonry` | Male | 30–50 | A confident, low Southern voice — authoritative without being loud. |
-| `walnut` | Male | 18–30 | A fast, confident young Southern voice — authoritative and steady. |
+| `lyra` | Female | 18–30 | A warm young American voice; bright and lively. |
+| `clementine` | Female | 30–50 | A warm, lively middle-aged American voice; both polished and energetic. |
+| `masonry` | Male | 30–50 | A confident, low Southern voice; authoritative without being loud. |
+| `walnut` | Male | 18–30 | A fast, confident young Southern voice; authoritative and steady. |
 
 ### Formal
 
 | Speaker | Gender | Age | Description |
 | :--- | :--- | :--- | :--- |
-| `lintel` | Female | 18–30 | A warm young American voice — both polished and lively. |
-| `eyre` | Female | 18–30 | A warm, friendly American voice — calm and easy to listen to. |
-| `bancroft` | Male | 60+ | A composed American voice — strong on professional and formal contexts. |
+| `lintel` | Female | 18–30 | A warm young American voice; both polished and lively. |
+| `eyre` | Female | 18–30 | A warm, friendly American voice; calm and unhurried. |
+| `bancroft` | Male | 60+ | A composed American voice; strong on professional and formal contexts. |
 | `marlu` | Male | 30–50 | An older Australian voice; low, mature, unhurried. |
 
 ### Casual
@@ -85,26 +76,26 @@ Coda is Rime's new flagship model. Its featured voices in the [Rime dashboard](h
 | Speaker | Gender | Age | Description |
 | :--- | :--- | :--- | :--- |
 | `hesse` | Female | 18–30 | A relaxed, easygoing female voice. |
-| `luna` | Female | 18–30 | A bright, lively female voice — energetic with a casual core. |
+| `luna` | Female | 18–30 | A bright, lively female voice; energetic with a casual core. |
 | `beatty` | Male | 18–30 | An easygoing, distinctly casual American male voice. |
-| `godfrey` | Male | 18–30 | An easygoing, lively American male voice — casual at heart. |
+| `godfrey` | Male | 18–30 | An easygoing, lively American male voice; casual at heart. |
 
 ### Energetic
 
 | Speaker | Gender | Age | Description |
 | :--- | :--- | :--- | :--- |
-| `astra` | Female | 18–30 | Bright, lively Californian — quick and expressive. |
-| `vespera` | Female | 18–30 | A friendly, lively young Californian voice — bright and adaptable. |
-| `parapet` | Male | 30–50 | A fast, lively Southern voice — energetic and grounded. |
-| `cupola` | Male | 30–50 | A confident, energetic American voice — professional with warmth. |
+| `astra` | Female | 18–30 | Bright, lively Californian; quick and expressive. |
+| `vespera` | Female | 18–30 | A friendly, lively young Californian voice; bright and adaptable. |
+| `parapet` | Male | 30–50 | A fast, lively Southern voice; energetic and grounded. |
+| `cupola` | Male | 30–50 | A confident, energetic American voice; professional with warmth. |
 
-All voices above are confirmed-working with `modelId: coda`. For the complete catalog including non-English languages, fetch [`/data/voices/voice_details.json`](/api-reference/data/voice-details).
+All voices above are confirmed to work with `modelId: coda`. The [voice-details endpoint](/api-reference/data/voice-details) contains the complete catalog, including non-English voices.
 
 ## Arcana v3 Voices
 
-<Tip>Coda is meaningfully better than Arcana across naturalness, prosody, and artifact-free output. For new projects, prefer Coda; for existing Arcana traffic, we recommend migrating to Coda — see [Migrating from Arcana](/docs/introduction#migrating-from-arcana).</Tip>
+<Tip>Choose Coda for new projects and existing Arcana traffic. It scores higher in Rime's human evaluations for naturalness, prosody, and artifact-free output. See [Start with Coda](/docs/introduction#start-with-coda).</Tip>
 
-Arcana v3 is Rime's previous flagship — a multilingual model with 94 expressive voices spanning age groups, regional accents, cultural backgrounds, and energy profiles.
+Arcana v3 is Rime's previous flagship: a multilingual model with 94 expressive voices spanning age groups, regional accents, cultural backgrounds, and energy profiles.
 
 See the [full voice list](/api-reference/data/voices) and [voice details](/api-reference/data/voice-details) for available Arcana speakers.
 

@@ -1,12 +1,12 @@
 ---
 title: Build a voice agent (Vite)
-description: "Build a voice agent with Rime TTS in a Vite + React app: a tiny Node proxy keeps your API key server-side while the browser records speech and plays back Rime audio."
+description: "Build a minimal voice-agent loop in Vite while a small Node proxy keeps your Rime API key off the browser."
 icon: bolt
 ---
 
-This guide builds a working voice agent in a Vite + React project. Vite serves only static assets, so the one extra piece is a tiny Node server that proxies TTS requests — your Rime API key must never ship to the browser.
+Build a minimal voice-agent loop in Vite without exposing your API key. Because Vite serves static assets, a small Node server proxies synthesis while the browser handles speech input and audio playback.
 
-There is no Rime npm package to install — and you don't need one. Rime is a single HTTPS API; the proxy below is plain `fetch`.
+Call Rime over HTTPS with `fetch`; no Rime-specific npm package is required. This starter uses browser speech recognition and a stub response function, both of which you should replace for production.
 
 ```
 Browser (mic + playback)  →  /api/tts (Vite dev proxy)  →  Node proxy :3001  →  https://users.rime.ai/v1/rime-tts
@@ -147,16 +147,16 @@ export default function App() {
 Open `http://localhost:5173`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
 
 <Info>
-  In production, deploy `server.mjs` (or fold the route into whatever backend you already have) and serve Vite's built assets from it — the same-origin `/api/tts` path keeps working. The API key lives only in the server environment.
+  In production, deploy `server.mjs` or fold the route into your existing backend, then serve Vite's built assets from it. The same-origin `/api/tts` path keeps working, and the API key remains in the server environment.
 </Info>
 
-## Want streaming?
+## Add streaming when latency matters
 
-For incremental synthesis — audio starts playing while later sentences are still generating — connect your **server** to Rime's WebSocket API and relay events to the browser. Rime's WebSocket endpoints authenticate with an `Authorization` header, which browser WebSockets cannot send, so the bridge always lives server-side. The bridge pattern is identical to the one in the [Next.js guide](/docs/voice-agent-nextjs#3-optional-stream-over-websockets); the `/ws3` message schema is in the [Coda WebSocket reference](/api-reference/coda/websockets-json).
+For incremental synthesis, connect your **server** to Rime's WebSocket API and relay events to the browser. Audio can then start while later sentences are still generating. Browser WebSockets cannot send the required `Authorization` header, so the bridge stays server-side. The [Next.js guide](/docs/voice-agent-nextjs#3-stream-over-websockets-when-latency-matters) shows the bridge pattern; the [Coda WebSocket reference](/api-reference/coda/websockets-json) defines the `/ws3` message schema.
 
-## Next steps
+## Production building blocks
 
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
     Endpoints, word-level timestamps, context IDs, and interruption handling.
   </Card>
@@ -169,4 +169,4 @@ For incremental synthesis — audio starts playing while later sentences are sti
   <Card title="TTS in five minutes" icon="rocket" href="/docs/quickstart-five-minute">
     The core API walkthrough in cURL, Python, JavaScript, and TypeScript.
   </Card>
-</CardGroup>
+</Columns>

@@ -17,11 +17,13 @@ rime speedtest
 | Flag | Short | Default | Description |
 | ---- | ----- | ------- | ----------- |
 | `--model` | `-m` | `coda` | Model ID for the test request |
-| `--runs` | -- | `1` | Number of requests per endpoint — reports mean/min/max when greater than 1 |
+| `--runs` | -- | `1` | Number of requests per endpoint; reports mean/min/max when greater than 1 |
 | `--timeout` | -- | `10s` | Per-request timeout (`0` disables timeout) |
-| `--url` | -- | -- | Additional URL to test, not in config (repeatable) |
+| `--url` | -- | -- | Additional URL to test (repeatable). Forwards your configured API credentials to that URL |
 | `--env` | -- | -- | Only test these named environments from config (repeatable) |
 | `--yes` | `-y` | `false` | Automatically switch the default environment if a faster one is found |
+
+<Warning>`--url` forwards your configured API credentials to every supplied URL. Use it only with endpoints you trust. The CLI also prints this warning at runtime.</Warning>
 
 ### Behavior
 

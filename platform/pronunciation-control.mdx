@@ -15,11 +15,15 @@ There are three ways to control pronunciation:
 
 ## Check dictionary coverage
 
-Use the [Coverage API](/api-reference/other/oov) to determine which words in your text are not yet in Rime's pronunciation dictionary. Words that aren't covered will still be spoken — the model predicts a pronunciation, which is often suitable when the spelling follows typical linguistic patterns — but it's worth verifying uncommon words before they reach end users.
+Use the [Coverage API](/api-reference/other/oov) to find words that are not yet in Rime's pronunciation dictionary. The model still predicts a pronunciation for uncovered words, often correctly when the spelling follows common patterns. Verify uncommon words before they reach end users.
 
 ## Specify a custom pronunciation inline
 
-For Mist-family models, you can specify a custom pronunciation directly in your TTS request by passing a phonetic string in curly brackets and setting `phonemizeBetweenBrackets: true`. The strings use the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet), which is inspired by IPA.
+<Warning>
+  [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) works on **Mist v1 and Mist v2** only. It is not supported on Mist v3, Coda, or Arcana.
+</Warning>
+
+For Mist v1 and Mist v2, add inline phonetic strings with the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet). Write the string by hand or generate one from a recording with the [Phonemize API](/api-reference/other/phonemize).
 
 See [Custom pronunciation](/docs/custom-pronunciation) for the full reference.
 
@@ -44,11 +48,9 @@ The response contains the phonetic transcription of the audio:
 }
 ```
 
-Drop any trailing punctuation token and paste the string into your TTS request inside curly brackets — here, `{h0El1o}` — with `phonemizeBetweenBrackets: true`.
+Drop any trailing punctuation token, then paste the string into your TTS request inside curly brackets with `phonemizeBetweenBrackets: true`. For example: `{h0El1o}`.
 
-<Warning>
-  [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) works on **Mist v1 and v2** only. It is not yet supported on Mist v3, Coda, or Arcana. For brand or product name pronunciations on those models, request a dictionary addition, or respell phonetically in plain English (accepting that this is approximate).
-</Warning>
+For brand or product names on Mist v3, Coda, or Arcana, request a dictionary addition or respell the word in plain English, accepting that respelling is approximate.
 
 ## Request a dictionary addition
 
@@ -59,5 +61,5 @@ If a word is mispronounced and you'd like it fixed at the dictionary level, reac
 ## Tips
 
 - Check coverage regularly when working with new or domain-specific content.
-- Brand names, technical terms, and made-up words are the most common sources of mispronunciation — verify these first.
+- Brand names, technical terms, and made-up words are the most common sources of mispronunciation; verify these first.
 - For flows where pronunciation control matters most, use Mist v1/v2 so you can correct pronunciations inline.

@@ -1,6 +1,6 @@
 ---
 title: "Playing audio"
-description: "How audio from synthesize_speech reaches your speakers — inline player, play URL, or MCP audio block."
+description: "How audio from synthesize_speech reaches your speakers: inline player, play URL, or MCP audio block."
 icon: "volume-high"
 ---
 
@@ -8,7 +8,7 @@ icon: "volume-high"
 
 ## 1. Inline player
 
-Hosts that support MCP Apps (such as Claude) render an audio player directly in the conversation. The MP3 travels outside the model's context, so playback is free of token overhead. This is the default experience — nothing to configure.
+Hosts that support MCP Apps (such as Claude) render an audio player directly in the conversation. The MP3 travels outside the model's context, so playback is free of token overhead. This is the default experience and requires no configuration.
 
 ## 2. Play URL
 
@@ -19,7 +19,7 @@ curl -s <audioUrl> -o /tmp/rime.mp3 && \
   (afplay /tmp/rime.mp3 || ffplay -nodisp -autoexit /tmp/rime.mp3 || mpv /tmp/rime.mp3)
 ```
 
-`afplay` ships with macOS; on Linux use `ffplay`, `mpv`, `aplay`, or `paplay`. The link expires shortly after generation, so play it promptly — if it has expired, just synthesize again.
+`afplay` ships with macOS; on Linux use `ffplay`, `mpv`, `aplay`, or `paplay`. The link expires shortly after generation, so play it promptly. If it has expired, just synthesize again.
 
 ## 3. MCP audio block
 
@@ -27,4 +27,4 @@ Pass `include_audio: true` to also receive a standard MCP `audio` content block 
 
 ## Hosts without audio support
 
-Hosts that render none of these still get a text summary and the structured result, so the tool never fails outright — you just won't hear the sample.
+Hosts that render none of these still get a text summary and the structured result, so the tool never fails outright; you just won't hear the sample.

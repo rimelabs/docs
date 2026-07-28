@@ -1,10 +1,10 @@
 ---
 title: API cheat sheet
-description: "The complete Rime API on one page: base URLs, bearer auth, and a runnable snippet for every endpoint — HTTP TTS, WebSocket streaming, voice listing, vocabulary coverage, and text normalization."
+description: "Base URLs, bearer authentication, and runnable examples for Rime's HTTP, WebSocket, voice, vocabulary, and text-normalization endpoints."
 icon: list-check
 ---
 
-Everything you need to integrate Rime, on one page. Every snippet below is complete and runnable — substitute your API key from the [API Tokens page](https://app.rime.ai/tokens).
+Use this page for Rime's service hosts, authentication pattern, and runnable requests across the main API surfaces. Create a key on the [API Tokens page](https://app.rime.ai/tokens) before running authenticated examples.
 
 ## Hosts and authentication
 
@@ -16,7 +16,10 @@ Everything you need to integrate Rime, on one page. Every snippet below is compl
 | Docs (this site, plus `/llms.txt` and per-page `.md` exports) | `https://docs.rime.ai` |
 
 <Warning>
-  The API host is `users.rime.ai` — **not `api.rime.ai`**, which exists but serves Rime-internal infrastructure: TTS requests there fail with `404`. Every authenticated endpoint takes the same header: `Authorization: Bearer YOUR_API_KEY`. On WebSocket connections, send it as a connection header — and because your key is a secret (and browser `WebSocket` objects can't set headers), connect from a server-side process rather than from browser code. There is no official Rime SDK on npm or PyPI, and none is needed — any similarly named packages in those registries are unrelated third-party projects, not Rime.
+  - Send TTS requests to `users.rime.ai`, not `api.rime.ai`. The latter serves internal infrastructure and returns `404` for TTS requests.
+  - Authenticate with `Authorization: Bearer YOUR_API_KEY`. On WebSocket connections, send the same value as a connection header.
+  - Keep the key on a server. Browser `WebSocket` objects cannot set the required header, so browser applications need a server-side bridge.
+  - Rime does not publish an npm or PyPI SDK. Similarly named registry packages are unrelated third-party projects.
 </Warning>
 
 ## Synthesize speech (HTTP)
@@ -64,11 +67,11 @@ async def main():
 asyncio.run(main())
 ```
 
-Set `modelId` explicitly on `/ws3` — without it, requests are served by the **Mist v3** backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error. Message schemas: [Coda WebSocket reference](/api-reference/coda/websockets-json) · Buffering control: [Segmentation](/docs/websockets-segment) · Web-app bridge pattern: [Next.js voice-agent guide](/docs/voice-agent-nextjs#3-optional-stream-over-websockets)
+Set `modelId` explicitly on `/ws3`. Without it, requests are served by the **Mist v3** backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error. Message schemas: [Coda WebSocket reference](/api-reference/coda/websockets-json) · Buffering control: [Segmentation](/docs/websockets-segment) · Web-app bridge pattern: [Next.js voice-agent guide](/docs/voice-agent-nextjs#3-stream-over-websockets-when-latency-matters)
 
 ## List voices
 
-Both voice endpoints are public — no API key required.
+Both voice endpoints are public; no API key required.
 
 ```bash
 # Voice names, keyed by modelId then ISO 639-2 language code
@@ -113,7 +116,7 @@ Guide: [Text normalization](/docs/text-normalization) · Reference: [Text Normal
 | Parameter | Values | Notes |
 |---|---|---|
 | `speaker` | See [voices](/docs/voices) | Required. Must match the model and language. |
-| `modelId` | `coda` (flagship), `arcana`, `mistv3`, `mistv2`, `mist` (legacy) | Set it explicitly — without one, `/ws3` serves only the Mist v3 voice catalog. |
+| `modelId` | `coda` (flagship), `arcana`, `mistv3`, `mistv2`, `mist` (legacy) | Set it explicitly. Without one, `/ws3` serves only the Mist v3 voice catalog. |
 | `text` | string | Up to 1,000 characters per request (HTTP returns `400` "text is too long" beyond that). |
 | `language` | `en`/`eng`, `es`/`spa`, `fr`/`fra`, `pt`/`por`, `de`/`deu`, `ja`/`jpn` | Must match the speaker's language. |
 | `audioFormat` (WS) | `mp3`, `mulaw`, `pcm` | HTTP uses the `Accept` header instead. |
@@ -122,7 +125,7 @@ Guide: [Text normalization](/docs/text-normalization) · Reference: [Text Normal
 
 ## Where to go deeper
 
-- [API reference index](/docs/api-reference) — every endpoint across every model
-- [WebSocket API overview](/docs/websockets) — endpoint comparison, timestamps, interruption handling
-- [Build a voice agent](/docs/voice-agent-nextjs) — complete apps in Next.js, Vite, Express, plain Node, and FastAPI
-- [Rime CLI](/docs/quickstart-cli) and the [hosted MCP server](/docs/mcp) — tooling around this same API
+- [API reference index](/docs/api-reference): every endpoint across every model
+- [WebSocket API overview](/docs/websockets): endpoint comparison, timestamps, interruption handling
+- [Build a voice agent](/docs/voice-agent-nextjs): complete apps in Next.js, Vite, Express, plain Node, and FastAPI
+- [Rime CLI](/docs/quickstart-cli) and the [hosted MCP server](/docs/mcp): tooling around this same API

@@ -1,12 +1,12 @@
 ---
 title: Build a voice agent (Node, no framework)
-description: "Build a voice agent with Rime TTS in plain Node.js with zero dependencies: node:http and built-in fetch proxy synthesis server-side while the browser records speech and plays back Rime audio."
+description: "Build a minimal voice-agent loop with Node.js built-ins while keeping your Rime API key on the server."
 icon: terminal
 ---
 
-This guide builds a working voice agent with **zero dependencies** — no framework, no packages, no `npm install`. Just `node:http` and Node's built-in `fetch`. If you want the same agent on a framework, see the [Next.js](/docs/voice-agent-nextjs), [Vite](/docs/voice-agent-vite), [Express](/docs/voice-agent-express), or [FastAPI](/docs/voice-agent-fastapi) guides.
+Build a minimal voice-agent loop with Node.js built-ins only. There is no framework, package, or `npm install`: just `node:http` and `fetch`. This starter uses browser speech recognition and a stub response function; replace both with production components.
 
-There is no Rime npm package — and you don't need one. Rime is a single HTTPS API.
+Keep `RIME_API_KEY` on the server and call Rime over HTTPS. The [Next.js](/docs/voice-agent-nextjs), [Vite](/docs/voice-agent-vite), [Express](/docs/voice-agent-express), and [FastAPI](/docs/voice-agent-fastapi) starters show the same boundary in their respective frameworks.
 
 ```
 Browser (mic + playback)  →  POST /api/tts (node:http)  →  POST https://users.rime.ai/v1/rime-tts
@@ -15,7 +15,7 @@ Browser (mic + playback)  →  POST /api/tts (node:http)  →  POST https://user
 ## Prerequisites
 
 - A Rime API key from the [API Tokens page](https://app.rime.ai/tokens), exported as `RIME_API_KEY`
-- Node.js 20.11 or later — nothing else
+- Node.js 20.11 or later. Nothing else is required.
 
 ## 1. Server
 
@@ -153,13 +153,13 @@ Create `index.html` next to `server.mjs`. It uses the browser's built-in `Speech
 
 Restart the server (it reads `index.html` at startup), open `http://localhost:3000`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
 
-## Want streaming?
+## Add streaming when latency matters
 
-For incremental synthesis — audio starts playing while later sentences are still generating — connect your server to `wss://users-ws.rime.ai/ws3` and relay events to the browser. Rime's WebSocket endpoints authenticate with an `Authorization` header, which browser WebSockets cannot send, so the bridge always lives server-side; the browser-facing side needs the `ws` package (the one dependency streaming adds). The complete bridge implementation is in the [Next.js guide](/docs/voice-agent-nextjs#3-optional-stream-over-websockets) and works with this same `createServer` instance. The `/ws3` message schema is in the [Coda WebSocket reference](/api-reference/coda/websockets-json).
+For incremental synthesis, connect your server to `wss://users-ws.rime.ai/ws3` and relay events to the browser. Audio can then start while later sentences are still generating. Browser WebSockets cannot send the required `Authorization` header, so the bridge stays server-side; the browser-facing side adds the one dependency, `ws`. The [Next.js guide](/docs/voice-agent-nextjs#3-stream-over-websockets-when-latency-matters) provides a complete bridge that works with the same `createServer` instance. The [Coda WebSocket reference](/api-reference/coda/websockets-json) defines the `/ws3` schema.
 
-## Next steps
+## Production building blocks
 
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
     Endpoints, word-level timestamps, context IDs, and interruption handling.
   </Card>
@@ -172,4 +172,4 @@ For incremental synthesis — audio starts playing while later sentences are sti
   <Card title="TTS in five minutes" icon="rocket" href="/docs/quickstart-five-minute">
     The core API walkthrough in cURL, Python, JavaScript, and TypeScript.
   </Card>
-</CardGroup>
+</Columns>

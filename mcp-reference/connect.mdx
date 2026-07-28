@@ -4,7 +4,7 @@ description: "Connect Claude Code, Claude.ai, Claude Desktop, OpenAI Codex, or a
 icon: "plug"
 ---
 
-The connector URL is `https://mcp.rime.ai`. The server speaks stateless Streamable HTTP, and both the root URL and `https://mcp.rime.ai/mcp` serve the MCP endpoint — use whichever your client expects.
+The connector URL is `https://mcp.rime.ai`. The server speaks stateless Streamable HTTP, and both the root URL and `https://mcp.rime.ai/mcp` serve the MCP endpoint. Use whichever your client expects.
 
 You can connect without any credentials to browse the voice catalog and generate integration code; add your API key to unlock synthesis and the linguistics tools. See [Authentication](/mcp-reference/authentication).
 
@@ -28,7 +28,7 @@ codex mcp add rime --url https://mcp.rime.ai \
   --bearer-token-env-var RIME_API_KEY
 ```
 
-Or add the server to `~/.codex/config.toml` directly — the Codex IDE extension reads the same file:
+Or add the server to `~/.codex/config.toml` directly: the Codex IDE extension reads the same file:
 
 ```toml
 [mcp_servers.rime]
@@ -57,4 +57,4 @@ For clients that use a JSON configuration (Cursor, Windsurf, and others):
 
 ## Verify the connection
 
-Ask your assistant to list Rime's voices, or call `list_voices` directly — it needs no API key, so it confirms connectivity regardless of how you authenticated.
+Ask your assistant to list Rime's voices, or call `list_voices` directly. It needs no API key, so it confirms connectivity regardless of how you authenticated.

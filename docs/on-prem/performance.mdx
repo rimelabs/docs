@@ -1,84 +1,51 @@
 ---
 title: Performance tuning
-description: "Tune Rime on-prem deployments for throughput, latency, and concurrency."
+description: "Tune supported Arcana on-prem deployments for concurrency without exceeding latency or real-time-factor targets."
 ---
 
-# Overview
+<Note>Performance tuning is available only for Arcana model images tagged `20251027` or later.</Note>
 
-When we talk about *performance* for a real-time audio streaming service, we
-typically mean a combination of the following metrics:
+Tune concurrency against an explicit service-level target. Rime does not provide rate limiting or request queues because those controls depend on the deployment, so enforce the concurrency limit in your own infrastructure.
 
-* Initial latency, or time-to-first-frame/byte (TTFF/TTFB), defined as the time
-  elapsed when the first frame is delivered from when the request was sent.
-  Lower is better.
-* Real-time factor (RTF), defined as a proportion of the time spent on
-  processing and the stream duration. A value ≤ 1 is required to stream at
-  real-time. Lower is better.
-* Concurrency, defined as the number of requests a service can handle. Higher is
-  better.
+## Tuning workflow
 
-The initial latency and RTF typically work in the opposite direction of
-concurrency: the latency and RTF typically go up as the concurrency level goes
-up. To ensure the performance of a real-time streaming service under high load,
-it is recommended to put a limit on the maximum concurrent requests a system
-handles, and to queue or reject the out-of-capacity requests.
+Use [`armchair`](https://crates.io/crates/armchair) to repeat this benchmark-driven loop:
 
-<Note>Rime does not provide rate-limiting or queuing support, as it is highly
-dependent on the exact deployment being used.</Note>
+1. Run a baseline without specifying concurrency (`-c`) and set the latency, real-time-factor, and success-rate constraints you need.
+2. If RTF is significantly lower than 1, increase both `DECODER_MAX_BATCH` and `GENERATOR_MAX_BATCH`.
+3. If the server fails to start with an out-of-memory error, decrease `GENERATOR_GPU_MEMORY_UTILIZATION`.
+4. Repeat until the benchmarked concurrency converges with `DECODER_MAX_BATCH` and `GENERATOR_MAX_BATCH`. Treat that value as the maximum concurrency for the deployment.
 
-# Metrics
+## Controls
 
-Rime provides some off-the-shelf metrics for reference only. Your mileage may
-vary depending on the hardware/software setup, latency constraints, and the
-actual traffic.
+These model-container environment variables control batching, sessions, and memory use:
 
-## Methodology
+| Variable | Default |
+| :--- | :--- |
+| `DECODER_MAX_BATCH` | `32` |
+| `DECODER_NUM_SESSIONS` | `6` |
+| `GENERATOR_MAX_BATCH` | `32` |
+| `GENERATOR_GPU_MEMORY_UTILIZATION` | `0.8` |
 
-We use the [`armchair`](https://crates.io/crates/armchair) tool for
-benchmarking a system and report the following:
+The defaults support Rime's lowest supported hardware specification. Higher-capacity hardware should still be tuned against representative traffic rather than a fixed concurrency assumption.
 
-* Initial latency: measured when there is 1 concurrent request (`-c 1`).
-* Max concurrency: measured at a performance target of 100% success rate, 99th
-  percentile of latency ≤ 1s, 99th percentile of RTF ≤ 1
-  (`--target=success:1.00,ttfb:p99@1s,rtf:p99@1.00`).
+## What to measure
 
+- **Initial latency**, or time to first frame or byte (TTFF/TTFB), measures the time from sending a request until the first frame arrives. Lower is better.
+- **Real-time factor (RTF)** is processing time divided by stream duration. RTF must remain at or below 1 for real-time delivery. Lower is better.
+- **Concurrency** is the number of simultaneous requests the service can handle while meeting the target. Higher is better.
 
-| Model     | Hardware | Initial latency | Max concurrency |
-| --------- | -------- | --------------- | --------------- |
-| Arcana v2 |     H100 |         μ=400ms |              32 |
+Latency and RTF usually rise with concurrency. Queue or reject requests above the measured limit instead of allowing overload to degrade every active stream.
 
-`armchair` is run with the default arguments, and from the same machine that
-serves the image to eliminate network latency.
+## Reference benchmark
 
-# Performance tuning
+Rime benchmarks with [`armchair`](https://crates.io/crates/armchair):
 
-<Note>Performance tuning is only available for Arcana model images tagged with
-`20251027` or later.</Note>
+- Initial latency is measured at one concurrent request (`-c 1`).
+- Maximum concurrency requires a 100% success rate, P99 latency at or below one second, and P99 RTF at or below 1 (`--target=success:1.00,ttfb:p99@1s,rtf:p99@1.00`).
 
-## Environment variables
+| Model | Hardware | Initial latency | Maximum concurrency |
+| :--- | :--- | :--- | :--- |
+| Arcana v2 | H100 | μ=400ms | 32 |
 
-There is a set of environment variables for the model image that you can tune
-in order to improve the concurrency under a set performance constraint:
-
-* `DECODER_MAX_BATCH`, defaults to `32`
-* `DECODER_NUM_SESSIONS`, defaults to `6`
-* `GENERATOR_MAX_BATCH`, defaults to `32`
-* `GENERATOR_GPU_MEMORY_UTILIZATION`, defaults to `0.8`
-
-The defaults for these variables are set to accommodate the lowest spec that
-Rime supports, so we recommend tuning them with a benchmark-driven approach.
-
-## Tuning
-
-You can use [`armchair`](https://crates.io/crates/armchair) to tune the
-environment variables with the following workflow:
-
-1. Get a base performance report by running `armchair` with specific
-   performance constraints, without specifying the concurrency level (`-c`).
-2. If RTF is significantly lower than 1, increase both `DECODER_MAX_BATCH` and
-   `GENERATOR_MAX_BATCH`.
-3. If the server fails to start with an OOM error, decrease
-   `GENERATOR_GPU_MEMORY_UTILIZATION`.
-4. Repeat the process until the benchmarked concurrency level converges with
-   `DECODER_MAX_BATCH` and `GENERATOR_MAX_BATCH`. This is the maximum
-   concurrency that the system can accept.
+This reference uses `armchair` defaults from the same machine that serves the image, which removes network latency from the measurement. Actual results vary with hardware, software, latency targets, and traffic shape.

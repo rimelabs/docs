@@ -1,10 +1,10 @@
 ---
 title: 'Pre-normalizing text'
-description: "Optional patterns you can pre-expand in your application before sending text to Rime. Use sparingly — Rime's normalizer handles most common formats natively without any preprocessing."
+description: "Pre-expand only the formats Rime does not already normalize reliably."
 ---
 
 <Warning>
-  **Most applications shouldn't pre-normalize.** Rime handles common patterns — currency with symbols, dates with years, clock times, phone numbers, standard measurements, and most numeric formats — natively. Pre-normalizing adds latency and engineering complexity for behavior you usually get for free. Before adding a pre-processing layer, review the [formats Rime handles natively](/docs/text-normalization#handled-at-a-glance) and verify any specific input with the [`/textnorm` endpoint](/docs/text-normalization#debugging-with-the-textnorm-endpoint).
+  **Most applications shouldn't pre-normalize.** Rime handles common patterns, currency with symbols, dates with years, clock times, phone numbers, standard measurements, and most numeric formats, natively. Pre-normalizing adds latency and engineering complexity for behavior you usually get for free. Before adding a pre-processing layer, review the [formats Rime handles natively](/docs/text-normalization#handled-at-a-glance) and verify any specific input with the [`/textnorm` endpoint](/docs/text-normalization#debugging-with-the-textnorm-endpoint).
 </Warning>
 
 If you've reviewed the native handling and still need to pre-normalize specific patterns, this page documents the known gaps and provides a prompt template you can drop into the layer that generates your text.
@@ -16,9 +16,9 @@ If you've reviewed the native handling and still need to pre-normalize specific 
 There are two cases where pre-normalization in your application is worth the cost:
 
 1. **The input falls into a [known gap](#known-gaps).** A small set of patterns aren't reliably expanded today. Pre-expanding those specific patterns is the reliable fix.
-2. **You need guaranteed consistency across regenerations.** For utterances that must read identically every time — regulatory disclosures, legal read-backs, confirmation flows — pre-normalizing removes a source of variability.
+2. **You need guaranteed consistency across regenerations.** For utterances that must read identically every time, such as regulatory disclosures, legal read-backs, or confirmation flows, pre-normalizing removes a source of variability.
 
-For everything else, the right default is: trust Rime's normalizer, and use [`/textnorm`](/docs/text-normalization#debugging-with-the-textnorm-endpoint) to verify anything that sounds off. If you find a pattern Rime doesn't handle, [flag it to Rime](mailto:support@rime.ai) — fixes ship on Rime's side instead of in every customer's pre-processing layer.
+For everything else, the right default is: trust Rime's normalizer, and use [`/textnorm`](/docs/text-normalization#debugging-with-the-textnorm-endpoint) to verify anything that sounds off. If you find a pattern Rime doesn't handle, [flag it to Rime](mailto:support@rime.ai); fixes ship on Rime's side instead of in every customer's pre-processing layer.
 
 ---
 
@@ -83,7 +83,7 @@ These patterns aren't reliably expanded today. Either avoid them at the source, 
 
 ## Pre-normalization prompt template
 
-If your application uses an LLM to generate text before sending it to Rime, you can add the rules below to its system prompt or run them as a post-processing pass. The template targets only the [known gaps](#known-gaps) — Rime's normalizer handles the rest, so there's no need to pre-expand everything.
+If your application uses an LLM to generate text before sending it to Rime, you can add the rules below to its system prompt or run them as a post-processing pass. The template targets only the [known gaps](#known-gaps); Rime's normalizer handles the rest, so there's no need to pre-expand everything.
 
 <Accordion title="System prompt template">
 

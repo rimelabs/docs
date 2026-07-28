@@ -4,30 +4,26 @@ description: "Generate your first Rime TTS audio clip in five minutes using cURL
 icon: rocket
 ---
 
-This guide shows you how to generate your first audio clip with Rime's text-to-speech (TTS) API and experiment with different voices and speech customizations.
+Generate a WAV file with one authenticated request to Rime's text-to-speech API. Choose a language tab, copy the complete script, and run it from your terminal.
 
 ## Prerequisites
 
-To follow this guide, you need:
+You need:
 
 - **A Rime API token:** Create a free [Rime account](https://app.rime.ai/signup/) and copy your API key from the [API Tokens](https://app.rime.ai/tokens/) page.
 - A language runtime, depending on which tab you follow:
-  - **cURL** — just a terminal (preinstalled on macOS and Linux).
-  - **Python** — [Python 3.10](https://www.python.org/downloads/release/python-3100/) or later.
-  - **JavaScript** — [Node.js 18](https://nodejs.org/) or later.
-  - **TypeScript** — Node.js 18+ plus [tsx](https://github.com/privatenumber/tsx) (`npm install -g tsx`).
+  - **cURL**: a terminal with cURL installed (included with macOS and most Linux distributions).
+  - **Python**: [Python 3.10](https://www.python.org/downloads/release/python-3100/) or later.
+  - **JavaScript**: [Node.js 18](https://nodejs.org/) or later.
+  - **TypeScript**: Node.js 18+ plus [tsx](https://github.com/privatenumber/tsx) (`npm install -g tsx`).
 
 Code blocks in this guide are tabbed. Pick cURL, Python, JavaScript, or TypeScript in each block to follow your preferred language.
 
 <Info>
-  No SDK is required (or available): there is no official Rime package on npm or PyPI. Every script below uses only the standard library or built-in `fetch`. Building inside a web framework? See the voice-agent guides for [Next.js](/docs/voice-agent-nextjs), [Vite](/docs/voice-agent-vite), [Express](/docs/voice-agent-express), [plain Node](/docs/voice-agent-node), and [FastAPI](/docs/voice-agent-fastapi).
+  These examples call Rime's HTTPS API with a standard library or built-in `fetch`. Rime does not publish an npm or PyPI SDK. Framework-specific starters are available for [Next.js](/docs/voice-agent-nextjs), [Vite](/docs/voice-agent-vite), [Express](/docs/voice-agent-express), [plain Node](/docs/voice-agent-node), and [FastAPI](/docs/voice-agent-fastapi).
 </Info>
 
-## Create your script
-
-If you'd rather paste a working file and read along, grab the full script below. Otherwise, continue step-by-step.
-
-### Full script
+## Copy the request
 
 Create a file called `rime_hello_world.py`, `rime_hello_world.js`, or `rime_hello_world.ts` (or run the cURL version directly in your terminal) and paste the full script:
 
@@ -156,7 +152,33 @@ generateSpeech();
 </CodeGroup>
 </Accordion>
 
-### Step-by-step code
+## Run it
+
+The cURL tab runs the request directly. For Python, JavaScript, or TypeScript, run:
+
+<CodeGroup>
+```bash Python
+python rime_hello_world.py
+```
+
+```bash JavaScript
+node rime_hello_world.js
+```
+
+```bash TypeScript
+npx tsx rime_hello_world.ts
+```
+</CodeGroup>
+
+A successful request writes `output.wav` and prints:
+
+```bash
+Audio saved to output.wav
+```
+
+<Accordion title="How the request works">
+
+### Build the request step by step
 
 Create a file called `rime_hello_world.py`, `rime_hello_world.js`, or `rime_hello_world.ts` and import the required library modules:
 
@@ -175,9 +197,7 @@ import * as fs from "fs";
 ```
 </CodeGroup>
 
-Next, we'll create a request to the Rime API.
-
-Set the request headers, specifying the Rime API key that you copied:
+Set the request headers with your Rime API key and the expected audio format:
 
 <CodeGroup>
 ```python Python
@@ -211,7 +231,7 @@ const headers: Record<string, string> = {
 ```
 </CodeGroup>
 
-Configure a payload specifying the details of the request:
+Set the text, speaker, and model in the request body:
 
 <CodeGroup>
 ```python Python
@@ -241,13 +261,13 @@ const payload = {
 
 This payload includes the three required parameters:
 
-- `text` adds the text that the model converts to speech.
-- `speaker` sets the voice that the agent uses (view your options on our [Voices](/docs/voices) page).
-- `modelId` specifies which model the agent uses. Use `coda` for our most realistic flagship voices, or `mistv3` for fast synthesis with the classic Mist lineup.
+- `text` is the content to synthesize.
+- `speaker` selects a voice from the [voice catalog](/docs/voices).
+- `modelId` selects the model. Use `coda` for the flagship voice lineup or `mistv3` for the lowest time to first audio.
 
-The [Coda API reference](/api-reference/coda/http) details the many optional parameters you can add to request payloads.
+The [Coda API reference](/api-reference/coda/http) lists the optional request parameters.
 
-Now that you've created the headers and payload, make a `POST` request to the Rime API and write the streamed audio response to a file:
+Send the `POST` request and write the streamed audio response to a file:
 
 <CodeGroup>
 ```python Python
@@ -309,37 +329,13 @@ generateSpeech();
 ```
 </CodeGroup>
 
-Streaming allows audio playback to begin before generation completes. This enables conversational flow, as the user can start listening to responses before the entire audio clip has been generated.
+These examples stream the response but write each chunk to disk. Interactive applications can play chunks as they arrive so speech begins before the complete response is generated. The [LiveKit quickstart](/docs/quickstart-livekit) shows this pattern in a conversational agent.
 
-Although streaming is less important in this example, because we're writing to a file, it's vital when using models in real-time conversations. If this sounds interesting, follow the [LiveKit quickstart](/docs/quickstart-livekit) to create your first conversational agent.
-
-## Test the script
-
-Run your script from the terminal:
-
-<CodeGroup>
-```bash Python
-python rime_hello_world.py
-```
-
-```bash JavaScript
-node rime_hello_world.js
-```
-
-```bash TypeScript
-npx tsx rime_hello_world.ts
-```
-</CodeGroup>
-
-On a successful run, the terminal displays a confirmation that your audio file has been saved:
-
-```bash
-'Audio saved to output.wav'
-```
+</Accordion>
 
 ## Choose a voice
 
-Rime offers a range of voices with different personalities. To change the voice, update the `speaker` parameter in your request:
+Change the `speaker` parameter to use another voice:
 
 <CodeGroup>
 ```python Python
@@ -371,7 +367,7 @@ Browse all available voices on the [Voices](/docs/voices) page.
 
 ## Custom pronunciation
 
-<Note>Custom pronunciation is supported on **Mist v1 and v2** only. Coda, Arcana, and Mist v3 do not support [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) yet.</Note>
+<Note>Custom pronunciation is supported on **Mist v1 and Mist v2** only. Coda, Arcana, and Mist v3 do not support [`phonemizeBetweenBrackets`](/docs/custom-pronunciation).</Note>
 
 The `mistv2` model lets you specify the pronunciation of brand names or uncommon words using the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet). Add the custom pronunciation in curly brackets and set [`phonemizeBetweenBrackets`](/docs/custom-pronunciation) to `true`:
 
@@ -406,13 +402,11 @@ const payload = {
 
 See the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet) for the full symbol reference, and [Pronunciation control](/platform/pronunciation-control) for an overview of all the ways to control pronunciation.
 
-## Next steps
+## Production choices
 
-Now that you can generate TTS audio, try following the [LiveKit quickstart guide](/docs/quickstart-livekit) to learn how you can set up a real-time conversation with an agent.
+The [LiveKit quickstart](/docs/quickstart-livekit) extends the same streaming API into a real-time voice agent. These references cover the main model, voice, latency, and transport decisions:
 
-Check out these resources to get more familiar with Rime:
-
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="Models" icon="microchip" href="/docs/models">
     Compare Coda (flagship) and Mist v3 (fast)
   </Card>
@@ -425,4 +419,4 @@ Check out these resources to get more familiar with Rime:
   <Card title="Coda Streaming API" icon="bolt" href="/api-reference/coda/http">
     Stream audio with our flagship model
   </Card>
-</CardGroup>
+</Columns>

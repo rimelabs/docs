@@ -3,17 +3,15 @@ title: "OpenClaw document reader with Rime TTS Telegram bot"
 description: "Configure OpenClaw to be your personal reading assistant"
 ---
 
-As convenient as having an AI agent read your documents aloud seems, the actual experience of text-to-speech (TTS) is often marred by the stilted cadence of an obviously generated voice. This guide demonstrates how to configure an OpenClaw assistant to read documents aloud in a voice that doesn't suck to listen to.
+Build a Telegram bot that turns pasted text or attached documents into a verbatim reading, spoken summary, or two-voice podcast. OpenClaw handles the assistant workflow and Rime generates the voice note.
 
-By adding Rime TTS to OpenClaw, you can convert any text to natural-sounding speech via instant messaging. Simply open a chat with your AI assistant, attach the text as a document or paste it in a message, and the bot returns a voice note in your desired mode of delivery: a verbatim reading, summary, or podcast discussion.
-
-Compare how the OpenClaw assistant delivers a podcast-style reading when it uses our custom [Rime.ai](https://rime.ai/) reading skill and when it uses its built-in TTS:
+The samples compare the same podcast-style reading through the custom Rime skill and OpenClaw's default TTS:
 
 | Rime TTS | Default TTS |
 | --- | --- |
 | <audio controls src="/audio/rime_podcast.mp3"></audio> | <audio controls src="/audio/edge_default_podcast.mp3"></audio> |
 
-The Rime voices sound far more natural, and by setting up a custom skill, we can configure the OpenClaw assistant to present users with a wide range of voices.
+The custom skill also presents a selectable Rime voice menu before generating audio.
 
 ## Prerequisites
 
@@ -250,35 +248,35 @@ When the user sends a file or pastes text and asks you to read it, you must
 follow the `rime-reader` skill workflow exactly. **Do not generate any audio
 until both the mode and voice have been confirmed.** There are no exceptions.
 
-**Step 1 — ask for the delivery mode.** Only skip if the user's message
+**Step 1: ask for the delivery mode.** Only skip if the user's message
 contained the exact word "verbatim", "summary", or "podcast":
 
 > How would you like this delivered?
 >
-> 📖 **Verbatim** — full text
-> 📋 **Summary** — concise spoken summary
-> 🎙️ **Podcast** — two hosts break it down in a lively conversation
+> 📖 **Verbatim**: full text
+> 📋 **Summary**: concise spoken summary
+> 🎙️ **Podcast**: two hosts break it down in a lively conversation
 
-**Step 2 — ask for a voice.** For verbatim or summary, ask for one voice. For
+**Step 2: ask for a voice.** For verbatim or summary, ask for one voice. For
 podcast, ask for two voices (Host 1 and Host 2). Use exactly this menu:
 
 > Which voice should I use?
 >
-> 🏛️ **atrium** — steady, polished, confident
-> ✨ **lyra** — smooth, expressive, quietly intense
-> 🌊 **transom** — deep, resonant, commanding
-> 🧊 **parapet** — cool, measured, precise
-> 🌿 **fern** — warm, natural, approachable
-> 🌑 **thalassa** — rich, textured, distinctive
-> 🔩 **truss** — firm, clear, authoritative
-> 🔷 **sirius** — crisp, formal, reliable
-> 🌒 **eliphas** — smooth, deep, gravitas
-> 📐 **lintel** — deliberate, focused, clean
+> 🏛️ **atrium**: steady, polished, confident
+> ✨ **lyra**: smooth, expressive, quietly intense
+> 🌊 **transom**: deep, resonant, commanding
+> 🧊 **parapet**: cool, measured, precise
+> 🌿 **fern**: warm, natural, approachable
+> 🌑 **thalassa**: rich, textured, distinctive
+> 🔩 **truss**: firm, clear, authoritative
+> 🔷 **sirius**: crisp, formal, reliable
+> 🌒 **eliphas**: smooth, deep, gravitas
+> 📐 **lintel**: deliberate, focused, clean
 >
 > For podcast, reply with two names (e.g. "atrium and fern"), or say "surprise me".
 
-**Step 3 — only now** follow the full `rime-reader` skill for normalization,
-scripting, and audio generation. Always use `rime.py` — never use another TTS
+**Step 3: only now** follow the full `rime-reader` skill for normalization,
+scripting, and audio generation. Always use `rime.py`; never use another TTS
 path.
 ```
 
@@ -319,7 +317,7 @@ You can use any of the available Arcana voices: `atrium`, `lyra`, `transom`, `pa
 The LLM writes the podcast script before synthesizing it, so you can steer the tone. Try adding a line such as the following to the **Document Reading** section of your `SOUL.md`:
 
 ```markdown
-For podcast mode, write the script in the style of a late-night talk show —
+For podcast mode, write the script in the style of a late-night talk show:
 one host is deadpan and skeptical, the other is wildly enthusiastic. Keep it
 punchy: no segment longer than two sentences.
 ```

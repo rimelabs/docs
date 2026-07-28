@@ -4,37 +4,12 @@ description: "Build a real-time voice agent in your browser using LiveKit Agents
 icon: rocket
 ---
 
-This guide demonstrates how to build a real-time voice agent using LiveKit's Agents SDK with natural speech provided by Rime. The agent uses LiveKit's plugins:
--  `silero` and `turn-detector`, for conversational turn-taking 
-- `gpt-4o-transcribe` for speech-to-text (STT)
-- `gpt-4o-mini` to generate responses
-- `rime` to generate realistic text-to-speech (TTS)
-
-By the end, you'll have a working voice agent that you can talk to in your browser. 
+Build a working browser voice agent with LiveKit transport, OpenAI transcription and responses, and Rime speech. The completed agent handles turn-taking, speech recognition, agent logic, and streaming TTS.
 
 <img
   src="/images/livekit-demo.gif"
   alt="Demo of a voice agent conversation using LiveKit and Rime"
 />
-
-The following LiveKit terminology will help your understanding of the rest of the guide:
-- a **Room** is a virtual space where participants connect and share media in real-time.
-- an **Agent** is a server-side participant that can process media streams and interact with users.
-- **LiveKit Cloud** is a platform for real-time audio streaming between participants.
-
-Here's how audio flows through the system:
-<img
-  src="/images/livekit-agent-flow-light.png"
-  alt="Voice agent architecture showing audio flowing from user through LiveKit, OpenAI, and Rime"
-  className="block dark:hidden"
-/>
-<img
-  src="/images/livekit-agent-flow-dark.png"
-  alt="Voice agent architecture showing audio flowing from user through LiveKit, OpenAI, and Rime"
-  className="hidden dark:block"
-/>
-
-If you'd like to experiment with Rime's TTS API directly before building a full voice agent, check out: [TTS in five minutes](/docs/quickstart-five-minute).
 
 ## Step 1: Prerequisites
 
@@ -54,11 +29,32 @@ Create a [LiveKit Cloud account](https://cloud.livekit.io/) for real-time audio 
 
 1. Create a new project called `rime-agent`
 2. Go to **Settings** → **API keys** → **Create key**
-3. Copy your **WebSocket URL**, **API key**, and **API secret**. you'll need all three
+3. Copy your **WebSocket URL**, **API key**, and **API secret**. You need all three.
 
 ### 1.4 Python
 
 Install [Python 3.10 or later](https://www.python.org/downloads/). Verify your installation by running `python --version` in your terminal.
+
+<Accordion title="LiveKit terms and architecture">
+
+- A **Room** is a virtual space where participants connect and share media in real time.
+- An **Agent** is a server-side participant that processes media streams and interacts with users.
+- **LiveKit Cloud** transports real-time audio between participants.
+
+The agent sends user audio through LiveKit to OpenAI for transcription and response generation, then returns Rime speech through the same room:
+
+<img
+  src="/images/livekit-agent-flow-light.png"
+  alt="Voice agent architecture showing audio flowing from user through LiveKit, OpenAI, and Rime"
+  className="block dark:hidden"
+/>
+<img
+  src="/images/livekit-agent-flow-dark.png"
+  alt="Voice agent architecture showing audio flowing from user through LiveKit, OpenAI, and Rime"
+  className="hidden dark:block"
+/>
+
+</Accordion>
 
 ## Step 2: Project setup
 
@@ -152,7 +148,7 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
-This loads the API keys from your `.env` file so they're available throughout the application. Don't skip this step — the LiveKit agents CLI doesn't load `.env` files automatically, so without `load_dotenv()` the worker won't find your LiveKit and API credentials.
+This loads the API keys from your `.env` file so they're available throughout the application. Don't skip this step: the LiveKit agents CLI doesn't load `.env` files automatically, so without `load_dotenv()` the worker won't find your LiveKit and API credentials.
 
 ### 3.2 Define an Agent class
 
@@ -417,7 +413,7 @@ Update the greeting at the end of `entrypoint`:
 await session.say(INTRO_MESSAGE)
 ```
 
-Storing your system prompt in a separate file keeps your personality configuration separate from your agent logic, making it easy to experiment with different characters.
+Keeping the system prompt in a separate file lets you change the character without editing the agent logic.
 
 ### 5.3 Adjust TTS chunking
 

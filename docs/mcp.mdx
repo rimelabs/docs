@@ -4,7 +4,7 @@ description: "Connect Claude, Codex, or your IDE to Rime's hosted MCP server and
 icon: plug-circle-bolt
 ---
 
-Connect an AI assistant to Rime's hosted [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server and hear a Rime voice in 60 seconds. Once connected, your assistant can browse the voice catalog, check pronunciation, generate speech samples, and scaffold voice-agent code — all from a conversation.
+Connect an AI assistant to Rime's hosted [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server and hear a Rime voice in 60 seconds. From the same conversation, your assistant can browse the voice catalog, check pronunciation, generate speech samples, and scaffold voice-agent code.
 
 ## Step 1: Connect
 
@@ -26,9 +26,9 @@ codex mcp add rime --url https://mcp.rime.ai \
   --bearer-token-env-var RIME_API_KEY
 ```
 
-For other clients — and connecting without an API key — see [Connecting](/mcp-reference/connect).
+For other clients, and connecting without an API key, see [Connecting](/mcp-reference/connect).
 
-<Note>No key is needed to browse voices or generate integration code. Synthesis and the linguistics tools use your regular [Rime API key](https://app.rime.ai/tokens), sent per request and never stored — see [Authentication](/mcp-reference/authentication).</Note>
+<Note>No key is needed to browse voices or generate integration code. Synthesis and the linguistics tools use your regular [Rime API key](https://app.rime.ai/tokens), sent per request and never stored. See [Authentication](/mcp-reference/authentication).</Note>
 
 ## Step 2: Hear your first voice
 
@@ -54,9 +54,9 @@ Which words in this script aren't in Rime's dictionary, and how will the numbers
 Generate Pipecat starter code for a voice agent using the astra voice.
 ```
 
-## Next steps
+## Models and API references
 
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="MCP Reference" icon="plug-circle-bolt" href="/mcp-reference/overview">
     All six tools, connection setup, authentication, and audio playback
   </Card>
@@ -69,4 +69,4 @@ Generate Pipecat starter code for a voice agent using the astra voice.
   <Card title="Streaming TTS" icon="wave-sine" href="/docs/streaming">
     Production streaming over HTTP, WebSockets, or SSE
   </Card>
-</CardGroup>
+</Columns>

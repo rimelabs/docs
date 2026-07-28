@@ -12,7 +12,7 @@ All requests require authentication with a bearer token in the `Authorization` h
 
 This API endpoint converts a short audio recording of a word into a phonetic string in the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet).
 
-Use it when you know how a word should sound but don't want to write the phonetic string by hand: record the word (or synthesize it), post the audio, and paste the returned string into a TTS request inside curly brackets with `phonemizeBetweenBrackets: true` — see [Custom pronunciation](/docs/custom-pronunciation).
+Use it when you know how a word should sound but don't want to write the phonetic string by hand: record the word (or synthesize it), post the audio, and paste the returned string into a TTS request inside curly brackets with `phonemizeBetweenBrackets: true`. See [Custom pronunciation](/docs/custom-pronunciation).
 
 <Note>
   Custom pronunciation strings are supported by **Mist v1 and v2** only. For an overview of all the ways to control pronunciation, see [Pronunciation control](/platform/pronunciation-control).
@@ -20,11 +20,11 @@ Use it when you know how a word should sound but don't want to write the phoneti
 
 ## Request
 
-Unlike Rime's other endpoints, the request body is the **raw audio bytes** — not JSON or multipart form data. Set the `Content-Type` header to match the audio format. WAV (`audio/wav`) and MP3 (`audio/mpeg`) are supported.
+Unlike Rime's other endpoints, the request body is the **raw audio bytes**, not JSON or multipart form data. Set the `Content-Type` header to match the audio format. WAV (`audio/wav`) and MP3 (`audio/mpeg`) are supported.
 
 ## Example
 
-Generate or record audio of the word — for example with the [Rime CLI](/cli-reference/overview):
+Generate or record audio of the word, for example with the [Rime CLI](/cli-reference/overview):
 
 ```bash
 rime tts -m coda -l en -s astra "hello" -o speech.wav
@@ -51,9 +51,9 @@ The response includes the phonetic string:
 
 ## Response fields
 
-- `audioId` — identifier of the uploaded audio clip.
-- `phonemeString` — the phonetic transcription in the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet). The string may end with a punctuation token (e.g. `!` or `?`); strip it before using the string inside `{}`.
-- `authed` — always `1`.
+- `audioId`: identifier of the uploaded audio clip.
+- `phonemeString`: the phonetic transcription in the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet). The string may end with a punctuation token (e.g. `!` or `?`); strip it before using the string inside `{}`.
+- `authed`: always `1`.
 
 <RequestExample>
 

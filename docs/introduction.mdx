@@ -1,16 +1,18 @@
 ---
 title: Introduction
-description: "An overview of Rime's speech platform, product capabilities, and developer interfaces."
+description: "Understand Rime's default model, core developer surfaces, and deployment options before you integrate."
 icon: book-open
 ---
 
-Rime is a speech platform for turning text into natural, responsive audio. It powers spoken content, conversational agents, telephony, accessibility features, games, and any product that needs a voice.
+Rime gives applications a natural, low-latency voice through one platform. Start with Coda for new work, then use HTTP or WebSockets from your backend. The dashboard, CLI, MCP server, and supported integrations provide other ways into the same system.
 
 The [Rime dashboard](https://app.rime.ai/) provides a visual workspace for exploring voices and generating speech. The same speech capabilities are available to applications and developer tools through Rime's APIs.
 
-## Start with Coda, our flagship model
+## Start with Coda
 
-**Coda** is Rime's most natural and expressive model — an LLM backbone paired with a dedicated speech inference engine, trained on full-duplex conversational speech between real people rather than voice actors or audiobook narrators. It's built for production voice agents: top-rated voice quality in human evaluations, **sub-100ms model latency** (sub-200ms end-to-end over the cloud API), and one multilingual voice lineup across English, Spanish, French, Portuguese, German, and Japanese. If you're moving from Arcana, the API contract is the same — just set `modelId: coda`.
+Coda is the default model for new projects and the recommended destination for Arcana traffic. Existing Arcana integrations can switch by setting `modelId: coda`; the rest of the API contract stays the same.
+
+Coda pairs an LLM backbone with a dedicated speech inference engine trained on full-duplex conversations between real people. It delivers top-rated voice quality in human evaluations, **sub-100ms model latency** (sub-200ms end to end over the cloud API), and one voice lineup across English, Spanish, French, Portuguese, German, and Japanese.
 
 <Card title="Generate your first audio with Coda" icon="rocket" href="/docs/quickstart-five-minute">
   Send one request with `modelId: coda` and get natural speech back in under five minutes.
@@ -24,7 +26,7 @@ The [Rime dashboard](https://app.rime.ai/) provides a visual workspace for explo
   </Card>
 
   <Card title="Stream speech in real time" icon="signal-stream" href="/docs/streaming">
-    Play audio as it is generated, or send text incrementally for low-latency conversations and voice agents.
+    Use HTTP for simple streaming responses or persistent WebSockets for the tightest conversational loop, with timestamps and interruption handling.
   </Card>
 
   <Card title="Choose voices, models, and languages" icon="microphone-lines" href="/docs/voices">
@@ -36,7 +38,7 @@ The [Rime dashboard](https://app.rime.ai/) provides a visual workspace for explo
   </Card>
 
   <Card title="Build voice agents" icon="messages" href="/docs/voice-agents">
-    Use Rime as the speech layer in conversational AI, customer support, telephony, and interactive assistants.
+    Begin with a complete LiveKit tutorial or connect Rime directly from Next.js, Vite, Express, Node.js, or FastAPI.
   </Card>
 
   <Card title="Connect voice platforms" icon="puzzle-piece" href="/docs/livekit">

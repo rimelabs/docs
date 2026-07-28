@@ -1,6 +1,6 @@
 ---
 title: 'Text Normalization'
-description: "Text normalization endpoint: returns the normalized form of input text — exactly what the TTS model sees before synthesis."
+description: "Return normalized text exactly as the TTS model receives it before synthesis."
 api: 'POST  https://optimize.rime.ai/textnorm'
 authMethod: "bearer"
 ---
@@ -9,7 +9,7 @@ All requests require authentication with a bearer token in the `Authorization` h
 
 ## Overview
 
-This API endpoint returns the normalized form of an input string — the way Rime's TTS models interpret numbers, phone numbers, dates, and other non-standard words before synthesis.
+This endpoint returns the normalized form of an input string exactly as Rime's TTS models receive it before synthesis. Use it to inspect numbers, phone numbers, dates, and other non-standard words.
 
 Use it to preview how a given input will be spoken, or to debug unexpected pronunciations of digits, sequences, and punctuation.
 

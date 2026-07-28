@@ -28,15 +28,13 @@ mode: custom
     </p>
   </div>
 
-  <div className="mt-16">
-    <div className="mb-6">
-      <p className="text-sm font-semibold uppercase tracking-wider text-[#B2321A] dark:text-[#E68732]">First request</p>
-      <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Go from text to audio</h2>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-        Set <code>RIME_API_KEY</code>, run one of these examples, and play the generated <code>hello.mp3</code> file.
-      </p>
-    </div>
+  <div className="mt-20">
+    <h2 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Make your first request</h2>
+    <p className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-400">
+      Set <code>RIME_API_KEY</code>, run one of these examples, and play the generated <code>hello.mp3</code> file.
+    </p>
 
+    <div className="mt-6">
     <CodeGroup>
     ```bash cURL
     curl --request POST \
@@ -98,28 +96,28 @@ mode: custom
     await writeFile("hello.mp3", Buffer.from(await response.arrayBuffer()));
     ```
     </CodeGroup>
+    </div>
 
     <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-500">
-      Want the complete walkthrough? Follow <a className="font-medium text-[#B2321A] underline decoration-[#B2321A]/60 underline-offset-4 hover:text-[#8f2815] dark:text-[#E68732] dark:decoration-[#E68732]/60 dark:hover:text-[#f0a35c]" href="/docs/quickstart-five-minute">TTS in five minutes</a>. Prefer the terminal? Try the <a className="font-medium text-[#B2321A] underline decoration-[#B2321A]/60 underline-offset-4 hover:text-[#8f2815] dark:text-[#E68732] dark:decoration-[#E68732]/60 dark:hover:text-[#f0a35c]" href="/docs/quickstart-cli">Rime CLI</a>.
+      Follow the <a className="font-medium text-[#B2321A] underline decoration-[#B2321A]/60 underline-offset-4 hover:text-[#8f2815] dark:text-[#E68732] dark:decoration-[#E68732]/60 dark:hover:text-[#f0a35c]" href="/docs/quickstart-five-minute">five-minute tutorial</a>, or run the same request from the <a className="font-medium text-[#B2321A] underline decoration-[#B2321A]/60 underline-offset-4 hover:text-[#8f2815] dark:text-[#E68732] dark:decoration-[#E68732]/60 dark:hover:text-[#f0a35c]" href="/docs/quickstart-cli">CLI</a>.
     </p>
   </div>
 
   <div className="mt-20">
-    <p className="text-sm font-semibold uppercase tracking-wider text-[#B2321A] dark:text-[#E68732]">Choose what you're building</p>
-    <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Start with the path that matches your application</h2>
-    <p className="mt-3 max-w-3xl text-zinc-600 dark:text-zinc-400">
-      Rime exposes one HTTP and WebSocket API surface. Choose a workflow, then move into the implementation and reference material you need.
+    <h2 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Choose the path that fits your application</h2>
+    <p className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-400">
+      Start with the outcome you need. Every path uses the same HTTP and WebSocket API.
     </p>
 
     <div className="mt-8">
       <Columns cols={3}>
-        <Card title="Add speech to an application" icon="wave-sine" href="/docs/quickstart-five-minute">
+        <Card title="Add speech to an application" href="/docs/quickstart-five-minute">
           Generate speech over HTTP, stream the response, and play it in your application.
         </Card>
-        <Card title="Build a real-time voice agent" icon="microphone-lines" href="/docs/voice-agents">
-          Connect Rime to an STT, LLM, and audio transport for responsive conversations.
+        <Card title="Build a real-time voice agent" href="/docs/voice-agents">
+          Connect Rime to speech recognition, an LLM, and audio transport for responsive conversations.
         </Card>
-        <Card title="Deploy on your infrastructure" icon="server" href="/docs/on-prem/quickstart">
+        <Card title="Deploy on your infrastructure" href="/docs/on-prem/quickstart">
           Run Rime privately with Docker Compose or Kubernetes.
         </Card>
       </Columns>
@@ -127,80 +125,37 @@ mode: custom
   </div>
 
   <div className="mt-20">
-    <p className="text-sm font-semibold uppercase tracking-wider text-[#B2321A] dark:text-[#E68732]">Developer journey</p>
-    <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">From first audio to production</h2>
-    <p className="mt-3 max-w-3xl text-zinc-600 dark:text-zinc-400">
-      Follow the lifecycle or jump directly to the problem you're solving.
+    <h2 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">From first audio to production</h2>
+    <p className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-400">
+      Move through each stage, or jump straight to the task you need.
     </p>
 
     <div className="mt-8">
       <Columns cols={4}>
-        <Card title="Get started" icon="rocket">
-          - [Generate your first audio](/docs/quickstart-five-minute)
-          - [Create an API token](https://app.rime.ai/tokens)
-          - [Authenticate requests](/docs/api-authentication)
-          - [Choose a voice](/docs/voices)
+        <Card title="Get started" href="/docs/quickstart-five-minute">
+          Generate your first audio, create a key, authenticate requests, and choose a voice.
         </Card>
-        <Card title="Build" icon="code">
-          - [Stream audio over HTTP](/docs/streaming)
-          - [Use WebSockets](/docs/websockets)
-          - [Build with LiveKit](/docs/quickstart-livekit)
-          - [Integrate with Pipecat](/docs/pipecat)
+        <Card title="Build" href="/docs/streaming">
+          Stream audio over HTTP, use WebSockets, and build with LiveKit or Pipecat.
         </Card>
-        <Card title="Customize" icon="sliders">
-          - [Choose a model](/docs/models)
-          - [Guide delivery with prompts](/docs/prompting)
-          - [Control pronunciation](/platform/pronunciation-control)
-          - [Format text](/docs/text-normalization)
+        <Card title="Customize" href="/docs/models">
+          Choose a model, guide delivery with prompts, control pronunciation, and format text.
         </Card>
-        <Card title="Operate" icon="gauge-simple-max">
-          - [Reduce latency](/docs/latency)
-          - [Select a region](/docs/regional-endpoints)
-          - [Deploy on-prem](/docs/on-prem/quickstart)
-          - [Review privacy and compliance](/docs/privacy-compliance)
+        <Card title="Operate" href="/docs/latency">
+          Reduce latency, select a region, deploy on-prem, and review privacy and compliance.
         </Card>
       </Columns>
     </div>
   </div>
 
   <div className="mt-20">
-    <p className="text-sm font-semibold uppercase tracking-wider text-[#B2321A] dark:text-[#E68732]">Models and voices</p>
-    <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Choose the right sound for your application</h2>
-    <p className="mt-3 max-w-3xl text-zinc-600 dark:text-zinc-400">
-      Compare model capabilities, then browse voices by model and language before choosing what to put into production.
-    </p>
-
-    <div className="mt-8">
-      <Columns cols={2}>
-        <Card title="Compare models" icon="layer-group" href="/docs/models">
-          Understand the tradeoffs across Coda, Arcana, and Mist before choosing a model ID.
-        </Card>
-        <Card title="Browse voices" icon="headphones" href="/docs/voices">
-          Explore the voice catalog and find voices available for your model and language.
-        </Card>
-      </Columns>
-    </div>
-  </div>
-
-  <div className="mt-20 border-t border-zinc-200 pt-12 dark:border-zinc-800">
-    <p className="text-sm font-semibold uppercase tracking-wider text-[#B2321A] dark:text-[#E68732]">Resources</p>
-    <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Keep building</h2>
-
-    <div className="mt-8">
-      <Columns cols={4}>
-        <Card title="API reference" icon="brackets-curly" href="/docs/api-reference">
-          Endpoints, parameters, formats, and examples.
-        </Card>
-        <Card title="API cheat sheet" icon="rectangle-list" href="/docs/api-cheat-sheet">
-          Common requests and endpoints on one page.
-        </Card>
-        <Card title="CLI" icon="terminal" href="/docs/quickstart-cli">
-          Generate and inspect audio from your terminal.
-        </Card>
-        <Card title="MCP server" icon="robot" href="/docs/mcp">
-          Use Rime from Claude, Codex, and compatible IDEs.
-        </Card>
-      </Columns>
-    </div>
+    <Columns cols={2}>
+      <Card title="Choose a model and voice" href="/docs/models">
+        Compare Coda, Arcana, and Mist, then browse voices by model and language.
+      </Card>
+      <Card title="API reference and tools" href="/docs/api-reference">
+        Endpoint contracts, the API cheat sheet, the CLI, and the MCP server, all in one place.
+      </Card>
+    </Columns>
   </div>
 </div>

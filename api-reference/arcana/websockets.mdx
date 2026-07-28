@@ -60,8 +60,8 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
   The text you'd like spoken. Character limit per request is 1,000 via the API and in the dashboard UI.
 </ParamField>
 
-<ParamField body="modelId" type="string" required>
-  This value **must** be set to `arcana`. Without it, the server routes to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
+<ParamField body="modelId" type="string" default="mistv3">
+  Set this to `arcana`. It is not strictly required, but if you omit it the server defaults to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
 </ParamField>
 
 <ParamField body="audioFormat" type="string">

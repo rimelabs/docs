@@ -38,3 +38,29 @@ html.dark[data-current-path="/"] .nav-tabs-item[data-active="true"] {
 html[data-current-path="/"] .nav-tabs-item[data-active="true"] > div {
   background-color: transparent !important;
 }
+
+/* --- Rime brand warm neutrals: Paper (#F0E9DD family) in light, Ink in dark ---
+   Mintlify leaves the root canvas transparent (defaults to white/near-black),
+   so we set the surface, the navbar, and the light-mode code block to warm
+   tones instead of the default white that clashed with the brand palette. */
+html:not(.dark) {
+  background-color: #F8F3EA;
+}
+
+html.dark {
+  background-color: #201C18;
+}
+
+html:not(.dark) #navbar {
+  background-color: #F8F3EA;
+}
+
+html.dark #navbar {
+  background-color: #201C18;
+}
+
+/* Warm the light-mode code block surface so it does not read as a white patch. */
+html:not(.dark) pre.shiki,
+html:not(.dark) pre.shiki > code {
+  background-color: #F0E9DD !important;
+}

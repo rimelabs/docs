@@ -7,6 +7,8 @@ authMethod: "bearer"
 
 All requests require authentication with a bearer token in the `Authorization` header: `Authorization: Bearer YOUR_API_KEY`. See [API authentication](/docs/api-authentication) for how to create a key.
 
+<Warning>Include `modelId=arcana` in the connection query. If you omit it, the server routes the request to Mist v3 and speakers outside the Mist v3 catalog can fail with `Speaker not found`.</Warning>
+
 ## Overview
 
 Rime's websocket implementation accepts bare text, and responds with audio bytes of the selected format. All synthesis arguments are provided as query parameters when establishing the connection.
@@ -33,7 +35,7 @@ The messages your client will receive will be raw audio bytes in the audio forma
 
 ## Commands
 
-There will be times when you want to interact with the API and manipute the stored buffer. These are the current supported commands.
+Use these commands to manipulate the stored text buffer.
 
 ### `<CLEAR>`
 
@@ -58,8 +60,8 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
   The text you'd like spoken. Character limit per request is 1,000 via the API and in the dashboard UI.
 </ParamField>
 
-<ParamField body="modelId" type="string">
-  This value **must** be set to `arcana` — without it, the server routes to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
+<ParamField body="modelId" type="string" required>
+  This value **must** be set to `arcana`. Without it, the server routes to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
 </ParamField>
 
 <ParamField body="audioFormat" type="string">

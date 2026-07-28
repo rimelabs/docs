@@ -7,6 +7,8 @@ authMethod: "bearer"
 
 All requests require authentication with a bearer token in the `Authorization` header: `Authorization: Bearer YOUR_API_KEY`. See [API authentication](/docs/api-authentication) for how to create a key.
 
+<Warning>Include `modelId=arcana` in the connection query. If you omit it, the server routes the request to Mist v3 and speakers outside the Mist v3 catalog can fail with `Speaker not found`.</Warning>
+
 ## Overview
 
 In addition to a plaintext websocket implementation,
@@ -14,7 +16,7 @@ Rime also has an implementation that sends and receives events as JSON objects.
 Like the other implementation, all synthesis arguments are provided as query
 parameters when establishing the connection.
 
-The websocket API buffers inputs up to on of the following punctuation
+The WebSocket API buffers inputs up to one of the following punctuation
 characters: `.`, `?`, `!`. This is most pertinent for the initial messages
 sent to the API, as synthesis won't begin until there are sufficient
 tokens to generate audio with natural prosody. After the first synthesis
@@ -52,8 +54,8 @@ examples:
 ```
 
 Context IDs can be provided, which will be attached to subsequent messages
-that the server sends back to the client. Rime will not maintain multiple s
-imultaneous context ids. The events will contain the most recent context ID
+that the server sends back to the client. Rime will not maintain multiple
+simultaneous context IDs. The events will contain the most recent context ID
 at the time that audio was requested. In the above examples, even if both
 messages are received by the server before it sends any audio, the audio
 response for the first sentence will be tagged with `contextId: null`,
@@ -172,8 +174,8 @@ type ErrorEvent = {
   The text you'd like spoken. Character limit per request is 1,000 via the API and in the dashboard UI.
 </ParamField>
 
-<ParamField body="modelId" type="string">
-  This value **must** be set to `arcana` — without it, the server routes to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
+<ParamField body="modelId" type="string" required>
+  This value **must** be set to `arcana`. Without it, the server routes to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
 </ParamField>
 
 <ParamField body="audioFormat" type="string">

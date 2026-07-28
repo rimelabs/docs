@@ -10,7 +10,7 @@ import { IntegrationHeader } from '/snippets/integration-header.mdx'
   partnerAlt="Baseten logo"
 />
 
-[Baseten](https://www.baseten.co/) is a platform for deploying and serving AI models on autoscaling GPU infrastructure. Rime's text-to-speech engine images run on Baseten as single-container deployments — the engine validates its own license and serves TTS directly, with no separate router.
+[Baseten](https://www.baseten.co/) is a platform for deploying and serving AI models on autoscaling GPU infrastructure. Rime's text-to-speech engine images run on Baseten as single-container deployments: the engine validates its own license and serves TTS directly, with no separate router.
 
 ### Get started
 
@@ -18,13 +18,21 @@ Ready-to-use deploy configs for Rime's models live in the [`rimelabs/rime-basete
 
 | Model | Directory |
 |---|---|
-| Rime Coda v1 — flagship expressive TTS | [`rime-coda-v1/`](https://github.com/rimelabs/rime-baseten-deploy/tree/main/rime-coda-v1) |
-| Rime Mist v3 — low-latency conversational | [`rime-mist-v3/`](https://github.com/rimelabs/rime-baseten-deploy/tree/main/rime-mist-v3) |
+| Rime Coda v1: flagship expressive TTS | [`rime-coda-v1/`](https://github.com/rimelabs/rime-baseten-deploy/tree/main/rime-coda-v1) |
+| Rime Mist v3: low-latency conversational | [`rime-mist-v3/`](https://github.com/rimelabs/rime-baseten-deploy/tree/main/rime-mist-v3) |
+
+## Prerequisites
+
+Before cloning the deployment repository, contact [help@rime.ai](mailto:help@rime.ai) for engine-image and license access. Your Baseten workspace needs these secrets:
+
+- `gcp_rime_service_account`
+- `rime_license`
+- `rime_api_key`
 
 To deploy:
 
 1. Clone the repo and `cd` into the model directory you want.
-2. Set three secrets on your Baseten workspace — `gcp_rime_service_account` (pulls Rime's private engine image), `rime_license`, and `rime_api_key`. The per-model README walks through each. Engine images are license-gated; contact help@rime.ai for access.
+2. Set the three required secrets in your Baseten workspace. The per-model README describes each value.
 3. Push the config with the [Truss CLI](https://truss.baseten.co/):
 
 ```bash

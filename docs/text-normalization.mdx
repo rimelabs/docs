@@ -1,12 +1,12 @@
 ---
 title: 'Text normalization'
-description: "Rime automatically normalizes English text — numbers, dates, currency, phone numbers, measurements, and more — before synthesis."
+description: "Rime normalizes common English numbers, dates, currency, phone numbers, and measurements before synthesis."
 ---
 
 When you send text to Rime's TTS models, a normalization layer runs first. It expands numbers, dates, currency, phone numbers, measurements, and other non-standard words into their spoken form before the model synthesizes audio.
 
 <Note>
-  **Rime handles text normalization automatically.** Most common formats — currency with symbols, dates with years, clock times, phone numbers, and standard measurements — expand correctly without any preprocessing. Just write naturally. If something sounds wrong, [debug it with `/textnorm`](#debugging-with-the-textnorm-endpoint) before adding a pre-processing layer to your application.
+  **Rime handles text normalization automatically.** Most common formats, currency with symbols, dates with years, clock times, phone numbers, and standard measurements, expand correctly without any preprocessing. Just write naturally. If something sounds wrong, [debug it with `/textnorm`](#debugging-with-the-textnorm-endpoint) before adding a pre-processing layer to your application.
 </Note>
 
 ## Handled at a glance
@@ -36,7 +36,7 @@ For full reference, see [Spell function](/docs/spell).
 
 Rime's models may not nail uncommon brand or product names on the first try. Two options:
 
-1. **Submit the word to Rime** to add to the dictionary (typically about a week). Reach out to your account manager via Slack or email, or contact [sales@rime.ai](mailto:sales@rime.ai) — mention if you need faster turnaround or have an SLA.
+1. **Submit the word to Rime** to add to the dictionary (typically about a week). Reach out to your account manager via Slack or email, or contact [sales@rime.ai](mailto:sales@rime.ai); mention if you need faster turnaround or have an SLA.
 2. **Use custom pronunciations inline** with the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet) and `phonemizeBetweenBrackets: true`. See [Custom pronunciation](/docs/custom-pronunciation) for the full reference.
 
 <Warning>
@@ -64,7 +64,7 @@ For flows that need precise pause durations (legal disclaimers, regulated read-b
 
 The fastest way to spot-check normalization without writing code is the [Generate page in the Rime web app](https://app.rime.ai/generate/): paste any input string and it shows you the normalized version Rime will synthesize from.
 
-For programmatic debugging, Rime also exposes a `/textnorm` endpoint that returns the normalized form of an input string — exactly what the TTS model receives before synthesis. It's the fastest way to separate normalization issues from synthesis issues in scripts and pipelines.
+For programmatic debugging, Rime also exposes a `/textnorm` endpoint that returns the normalized form of an input string, exactly what the TTS model receives before synthesis. It's the fastest way to separate normalization issues from synthesis issues in scripts and pipelines.
 
 ```bash
 curl -X POST https://optimize.rime.ai/textnorm \
@@ -86,8 +86,8 @@ When something sounds off:
 1. **Capture the exact input text** that produced the bad output.
 2. **POST it to `/textnorm`** and look at the normalized output.
 3. **Compare** the normalized output to what you expected the model to say.
-4. If normalization is wrong, you have a reproducible signal — [flag it to Rime](mailto:support@rime.ai) with the input, expected normalization, and actual normalization. Fixes ship on Rime's side.
-5. If normalization looks correct but speech still sounds off, the issue is in synthesis, not normalization — try a different voice, model version, or sampling settings.
+4. If normalization is wrong, you have a reproducible signal; [flag it to Rime](mailto:support@rime.ai) with the input, expected normalization, and actual normalization. Fixes ship on Rime's side.
+5. If normalization looks correct but speech still sounds off, the issue is in synthesis, not normalization; try a different voice, model version, or sampling settings.
 
 ## Testing checklist
 
@@ -106,4 +106,4 @@ For anything that sounds wrong, POST the exact input to [`/textnorm`](#debugging
 
 For most applications, pre-normalizing is unnecessary and adds latency and engineering complexity. Rime's normalizer handles common patterns natively, and the fastest way to fix a pronunciation issue is to verify with [`/textnorm`](#debugging-with-the-textnorm-endpoint) and [flag any miss to Rime](mailto:support@rime.ai).
 
-If you have a specific pattern that genuinely needs to be pre-expanded — for example, an alphanumeric ID format unique to your domain, or a flow where regenerated text must read identically every time — see [Pre-normalizing text](/docs/pre-normalization) for guidance and a drop-in prompt template.
+If a pattern genuinely needs to be pre-expanded, such as a domain-specific alphanumeric ID or a flow that must read identically after regeneration, see [Pre-normalizing text](/docs/pre-normalization) for guidance and a drop-in prompt template.

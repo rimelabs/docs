@@ -7,7 +7,7 @@ description: "Reference for Rime's phonetic alphabet used to specify custom pron
 
 Rime uses its own phonetic alphabet, inspired by the International Phonetic Alphabet (IPA), to let you specify exactly how a word should sound. You provide a phonetic string inside curly brackets and set `phonemizeBetweenBrackets: true` on the request. For the full request mechanic, see [Custom pronunciation](/docs/custom-pronunciation).
 
-For example, the word `custom` is represented as `{k1Ast0xm}`. Even made-up words work — `gorbulets` becomes `{g1orby0ul2Ets}`.
+For example, the word `custom` is represented as `{k1Ast0xm}`. Even made-up words work; `gorbulets` becomes `{g1orby0ul2Ets}`.
 
 ## Vowels
 
@@ -83,7 +83,7 @@ Strip any trailing punctuation token from `phonemeString`, then use the symbol t
 
 ## Related
 
-- [Custom pronunciation](/docs/custom-pronunciation) — how to use phonetic strings in API requests
-- [Pronunciation control](/platform/pronunciation-control) — overview of checking coverage, custom pronunciations, and dictionary additions
-- [Coverage API](/api-reference/other/oov) — check whether words are in Rime's dictionary before writing a custom pronunciation
-- [Phonemize API](/api-reference/other/phonemize) — generate a phonetic string from an audio recording of the word
+- [Custom pronunciation](/docs/custom-pronunciation): how to use phonetic strings in API requests
+- [Pronunciation control](/platform/pronunciation-control): overview of checking coverage, custom pronunciations, and dictionary additions
+- [Coverage API](/api-reference/other/oov): check whether words are in Rime's dictionary before writing a custom pronunciation
+- [Phonemize API](/api-reference/other/phonemize): generate a phonetic string from an audio recording of the word

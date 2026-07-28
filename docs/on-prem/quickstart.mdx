@@ -1,31 +1,25 @@
 ---
 title: Quickstart
-description: "Get Rime running on-prem in your environment."
+description: "Deploy a licensed Rime API and TTS service pair on an NVIDIA host with Docker Compose."
 ---
 
-<Tip>On-prem is  now **public and generally available!** For more information regarding access to Docker images and pricing info, reach out to help@rime.ai.</Tip>
+Run Rime on your own NVIDIA host as a paired API service and TTS model service. Each model deployment needs one of each service; multiple pairs can share a machine when capacity allows.
 
-# Introduction
+<Warning>
+  On-prem deployment requires registry access, a Rime license, and API credentials. Contact [help@rime.ai](mailto:help@rime.ai) before starting. The running services also need outbound HTTPS access to Rime's usage and license endpoints.
+</Warning>
 
-## Why on-premises?
+## Architecture
 
-Deploying on-premises offers several advantages over using cloud APIs over a public network. One of the main benefits is speed; by hosting the services locally, you can significantly reduce network latency, resulting in faster system responses and data processing.
+![On-prem components](/images/on-prem-components_update.png)
 
-## Security
+The API service handles HTTP and WebSocket requests and verifies the license. The TTS service performs model inference.
 
-With an on-premises deployment, all sensitive data remains within your corporate network, ensuring enhanced security as it is not transmitted over the Internet. This setup helps in complying with strict data privacy and protection regulations.
-
-## Performance
-
-### Latency
+## Published latency figures
 
 - **Coda:** Available on-premises. Setup details and performance numbers coming in a follow-up release.
 - **Mist v2:** Our tests have shown median latency of **175ms** with randomly generated sentences between 40 and 50 characters on A10Gs and similar GPUs.
-- **Arcana:** See [performance tuning](/docs/on-prem/performance#metrics).
-
-## Components
-
-![On-Premise Components](/images/on-prem-components_update.png)
+- **Arcana:** See [performance tuning](/docs/on-prem/performance).
 
 # Prerequisites
 
@@ -101,7 +95,7 @@ You should see your GPU listed in the output, alongside the driver version and C
 
 ## Firewall requirements
 
-The Rime API instance will listen on port 8000 for HTTP traffic, and on port 8001 for WebSocket traffic.
+The Rime API service listens on port 8000 for HTTP, port 8002 for binary WebSockets, and port 8003 for JSON WebSockets.
 
 You will also need to allow the following outbound traffic in your firewall rules:
 
@@ -109,24 +103,19 @@ You will also need to allow the following outbound traffic in your firewall rule
 - `https://optimize.rime.ai/license`: verifies that your on-prem license is active.
 - `us-docker.pkg.dev` on port 443: container image registry.
 
-# Self-service licensing and credentials
+# API and registry credentials
 
-## API key Generation
+## Generate an API key
 
-Refer to our [user interface dashboard](https://app.rime.ai) to generate the necessary keys and credentials for authenticating and authorizing the deployment and use of our services.
+Create a Rime API key in the [dashboard](https://app.rime.ai). Rime supplies the Artifact Registry key and license access separately.
 
 # Deployment
 
-The deployment consists of two services, each powered by a container image:
-
-- **API service:** responsible for handling the HTTP and WebSocket requests, and for verifying the license. It serves as a proxy to the TTS service.
-- **TTS service:** responsible for model inference.
-
-There is a 1:1 relationship between the API service and the TTS service: for each TTS model, you will need a corresponding API service. Multiple pairs of API and TTS services can be deployed on the same machine.
+The following sections select the model and API images, configure the service pair, and start it with Docker Compose.
 
 ## Artifact Registry login
 
-Key file to be provided by Rime.
+Use the Artifact Registry key provided by Rime:
 
 ```bash Log in to Artifact Registry
 cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
@@ -329,32 +318,16 @@ environment:
 docker compose up -d
 ```
 
-## Deployment steps
+<Note>Allow approximately five minutes for model warm-up before sending the first synthesis request.</Note>
 
-<iframe src="https://drive.google.com/file/d/1zzrPCVIDsiTMNY_pyb4Z2TezgCTl4Qc1/preview" width="560" height="315" allow="autoplay" allowfullscreen></iframe>
-
-1. **Environment setup:** Prepare your AWS environment according to the specifications required for optimal deployment.
-2. **Service deployment:** Using Docker, deploy the images on your server.
-3. **Networking setup:** Configure the network settings, including the Internet Gateway and port settings, to ensure connectivity and security.
-4. **Licensing and authentication:** Generate and apply the necessary API key via our dashboard to start using the services.
-
-> **Note:** Once the containers are started, expect a five-minute delay for warm-up before sending the first TTS requests.
-
-## Additional information
-
-- **Troubleshooting guide:** A troubleshooting guide will be provided to help resolve common issues during deployment.
-- **Available voices and models:** All voices are currently available.
-
-# Requests and response formats
-
-## HTTP requests
-
-**Request:**
+### Verify health
 
 ```bash Health check
 curl http://localhost:8000/health
 ```
-This should return:
+
+A ready deployment returns `apiStatus: "ok"`, `licenseStatus: "valid"`, and `modelReachable: true`:
+
 ```json
 {
   "apiStatus": "ok",
@@ -364,8 +337,21 @@ This should return:
 }
 ```
 
+## AWS video walkthrough
+
+<iframe src="https://drive.google.com/file/d/1zzrPCVIDsiTMNY_pyb4Z2TezgCTl4Qc1/preview" width="560" height="315" allow="autoplay" allowfullscreen></iframe>
+
+# Requests and response formats
+
+## HTTP requests
+
+**Request:**
+
 ```bash Request example
-curl -X POST "http://localhost:8000" -H "Authorization: Bearer <API KEY> -H "Content-Type: application/json" -d '{
+curl -X POST "http://localhost:8000" \
+  -H "Authorization: Bearer <API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
   "text": "I would love to have a conversation with you. The new model is out.",
   "speaker": "joy",
   "modelId": "mist"

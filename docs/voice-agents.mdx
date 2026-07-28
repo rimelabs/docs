@@ -4,13 +4,17 @@ description: "Choose a complete voice-agent tutorial, a direct API starter, or a
 icon: messages
 ---
 
-Rime provides the speech layer in a voice agent. A complete agent also needs audio transport, speech recognition, turn detection, and agent logic that decides what to say.
+Start with the LiveKit tutorial for a complete, working voice agent. Use a direct API starter when you already own transport, transcription, turn detection, and orchestration. Rime supplies the speech layer in either case.
+
+<Warning>
+  Keep `RIME_API_KEY` on the server. Browser clients should call your application server or connect through a server-side WebSocket bridge rather than authenticate with Rime directly.
+</Warning>
 
 ## Choose an implementation
 
 <Columns cols={2}>
   <Card title="LiveKit voice agent" icon="microphone-lines" href="/docs/quickstart-livekit">
-    Build an end-to-end browser voice agent with audio transport, turn detection, speech recognition, agent logic, and Rime speech. This is the recommended complete tutorial.
+    Run an end-to-end browser agent with LiveKit transport, turn detection, speech recognition, agent logic, and Rime speech.
   </Card>
 
   <Card title="Direct API starters" icon="code">
@@ -37,7 +41,7 @@ Rime provides the speech layer in a voice agent. A complete agent also needs aud
   </Card>
 </Columns>
 
-## How the pieces fit
+## Rime is the speech layer
 
 | Layer | Responsibility |
 | --- | --- |
@@ -47,10 +51,6 @@ Rime provides the speech layer in a voice agent. A complete agent also needs aud
 | Speech generation | Sends the response text to Rime and returns natural audio to the user. |
 
 The LiveKit tutorial implements the complete path. The direct API pages are application starters: they demonstrate the Rime proxy and browser interface while leaving the production speech-recognition and agent-logic choices to your application.
-
-<Warning>
-  Keep `RIME_API_KEY` on the server. Browser clients should call your application server or connect through a server-side WebSocket bridge rather than authenticate with Rime directly.
-</Warning>
 
 ## Design for live conversation
 

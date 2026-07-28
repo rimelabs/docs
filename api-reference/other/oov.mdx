@@ -10,11 +10,9 @@ All requests require authentication with a bearer token in the `Authorization` h
 
 ## Overview
 
-This API endpoint allows you to determine which words are included in the Rime dictionary out of the box.
+This endpoint returns the words in your input that are absent from Rime's pronunciation dictionary. Uncovered words are still synthesized using the model's predicted pronunciation, but brand names, technical terms, and names should be verified before production use.
 
-We can add new words to our dictionary as needed in about a week — reach out to your account manager via Slack or email, or contact [sales@rime.ai](mailto:sales@rime.ai), if you need faster turnaround or have an SLA. Or you can immediately [generate a custom pronunciation](/docs/custom-pronunciation), which uses the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet) — write it by hand, or create one from a recording with the [Phonemize API](/api-reference/other/phonemize).
-
-If a word is not in our dictionary, our TTS model will still attempt a pronunciation, which is often suitable if the spelling follows typical linguistic patterns.
+Dictionary additions typically take about a week. Contact your account manager through Slack or email, or write to [sales@rime.ai](mailto:sales@rime.ai), if you need a different turnaround or have an SLA. For immediate Mist v1 or Mist v2 control, [generate a custom pronunciation](/docs/custom-pronunciation) by hand or from a recording with the [Phonemize API](/api-reference/other/phonemize).
 
 ## Example
 
@@ -167,11 +165,11 @@ HttpResponse<String> response = Unirest.post("https://users.rime.ai/oov")
 
 <ResponseExample>
 
-```json 200 — words not in dictionary
+```json 200: words not in dictionary
 ["testt", "testtt"]
 ```
 
-```json 200 — all words covered
+```json 200: all words covered
 []
 ```
 

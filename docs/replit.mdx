@@ -12,7 +12,7 @@ import { IntegrationHeader } from '/snippets/integration-header.mdx'
   partnerHeight="40px"
 />
 
-This guide demonstrates how to add Rime's text-to-speech (TTS) functionality to apps built with [Replit](https://replit.com/), an AI-powered platform that generates code from users' text descriptions. Rime is a TTS API that generates natural-sounding voice audio. When your Replit app needs to speak, it sends text to Rime's API and receives audio back.
+Build a [Replit](https://replit.com/) voiceover application that sends text to Rime and plays the returned audio. The Replit agent generates the application from the prompt below; keep the Rime API key in Replit Secrets so it never reaches browser code.
 
 <video
   controls
@@ -20,9 +20,10 @@ This guide demonstrates how to add Rime's text-to-speech (TTS) functionality to 
   playsInline
   className="w-full aspect-video"
   src="/images/replit-demo-app.mp4"
+  alt="Replit voiceover application using Rime text to speech"
 />
 
-This approach works well if you want to prototype voice features quickly without writing integration code yourself. The Replit agent handles the API calls, authentication, and audio playback, while Rime generates the speech.
+The generated application handles the server-side API request and audio playback while Rime generates the speech.
 
 ## Prerequisites
 

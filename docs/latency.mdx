@@ -1,19 +1,20 @@
 ---
 title: Low-latency TTS for real-time voice agents
 sidebarTitle: Latency
-description: "Rime TTS latency benchmarks: sub-200ms end-to-end via the cloud API, sub-100ms on-prem with Coda, 37ms TTFA with Mist v3 — plus what affects response time and how to reduce it."
+description: "Rime TTS latency benchmarks, the factors that affect response time, and practical ways to reduce it."
 icon: gauge-simple-max
 ---
 
-## tl;dr: Rime is really fast. 
-Sub-200ms end-to-end latency is standard via the cloud API. Coda, Rime's flagship model, achieves **sub-100ms model latency on the GPU engine** when self-hosted or on-prem.
+## Latency at a glance
 
-Via the cloud API, the total time you measure also includes network round-trip — typically 25–50ms from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints). [Contact us](mailto:support@rime.ai) to optimize further.
+Rime's cloud API delivers sub-200ms end-to-end latency under typical conditions. Coda reaches **sub-100ms model latency on the GPU engine** when self-hosted or on-prem, while Mist v3 has the lowest measured time to first audio.
+
+Via the cloud API, the total time you measure also includes network round-trip; typically 25–50ms from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints). [Contact us](mailto:support@rime.ai) to optimize further.
 
 ## Real-time performance benchmarks
 
 <Note>
-  These numbers were measured on a single Lambda H100 SXM machine — H100 SXM5 GPU, 26 vCPUs, 221 GiB RAM, Ubuntu 24.04, NVIDIA driver `595.58.03`.
+  These numbers were measured on a single Lambda H100 SXM machine with an H100 SXM5 GPU, 26 vCPUs, 221 GiB RAM, Ubuntu 24.04, and NVIDIA driver `595.58.03`.
 </Note>
 
 | Metric | Coda | Arcana v3 | Mist v3 |
@@ -26,28 +27,33 @@ Via the cloud API, the total time you measure also includes network round-trip �
 
 **TTFA** = Time-to-First-Audio. **RTF** = Real-Time Factor (synthesis time ÷ audio duration; values below 1.0 mean synthesis is faster than playback).
 
-## TTS and latency
+## Reduce latency
 
-The response time from any text-to-speech (TTS) API depends on a variety of factors, including network latency, the length of the text input, any text preprocessing needed prior to model inference, and payload size.
+1. **Choose the model for the constraint.** Use `mistv3` for the lowest cloud time to first audio. Choose Coda when voice quality is the priority and sub-100ms engine latency meets the target.
+2. **Consume the response as a stream.** Start playback from the first bytes instead of buffering the complete response.
+3. **Use the nearest regional endpoint.** Route East Coast traffic to US East and West Coast traffic to US West.
+4. **Request only the audio you need.** Smaller payloads cross the network faster. Telephony applications should request 8kHz audio directly.
+5. **Skip normalization only for already normalized text.** [`noTextNormalization`](/docs/text-normalization) removes preprocessing, but it is safe only when the input has no digits, abbreviations, or ambiguous punctuation.
 
-Rime's TTS API has been designed from the ground up to be the fastest to respond. The following sections will have information on the contributing factors to response latency and recommendations for reducing this latency.
+## What affects latency
+
+End-to-end latency combines server processing, response size, and network distance.
 
 ### Factors that affect API response time
 
-1. **Inference time:** In general, server processing time will include the amount of time that the server takes to process the API request; for deep-learning TTS models, this will include model inference time but also text preprocessing functions and audio postprocessing.
-2. **Payload size:** The size of the response data sent between the server and the client can impact API response time — large payloads take longer to transmit across the network. 
-3. **Network latency:** Network latency affects response time due to the simple fact that distance from the server will increase the amount of time it takes for the payload to get to the client.
+1. **Server processing:** Model inference, text preprocessing, and audio postprocessing all contribute to the first response byte.
+2. **Payload size:** Larger audio responses take longer to transmit.
+3. **Network distance:** A longer route between the application and Rime increases round-trip time.
 
-### Streaming
+### Stream the response
 
-Assuming the client is able to stream audio, whether on-device or through a telephony provider or system, streaming will always be faster than non-streaming requests to our API. The reason for this is simple: a great deal of end-to-end response time comes down to the client. If we reduce the size of the initial payload chunk, we can reduce TTFB, which is the time audio can start streaming.
+Streaming reduces time to first playback because the client can consume the first chunk before Rime finishes generating the complete response. Buffering the whole body delays playback until synthesis and transfer are complete.
 
-
-<Frame caption="The image above contains a plot of both response time and TTFB for the request body to our streaming PCM endpoint seen below.">
-  <img src="/images/streaming-ttfb.png" />
+<Frame caption="Response time and TTFB for a streaming PCM request">
+  <img src="/images/streaming-ttfb.png" alt="Chart comparing total response time with time to first byte for a streaming PCM request" />
 </Frame>
 
-The image above contains a plot of both response time and TTFB for the following request body to our streaming PCM endpoint:
+The chart uses this request body:
 
 ```bash
 curl -X POST https://users.rime.ai/v1/rime-tts \
@@ -82,19 +88,13 @@ with requests.post(
             f.write(chunk)
 ```
 
-### Recommendations for reducing response time
-
-<Tip>For the lowest cloud latency, use `mistv3` — typical TTFB is well below 100ms.</Tip>
-
-- Use the API parameter [`noTextNormalization`](/docs/text-normalization), which turns off text normalization, to reduce the amount of computation needed to prepare input text for TTS inference. This can safely be used in cases where there are no digits, abbreviations, or tricky punctuation, such as in `Yes, I grew up on one twenty-three Main Street in Oakland, California.` instead of `Yes, I grew up on 123 Main St. in Oakland, CA.`.
-- Request audio that meets the needs of your application. Remember: Smaller payloads move across the network more quickly. For example, if you're building an application for telephony, request 8 kHz (8,000 Hz) audio using the `samplingRate` parameter.
-<Info>Rime's models produce PCM audio by default, and conversion and downsampling must take place for sampling rates other than 22kHz. Still, the reduction in payload size and therefore network overhead more than makes up for increased server processing time.</Info>
+<Info>Rime's models produce PCM audio by default, and conversion and downsampling must take place for sampling rates other than 22kHz. For low-bandwidth applications, the smaller payload usually outweighs the added server processing.</Info>
 
 ## Network latency by region
 
 Rime serves the API from multiple regions so you can route requests to the data center closest to your application. Picking the closest endpoint typically shaves tens of milliseconds off round-trip time.
 
-These are rough round-trip times (RTT) — the back-and-forth network delay between your application and Rime — from major US metros to each region:
+These are rough round-trip times (RTT), the back-and-forth network delay between your application and Rime, from major US metros to each region:
 
 | From metro | To US East | To US West |
 | :--- | :--- | :--- |

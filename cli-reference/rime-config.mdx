@@ -34,7 +34,7 @@ api_key = "your_api_key_here"
 
 Both standard Rime endpoints are pre-configured as named environments. The `default_env` field designates which one is active by default.
 
-<Note>Older config files without `default_env` continue to work — the top-level `api_url` and `api_key` fields are still respected as the fallback default.</Note>
+<Note>Older config files without `default_env` continue to work: the top-level `api_url` and `api_key` fields are still respected as the fallback default.</Note>
 
 ## `rime config list`
 
@@ -107,7 +107,7 @@ Auth Header:  Authorization: Bearer (redacted)
 
 ## `rime config add`
 
-Add a named environment to `~/.rime/rime.toml`. Prompts interactively for API URL, API key (input hidden), and an optional auth prefix. You cannot add an environment named `default` — use `rime config default` to change which environment is the default.
+Add a named environment to `~/.rime/rime.toml`. Prompts interactively for API URL, API key (input hidden), and an optional auth prefix. You cannot add an environment named `default`. Use `rime config default` to change which environment is the default.
 
 ```bash
 rime config add <name>
@@ -149,4 +149,4 @@ Open `~/.rime/rime.toml` in your default editor (`$VISUAL` or `$EDITOR`, falling
 rime config edit
 ```
 
-No flags. Requires the config file to exist — run `rime config init` first if needed.
+No flags. Requires the config file to exist. Run `rime config init` first if needed.

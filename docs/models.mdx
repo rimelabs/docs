@@ -1,25 +1,25 @@
 ---
 title: Models
-description: "Pick the right Rime model: Coda (flagship), Arcana, Mist v3, Mist v2."
+description: "Choose between Coda, Arcana, Mist v3, and Mist v2 for voice quality, latency, language support, and pronunciation control."
 icon: cube
 ---
 
-Models are constantly being trained and fine-tuned based on user and customer feedback. Please check back often, as we push changes frequently.
+Start with **Coda** for new applications and Arcana migrations. Choose **Mist v3** when the lowest time to first audio matters most. Use **Mist v2** when you need inline pronunciation or pause controls that newer models do not yet support.
 
-<Tip>Rime's API is available in multiple regions. Use the [regional endpoint](/docs/regional-endpoints) closest to your deployment for the lowest latency.</Tip>
-
-Rime currently has five models in production: `coda`, `arcanav3`, `arcanav2`, `mistv3`, and `mistv2`. All are available via the cloud API and on-premises, and all stream audio in real time over [HTTP and WebSockets](/docs/streaming).
-
-## Which model should I use?
+## Choose a model
 
 | Pick this | When |
 | :--- | :--- |
-| `coda` | **Default for most new apps.** Rime's flagship — top-rated voice quality in human evaluations, sub-100ms model latency, and the recommended replacement for all Arcana traffic. |
-| `arcana` | You need multilingual code-switching across languages that Coda doesn't yet support. Otherwise, prefer Coda. |
-| `mistv3` | You need the fastest TTFA (~37 ms P50). |
-| `mistv2` | You need [custom pronunciation control](/docs/custom-pronunciation) for brand names and uncommon words (not yet on Mist v3). For other use cases, prefer Mist v3. |
+| `coda` | **Default for most new apps.** Rime's flagship model, with the highest voice-quality scores in Rime's human evaluations, sub-100ms model latency, and one multilingual voice lineup. |
+| `arcana` | You need multilingual code-switching or a language that Coda does not yet support. Otherwise, migrate Arcana traffic to Coda. |
+| `mistv3` | You need the fastest time to first audio, approximately 37ms P50 in Rime's benchmark. |
+| `mistv2` | You need [custom pronunciation control](/docs/custom-pronunciation) or custom pauses. For other Mist workloads, prefer Mist v3. |
 
-For benchmarked latency and throughput numbers, see [Latency](/docs/latency#real-time-performance-benchmarks).
+For benchmark methodology, latency, and throughput numbers, see [Latency](/docs/latency#real-time-performance-benchmarks).
+
+All production models are available through the cloud API and on-premises, and all stream audio over [HTTP and WebSockets](/docs/streaming). Rime currently operates `coda`, `arcanav3`, `arcanav2`, `mistv3`, and `mistv2` model deployments.
+
+<Tip>Use the [regional endpoint](/docs/regional-endpoints) closest to your application to reduce network latency.</Tip>
 
 ## Feature matrix
 
@@ -35,68 +35,66 @@ For benchmarked latency and throughput numbers, see [Latency](/docs/latency#real
 
 ## Coda
 
-**Coda**, released May 2026, is Rime's new flagship TTS model and the successor to Arcana. It pairs a sophisticated LLM backbone with a dedicated speech inference engine, trained on the conversational full-duplex data preferred by production voice AI deployments.
+**Coda**, released May 2026, is Rime's flagship TTS model and the successor to Arcana. It pairs an LLM backbone with a dedicated speech inference engine trained on full-duplex conversational data.
 
-* In human-led voice-quality evaluations, Coda surpasses both prior Rime models and competitor TTS offerings — including naturalness, prosody, and artifact-free output
-* **Sub-100ms model latency on the GPU engine** when self-hosted or on-prem.
-    * Cloud API users add roughly 25–50ms network round-trip from most of the continental US when routed to the closest [regional endpoint](/docs/regional-endpoints).
-* Multilingual support for English, Spanish, French, Portuguese, German, and Japanese using a shared voice lineup
-* Word-level timestamps for text-audio alignment and interruption handling
-* Supports the [`spell()` function](/docs/spell) for spelling out sequences letter by letter or number by number
-* Available via `modelId: coda` through Rime's API endpoints
+- Received the highest voice-quality scores in Rime's human evaluations for naturalness, prosody, and artifact-free output
+- **Sub-100ms model latency on the GPU engine** when self-hosted or on-prem
+  - Cloud API users typically add 25 to 50ms of network round-trip time from most of the continental US when routed to the closest [regional endpoint](/docs/regional-endpoints)
+- One voice lineup across English, Spanish, French, Portuguese, German, and Japanese
+- Word-level timestamps for text-audio alignment and interruption handling
+- Supports [`spell()`](/docs/spell) for spelling sequences letter by letter or number by number
+- Available with `modelId: coda`
 
 ## Arcana
 
-<Tip>Coda is meaningfully better than Arcana across naturalness, prosody, and artifact-free output. We recommend migrating all existing Arcana traffic to Coda — just swap `modelId: arcana` for `modelId: coda` in your requests.</Tip>
+<Tip>Use Coda for new work and migrate existing Arcana traffic by changing `modelId: arcana` to `modelId: coda`. The rest of the API contract stays the same.</Tip>
 
-**Arcana**, released April 2025, is Rime's previous flagship TTS model — known for naturalness and emotional depth in synthesized speech.
+**Arcana**, released April 2025, is Rime's previous flagship model. Keep it for multilingual code-switching or language coverage that Coda does not yet provide.
 
-* Highly expressive, natural-sounding speech with emotional nuance  
-* Fine-grained control over prosody, pacing, and tone  
-* Supports a wide range of vocal demographics, including different ages, accents, and cultural backgrounds  
-* Enhanced realism for dynamic, conversational, and character-driven use cases  
-* Supports the [`spell()` function](/docs/spell) for spelling out sequences letter by letter or number by number
-* Available via `modelId: arcana` through Rime's API endpoints
+- 94 voices spanning age groups, regional accents, cultural backgrounds, and speaking styles
+- Fine-grained control over prosody, pacing, and tone
+- Supports [`spell()`](/docs/spell) for spelling sequences letter by letter or number by number
+- Available with `modelId: arcana`
 
 ## Mist v3
 
-**Mist v3**, released March 2026, is a major update to the engine powering our classic Mist model.
+**Mist v3**, released March 2026, is the low-latency successor to Mist v2.
 
-* Typical TTFB is now well below 100ms — a significant performance improvement over previous versions, achieved without sacrificing the quality and predictability of Mist
-* `modelId: mistv3`
-* Our most popular Mist speakers are all available — see the [full voice list](/api-reference/data/voices)
-* [`speedAlpha`](/docs/speed) behavior is reversed compared to Mist and Mist v2, bringing it to parity with Arcana: **higher values produce faster speech**
+- Typical time to first byte is well below 100ms
+- Uses `modelId: mistv3`
+- Includes the most popular Mist speakers from the [voice catalog](/api-reference/data/voices)
+- [`speedAlpha`](/docs/speed) follows the modern direction: values above 1.0 produce faster speech
 
 ## Mist v2
 
-**Mist v2**, released February 2025, has the following features:
+**Mist v2**, released February 2025, remains the choice for controls that are not yet available on newer models.
 
-* Multi-lingual English + Spanish, plus more languages coming soon
-* More realistic speech with natural and contextual nuances
-* Advanced pronunciation control
-* Ultra-fast on-prem latency of ~70ms, perfect for real-time applications
-* More accents, demographics, and speaking styles
+- English and Spanish support
+- Inline pronunciation control and custom pauses
+- Approximately 70ms on-prem latency in Rime's benchmark
+- 94 voices across accents, demographics, and speaking styles
+- Uses `modelId: mistv2`
 
-## Mist (legacy)
+## Mist legacy
 
-**Mist** is Rime’s next-generation TTS engine, released April 2023, capable of synthesizing conversational speech. Using the `modelId` parameter for Rime’s TTS endpoints, specifying `mistv2` or `mist`, will allow you to synthesize speech using this newer family of models. As of February 2025, the default value for `modelId` when unspecified is `mist`.
+**Mist**, released April 2023, is a legacy model in the Mist family. Use `modelId: mistv2` or `modelId: mist` to synthesize with these older deployments. As of February 2025, requests that omit `modelId` default to `mist`.
 
 **Model v1 was released in April 2022 and has been deprecated.**
 
-## Additional controls (Arcana)
+## Arcana generation controls
 
 <Note>The controls in this section apply to Arcana only. Mist v3 and Mist v2 do not expose `temperature`, `top_p`, or `repetition_penalty`.</Note>
 
-Arcana supports several additional controls due to its LLM backbone. We recommend leaving these on the default values.
+Arcana supports three additional generation controls. Keep their default values unless you have evaluated the change against representative audio.
 
-* `temperature`: Controls the randomness of the generated speech.
-  * **Low** (0): Produces more predictable and focused speech.
-  * **High** (1+): Introduces variability in prosody and expression, potentially leading to more dynamic speech patterns.
-* `repetition_penalty`: Discourages the model from repeating the same sounds.
-  * **Low** (`<1`): May result in repetitive speech patterns.
-  * **High** (`>1`): Encourages variation, leading to more natural-sounding speech and realistic laughter.
-* `top_p`: Determines the diversity of choices by limiting the selection to a subset of probable sounds.
-  * **Low** (0): Restricts the model to the most probable sounds, resulting in more monotonic speech.
-  * **High** (1): Allows for a broader range of sound choices, enhancing the naturalness and variability of speech.
+- `temperature`: controls randomness in generated speech
+  - **Low** (0): more predictable speech
+  - **High** (1+): more variation in prosody and expression
+- `repetition_penalty`: discourages repeated sounds
+  - **Low** (`<1`): may produce repetitive speech
+  - **High** (`>1`): encourages more variation
+- `top_p`: limits generation to a subset of probable sounds
+  - **Low** (0): more monotonic, predictable output
+  - **High** (1): a broader range of sound choices
 
 See the [Arcana API reference pages](/api-reference/arcana/streaming-mp3) for endpoint-specific details.

@@ -11,7 +11,7 @@ import { IntegrationHeader } from '/snippets/integration-header.mdx'
 
 ![Vapi demo](/images/vapi-demo.gif)
 
-[Vapi](https://vapi.ai) is an API-first platform for building, testing, and deploying AI voice agents. It handles telephony, orchestration, and integrations so you can focus on your agent's behavior. Paired with Rime's ultra-realistic voices, you get natural-sounding conversations with sub-200ms latency. This guide walks you through creating a basic voice assistant with Vapi and Rime.
+Configure a [Vapi](https://vapi.ai) assistant to use Rime for speech. Vapi handles telephony and orchestration; this guide covers the model, voice, transcriber, publishing, and optional bring-your-own-key settings.
  
 ## Prerequisites
 
@@ -54,9 +54,9 @@ Alternatively, use the **Generate** button and get AI help to create a well-stru
 
 In the **Voice** tab, configure your assistant to use **Rime AI** as the **Provider**.
 
-Select the **Voice** that you want your assistant to use. Learn more about Rime's voices on the [Voices](./voices) page. 
+Select the **Voice** that you want your assistant to use. See the [Voices](/docs/voices) page for the Rime catalog.
 
-Set the **Model** to **Arcana** to use the latest Rime model with the most realistic voices.
+Set the **Model** to **Arcana**.
 
 ![Voice tab with Rime AI provider selected](/images/vapi-voice.png)
 
@@ -80,21 +80,21 @@ Under the **Build** heading, click **More** and select **Integrations**. Then, f
 
 ![Integrations](/images/vapi-integrations.png)
 
-Vapi stores API keys securely and automatically grants your assistants access to them.
+Vapi stores provider keys under **Integrations** and makes them available to your assistants.
 
 ![Rime API key integration](/images/vapi-rime-api-key.png)
 
 ## Step 3: Test your assistant
 
-The above steps create the most basic assistant using Rime's voices.
+The assistant is now configured to use Rime speech.
 
 Click **Talk to Assistant** in the dashboard to start a conversation in your browser.
 
 ![Vapi demo](/images/vapi-demo.gif)
 
-## Next steps
+## Extend the assistant
 
-To further customize your assistant, you can:
+Available extensions include:
 
 - **Try different voices:** Audition other voices like `celeste`, `orion`, and `andromeda` at [app.rime.ai](https://app.rime.ai).
 - **Add a phone number:** Provision a contact number in the Vapi dashboard and assign it to your assistant for telephony

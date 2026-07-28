@@ -6,7 +6,7 @@
     "404": {
       "redirect": false,
       "title": "We can't find that page.",
-      "description": "The page you're looking for doesn't exist — but it might have moved. Try one of these starting points:\n\n**[API reference](/docs/api-reference)** — every TTS, WebSocket, and utility endpoint\n\n**[WebSocket overview](/docs/websockets)** — pick the right WebSocket endpoint for your use case\n\n**[Five-minute quickstart](/docs/quickstart-five-minute)** — generate your first audio clip\n\n**[Models](/docs/models)** — Coda, Arcana, Mist family\n\n**[Voices](/docs/voices)** — the full voice catalog\n\n**[API authentication](/docs/api-authentication)** — how API keys work\n\n**[Changelog](/docs/changelog)** — recent changes and release notes\n\nIf you're an AI agent, a machine-friendly index of every page is available at [/llms.txt](/llms.txt).\n\nThink something is genuinely broken? [Report a broken link](mailto:support@rime.ai)."
+      "description": "This page does not exist or has moved.\n\n**[API reference](/docs/api-reference)**: every TTS, WebSocket, and utility endpoint\n\n**[WebSocket overview](/docs/websockets)**: endpoint and transport choices\n\n**[Five-minute quickstart](/docs/quickstart-five-minute)**: generate an audio clip\n\n**[Models](/docs/models)**: Coda, Arcana, and the Mist family\n\n**[Voices](/docs/voices)**: the current voice catalog\n\n**[API authentication](/docs/api-authentication)**: create and use API keys\n\n**[Changelog](/docs/changelog)**: recent changes and release notes\n\nThe machine-readable index is available at [/llms.txt](/llms.txt).\n\n[Report a broken link](mailto:support@rime.ai)."
     }
   },
   "colors": {

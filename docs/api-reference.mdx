@@ -3,13 +3,13 @@ title: API reference index
 description: Index of Rime's TTS HTTP, WebSocket, and metadata endpoints across all supported models.
 ---
 
-Rime's TTS API is reached at `https://users.rime.ai/v1/rime-tts`. Authentication is a bearer token in the `Authorization` header — see [API authentication](/docs/api-authentication).
+Rime's TTS API is reached at `https://users.rime.ai/v1/rime-tts`. Authentication is a bearer token in the `Authorization` header. See [API authentication](/docs/api-authentication).
 
 Most clients should start with **Coda**, Rime's flagship model:
 
-- [Coda — Streaming HTTP](/api-reference/coda/http)
-- [Coda — WebSockets (`/ws`)](/api-reference/coda/websockets)
-- [Coda — WebSockets JSON (`/ws3`)](/api-reference/coda/websockets-json)
+- [Coda: Streaming HTTP](/api-reference/coda/http)
+- [Coda: WebSockets (`/ws`)](/api-reference/coda/websockets)
+- [Coda: WebSockets JSON (`/ws3`)](/api-reference/coda/websockets-json)
 
 For the cross-model overview of when to use each WebSocket endpoint, see [WebSocket API Overview](/docs/websockets).
 
@@ -26,18 +26,18 @@ Mist v2 also exposes non-streaming JSON-wrapped formats: [MP3](/api-reference/mi
 
 ## Metadata endpoints
 
-- [List All Voices](/api-reference/data/voices-v2) — `GET /data/voices/all-v2.json`
-- [List Voice Details](/api-reference/data/voice-details) — `GET /data/voices/voice_details.json`
+- [List All Voices](/api-reference/data/voices-v2): `GET /data/voices/all-v2.json`
+- [List Voice Details](/api-reference/data/voice-details): `GET /data/voices/voice_details.json`
 
 ## Utility endpoints
 
-- [Coverage (out-of-vocabulary check)](/api-reference/other/oov) — `POST /oov`
-- [Text Normalization](/api-reference/other/textnorm) — `POST /textnorm`
+- [Coverage (out-of-vocabulary check)](/api-reference/other/oov): `POST /oov`
+- [Text Normalization](/api-reference/other/textnorm): `POST /textnorm`
 
 ## Related
 
 - [Quickstart: TTS in five minutes](/docs/quickstart-five-minute)
-- [Models](/docs/models) — comparing Coda, Arcana, and Mist
-- [Voices](/docs/voices) — voice lineup and language support
+- [Models](/docs/models): comparing Coda, Arcana, and Mist
+- [Voices](/docs/voices): voice lineup and language support
 - [Latency tuning](/docs/latency)
 - [Changelog](/docs/changelog)

@@ -20,19 +20,19 @@ icon: list
   * Pronunciation features remain fully supported via the API: check dictionary coverage with the [Coverage API](/api-reference/other/oov) and specify custom pronunciations inline with the [Rime phonetic alphabet](/platform/rime-phonetic-alphabet) and `phonemizeBetweenBrackets` (Mist v1/v2).
   * To request a pronunciation fix or dictionary addition, reach out to your account manager via Slack or email, or contact [sales@rime.ai](mailto:sales@rime.ai).
   * The `saveOovs` parameter on Mist v1/v2 endpoints remains supported for backward compatibility, but has been removed from the API reference along with the dashboard it reported to.
-  * Newly documented: the [Phonemize API](/api-reference/other/phonemize) — post a recording of a word and get back a phonetic string in the Rime phonetic alphabet.
+  * Newly documented: the [Phonemize API](/api-reference/other/phonemize); post a recording of a word and get back a phonetic string in the Rime phonetic alphabet.
   * See [Pronunciation control](/platform/pronunciation-control) for an overview of all the ways to control pronunciation.
 </Update>
 
 <Update label="2026-05-19">
 * **Coda** is now available via `modelId: coda`:
-  * New flagship TTS model — sophisticated LLM backbone paired with a dedicated speech inference engine, trained on conversational full-duplex data.
+  * New flagship TTS model; sophisticated LLM backbone paired with a dedicated speech inference engine, trained on conversational full-duplex data.
   * Surpasses prior Rime models and competitor offerings in human-led voice-quality evaluations across naturalness, prosody, and artifact-free output.
-  * Sub-100ms model latency on the GPU engine (self-hosted or on-prem); cloud API users add roughly 25–50ms network round-trip from most of the continental US — see [Regional endpoints](/docs/regional-endpoints).
+  * Sub-100ms model latency on the GPU engine (self-hosted or on-prem); cloud API users add roughly 25–50ms network round-trip from most of the continental US. See [Regional endpoints](/docs/regional-endpoints).
   * Multilingual support across English, French, German, Japanese, Portuguese, and Spanish.
   * Word-level timestamps over the JSON websocket endpoint for text-audio alignment and interruption handling.
   * Available via the cloud API and on-premises at launch.
-  * **Recommended successor to Arcana** for all existing Arcana traffic — swap `modelId: arcana` for `modelId: coda`.
+  * **Recommended successor to Arcana** for all existing Arcana traffic; swap `modelId: arcana` for `modelId: coda`.
   * See the [Coda API reference](/api-reference/coda/http) for details.
 </Update>
 
@@ -65,7 +65,7 @@ icon: list
 
 <Update label="2026-04-06">
 * Mist v3 is now available via `modelId: mistv3`:
-  * TTFB well below 100ms — a major latency improvement over Mist v2 without sacrificing quality
+  * TTFB well below 100ms: a major latency improvement over Mist v2 without sacrificing quality
   * Popular Mist v2 speakers available, plus 8 Arcana flagship speakers now available as Mist v3 voices
   * See the [full voice list](/api-reference/data/voices)
 </Update>
@@ -318,7 +318,7 @@ New api onprem image `us-docker.pkg.dev/rime-labs/api/service:20250917` released
 </Update>
 
 <Update label="2025-04-24">
- * We’ve launched **Arcana** — a new model for expressive, natural voice synthesis. Available now with `modelId: arcana`.
+ * We’ve launched **Arcana**: a new model for expressive, natural voice synthesis. Available now with `modelId: arcana`.
 </Update>
 
 <Update label="2025-03-28">

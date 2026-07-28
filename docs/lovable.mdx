@@ -18,11 +18,10 @@ import { IntegrationHeader } from '/snippets/integration-header.mdx'
   playsInline
   className="w-full aspect-video"
   src="/images/lovable-demo.mp4"
+  alt="Lovable voiceover application using Rime text to speech"
 />
 
-[Lovable](https://lovable.dev/) is an AI-powered platform that lets anyone, regardless of technical skill, build full-stack web applications using natural language. Just describe what you want, and Lovable builds it for you.
-
-With Rime's text-to-speech (TTS) integration, you can now add natural, lifelike voice capabilities to your Lovable apps with just a few lines in your prompt. Whether you're building a voiceover tool, an accessibility feature, or an AI assistant, getting Rime TTS into your Lovable project is surprisingly simple.
+Build a Lovable application that calls Rime TTS from an Edge Function. Store the Rime API key in Lovable Cloud so it never reaches browser code.
 
 ## Prerequisites
 
@@ -45,7 +44,7 @@ Store the API key in Lovable Cloud.
 
 Since the Rime API requires authentication, Lovable will prompt you to enable [Lovable Cloud](https://docs.lovable.dev/integrations/cloud) and add your Rime API key under **Cloud → Secrets**.
 
-That's it! Lovable handles the rest by saving your API key as a secret and accessing it through Edge Functions, so it's never exposed in your frontend code.
+Lovable saves the key as a secret and accesses Rime through Edge Functions, keeping the credential out of frontend code.
 
 For a deeper understanding of how Lovable manages authenticated APIs, check out the [Integrations](https://docs.lovable.dev/integrations/introduction#authenticated-apis-requires-secrets) docs.
 
@@ -84,7 +83,7 @@ Use Rime TTS
 Store the API key in Lovable Cloud.
 ```
 
-Feel free to tweak the design, swap out voices, or completely reimagine the app. The key is including those Rime TTS instructions, so Lovable knows how to connect everything.
+The prompt can change the design or voice lineup, but it must retain the Rime endpoint and Lovable Cloud secret instructions.
 
 **Test the app built by this prompt:** Visit [rime.lovable.app](https://rime.lovable.app).
 

@@ -1,12 +1,12 @@
 ---
 title: Build a voice agent (FastAPI)
-description: "Build a voice agent with Rime TTS in a FastAPI app: a Python endpoint proxies synthesis with httpx while the browser records speech and plays back Rime audio."
+description: "Build a minimal voice-agent loop in FastAPI while a server-side endpoint protects your Rime API key."
 icon: python
 ---
 
-This guide builds a working voice agent on FastAPI: the browser captures speech, your Python backend decides what to say, and Rime speaks the reply.
+Build a minimal voice-agent loop in FastAPI: the browser captures speech, your backend decides what to say, and Rime speaks the reply. This starter uses browser speech recognition and a stub response function; replace both with production components.
 
-There is no Rime PyPI package to install — and you don't need one. Rime is a single HTTPS API; the endpoint below is a plain `httpx` call.
+Keep `RIME_API_KEY` on the server and call Rime over HTTPS with `httpx`. No Rime-specific PyPI package is required.
 
 ```
 Browser (mic + playback)  →  POST /api/tts (FastAPI)  →  POST https://users.rime.ai/v1/rime-tts
@@ -146,13 +146,13 @@ Create `index.html` next to `main.py`. It uses the browser's built-in `SpeechRec
 
 Open `http://localhost:8000`, click **Speak**, say something, and the agent answers in Rime's `astra` voice.
 
-## Want streaming?
+## Add streaming when latency matters
 
-For incremental synthesis — audio starts playing while later sentences are still generating — connect your **server** to `wss://users-ws.rime.ai/ws3` with the Python [`websockets`](https://pypi.org/project/websockets/) library and relay events to the browser (FastAPI's own WebSocket support works well as the browser-facing side). Rime's WebSocket endpoints authenticate with an `Authorization` header, which browser WebSockets cannot send, so the bridge always lives server-side. Runnable Python connection code and the full `/ws3` message schema are in the [Coda WebSocket reference](/api-reference/coda/websockets-json).
+For incremental synthesis, connect your **server** to `wss://users-ws.rime.ai/ws3` with the Python [`websockets`](https://pypi.org/project/websockets/) library and relay events through FastAPI's WebSocket support. Audio can then start while later sentences are still generating. Browser WebSockets cannot send the required `Authorization` header, so the Rime connection stays server-side. The [Coda WebSocket reference](/api-reference/coda/websockets-json) includes runnable Python code and the full `/ws3` schema.
 
-## Next steps
+## Production building blocks
 
-<CardGroup cols={2}>
+<Columns cols={2}>
   <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
     Endpoints, word-level timestamps, context IDs, and interruption handling.
   </Card>
@@ -165,4 +165,4 @@ For incremental synthesis — audio starts playing while later sentences are sti
   <Card title="Pipecat" icon="puzzle-piece" href="/docs/pipecat">
     Building a full Python voice pipeline? Use the ready-made Rime plugin.
   </Card>
-</CardGroup>
+</Columns>

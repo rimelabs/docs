@@ -1,6 +1,6 @@
 ---
 title: Pipecat
-description: "Build a real-time voice agent with Pipecat and Rime TTS — a full Python walkthrough from install to a working browser-based agent."
+description: "Build a real-time voice agent with Pipecat and Rime TTS: a full Python walkthrough from install to a working browser-based agent."
 ---
 
 This guide demonstrates how to build a real-time voice agent using [Pipecat](https://github.com/pipecat-ai/pipecat), the open-source voice-agent framework created by [Daily](https://www.daily.co/). Rime provides natural-sounding speech synthesis through Pipecat's built-in Rime TTS service.
@@ -497,31 +497,31 @@ async def on_client_connected(transport, client):
     await worker.queue_frames([LLMRunFrame()])
 ```
 
-Storing your system prompt in a separate file keeps your personality configuration separate from your agent logic, making it easy to experiment with different characters.
+Keeping the system prompt in a separate file lets you change the character without editing the agent logic.
 
-## Next steps
+## Swap agent components
 
-Pipecat's modular design makes it easy to swap components. Experiment with your agent by:
+Pipecat components can be replaced independently:
 - Replacing OpenAI with another STT provider, such as Deepgram or AssemblyAI
 - Using a different LLM, such as Anthropic, Gemini, or a local model
 - Switching transports to use WebSocket for server-to-server or [Daily's hosted rooms](/docs/daily) for production deployments
 
-To learn more about the Pipecat framework, including its transport options, deployment patterns, and advanced features, browse the [Pipecat documentation](https://docs.pipecat.ai/getting-started/introduction).
+The [Pipecat documentation](https://docs.pipecat.ai/getting-started/introduction) covers transports, deployment patterns, and advanced features.
 
 View Rime's [Pipecat demo agents](https://github.com/rimelabs/rime-pipecat-agents) for a ready-to-use multilingual agent example that switches languages dynamically.
 
 ## Troubleshooting
 
-If you encounter problems while following this guide, consult the quick fixes below.
+Use these checks for common setup failures.
 
 ### No audio output and other TTS errors
 
-- **Check your TTS service class:** Use `RimeTTSService` — it supports all current Rime models (`coda`, `arcana`, `mistv3`, `mistv2`). The older `RimeNonJsonTTSService` is deprecated and will be removed in Pipecat 2.0.
+- **Check your TTS service class:** Use `RimeTTSService`. It supports all current Rime models (`coda`, `arcana`, `mistv3`, `mistv2`). The older `RimeNonJsonTTSService` is deprecated and will be removed in Pipecat 2.0.
 - **Verify your Rime API key:** Ensure the key is valid and has TTS permissions.
 
 ### Import errors when starting the agent
 
-- **Check your Pipecat version:** Errors like `No module named 'pipecat.processors.aggregators.openai_llm_context'` mean you're running code written for Pipecat 0.x on a 1.x install (or vice versa). This guide requires `pipecat-ai` 1.5 or later — the 1.0 release renamed `OpenAILLMContext` to `LLMContext`, replaced `llm.create_context_aggregator()` with `LLMContextAggregatorPair`, and moved VAD configuration from `TransportParams` to `LLMUserAggregatorParams`.
+- **Check your Pipecat version:** Errors like `No module named 'pipecat.processors.aggregators.openai_llm_context'` mean you're running code written for Pipecat 0.x on a 1.x install (or vice versa). This guide requires `pipecat-ai` 1.5 or later: the 1.0 release renamed `OpenAILLMContext` to `LLMContext`, replaced `llm.create_context_aggregator()` with `LLMContextAggregatorPair`, and moved VAD configuration from `TransportParams` to `LLMUserAggregatorParams`.
 
 ### The agent doesn't respond to speech
 

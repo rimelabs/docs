@@ -13,9 +13,9 @@ icon: plug
 All WebSocket endpoints (`/ws`, `/ws2`, `/ws3`) use the same bearer token as the rest of the Rime API. Send `Authorization: Bearer YOUR_API_KEY` as a connection header when establishing the connection, and pass synthesis arguments (`speaker`, `modelId`, `audioFormat`, `lang`, …) as query parameters on the connection URL. See [API authentication](/docs/api-authentication) for how to create a key, and the per-endpoint reference pages below for complete, runnable connection code.
 
 <Warning>
-  Send the token in the `Authorization` header — connections without valid credentials are rejected with `401`.
+  Send the token in the `Authorization` header; connections without valid credentials are rejected with `401`.
 
-  Your API key is a secret: keep it out of client-side code. The browser `WebSocket` API can't set request headers, so connect from a server-side process (Node, Python, etc.), or proxy the connection through your own backend. The [voice-agent guides](/docs/voice-agent-nextjs#3-optional-stream-over-websockets) show a complete browser ↔ server ↔ Rime bridge.
+  Your API key is a secret: keep it out of client-side code. The browser `WebSocket` API can't set request headers, so connect from a server-side process (Node, Python, etc.), or proxy the connection through your own backend. The [voice-agent guides](/docs/voice-agent-nextjs#3-stream-over-websockets-when-latency-matters) show a complete browser ↔ server ↔ Rime bridge.
 </Warning>
 
 ## Choosing an endpoint
@@ -36,7 +36,7 @@ Rime offers three WebSocket endpoints. Here's how they compare:
 
 ---
 
-## `/ws3` — JSON WebSocket (flagship)
+## `/ws3`: JSON WebSocket (flagship)
 
 ```
 wss://users-ws.rime.ai/ws3
@@ -56,7 +56,7 @@ This is the endpoint Rime actively invests in. It supports all current and upcom
 
 ---
 
-## `/ws2` — Legacy JSON WebSocket
+## `/ws2`: Legacy JSON WebSocket
 
 ```
 wss://users-ws.rime.ai/ws2
@@ -73,7 +73,7 @@ wss://users-ws.rime.ai/ws2
 
 ---
 
-## `/ws` — Binary WebSocket (legacy)
+## `/ws`: Binary WebSocket (legacy)
 
 ```
 wss://users-ws.rime.ai/ws
@@ -96,7 +96,7 @@ wss://users-ws.rime.ai/ws
 
 ### Word-level timestamps
 
-Both JSON endpoints return word-level timing data alongside audio. This is useful for tracking which words have already been spoken — for example, when an end-user interrupts the assistant mid-sentence.
+Both JSON endpoints return word-level timing data alongside audio. This is useful for tracking which words have already been spoken, for example, when an end-user interrupts the assistant mid-sentence.
 
 ```typescript
 type TimestampsEvent = {
@@ -122,7 +122,7 @@ On `/ws3` and `/ws2`, you can attach a `contextId` to any text message and it wi
 ```
 
 <Info>
-  Rime does not maintain multiple simultaneous context IDs. The audio chunk event will carry the most recent context ID that was active at the time the audio was requested. If you send two messages before any audio is synthesized, only the later context ID will be reflected on the first audio chunk. Once set, a context ID also persists across subsequent messages that don't provide one — events keep carrying the previous ID until you send a new one.
+  Rime does not maintain multiple simultaneous context IDs. The audio chunk event will carry the most recent context ID that was active at the time the audio was requested. If you send two messages before any audio is synthesized, only the later context ID will be reflected on the first audio chunk. Once set, a context ID also persists across subsequent messages that don't provide one; events keep carrying the previous ID until you send a new one.
 </Info>
 
 ---
@@ -174,9 +174,9 @@ On `/ws2`, the event additionally carries a boolean `done: true` field; match on
 
 `done` fires at different points depending on the `segment` setting:
 
-- **`segment=never`** — fires once per `flush`, after all audio for that flush has been sent. `eos` also fires `done` for any content remaining in the buffer.
-- **`segment=bySentence` / `segment=immediate`** — fires once per synthesis run, after the last segment completes and the buffer is empty. Intermediate sentence boundaries do not emit `done`.
-- **`eos` (all modes)** — always emits `done` before closing the connection.
+- **`segment=never`**: fires once per `flush`, after all audio for that flush has been sent. `eos` also fires `done` for any content remaining in the buffer.
+- **`segment=bySentence` / `segment=immediate`**: fires once per synthesis run, after the last segment completes and the buffer is empty. Intermediate sentence boundaries do not emit `done`.
+- **`eos` (all modes)**: always emits `done` before closing the connection.
 
 See [Segmentation & Behavior Settings](/docs/websockets-segment) for details on each mode.
 
@@ -188,14 +188,14 @@ Each endpoint has a reference page with full message schemas and runnable connec
 
 | Endpoint | Coda | Arcana | Mist v3 | Mist v2 |
 |---|---|---|---|---|
-| **`/ws3`** (JSON) | [Coda](/api-reference/coda/websockets-json) | [Arcana](/api-reference/arcana/websockets-json) | [Mist v3](/api-reference/mistv3/websockets-json) | — |
-| **`/ws2`** (JSON) | — | — | — | [Mist v2](/api-reference/mistv2/websockets-json) |
+| **`/ws3`** (JSON) | [Coda](/api-reference/coda/websockets-json) | [Arcana](/api-reference/arcana/websockets-json) | [Mist v3](/api-reference/mistv3/websockets-json) | Not supported |
+| **`/ws2`** (JSON) | Not supported | Not supported | Not supported | [Mist v2](/api-reference/mistv2/websockets-json) |
 | **`/ws`** (binary) | [Coda](/api-reference/coda/websockets) | [Arcana](/api-reference/arcana/websockets) | [Mist v3](/api-reference/mistv3/websockets) | [Mist v2](/api-reference/mistv2/websockets) |
 
-## Next steps
+## Control synthesis timing
 
-How text is buffered and when synthesis is triggered is controlled by the `segment` parameter. Understanding segmentation is the key to getting predictable, low-latency behavior from the WebSocket API.
+The `segment` parameter controls how text is buffered and when synthesis begins.
 
 <Card title="Segmentation & behavior settings" icon="sliders" href="/docs/websockets-segment">
-  Learn how `segment=never`, `segment=bySentence`, and `segment=immediate` work, and how to choose the right one for your use case.
+  Compare `segment=never`, `segment=bySentence`, and `segment=immediate`.
 </Card>

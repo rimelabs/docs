@@ -38,3 +38,501 @@ html.dark[data-current-path="/"] .nav-tabs-item[data-active="true"] {
 html[data-current-path="/"] .nav-tabs-item[data-active="true"] > div {
   background-color: transparent !important;
 }
+
+/* Homepage: an audio-native task router with one clear hierarchy per section. */
+.rime-home {
+  --rime-home-accent: #b2321a;
+  --rime-home-accent-hover: #8f2815;
+  --rime-home-accent-ink: #ffffff;
+  --rime-home-border: #e5dfd6;
+  --rime-home-ink: #181714;
+  --rime-home-muted: #625f59;
+  --rime-home-soft: #f7f3ec;
+  --rime-home-soft-hover: #f0e9df;
+  box-sizing: border-box;
+  color: var(--rime-home-ink);
+  margin-inline: auto;
+  max-width: 68rem;
+  padding: clamp(3.5rem, 7vw, 6rem) 1.5rem 6rem;
+}
+
+html.dark .rime-home {
+  --rime-home-accent: #e68732;
+  --rime-home-accent-hover: #f0a35c;
+  --rime-home-accent-ink: #19140f;
+  --rime-home-border: #3d3832;
+  --rime-home-ink: #f5f2ed;
+  --rime-home-muted: #b7b0a7;
+  --rime-home-soft: #211e1a;
+  --rime-home-soft-hover: #2b2722;
+}
+
+.rime-home *,
+.rime-home *::before,
+.rime-home *::after {
+  box-sizing: border-box;
+}
+
+.rime-home a {
+  color: inherit;
+}
+
+.rime-home a:focus-visible {
+  border-radius: 0.35rem;
+  outline: 3px solid var(--rime-home-accent);
+  outline-offset: 4px;
+}
+
+.rime-home-hero {
+  align-items: end;
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+  grid-template-columns: minmax(0, 1.3fr) minmax(17rem, 0.7fr);
+}
+
+.rime-home-hero-copy h1 {
+  color: var(--rime-home-ink);
+  font-size: clamp(3.1rem, 6vw, 4.8rem);
+  font-weight: 650;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  margin: 0;
+  max-width: 12ch;
+  text-wrap: balance;
+}
+
+.rime-home-hero-copy > p:first-of-type {
+  color: var(--rime-home-muted);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  margin: 1.5rem 0 0;
+  max-width: 36rem;
+  text-wrap: pretty;
+}
+
+.rime-home-primary-action {
+  align-items: center;
+  background: var(--rime-home-accent);
+  border-radius: 0.55rem;
+  color: var(--rime-home-accent-ink) !important;
+  display: inline-flex;
+  font-size: 0.95rem;
+  font-weight: 650;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 2rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.05rem;
+  text-decoration: none !important;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.rime-home-primary-action span {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.rime-home-token-link {
+  color: var(--rime-home-muted);
+  font-size: 0.875rem;
+  margin: 0.9rem 0 0;
+}
+
+.rime-home-token-link a {
+  color: var(--rime-home-accent);
+  font-weight: 600;
+  text-decoration-color: color-mix(in srgb, var(--rime-home-accent) 55%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22rem;
+}
+
+.rime-home-hero-routes {
+  border-top: 1px solid var(--rime-home-border);
+}
+
+.rime-home-hero-routes > a {
+  align-items: center;
+  border-bottom: 1px solid var(--rime-home-border);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  min-height: 5rem;
+  padding: 0.9rem 0.25rem;
+  text-decoration: none !important;
+}
+
+.rime-home-route-title,
+.rime-home-route-meta {
+  display: block;
+}
+
+.rime-home-route-title {
+  color: var(--rime-home-ink);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.rime-home-route-meta {
+  color: var(--rime-home-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin-top: 0.2rem;
+}
+
+.rime-home-hero-routes > a > span:last-child {
+  color: var(--rime-home-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.rime-home-signal {
+  aspect-ratio: 8 / 1;
+  background: url("/images/rime-docs-signal.svg") center / contain no-repeat;
+  display: block;
+  grid-column: 1 / -1;
+  margin-top: clamp(0.5rem, 2vw, 1.5rem);
+  opacity: 0.92;
+  width: 100%;
+}
+
+html.dark .rime-home-signal {
+  filter: brightness(1.08) saturate(0.92);
+  opacity: 0.9;
+}
+
+.rime-home-section {
+  margin-top: clamp(5rem, 10vw, 8rem);
+}
+
+.rime-home-section-heading {
+  max-width: 46rem;
+}
+
+.rime-home-section-heading h2 {
+  color: var(--rime-home-ink);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.rime-home-section-heading p {
+  color: var(--rime-home-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 0.9rem 0 0;
+  max-width: 42rem;
+  text-wrap: pretty;
+}
+
+.rime-home-section-heading code {
+  background: var(--rime-home-soft);
+  border: 1px solid var(--rime-home-border);
+  border-radius: 0.35rem;
+  color: var(--rime-home-ink);
+  font-size: 0.88em;
+  padding: 0.1rem 0.32rem;
+}
+
+.rime-home-code {
+  margin-top: 2rem;
+}
+
+.rime-home-inline-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.rime-home-inline-links a {
+  align-items: center;
+  color: var(--rime-home-accent);
+  display: inline-flex;
+  font-size: 0.9rem;
+  font-weight: 600;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  text-decoration: none !important;
+}
+
+.rime-home-inline-links a span {
+  transition: transform 160ms ease;
+}
+
+.rime-home-paths {
+  background: var(--rime-home-soft);
+  border: 1px solid var(--rime-home-border);
+  border-radius: 1.25rem;
+  padding: clamp(2rem, 5vw, 4rem);
+}
+
+.rime-home-path-list {
+  border-top: 1px solid var(--rime-home-border);
+  margin-top: 2.25rem;
+}
+
+.rime-home-path-list > a {
+  align-items: center;
+  border-bottom: 1px solid var(--rime-home-border);
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  min-height: 7.5rem;
+  padding: 1.3rem 0.75rem;
+  text-decoration: none !important;
+  transition: background-color 160ms ease;
+}
+
+.rime-home-path-number {
+  color: var(--rime-home-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.rime-home-path-copy,
+.rime-home-path-title,
+.rime-home-path-description {
+  display: block;
+}
+
+.rime-home-path-title {
+  color: var(--rime-home-ink);
+  font-size: 1.12rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.rime-home-path-description {
+  color: var(--rime-home-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin-top: 0.35rem;
+  max-width: 43rem;
+}
+
+.rime-home-path-arrow {
+  color: var(--rime-home-muted);
+  font-size: 1.2rem;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.rime-home-journey {
+  border-top: 1px solid var(--rime-home-border);
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+}
+
+.rime-home-journey > li {
+  border-bottom: 1px solid var(--rime-home-border);
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(10rem, 0.55fr) minmax(0, 1.45fr);
+  padding: 1.75rem 0;
+}
+
+.rime-home-stage-title {
+  align-items: baseline;
+  display: flex;
+  gap: 1rem;
+}
+
+.rime-home-stage-title > span {
+  color: var(--rime-home-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.rime-home-stage-title h3 {
+  color: var(--rime-home-ink);
+  font-size: 1.15rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.rime-home-stage-links {
+  display: grid;
+  gap: 0.35rem 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rime-home-stage-links a {
+  align-items: center;
+  border-radius: 0.45rem;
+  color: var(--rime-home-ink);
+  display: flex;
+  font-size: 0.9rem;
+  font-weight: 520;
+  gap: 0.75rem;
+  justify-content: space-between;
+  line-height: 1.4;
+  min-height: 2.75rem;
+  padding: 0.62rem 0.75rem;
+  text-decoration: none !important;
+  transition: background-color 160ms ease;
+}
+
+.rime-home-stage-links a span {
+  color: var(--rime-home-muted);
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.rime-home-final-grid {
+  border-top: 1px solid var(--rime-home-border);
+  display: grid;
+  gap: clamp(3rem, 7vw, 5rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-top: clamp(3rem, 7vw, 5rem);
+}
+
+.rime-home-final-grid .rime-home-section-heading h2 {
+  font-size: clamp(1.8rem, 3vw, 2.25rem);
+}
+
+.rime-home-compact-links {
+  border-top: 1px solid var(--rime-home-border);
+  margin-top: 1.75rem;
+}
+
+.rime-home-compact-links > a {
+  align-items: center;
+  border-bottom: 1px solid var(--rime-home-border);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  min-height: 4.6rem;
+  padding: 0.85rem 0.25rem;
+  text-decoration: none !important;
+}
+
+.rime-home-compact-title,
+.rime-home-compact-meta {
+  display: block;
+}
+
+.rime-home-compact-title {
+  color: var(--rime-home-ink);
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.rime-home-compact-meta {
+  color: var(--rime-home-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin-top: 0.2rem;
+}
+
+.rime-home-compact-links > a > span:last-child {
+  color: var(--rime-home-muted);
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+@media (hover: hover) {
+  .rime-home-primary-action:hover {
+    background: var(--rime-home-accent-hover);
+    transform: translateY(-1px);
+  }
+
+  .rime-home-hero-routes > a:hover > span:last-child,
+  .rime-home-inline-links a:hover span,
+  .rime-home-path-list > a:hover .rime-home-path-arrow,
+  .rime-home-stage-links a:hover span,
+  .rime-home-compact-links > a:hover > span:last-child {
+    color: var(--rime-home-accent);
+    transform: translateX(3px);
+  }
+
+  .rime-home-path-list > a:hover,
+  .rime-home-stage-links a:hover {
+    background: var(--rime-home-soft-hover);
+  }
+}
+
+@media (max-width: 880px) {
+  .rime-home-hero {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .rime-home-hero-routes {
+    margin-top: 0.25rem;
+  }
+
+  .rime-home-journey > li {
+    grid-template-columns: 1fr;
+  }
+
+  .rime-home-final-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .rime-home {
+    padding: 3rem 1rem 4.5rem;
+  }
+
+  .rime-home-hero {
+    gap: 2.75rem;
+  }
+
+  .rime-home-hero-copy h1 {
+    font-size: clamp(2.75rem, 13vw, 3.5rem);
+    max-width: 10ch;
+  }
+
+  .rime-home-signal {
+    margin-top: 0;
+  }
+
+  .rime-home-section {
+    margin-top: 4.75rem;
+  }
+
+  .rime-home-paths {
+    border-radius: 1rem;
+    padding: 2rem 1rem;
+  }
+
+  .rime-home-path-list > a {
+    gap: 0.8rem;
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+    min-height: 7rem;
+    padding-inline: 0.35rem;
+  }
+
+  .rime-home-path-title {
+    font-size: 1rem;
+  }
+
+  .rime-home-path-description {
+    font-size: 0.84rem;
+  }
+
+  .rime-home-stage-links {
+    grid-template-columns: 1fr;
+  }
+
+  .rime-home-final-grid {
+    padding-top: 3.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rime-home *,
+  .rime-home *::before,
+  .rime-home *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

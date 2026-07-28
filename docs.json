@@ -10,9 +10,18 @@
     }
   },
   "colors": {
-    "primary": "#B2321A",
-    "light": "#E68732",
-    "dark": "#B2321A"
+    "primary": "#1DADC7",
+    "light": "#4FC3D9",
+    "dark": "#147D91"
+  },
+  "background": {
+    "color": {
+      "light": "#F0E9DD",
+      "dark": "#2E2A25"
+    }
+  },
+  "styling": {
+    "codeblocks": "dark"
   },
   "favicon": "/rime-social-logo.png",
   "logo": {

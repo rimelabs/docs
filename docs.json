@@ -17,15 +17,10 @@
   "favicon": "/rime-social-logo.png",
   "logo": {
     "light": "/logo/light.png",
-    "dark": "/logo/dark.png"
+    "dark": "/logo/dark.png",
+    "href": "/"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Homepage",
-        "href": "https://rime.ai/"
-      }
-    ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
@@ -35,10 +30,18 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Home",
+        "hidden": true,
+        "searchable": true,
+        "pages": [
+          "index"
+        ]
+      },
+      {
         "tab": "Documentation",
         "groups": [
           {
-            "group": "Introduction",
+            "group": "Start here",
             "pages": [
               "docs/introduction",
               "docs/api-cheat-sheet"
@@ -49,8 +52,20 @@
             "pages": [
               "docs/quickstart-five-minute",
               "docs/api-authentication",
+              "docs/quickstart-cli",
+              "docs/mcp",
+              "docs/regional-endpoints"
+            ]
+          },
+          {
+            "group": "Voice agents",
+            "icon": "messages",
+            "pages": [
+              "docs/voice-agents",
+              "docs/quickstart-livekit",
               {
-                "group": "Build a voice agent",
+                "group": "Direct API starters",
+                "icon": "code",
                 "pages": [
                   "docs/voice-agent-nextjs",
                   "docs/voice-agent-vite",
@@ -58,11 +73,7 @@
                   "docs/voice-agent-node",
                   "docs/voice-agent-fastapi"
                 ]
-              },
-              "docs/quickstart-cli",
-              "docs/quickstart-livekit",
-              "docs/mcp",
-              "docs/regional-endpoints"
+              }
             ]
           },
           {
@@ -1834,11 +1845,6 @@
     {
       "source": "/docs/timestamps",
       "destination": "/docs/websockets",
-      "permanent": false
-    },
-    {
-      "source": "/docs/voice-agents",
-      "destination": "/docs/quickstart-livekit",
       "permanent": false
     },
     {

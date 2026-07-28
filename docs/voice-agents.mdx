@@ -1,0 +1,73 @@
+---
+title: Build a voice agent
+description: "Choose a complete voice-agent tutorial, a direct API starter, or a supported voice platform."
+icon: messages
+---
+
+Rime provides the speech layer in a voice agent. A complete agent also needs audio transport, speech recognition, turn detection, and agent logic that decides what to say.
+
+## Choose an implementation
+
+<Columns cols={2}>
+  <Card title="LiveKit voice agent" icon="microphone-lines" href="/docs/quickstart-livekit">
+    Build an end-to-end browser voice agent with audio transport, turn detection, speech recognition, agent logic, and Rime speech. This is the recommended complete tutorial.
+  </Card>
+
+  <Card title="Direct API starters" icon="code">
+    Add a server-side Rime speech route and a browser voice interface to your application stack.
+
+    - [Next.js](/docs/voice-agent-nextjs)
+    - [Vite + React](/docs/voice-agent-vite)
+    - [Express](/docs/voice-agent-express)
+    - [Node.js](/docs/voice-agent-node)
+    - [FastAPI](/docs/voice-agent-fastapi)
+  </Card>
+
+  <Card title="Voice platforms" icon="puzzle-piece">
+    Use Rime through a framework or service that supplies transport, telephony, or agent orchestration.
+
+    - [LiveKit](/docs/livekit)
+    - [Pipecat](/docs/pipecat)
+    - [Vapi](/docs/vapi)
+    - [Daily](/docs/daily)
+  </Card>
+
+  <Card title="WebSocket API" icon="plug" href="/docs/websockets">
+    Build directly on persistent synthesis connections when you need incremental text, word timestamps, context management, or interruption control.
+  </Card>
+</Columns>
+
+## How the pieces fit
+
+| Layer | Responsibility |
+| --- | --- |
+| Audio transport | Carries microphone input and synthesized audio between the user and the agent. |
+| Speech recognition | Converts the user's audio into text for the agent. |
+| Agent logic | Uses application rules or a language model to decide what to say. |
+| Speech generation | Sends the response text to Rime and returns natural audio to the user. |
+
+The LiveKit tutorial implements the complete path. The direct API pages are application starters: they demonstrate the Rime proxy and browser interface while leaving the production speech-recognition and agent-logic choices to your application.
+
+<Warning>
+  Keep `RIME_API_KEY` on the server. Browser clients should call your application server or connect through a server-side WebSocket bridge rather than authenticate with Rime directly.
+</Warning>
+
+## Design for live conversation
+
+<Columns cols={2}>
+  <Card title="Stream speech" icon="signal-stream" href="/docs/streaming">
+    Start playback while the response is still being generated and choose an audio format for your transport.
+  </Card>
+
+  <Card title="Handle interruptions" icon="hand" href="/docs/websockets">
+    Use timestamps, context IDs, segmentation, and clear operations to coordinate turns and barge-in.
+  </Card>
+
+  <Card title="Reduce latency" icon="gauge-simple-max" href="/docs/latency">
+    Measure time to first audio and tune the synthesis path for responsive conversations.
+  </Card>
+
+  <Card title="Choose a voice" icon="waveform-lines" href="/docs/voices">
+    Match a voice, model, and language to the agent's audience and role.
+  </Card>
+</Columns>

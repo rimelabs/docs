@@ -1,119 +1,83 @@
 ---
 title: Introduction
-description: "Rime's text-to-speech API for real-time voice agents and IVR: low-latency streaming TTS with Coda, Arcana, and Mist models across English, Spanish, French, Portuguese, German, and Japanese."
-icon: book
+description: "An overview of Rime's speech platform, product capabilities, and developer interfaces."
+icon: book-open
 ---
 
-Rime provides industry-leading text-to-speech (TTS) AI models built for **real-time conversational experiences at scale**.
+Rime is a speech platform for turning text into natural, responsive audio. It powers spoken content, conversational agents, telephony, accessibility features, games, and any product that needs a voice.
 
-Our latest flagship model, **Coda**, pairs a sophisticated LLM backbone with a dedicated speech inference engine.
+The [Rime dashboard](https://app.rime.ai/) provides a visual workspace for exploring voices and generating speech. The same speech capabilities are available to applications and developer tools through Rime's APIs.
 
-It's trained on Rime's massive proprietary data set of full-duplex conversational speech between real people — not voice actors, audiobook narrators, or YouTube influencers — which means it's perfect for production voice AI agents, whether you're building intelligent IVRs, multilingual voice agents, or anything in between.
+## Start with Coda, our flagship model
 
-## Hello from Coda in 30 seconds
+**Coda** is Rime's most natural and expressive model — an LLM backbone paired with a dedicated speech inference engine, trained on full-duplex conversational speech between real people rather than voice actors or audiobook narrators. It's built for production voice agents: top-rated voice quality in human evaluations, **sub-100ms model latency** (sub-200ms end-to-end over the cloud API), and one multilingual voice lineup across English, Spanish, French, Portuguese, German, and Japanese. If you're moving from Arcana, the API contract is the same — just set `modelId: coda`.
 
-```bash
-curl --request POST \
-  --url https://users.rime.ai/v1/rime-tts \
-  --header 'Authorization: Bearer YOUR_API_KEY' \
-  --header 'Content-Type: application/json' \
-  --header 'Accept: audio/mpeg' \
-  --output hello.mp3 \
-  --data '{
-    "speaker": "astra",
-    "text": "Hello from Coda.",
-    "modelId": "coda",
-    "lang": "en"
-  }'
-```
+<Card title="Generate your first audio with Coda" icon="rocket" href="/docs/quickstart-five-minute">
+  Send one request with `modelId: coda` and get natural speech back in under five minutes.
+</Card>
 
-Get your `YOUR_API_KEY` from the [API Tokens page](https://app.rime.ai/tokens).
+## Make voice part of your product
 
-The [Rime CLI](/docs/quickstart-cli) wraps this same endpoint behind a `rime tts` command if you'd rather not write the request yourself. Or connect Claude, Codex, or your IDE directly to Rime through the [hosted MCP server](/docs/mcp).
-
-## Explore the API
-
-All TTS requests go to `https://users.rime.ai/v1/rime-tts`, authenticated with a bearer token in the `Authorization` header (see [API authentication](/docs/api-authentication)). In a hurry — or an AI agent? The [API cheat sheet](/docs/api-cheat-sheet) covers every endpoint with a runnable example on a single page. For the full list of endpoints — streaming HTTP, WebSockets, SSE, and voice metadata, across every model — start at the [API reference index](/docs/api-reference). New to streaming? See the [WebSocket API overview](/docs/websockets).
-
-<Info>
-  **There is no official Rime SDK on npm or PyPI** — and you don't need one. The API is a single HTTPS/WebSocket surface that works with plain `fetch`, `requests`, or any WebSocket client. For higher-level tooling, use the [Rime CLI](/docs/quickstart-cli), the [hosted MCP server](/docs/mcp), a framework plugin ([Pipecat](/docs/pipecat), [LiveKit](/docs/livekit)), or the framework guides for [Next.js](/docs/voice-agent-nextjs), [Vite](/docs/voice-agent-vite), [Express](/docs/voice-agent-express), [plain Node](/docs/voice-agent-node), and [FastAPI](/docs/voice-agent-fastapi).
-</Info>
-
-## What Makes Coda Different
-
-<CardGroup cols={2}>
-  <Card title="Real-time conversational performance" icon="bolt">
-    Sub-100ms model latency on the GPU engine and sub-200ms end-to-end via the cloud API — fast enough for mid-utterance control and barge-in without awkward silences. See [Latency](/docs/latency) for benchmarks.
+<Columns cols={2}>
+  <Card title="Generate speech" icon="waveform" href="/docs/quickstart-five-minute">
+    Turn text into playable or downloadable audio in formats suited to web, mobile, telephony, and media workflows.
   </Card>
-  <Card title="Top-rated voice quality" icon="trophy">
-    In human-led evaluations, Coda surpasses both prior Rime models and competitor TTS offerings on naturalness, prosody, and artifact-free output.
+
+  <Card title="Stream speech in real time" icon="signal-stream" href="/docs/streaming">
+    Play audio as it is generated, or send text incrementally for low-latency conversations and voice agents.
   </Card>
-  <Card title="Multilingual support" icon="globe">
-    One model speaks English, Spanish, French, Portuguese, German, and Japanese using a shared expressive voice lineup.
+
+  <Card title="Choose voices, models, and languages" icon="microphone-lines" href="/docs/voices">
+    Browse distinct speakers and select the speech model, language, and sound that fit your application.
   </Card>
-  <Card title="Word-level timestamps" icon="clock">
-    Structural metadata enables text-audio alignment, real-time highlighting, better interruption handling, and smarter orchestration.
+
+  <Card title="Shape how speech sounds" icon="sliders" href="/docs/prompting">
+    Guide delivery, pacing, spelling, pauses, pronunciation, and the way numbers, dates, and other text are spoken.
   </Card>
-</CardGroup>
 
-## Rime's TTS Models
-
-Rime now offers a suite of models tailored for different production needs:
-
-- **Coda**
-    - `modelId: coda`
-    - Our flagship TTS model. LLM backbone with a dedicated speech inference engine, trained on conversational full-duplex data.
-    - Surpasses prior Rime models and competitor offerings in human-led voice-quality evaluations. [See the announcement](https://rime.ai/resources/coda-tts).
-    - **Sub-100ms model latency on the GPU engine** when self-hosted or running on-prem.
-        - Via the cloud API, expect roughly 25–50ms additional network round-trip from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints).
-    - Native multilingual support across English, Spanish, French, Portuguese, German, and Japanese.
-    - Word-level timestamps for fine-grained text-audio alignment and interruption handling.
-- **Arcana v3**
-    - `modelId: arcana`
-    - The previous-generation flagship: ultra-realistic, expressive voices with **low latency (~120ms TTFB out of engine)** and **native multilingual code-switching** across more than 10 languages.
-    - **Coda is the recommended successor for all Arcana traffic.**
-- **Arcana v2**
-    - `modelId: arcanav2`
-    - **Ultra-realistic and expressive voices** (including laughter and whispering) with low latency (~250 ms TTFB out of the engine).
-    - Built for high-volume conversational applications.
-- **Mist v3**
-    - `modelId: mistv3`
-    - Major update to the Mist engine — **TTFA around 37 ms (P50)** on the GPU engine, significantly faster than Coda or Arcana while preserving Mist's pronunciation control and predictability.
-- **Mist v2**
-    - `modelId: mistv2`
-    - Previous-generation Mist model. For new projects, prefer Mist v3.
-
-For full details on each model — including the latency benchmarks, voice counts, and feature matrix — see [Models](/docs/models).
-
-## Migrating from Arcana
-
-<Tip>Coda is meaningfully better than Arcana across naturalness, prosody, and artifact-free output. We recommend migrating all existing Arcana traffic to Coda. The API contract is the same — just swap `modelId: arcana` for `modelId: coda`.</Tip>
-
-## Language & Voice Support
-
-Coda supports global voice experiences across English, Spanish, French, Portuguese, German, and Japanese, with a shared voice identity across languages.
-
-Rime exposes a rich set of **demographically diverse voices** you can select via API to match your brand, audience, and use case.
-
-## Flexible Deployment
-
-Rime supports flexible infrastructure options — from the [cloud API](/docs/api-reference) and virtual private cloud to [on-premises deployments](/docs/on-prem/quickstart) — without artificial concurrency limits. Whether your application must run close to users for real-time responsiveness or within secure enterprise environments, Rime fits your architecture.
-
-## Ready to Get Started?
-
-Follow the [quickstart guide](/docs/quickstart-five-minute) to begin generating text-to-speech with Rime's models — including Coda — in under five minutes.
-
-<CardGroup cols={2}>
-  <Card title="Streaming TTS" icon="wave-sine" href="/docs/streaming">
-    Stream audio over HTTP, WebSockets, or SSE — and how to choose for your voice agent.
+  <Card title="Build voice agents" icon="messages" href="/docs/voice-agents">
+    Use Rime as the speech layer in conversational AI, customer support, telephony, and interactive assistants.
   </Card>
-  <Card title="WebSocket API" icon="plug" href="/docs/websockets">
-    Persistent connections, incremental text input, word-level timestamps, and interruption handling.
+
+  <Card title="Connect voice platforms" icon="puzzle-piece" href="/docs/livekit">
+    Integrate with LiveKit, Pipecat, Vapi, Daily, SignalWire, VideoSDK, and other voice application frameworks.
   </Card>
-  <Card title="Latency" icon="gauge-simple-max" href="/docs/latency">
-    Measured benchmarks per model and how to minimize time-to-first-audio.
+
+  <Card title="Create a custom voice" icon="clone" href="/platform/voice-cloning">
+    Make a branded enterprise voice available to the same speech API as Rime's voice catalog.
   </Card>
-  <Card title="Voices" icon="microphone-lines" href="/docs/voices">
-    Browse Rime's voice catalog across models and languages.
+
+  <Card title="Run Rime in your environment" icon="server" href="/docs/on-prem/quickstart">
+    Use Rime's regional cloud endpoints or deploy supported models on your own infrastructure.
   </Card>
-</CardGroup>
+</Columns>
+
+## Build with the tools you use
+
+<Columns cols={2}>
+  <Card title="Dashboard" icon="browser" href="https://app.rime.ai/">
+    Explore, preview, and save voices; generate speech and inspect normalized text. Create API tokens, follow setup progress, manage teams, and review usage and billing.
+  </Card>
+
+  <Card title="HTTP and WebSocket APIs" icon="brackets-curly" href="/docs/api-reference">
+    Generate complete audio responses, stream audio, receive word timestamps, list voices, and use Rime's language tools.
+  </Card>
+
+  <Card title="Application code" icon="code" href="/docs/quickstart-five-minute">
+    Use standard HTTP and WebSocket clients from Python, JavaScript, Go, or any server-side language; no Rime-specific SDK is required.
+  </Card>
+
+  <Card title="CLI" icon="terminal" href="/docs/quickstart-cli">
+    Generate, play, and save speech, inspect usage, and test response speed from the terminal.
+  </Card>
+
+  <Card title="MCP server" icon="robot" href="/docs/mcp">
+    Let Claude, Codex, and compatible tools browse voices, generate samples, inspect pronunciation and text normalization, and scaffold integrations.
+  </Card>
+
+  <Card title="Application integrations" icon="plug" href="/docs/pipecat">
+    Use Rime with supported voice-agent frameworks, telephony services, deployment platforms, and application builders.
+  </Card>
+</Columns>
+
+One Rime API token authenticates the API, CLI, MCP tools, and supported integrations. Tokens, team access, and billing are managed in the [Rime dashboard](https://app.rime.ai/).

@@ -70,3 +70,23 @@ html:not(.dark) pre.shiki,
 html:not(.dark) pre.shiki span {
   color: var(--shiki-dark) !important;
 }
+
+/* Light-mode code chrome: recolor the right-edge "fade" from white to the dark
+   code surface, and lighten the action icons so they read on the dark block. */
+html:not(.dark) .code-group div.print\:hidden {
+  background-image: linear-gradient(to right, rgba(11, 12, 14, 0), #0B0C0E 45px) !important;
+}
+
+html:not(.dark) .code-group button,
+html:not(.dark) .code-group button svg {
+  color: #B5B5B5 !important;
+}
+
+/* Keep the header a single constant surface: remove the scroll-triggered
+   background/border/blur change that reads as a distracting color shift. */
+#navbar > div:first-child {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  backdrop-filter: none !important;
+  transition: none !important;
+}

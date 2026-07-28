@@ -133,33 +133,55 @@ mode: custom
       Follow the lifecycle or jump directly to the problem you're solving.
     </p>
 
-    <div className="mt-8">
-      <Columns cols={4}>
-        <Card title="Get started" icon="rocket">
-          - [Generate your first audio](/docs/quickstart-five-minute)
-          - [Create an API token](https://app.rime.ai/tokens)
-          - [Authenticate requests](/docs/api-authentication)
-          - [Choose a voice](/docs/voices)
-        </Card>
-        <Card title="Build" icon="code">
-          - [Stream audio over HTTP](/docs/streaming)
-          - [Use WebSockets](/docs/websockets)
-          - [Build with LiveKit](/docs/quickstart-livekit)
-          - [Integrate with Pipecat](/docs/pipecat)
-        </Card>
-        <Card title="Customize" icon="sliders">
-          - [Choose a model](/docs/models)
-          - [Guide delivery with prompts](/docs/prompting)
-          - [Control pronunciation](/platform/pronunciation-control)
-          - [Format text](/docs/text-normalization)
-        </Card>
-        <Card title="Operate" icon="gauge-simple-max">
-          - [Reduce latency](/docs/latency)
-          - [Select a region](/docs/regional-endpoints)
-          - [Deploy on-prem](/docs/on-prem/quickstart)
-          - [Review privacy and compliance](/docs/privacy-compliance)
-        </Card>
-      </Columns>
+    <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
+        <div className="flex items-center gap-2.5">
+          <Icon icon="rocket" size={19} color="#B2321A" />
+          <h3 className="m-0 text-base font-semibold text-zinc-950 dark:text-zinc-50">Get started</h3>
+        </div>
+        <div className="mt-4 flex flex-col gap-2.5 text-sm">
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/quickstart-five-minute">Generate your first audio</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="https://app.rime.ai/tokens">Create an API token</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/api-authentication">Authenticate requests</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/voices">Choose a voice</a>
+        </div>
+      </div>
+      <div className="rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
+        <div className="flex items-center gap-2.5">
+          <Icon icon="code" size={19} color="#B2321A" />
+          <h3 className="m-0 text-base font-semibold text-zinc-950 dark:text-zinc-50">Build</h3>
+        </div>
+        <div className="mt-4 flex flex-col gap-2.5 text-sm">
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/streaming">Stream audio over HTTP</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/websockets">Use WebSockets</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/quickstart-livekit">Build with LiveKit</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/pipecat">Integrate with Pipecat</a>
+        </div>
+      </div>
+      <div className="rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
+        <div className="flex items-center gap-2.5">
+          <Icon icon="sliders" size={19} color="#B2321A" />
+          <h3 className="m-0 text-base font-semibold text-zinc-950 dark:text-zinc-50">Customize</h3>
+        </div>
+        <div className="mt-4 flex flex-col gap-2.5 text-sm">
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/models">Choose a model</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/prompting">Guide delivery with prompts</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/platform/pronunciation-control">Control pronunciation</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/text-normalization">Format text</a>
+        </div>
+      </div>
+      <div className="rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
+        <div className="flex items-center gap-2.5">
+          <Icon icon="gauge-simple-max" size={19} color="#B2321A" />
+          <h3 className="m-0 text-base font-semibold text-zinc-950 dark:text-zinc-50">Operate</h3>
+        </div>
+        <div className="mt-4 flex flex-col gap-2.5 text-sm">
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/latency">Reduce latency</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/regional-endpoints">Select a region</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/on-prem/quickstart">Deploy on-prem</a>
+          <a className="text-zinc-600 no-underline transition-colors hover:text-[#B2321A] dark:text-zinc-400 dark:hover:text-[#E68732]" href="/docs/privacy-compliance">Review privacy and compliance</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -182,7 +204,7 @@ mode: custom
     </div>
   </div>
 
-  <div className="mt-20 border-t border-zinc-200 pt-12 dark:border-zinc-800">
+  <div className="mt-20">
     <p className="text-sm font-semibold uppercase tracking-wider text-[#B2321A] dark:text-[#E68732]">Resources</p>
     <h2 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Keep building</h2>
 

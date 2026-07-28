@@ -23,7 +23,7 @@ Write for a developer who needs to make a decision or complete a task.
 - Prefer verifiable technical facts over promotional adjectives. Do not call a feature seamless, powerful, lifelike, enterprise-grade, or state-of-the-art without evidence that belongs on the page.
 - State prerequisites, credential boundaries, unsupported configurations, and security consequences before the steps they affect.
 - Keep the most useful path prominent. Present alternatives only after the default recommendation is clear.
-- Use headings that name the decision or task. Avoid generic endings such as “Next steps,” “Conclusion,” and “Keep building.”
+- Use headings that name the decision or task. A closing section must route to specific, titled destinations with a reason to follow each one; never end with a generic sign-off such as “Conclusion” or “Keep building.” A heading like “Next steps” is fine only when what follows is substantive and specific, not a token list.
 - Preserve technical meaning when editing punctuation. Never apply a blind character replacement without reviewing every changed sentence, table cell, code caption, and link anchor.
 - Keep prose concise, but do not make it abrupt. Vary sentence length and use contractions when they sound natural.
 

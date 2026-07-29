@@ -1,17 +1,13 @@
 ---
 title: Models
-description: "Coda and Mist v3 are Rime's current models. Arcana and Mist v2 are deprecated and will be sunset on August 15, 2026."
+description: "Coda and Mist v3 are Rime's current models. Arcana is deprecated and will be sunset on August 15, 2026."
 icon: cube
 ---
 
-Start with **Coda** for new applications and Arcana migrations. Choose **Mist v3** when the lowest time to first audio matters most, or when you need inline pronunciation control or custom pauses. **Arcana** and **Mist v2** are deprecated and will be sunset on August 15, 2026; see the migration notes below.
+Start with **Coda** for new applications and Arcana migrations. Choose **Mist v3** when the lowest time to first audio matters most, or when you need inline pronunciation control or custom pauses; prefer it over the older Mist v2. **Arcana** is deprecated and will be sunset on August 15, 2026; see the migration notes below.
 
 <Warning>
-**Arcana and Mist v2 will be sunset on August 15, 2026.**
-
-- **Arcana:** cloud traffic will route to [Coda](#coda) on that date. Migrate by changing `modelId: arcana` to `modelId: coda`; the API contract is unchanged. Sinhala remains available on Arcana.
-- **Mist v2:** migrate to [Mist v3](#mist-v3) by changing `modelId: mistv2` to `modelId: mistv3`. Mist v3 supports inline pronunciation control and custom pauses, so no capability is lost.
-- **On-prem:** existing Arcana and Mist v2 images remain available to pull and run, but will not receive updates or support (including vulnerability patches and text-normalization fixes) after August 15, 2026.
+**Arcana will be sunset on August 15, 2026.** Cloud traffic will route to [Coda](#coda) on that date. Migrate by changing `modelId: arcana` to `modelId: coda`; the API contract is unchanged. Sinhala remains available on Arcana. On-prem Arcana images remain available to pull and run, but will not receive updates or support (including vulnerability patches and text-normalization fixes) after August 15, 2026.
 </Warning>
 
 ## Choose a model
@@ -21,7 +17,7 @@ Start with **Coda** for new applications and Arcana migrations. Choose **Mist v3
 | `coda` | **Default for most new apps.** Rime's flagship model, with the highest voice-quality scores in Rime's human evaluations, sub-100ms model latency, and one multilingual voice lineup. |
 | `mistv3` | You need the fastest time to first audio (approximately 37ms P50 in Rime's benchmark), inline pronunciation control, or custom pauses. |
 | `arcana` | **Deprecated, sunset August 15, 2026.** Migrate to Coda. Arcana remains available for Sinhala. |
-| `mistv2` | **Deprecated, sunset August 15, 2026.** Migrate to Mist v3, which supports the same pronunciation and pause controls. |
+| `mistv2` | Earlier low-latency Mist model. Prefer [Mist v3](#mist-v3) for new work; it offers lower latency and the same pronunciation and pause controls. |
 
 For benchmark methodology, latency, and throughput numbers, see [Latency](/docs/latency#real-time-performance-benchmarks).
 
@@ -69,7 +65,7 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 
 ## Mist v3
 
-**Mist v3**, released March 2026, is the low-latency successor to Mist v2 and the migration target for Mist v2 traffic.
+**Mist v3**, released March 2026, is the low-latency successor to Mist v2 and the preferred Mist model for new work.
 
 - Typical time to first byte is well below 100ms
 - Supports inline [pronunciation control](/platform/pronunciation-control) and [custom pauses](/docs/custom-pauses)
@@ -79,7 +75,7 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 
 ## Mist v2
 
-<Warning>**Mist v2 is deprecated and will be sunset on August 15, 2026.** Migrate to [Mist v3](#mist-v3) by changing `modelId: mistv2` to `modelId: mistv3`; Mist v3 supports the same inline pronunciation control and custom pauses. On-prem Mist v2 images remain available to pull and run, but will not receive updates or support after August 15, 2026.</Warning>
+<Tip>For new work, prefer [Mist v3](#mist-v3): it offers lower latency and the same inline pronunciation control and custom pauses.</Tip>
 
 **Mist v2**, released February 2025, is the earlier low-latency Mist model.
 

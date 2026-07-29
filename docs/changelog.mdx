@@ -8,6 +8,14 @@ icon: list
 
 <Tip>Subscribe to the [RSS feed](https://docs.rime.ai/docs/changelog/rss.xml) to get notified of new releases.</Tip>
 
+<Update label="2026-07-29">
+* **Arcana and Mist v2 will be sunset on August 15, 2026.**
+  * **Arcana:** on August 15, cloud Arcana traffic will route to [Coda](/docs/models#coda). Migrate by changing `modelId: arcana` to `modelId: coda`; the API contract is unchanged. Sinhala remains available on Arcana.
+  * **Mist v2:** migrate to [Mist v3](/docs/models#mist-v3) by changing `modelId: mistv2` to `modelId: mistv3`. Mist v3 supports inline pronunciation control and custom pauses, so no capability is lost.
+  * **On-prem:** existing Arcana and Mist v2 images remain available to pull and run, but will not receive updates or support (including vulnerability patches and text-normalization fixes) after August 15, 2026.
+  * We recommend migrating before August 15 so you can test voices and validate output on your own timeline. Questions? Reach us in the Rime help desk Slack.
+</Update>
+
 <Update label="2026-07-10">
 * Rime now hosts a first-party MCP (Model Context Protocol) server at [mcp.rime.ai](https://mcp.rime.ai):
   * Connect Claude, OpenAI Codex, your IDE, or any MCP-compatible client to browse the voice catalog, check dictionary coverage, preview text normalization, generate speech samples, and scaffold Pipecat or LiveKit integration code.

@@ -20,9 +20,6 @@
       "dark": "#2E2A25"
     }
   },
-  "styling": {
-    "codeblocks": "dark"
-  },
   "favicon": "/rime-social-logo.png",
   "logo": {
     "light": "/logo/light.png",

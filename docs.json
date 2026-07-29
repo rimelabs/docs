@@ -47,14 +47,14 @@
         "tab": "Documentation",
         "groups": [
           {
-            "group": "Start here",
+            "group": "Overview",
             "pages": [
               "docs/introduction",
               "docs/api-cheat-sheet"
             ]
           },
           {
-            "group": "Getting started",
+            "group": "Quickstart",
             "pages": [
               "docs/quickstart-five-minute",
               "docs/api-authentication",

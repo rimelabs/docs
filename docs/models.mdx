@@ -80,21 +80,3 @@ All production models are available through the cloud API and on-premises, and a
 **Mist**, released April 2023, is a legacy model in the Mist family. Use `modelId: mistv2` or `modelId: mist` to synthesize with these older deployments. As of February 2025, requests that omit `modelId` default to `mist`.
 
 **Model v1 was released in April 2022 and has been deprecated.**
-
-## Arcana generation controls
-
-<Note>The controls in this section apply to Arcana only. Mist v3 and Mist v2 do not expose `temperature`, `top_p`, or `repetition_penalty`.</Note>
-
-Arcana supports three additional generation controls. Keep their default values unless you have evaluated the change against representative audio.
-
-- `temperature`: controls randomness in generated speech
-  - **Low** (0): more predictable speech
-  - **High** (1+): more variation in prosody and expression
-- `repetition_penalty`: discourages repeated sounds
-  - **Low** (`<1`): may produce repetitive speech
-  - **High** (`>1`): encourages more variation, including more natural-sounding speech and realistic laughter
-- `top_p`: limits generation to a subset of probable sounds
-  - **Low** (0): more monotonic, predictable output
-  - **High** (1): a broader range of sound choices
-
-See the [Arcana API reference pages](/api-reference/arcana/streaming-mp3) for endpoint-specific details.

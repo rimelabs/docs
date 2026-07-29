@@ -1,13 +1,35 @@
 ---
 title: Performance tuning
-description: "Tune supported Arcana on-prem deployments for concurrency without exceeding latency or real-time-factor targets."
+description: "Tune supported Coda and Arcana on-prem deployments for concurrency without exceeding latency or real-time-factor targets."
 ---
 
-<Note>Performance tuning is available only for Arcana model images tagged `20251027` or later.</Note>
+<Note>Performance tuning applies to both Coda and Arcana on-prem deployments.</Note>
 
 Tune concurrency against an explicit service-level target. Rime does not provide rate limiting or request queues because those controls depend on the deployment, so enforce the concurrency limit in your own infrastructure.
 
-## Tuning workflow
+## What to measure
+
+- **Initial latency**, or time to first frame or byte (TTFF/TTFB), measures the time from sending a request until the first frame arrives. Lower is better.
+- **Real-time factor (RTF)** is processing time divided by stream duration. RTF must remain at or below 1 for real-time delivery. Lower is better.
+- **Concurrency** is the number of simultaneous requests the service can handle while meeting the target. Higher is better.
+
+Latency and RTF usually rise with concurrency. Queue or reject requests above the measured limit instead of allowing overload to degrade every active stream.
+
+## Coda
+
+For Coda, `GENERATOR_MAX_BATCH` is the only control that affects tuning, and its default works for most deployments.
+
+| Variable | Default |
+| :--- | :--- |
+| `GENERATOR_MAX_BATCH` | `32` |
+
+Increase it to `64` or `128` when you serve higher traffic or run on more modern GPUs. A larger batch supports higher concurrency at the cost of longer container startup time. Leave the other controls listed below at their defaults.
+
+## Arcana
+
+Arcana exposes additional batching, session, and memory controls. Tune them together against representative traffic.
+
+### Tuning workflow
 
 Use [`armchair`](https://crates.io/crates/armchair) to repeat this benchmark-driven loop:
 
@@ -16,7 +38,7 @@ Use [`armchair`](https://crates.io/crates/armchair) to repeat this benchmark-dri
 3. If the server fails to start with an out-of-memory error, decrease `GENERATOR_GPU_MEMORY_UTILIZATION`.
 4. Repeat until the benchmarked concurrency converges with `DECODER_MAX_BATCH` and `GENERATOR_MAX_BATCH`. Treat that value as the maximum concurrency for the deployment.
 
-## Controls
+### Controls
 
 These model-container environment variables control batching, sessions, and memory use:
 
@@ -29,15 +51,7 @@ These model-container environment variables control batching, sessions, and memo
 
 The defaults support Rime's lowest supported hardware specification. Higher-capacity hardware should still be tuned against representative traffic rather than a fixed concurrency assumption.
 
-## What to measure
-
-- **Initial latency**, or time to first frame or byte (TTFF/TTFB), measures the time from sending a request until the first frame arrives. Lower is better.
-- **Real-time factor (RTF)** is processing time divided by stream duration. RTF must remain at or below 1 for real-time delivery. Lower is better.
-- **Concurrency** is the number of simultaneous requests the service can handle while meeting the target. Higher is better.
-
-Latency and RTF usually rise with concurrency. Queue or reject requests above the measured limit instead of allowing overload to degrade every active stream.
-
-## Reference benchmark
+### Reference benchmark
 
 Rime benchmarks with [`armchair`](https://crates.io/crates/armchair):
 

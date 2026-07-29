@@ -14,7 +14,7 @@ Generate an MP3 speech sample from text. With no arguments, the tool plays a def
 | --------- | ---- | -------- | ------- | ----------- |
 | `text` | string | No | A short demo line | Text to synthesize (max 2,000 characters) |
 | `speaker` | string | No | `lyra` | Voice name from [`list_voices`](/mcp-reference/list-voices) |
-| `modelId` | string | No | `coda` | Model ID: `coda` (flagship), `mistv3`, or `arcana` |
+| `modelId` | string | No | `coda` | Model ID: `coda` (flagship) or `mistv3` |
 | `language` | string | No | None | Sent as `lang` only if provided (e.g. `eng`, the value from [`get_voice_details`](/mcp-reference/get-voice-details)). Omit to let Rime infer the language from the speaker |
 | `include_audio` | boolean | No | `false` | Also return the audio as a standard MCP audio content block (base64), for hosts that play audio natively. Adds the audio to the model's context |
 

@@ -38,3 +38,20 @@ html.dark[data-current-path="/"] .nav-tabs-item[data-active="true"] {
 html[data-current-path="/"] .nav-tabs-item[data-active="true"] > div {
   background-color: transparent !important;
 }
+
+/* Primary CTA (topbar Dashboard button): brand ink pill in light mode,
+   light beige with ink text in dark mode (design review, Aug 2026). The
+   button's fill is a Mintlify-generated absolute span (bg-primary-dark)
+   and its label is hardcoded white, so both need mode-aware overrides. */
+#topbar-cta-button a > span.absolute {
+  background-color: #2e2a25 !important;
+}
+
+html.dark #topbar-cta-button a > span.absolute {
+  background-color: #f0e9dd !important;
+}
+
+html.dark #topbar-cta-button a span,
+html.dark #topbar-cta-button a svg {
+  color: #24211d !important;
+}

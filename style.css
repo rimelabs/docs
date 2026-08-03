@@ -38,3 +38,28 @@ html.dark[data-current-path="/"] .nav-tabs-item[data-active="true"] {
 html[data-current-path="/"] .nav-tabs-item[data-active="true"] > div {
   background-color: transparent !important;
 }
+
+/* Primary CTA (topbar Dashboard button): the @rimelabs/ui Button pillDark
+   treatment. Brand ink with cream-raised text in light mode; flipped to a
+   cream-raised (light beige) fill with ink text in dark mode. Values are
+   the rime-ui brand tokens: ink #24211D, cream-raised #F8F3EA. The button's
+   fill is a Mintlify-generated absolute span (bg-primary-dark) and its
+   label is hardcoded white, so both need mode-aware overrides; Mintlify's
+   own group-hover opacity supplies the pillDark hover behavior. */
+#topbar-cta-button a > span.absolute {
+  background-color: #24211d !important;
+}
+
+#topbar-cta-button a span,
+#topbar-cta-button a svg {
+  color: #f8f3ea !important;
+}
+
+html.dark #topbar-cta-button a > span.absolute {
+  background-color: #f8f3ea !important;
+}
+
+html.dark #topbar-cta-button a span,
+html.dark #topbar-cta-button a svg {
+  color: #24211d !important;
+}

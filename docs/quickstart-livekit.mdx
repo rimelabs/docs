@@ -166,7 +166,7 @@ class Assistant(Agent):
 
 This creates a class that extends the `Agent` base class, defining your agent's personality through a system prompt. The prompt can be as simple or complex as you like. Later in the guide you'll see an example of a detailed system prompt that fully customizes the agent's behavior.
 
- Import the `Agent` class at the top of the the script. For convenience, below are all the rest of the required imports. Add these imports to the top of `agent.py` as well:
+Import the `Agent` class at the top of `agent.py`, along with the rest of the required imports:
 
 ```python
 from dotenv import load_dotenv
@@ -217,7 +217,7 @@ async def entrypoint(ctx: JobContext):
 This function runs each time a user connects and does the following:
 
 - Connects to the LiveKit room and waits for a participant to join
-- Creates an `AgentSession` that wires together the voice pipeline components: OpenAI for STT and LLM, Rime for TTS, and LiveKit for VAD and turn detecting
+- Creates an `AgentSession` that wires together the voice pipeline components: OpenAI for STT and LLM, Rime for TTS, and LiveKit for VAD and turn detection
 - Starts the session with noise cancellation enabled to filter out background noise from the user's microphone
 - Greets the user with an initial message
 

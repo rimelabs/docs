@@ -8,13 +8,13 @@ icon: 'comment-dots'
 
 Building a voice agent means asking an LLM to write text that will be *spoken*, not read. That's a different job from what LLMs do by default: they're trained on text and post-trained for grammatical correctness, so when you send their output to a TTS model, it tends to sound like written prose read aloud rather than natural, conversational speech.
 
-The patterns below cover the two problems your LLM has to solve: sounding like a person, and producing text the normalizer can read cleanly. A drop-in system prompt at the end bundles them together.
+Your LLM has two problems to solve: sounding like a person, and producing text the normalizer can read cleanly. A drop-in system prompt at the end covers both.
 
 ## Sound like a person
 
-The goal here isn't to fool anyone into thinking they're talking to a human. It's to make callers feel comfortable enough to talk naturally, which leads to better outcomes than a stiff, overly formal agent.
+The goal is to make callers comfortable enough to talk naturally, which leads to better outcomes than a stiff, overly formal agent. You aren't trying to fool anyone into thinking they're talking to a human.
 
-Real speech meanders: fillers, restarts, soft pauses, the occasional "yeah, no." Coda doesn't accept SSML: no `<break>`, no `<emotion>`, no inline tags except [`spell()`](/docs/spell). That's by design. Rime's philosophy is to keep things as simple as possible.
+Real speech meanders: fillers, restarts, soft pauses, the occasional "yeah, no." Coda doesn't accept SSML: no `<break>`, no `<emotion>`, no inline tags except [`spell()`](/docs/spell). Rime keeps the interface deliberately small.
 
 Coda reads the semantic content of what you send and shapes its emotional delivery accordingly, so the only levers you need are word choice and punctuation: exclamation marks and interrobangs for excitement, commas and ellipses for pacing.
 
@@ -32,7 +32,7 @@ These pairs aren't universal good/bad; the right register depends on call type, 
 
 ### Disfluencies in the text itself
 
-Have the model use "um," "uh," "so," "yeah," and "well" where a person would actually hesitate. Don't reach for tags; the disfluency *is* the prompt. Sprinkle, don't stack: two "um"s in a row reads as a bug.
+Have the model use "um," "uh," "so," "yeah," and "well" where a person would actually hesitate. Don't reach for tags; write the disfluency into the text itself. Sprinkle, don't stack: two "um"s in a row reads as a bug.
 
 ### Punctuation is your only prosody tool
 

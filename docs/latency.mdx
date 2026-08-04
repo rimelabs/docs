@@ -5,6 +5,8 @@ description: "Rime TTS latency benchmarks, the factors that affect response time
 icon: gauge-simple-max
 ---
 
+import NetworkRttTable from "/snippets/network-rtt-table.mdx";
+
 ## Latency at a glance
 
 Rime's cloud API delivers sub-200ms end-to-end latency under typical conditions. Coda reaches **sub-100ms model latency on the GPU engine** when self-hosted or on-prem, while Mist v3 has the lowest measured time to first audio.
@@ -96,18 +98,6 @@ Rime serves the API from multiple regions so you can route requests to the data 
 
 These are rough round-trip times (RTT), the back-and-forth network delay between your application and Rime, from major US metros to each region:
 
-| From metro | To US East | To US West |
-| :--- | :--- | :--- |
-| East Coast (NYC, DC, Boston, Atlanta) | 5–25 ms | 60–85 ms |
-| Midwest / South (Chicago, Dallas, Denver) | 25–55 ms | 35–65 ms |
-| West Coast (SF, LA, Seattle) | 60–85 ms | 5–25 ms |
-
-Rules of thumb:
-
-- **Same region** (your app and the Rime endpoint in the same AWS region): typically 1–10 ms.
-- **Coast-to-coast**: ~60 ms is the physical floor, set by the speed of light in fiber across ~2,500 miles. 60–85 ms is normal.
-- **Above 90 ms** between major US metros usually points to a suboptimal network route, not Rime.
-
-**For voice AI:** if you serve users nationwide from a single region, far-coast users will see 60–85 ms of network round-trip on top of Rime's inference time. To stay comfortably under 200 ms end-to-end, route East-coast users to US East and West-coast users to US West.
+<NetworkRttTable />
 
 For the full endpoint URLs and routing guidance, see [Regional endpoints](/docs/regional-endpoints). To measure TTFB against each endpoint from your own machine, run [`rime speedtest`](/cli-reference/rime-monitoring).

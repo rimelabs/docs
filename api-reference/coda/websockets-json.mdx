@@ -5,7 +5,9 @@ api: 'GET wss://users-ws.rime.ai/ws3'
 authMethod: "bearer"
 ---
 
-All requests require authentication with a bearer token in the `Authorization` header: `Authorization: Bearer YOUR_API_KEY`. See [API authentication](/docs/api-authentication) for how to create a key.
+import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
+
+<ApiAuthBearer />
 
 <Warning>Include `modelId=coda` in the connection query. If you omit it, the server routes the request to Mist v3 and speakers outside the Mist v3 catalog can fail with `Speaker not found`.</Warning>
 

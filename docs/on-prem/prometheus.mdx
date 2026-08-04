@@ -7,7 +7,7 @@ Prometheus is a monitoring and alerting system commonly used to scrape and revie
 ## Prerequisites
 
 Before proceeding, confirm:
-1. You can access a self-hosted instance where the `/metrics` endpoint is exposed (assuming port 8080).
+1. You can reach the generator's metrics port on your model container. Metrics are **not** served on the engine's HTTP port (8080); that port serves only synthesis and the `/livez` and `/readyz` probes. Set `GENERATOR_SERVICE_PORT` explicitly on the model container (for example `30000`) and scrape that port. If the variable is unset, the generator binds a random free port, which cannot be scraped reliably.
 2. You have permissions to edit the main configuration file, typically `prometheus.yml`.
 3. You have permissions to run a Docker container in your environment.
 
@@ -24,7 +24,7 @@ global:
 scrape_configs:
   - job_name: "model-rime-tts"
     static_configs:
-      - targets: ["<instance_ip>:8080"]  # Adjust this
+      - targets: ["<instance_ip>:30000"]  # GENERATOR_SERVICE_PORT on the model container
     metrics_path: "/metrics"  # Default path for Prometheus metrics
 ```
 

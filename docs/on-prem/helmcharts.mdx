@@ -16,6 +16,22 @@ Helm 3.0+
 NVIDIA GPU Operator installed (for GPU support)
 PV provisioner support in the underlying infrastructure (if using persistent storage)
 
+Rime images are hosted in a private Artifact Registry at `us-docker.pkg.dev/rime-labs`. Create a pull secret from the service-account key Rime provides and reference it in your values, otherwise both pods fail with `ImagePullBackOff`:
+
+```bash
+kubectl create secret docker-registry rime-registry \
+  --docker-server=us-docker.pkg.dev \
+  --docker-username=_json_key \
+  --docker-password="$(cat rime-sa-key.json)"
+```
+
+```yaml
+imagePullSecrets:
+  - name: rime-registry
+```
+
+Use the same `YYYYMMDD` image tag for the API and model containers. See [Quickstart](/docs/on-prem/quickstart#image-tags) for the current release tag.
+
 ## Chart structure
 
 ```
@@ -45,8 +61,8 @@ helm install rime-labs ./rime-labs
 ```yaml
 api:
   image:
-    repository: rime/api
-    tag: 0a111d625e17
+    repository: us-docker.pkg.dev/rime-labs/api/service
+    tag: "20260801"
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -64,8 +80,8 @@ api:
 
 model:
   image:
-    repository: rime/model
-    tag: 7bd3a89c3b05
+    repository: us-docker.pkg.dev/rime-labs/coda/v1/coda
+    tag: "20260801"
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP

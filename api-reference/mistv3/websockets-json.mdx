@@ -91,6 +91,8 @@ The audio will be a base64 encoded chunk of audio bytes in the audio format spec
 
 Word-level timestamps are emitted alongside the audio chunks so the client can tell exactly which words have been spoken at any point. This is especially useful for handling interruptions: when the user starts talking over the output, you can map the playback position back to the last word that was actually heard.
 
+<Warning>Timestamps are emitted only when `lang` is `en`/`eng` or `es`/`spa`, or when `lang` is omitted. Requests in any other language receive `chunk` and `done` events with no `timestamps` event and no error (this includes fr and de). Do not block playback while waiting for a timestamps event.</Warning>
+
 ```typescript
 type TimestampsEvent = {
   type: "timestamps",
@@ -171,8 +173,8 @@ type ErrorEvent = {
 </ParamField>
 
 <ParamField body="inlineSpeedAlpha" type="string">
-  Comma-separated list of speed values applied to words in square brackets. Values > 1.0 speed up speech, < 1.0 slow it down.
-  Example: "This is [slow] and [fast]", use "0.5, 3" to make "slow" slower and "fast" faster.
+  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
+  Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
 </ParamField>
 
 <ParamField body="speedAlpha" type="float" default="1.0">

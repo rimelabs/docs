@@ -87,6 +87,8 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 
 ## Mist legacy
 
-**Mist**, released April 2023, is a legacy model in the Mist family. Use `modelId: mistv2` or `modelId: mist` to synthesize with these older deployments. As of February 2025, requests that omit `modelId` default to `mist`.
+**Mist**, released April 2023, is a legacy model in the Mist family. Use `modelId: mistv2` or `modelId: mist` to synthesize with these older deployments.
+
+<Warning>Requests that omit `modelId`, or send a value the API does not recognize, are served by **Mist v3**. Set `modelId` explicitly on every request; Coda is never served by default.</Warning>
 
 **Model v1 was released in April 2022 and has been deprecated.**

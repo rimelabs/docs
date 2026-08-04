@@ -110,6 +110,8 @@ when the connection was established. If you provided any context id when sending
 
 Word-level timestamps are emitted alongside the audio chunks so the client can tell exactly which words have been spoken at any point. This is especially useful for handling interruptions: when the user starts talking over the output, you can map the playback position back to the last word that was actually heard.
 
+<Warning>Timestamps are emitted only when `lang` is `en`/`eng` or `es`/`spa`, or when `lang` is omitted. Requests in any other language receive `chunk` and `done` events with no `timestamps` event and no error (this includes fr, de, ja, pt, ar, and hi). Do not block playback while waiting for a timestamps event.</Warning>
+
 ```typescript
 type TimestampsEvent = {
   type: "timestamps",

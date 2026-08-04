@@ -8,6 +8,13 @@ icon: list
 
 <Tip>Subscribe to the [RSS feed](https://docs.rime.ai/docs/changelog/rss.xml) to get notified of new releases.</Tip>
 
+<Update label="2026-08-04">
+* The [language matrix](/docs/voices#languages) now lists support per model.
+  * Coda serves English, Arabic, French, German, Hindi, Japanese, Portuguese, and Spanish.
+  * Mist v3 serves English, French, German, and Spanish.
+  * The `lang` parameter tables in the [Coda API reference](/api-reference/coda/http) now include Arabic and Hindi.
+</Update>
+
 <Update label="2026-07-29">
 * **Arcana will be sunset on August 15, 2026.**
   * On August 15, cloud Arcana traffic will route to [Coda](/docs/models#coda). Migrate by changing `modelId: arcana` to `modelId: coda`; the API contract is unchanged. Sinhala remains available on Arcana.

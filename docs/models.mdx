@@ -30,14 +30,14 @@ All production models are available through the cloud API and on-premises, and a
 | Attribute | Coda | Arcana | Mist |
 | :---- | :----: | :----: | :----: |
 | Number of voices | 184 | 94 | 94 |
-| Multilingual | ✅ | ✅ | ❌ |
+| Multilingual | ✅ | ✅ | ✅ |
 | [Text normalization](/docs/text-normalization) | ✅ | ✅ | ✅ |
 | [`spell()` function](/docs/spell) | ✅ | ✅ | ✅ |
 | [Speed adjustment](/docs/speed) | ✅ | ✅ | ✅ |
 | [Pronunciation control](/platform/pronunciation-control) | ❌ | ❌ | ✅ |
 | [Custom pauses](/docs/custom-pauses) | ❌ | ❌ | ✅ |
 
-The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control and custom pauses.
+The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control and custom pauses. Mist v3 supports English, French, German, and Spanish; Mist v2 supports English and Spanish. See the [language matrix](/docs/voices#languages) for coverage per model.
 
 ## Coda
 
@@ -46,7 +46,7 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 - Received the highest voice-quality scores in Rime's human evaluations for naturalness, prosody, and artifact-free output
 - **Sub-100ms model latency on the GPU engine** when self-hosted or on-prem
   - Cloud API users typically add 25 to 50ms of network round-trip time from most of the continental US when routed to the closest [regional endpoint](/docs/regional-endpoints)
-- One voice lineup across English, Spanish, French, Portuguese, German, and Japanese
+- One voice lineup across English, Arabic, French, German, Hindi, Japanese, Portuguese, and Spanish
 - Word-level timestamps for text-audio alignment and interruption handling
 - Supports [`spell()`](/docs/spell) for spelling sequences letter by letter or number by number
 - Available with `modelId: coda`
@@ -68,6 +68,7 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 **Mist v3**, released March 2026, is the low-latency successor to Mist v2 and the preferred Mist model for new work.
 
 - Typical time to first byte is well below 100ms
+- Supports English, French, German, and Spanish
 - Supports inline [pronunciation control](/platform/pronunciation-control) and [custom pauses](/docs/custom-pauses)
 - Includes the most popular Mist speakers from the [voice catalog](/api-reference/data/voices)
 - [`speedAlpha`](/docs/speed) values above 1.0 produce faster speech, the modern direction

@@ -4,7 +4,7 @@ description: "Install the Rime CLI and synthesize your first audio clip from the
 icon: terminal
 ---
 
-Go from zero to using Rime's TTS API in 60 seconds using the Rime CLI.
+Start using Rime's TTS API in 60 seconds with the Rime CLI.
 
 ## Prerequisites
 
@@ -12,8 +12,6 @@ Go from zero to using Rime's TTS API in 60 seconds using the Rime CLI.
 - **macOS or Linux** (the CLI runs on both)
 
 ## Step 1: Install the CLI
-
-Pick your preferred installation method.
 
 ```bash Shell script
 curl -fsSL https://rime.ai/install-cli.sh | sh
@@ -37,7 +35,7 @@ rime version 0.x.x
 rime login
 ```
 
-This opens your browser to the Rime dashboard. Authenticate there, and the CLI saves your API key to `~/.rime/rime.toml` automatically.
+`rime login` opens your browser to the Rime dashboard. Authenticate there, and the CLI saves your API key to `~/.rime/rime.toml`.
 
 ![Demo of the `rime login` command](/images/cli/login-demo.gif)
 
@@ -52,7 +50,7 @@ rime hello
 
 ## Synthesize your own text
 
-Now that the CLI is set up, generate speech from any text:
+Generate speech from any text:
 
 ```bash
 rime tts "Hello from Rime." -s celeste -m coda
@@ -76,7 +74,7 @@ rime play welcome.wav
 
 ## Try different voices and models
 
-Rime offers 94+ voices. Swap the `--speaker` flag to change the voice:
+Rime has 94+ voices. Swap the `--speaker` flag to change the voice:
 
 ```bash
 rime tts "The quick brown fox." -s orion -m coda
@@ -89,7 +87,7 @@ rime tts "The quick brown fox." -s peak -m mistv2
 
 ## Generate a curl command
 
-Need to integrate with the API directly? Generate a ready-to-use curl command:
+To call the API directly, generate a curl command:
 
 ```bash
 rime curl "Hello from Rime" -s astra -m coda

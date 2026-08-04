@@ -9,11 +9,11 @@ import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
 
 <ApiAuthBearer />
 
-## Fixed Headers
+## Fixed headers
 
 <ParamField header="Accept" type="text/event-stream" required></ParamField>
 
-## Variable Parameters
+## Variable parameters
 
 <ParamField body="speaker" type="string" required>
   Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
@@ -64,7 +64,7 @@ import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
   **mist/mistv2 only.** Skips text normalization of the input text prior to synthesizing audio. This will reduce latency at the cost of some possible mispronunciation of digits and abbreviations.
 </ParamField>
 
-## Example Output
+## Example output
 
 ```
 event: chunk

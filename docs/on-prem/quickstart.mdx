@@ -409,6 +409,7 @@ Sample response file: [`result.pcm`](https://drive.google.com/file/d/1pwkGW9jCe1
 The API service serves the JSON WebSocket endpoint for `coda`, `arcana`, and `mist` models on port `8003`. For example, `ws://localhost:8003`, which is equivalent to our [cloud JSON WebSocket API](/docs/websockets).
 
 <Warning>**Spanish is not accepted on the on-prem JSON WebSocket ports.** Sending `lang=spa` to port 8003 (or 8001) returns HTTP 400, for every model, including Coda and Arcana deployments that serve Spanish voices. This restriction does not exist on the cloud endpoint. For Spanish on-prem, use the binary WebSocket endpoint or the HTTP endpoint, which lose word timestamps and context IDs.</Warning>
+
 See the [Coda JSON WebSocket docs](/api-reference/coda/websockets-json), [Arcana JSON WebSocket docs](/api-reference/arcana/websockets-json), and [Mist JSON WebSocket docs](/api-reference/mistv2/websockets-json) depending
 on which model backend you have configured.
 

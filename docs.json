@@ -167,7 +167,6 @@
             "icon": "server",
             "pages": [
               "docs/on-prem/quickstart",
-              "docs/on-prem/helmcharts",
               "docs/on-prem/metrics",
               "docs/on-prem/load-balancing",
               "docs/on-prem/performance",
@@ -516,7 +515,7 @@
     },
     {
       "source": "/api-reference/on-prem-helmcharts",
-      "destination": "/docs/on-prem/helmcharts"
+      "destination": "/docs/on-prem/quickstart"
     },
     {
       "source": "/api-reference/abbreviations",
@@ -594,7 +593,7 @@
     },
     {
       "source": "/api-reference/on-prem/helmcharts",
-      "destination": "/docs/on-prem/helmcharts"
+      "destination": "/docs/on-prem/quickstart"
     },
     {
       "source": "/api-reference/on-prem/load-balancing",
@@ -3517,6 +3516,10 @@
       "source": "/api-reference/data/voices",
       "destination": "/api-reference/data/voices-v2",
       "permanent": false
+    },
+    {
+      "source": "/docs/on-prem/helmcharts",
+      "destination": "/docs/on-prem/quickstart"
     }
   ]
 }

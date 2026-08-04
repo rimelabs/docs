@@ -50,7 +50,9 @@ Language support varies by model. As of August 2026, Rime's current models suppo
 | Portuguese | `por` / `pt` | ✅ | ❌ |
 | Spanish | `spa` / `es` | ✅ | ✅ |
 
-Deprecated models keep their existing coverage until retirement. Mist v2 supports English, French, German, and Spanish. Arcana serves its legacy lineup (English, Arabic, French, German, Hebrew, Hindi, Japanese, Portuguese, and Spanish) until the August 15, 2026 sunset; after that date, Sinhala remains available on Arcana and every other Arcana language is served by [Coda](/docs/models#coda).
+Deprecated models keep their existing coverage until retirement. Mist v2 supports English, French, German, and Spanish. Arcana serves its legacy lineup (English, Arabic, French, German, Hebrew, Hindi, Japanese, Portuguese, and Spanish) until the August 15, 2026 sunset.
+
+<Warning>**Hebrew and Sinhala have no Coda equivalent.** [Coda](/docs/models#coda) does not serve Hebrew, so Hebrew and Sinhala both remain on Arcana after August 15, 2026. Every other Arcana language is served by Coda. If you use Arcana Hebrew (`aviva`, `ori`), contact [support@rime.ai](mailto:support@rime.ai) before migrating.</Warning>
 
 ## Coda voices
 
@@ -61,16 +63,15 @@ Coda is Rime's flagship model. Its featured voices in the [Rime dashboard](https
 | Speaker | Gender | Age | Description |
 | :--- | :--- | :--- | :--- |
 | `lyra` | Female | 18–30 | A warm young American voice; bright and lively. |
-| `clementine` | Female | 30–50 | A warm, lively middle-aged American voice; both polished and energetic. |
+| `clementine` | Female | 18–30 | A warm, lively twenty-something American voice; both polished and energetic. |
 | `masonry` | Male | 30–50 | A confident, low Southern voice; authoritative without being loud. |
-| `walnut` | Male | 18–30 | A fast, confident young Southern voice; authoritative and steady. |
 
 ### Formal
 
 | Speaker | Gender | Age | Description |
 | :--- | :--- | :--- | :--- |
 | `lintel` | Female | 18–30 | A warm young American voice; both polished and lively. |
-| `eyre` | Female | 18–30 | A warm, friendly American voice; calm and unhurried. |
+| `eyre` | Female | 30–50 | A warm, friendly American voice; calm and easy to listen to. |
 | `bancroft` | Male | 60+ | A composed American voice; strong on professional and formal contexts. |
 | `marlu` | Male | 30–50 | An older Australian voice; low, mature, unhurried. |
 
@@ -91,6 +92,8 @@ Coda is Rime's flagship model. Its featured voices in the [Rime dashboard](https
 | `vespera` | Female | 18–30 | A friendly, lively young Californian voice; bright and adaptable. |
 | `parapet` | Male | 30–50 | A fast, lively Southern voice; energetic and grounded. |
 | `cupola` | Male | 30–50 | A confident, energetic American voice; professional with warmth. |
+
+`lawton` (Male, 60+) is a sixteenth flagship Coda voice; it carries no style assignment in the catalog, so it does not appear in the tables above.
 
 All voices above are confirmed to work with `modelId: coda`. The [voice-details endpoint](/api-reference/data/voice-details) contains the complete catalog, including non-English voices.
 

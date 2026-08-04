@@ -4,7 +4,7 @@ description: "Generate ready-to-run Pipecat or LiveKit voice-agent code wired to
 icon: "code"
 ---
 
-Generate a ready-to-run code snippet for wiring Rime TTS into a voice-agent framework ([Pipecat](/docs/pipecat) or [LiveKit](/docs/livekit)). Returns install commands, working code, and `.env` notes. Runs entirely on the server; no network call, no credits consumed.
+Generate a ready-to-run code snippet for wiring Rime TTS into a voice-agent framework ([Pipecat](/docs/pipecat) or [LiveKit](/docs/livekit)). Returns install commands, working code, and `.env` notes. The tool runs entirely on the server, so it makes no network call and consumes no credits.
 
 **API key:** Not required.
 
@@ -26,7 +26,7 @@ Ask your assistant:
 Generate LiveKit starter code for a voice agent using the coda model and the astra voice.
 ```
 
-The assistant emits a complete, runnable agent, or use the [`build_voice_agent`](/mcp-reference/prompts) starter prompt to have it pick the voice with you first.
+The assistant emits a complete, runnable agent. To pick the voice with the assistant first, use the [`build_voice_agent`](/mcp-reference/prompts) starter prompt.
 
 ## Related
 

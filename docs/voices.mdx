@@ -101,17 +101,17 @@ All voices above are confirmed to work with `modelId: coda`. The [voice-details 
 
 <Tip>Choose Coda for new projects and existing Arcana traffic. It scores higher in Rime's human evaluations for naturalness, prosody, and artifact-free output. See [Start with Coda](/docs/introduction#start-with-coda).</Tip>
 
-Arcana v3 is Rime's previous flagship: a multilingual model with 94 voices spanning age groups, regional accents, cultural backgrounds, and energy profiles.
+Arcana v3 is Rime's previous flagship: a multilingual model with 266 voices spanning age groups, regional accents, cultural backgrounds, and energy profiles.
 
 See the [full voice list](/api-reference/data/voices) and [voice details](/api-reference/data/voice-details) for available Arcana speakers.
 
-### The 94 Arcana voices
+### Arcana flagship voices
 
-Arcana v3 includes 94 voices across English (US regional, international) plus the other [supported Arcana languages](#languages). See [`/data/voices/voice_details.json`](/api-reference/data/voice-details) for the full catalog with demographics.
+64 of Arcana's 266 voices are marked `flagship` in the catalog, across English (US regional, international) plus the other [supported Arcana languages](#languages). See [`/data/voices/voice_details.json`](/api-reference/data/voice-details) for the full catalog with demographics; filter on `"flagship": true`.
 
 ## Mist v3 voices
 
-Mist v3 supports the same popular speaker lineup as Mist v2 with significantly lower TTFA.
+Mist v3 carries 78 voices with significantly lower TTFA than Mist v2. Most are drawn from the Mist v2 lineup, but the lineups are not identical: 71 speakers are shared, 67 Mist v2 speakers are not available on Mist v3, and 7 are Mist v3 only. Confirm a speaker before switching `modelId`.
 
 See the [full voice list](/api-reference/data/voices) for available Mist v3 speakers.
 

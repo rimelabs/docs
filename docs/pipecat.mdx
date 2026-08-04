@@ -3,7 +3,7 @@ title: Pipecat
 description: "Build a real-time voice agent with Pipecat and Rime TTS: a full Python walkthrough from install to a working browser-based agent."
 ---
 
-This guide demonstrates how to build a real-time voice agent using [Pipecat](https://github.com/pipecat-ai/pipecat), the open-source voice-agent framework created by [Daily](https://www.daily.co/). Rime provides natural-sounding speech synthesis through Pipecat's built-in Rime TTS service.
+Build a real-time voice agent with [Pipecat](https://github.com/pipecat-ai/pipecat), the open-source voice-agent framework created by [Daily](https://www.daily.co/). Rime handles speech synthesis through Pipecat's built-in Rime TTS service.
 
 You can mix and match different services for each component of your Pipecat pipeline. This tutorial uses:
 - `silero` for voice activity detection (VAD)
@@ -21,9 +21,9 @@ The result is a working voice agent that runs locally and opens in your browser.
 The guide uses the following Pipecat terminology:
 - A **pipeline** is a sequence of frame processors. Audio frames flow in, are transcribed, processed by the LLM, and synthesized into speech, then flow back out.
 - A **transport** handles real-time audio input and output (I/O). Pipecat supports multiple transports, including WebRTC (browser), WebSocket, and local audio devices.
-- **Frame processors** are the building blocks. Each service (STT, LLM, and TTS, respectively) is a processor that transforms frames as they flow through the pipeline.
+- **Frame processors** transform frames as they flow through the pipeline. Each service (STT, LLM, TTS) is a processor.
 
-If you'd like to experiment directly with Rime's TTS API before building a full voice agent, check out: [TTS in five minutes](/docs/quickstart-five-minute).
+To try Rime's TTS API before building a full voice agent, see [TTS in five minutes](/docs/quickstart-five-minute).
 
 ## Step 1: Prerequisites
 
@@ -117,7 +117,7 @@ uv sync
 
 ## Step 3: Create the agent
 
-Create an `agent.py` file to contain all the code that gets your agent talking. If you're in a rush and just want to run it, skip to [Step 3.5: Full agent code](#3-5-full-agent-code). Otherwise, continue reading to code the agent step-by-step.
+Create an `agent.py` file for the agent code. To skip the explanation and paste the finished file, go to [Step 3.5: Full agent code](#3-5-full-agent-code).
 
 ### 3.1 Load environment variables and configure imports
 
@@ -168,7 +168,7 @@ Keep your responses short and conversational - no more than 2-3 sentences.
 Be friendly and natural."""
 ```
 
-This system prompt defines your agent's personality. It can be as simple or complex as you like. Later in the guide, you'll see an example of a detailed system prompt that fully customizes the agent's behavior.
+This system prompt defines your agent's personality. It can be as simple or complex as you like. [Step 5.2](#5-2-fine-tune-agent-personalities) has a longer example.
 
 ### 3.3 Code the conversation pipeline
 
@@ -301,7 +301,7 @@ Pipecat's `main` helper from `pipecat.runner.run` automatically:
 - Serves a prebuilt browser client at `/client`
 - Sets up the WebRTC connection and passes the connection to your `bot` function
 
-When you run the agent, Pipecat starts a local HTTP server. Open the browser client to connect via WebRTC. The server runs locally, but the agent makes API calls to OpenAI and Rime.
+When you run the agent, Pipecat starts a local HTTP server. Open the browser client to connect over WebRTC. The agent still calls the OpenAI and Rime APIs over the network.
 
 ### 3.5 Full agent code
 
@@ -406,7 +406,7 @@ if __name__ == "__main__":
 
 ## Step 4: Test your agent
 
-The full pipeline is now ready for you to test. You can run the agent from the terminal using `uv` and interact with it in your browser.
+Run the agent from the terminal with `uv`, then talk to it in your browser.
 
 ### 4.1 Start the agent
 
@@ -416,7 +416,7 @@ Run the following command to start your agent:
 uv run agent.py
 ```
 
-You'll see output indicating the server is starting.
+The terminal prints server startup output.
 
 ### 4.2 Connect to your agent
 
@@ -426,7 +426,7 @@ You can now talk to your agent using your microphone.
 
 ## Step 5: Customize your agent
 
-Now that your agent is running, you can experiment with different voices and personalities.
+Change the voice in the `tts` service, or move the system prompt into its own file.
 
 ### 5.1 Change the voice
 
@@ -442,7 +442,7 @@ tts = RimeTTSService(
 )
 ```
 
-Rime offers many voices with different personalities. See the full list on the [Voices](/docs/voices) page.
+See the [Voices](/docs/voices) page for the full list of Rime voices.
 
 ### 5.2 Fine-tune agent personalities
 
@@ -501,18 +501,16 @@ Keeping the system prompt in a separate file lets you change the character witho
 
 ## Swap agent components
 
-Pipecat components can be replaced independently:
-- Replacing OpenAI with another STT provider, such as Deepgram or AssemblyAI
-- Using a different LLM, such as Anthropic, Gemini, or a local model
-- Switching transports to use WebSocket for server-to-server or [Daily's hosted rooms](/docs/daily) for production deployments
+Each Pipecat component can be swapped independently:
+- Replace OpenAI with another STT provider such as Deepgram or AssemblyAI.
+- Use a different LLM such as Anthropic, Gemini, or a local model.
+- Switch transports to WebSocket for server-to-server, or to [Daily's hosted rooms](/docs/daily) for production deployments.
 
 The [Pipecat documentation](https://docs.pipecat.ai/getting-started/introduction) covers transports, deployment patterns, and advanced features.
 
 View Rime's [Pipecat demo agents](https://github.com/rimelabs/rime-pipecat-agents) for a ready-to-use multilingual agent example that switches languages dynamically.
 
 ## Troubleshooting
-
-Use these checks for common setup failures.
 
 ### No audio output and other TTS errors
 

@@ -2,11 +2,11 @@
 title: Metrics
 description: "Observability metrics exposed by Rime on-prem containers."
 ---
-Keeping track of system metrics is crucial for maintaining a stable Rime self-hosted deployment. These insights help guide decisions about scaling and performance. To support this, Rime services expose multiple endpoints that let you monitor system health.
+Rime services expose several endpoints for monitoring the health of a self-hosted deployment. Use them to inform scaling and performance decisions.
 
 ## API container
 
-A `/health` route is available on port 8000 to give you a quick snapshot of the overall status. You can check it with the following command:
+The API container serves a `/health` route on port 8000 that reports overall status:
 
 ```bash
 curl -X GET "http://localhost:8000/health"
@@ -21,7 +21,7 @@ A typical response looks like this:
   "modelReachable": true
 }
 ```
-This provides a simple health check mechanism to verify that both API and model services are up and responding.
+The response confirms that both the API and model services are up and responding.
 
 ## Arcana container
 
@@ -40,11 +40,11 @@ ok
 
 ### Metrics
 
-The model is capable of emitting OpenTelemetry metrics.
+The model can emit OpenTelemetry metrics.
 
 The internal vLLM process also exposes a Prometheus `/metrics` endpoint.
 
-Both can serve as sources of data for metrics collection, tuning, and debugging.
+You can use either as a data source for metrics collection, tuning, and debugging.
 
 #### OpenTelemetry metrics
 
@@ -70,7 +70,7 @@ OTEL_COLLECTOR_ENDPOINT="https://${OTELCOL_DOMAIN:?}:4317"
 
 The model does not set any resource attributes for these metrics. `OTEL_RESOURCE_ATTRIBUTES` may be used to define them.
 
-The model does not implement OpenTelemetry authentication. If authentication is desired, running an OpenTelemetry Collector sidecar to forward metrics is recommended.
+The model does not implement OpenTelemetry authentication. If you need authentication, run an OpenTelemetry Collector sidecar to forward the metrics.
 
 #### Prometheus metrics
 
@@ -80,9 +80,9 @@ By default, a random port is assigned to the vLLM server. To choose a fixed port
 
 #### OpenTelemetry Collector sidecar
 
-> If authentication, or other OpenTelemetry Collector extensions, are desired, be sure to utilize the `contrib` distribution that includes them.
+> If you need authentication or other OpenTelemetry Collector extensions, use the `contrib` distribution that includes them.
 
-An OpenTelemetry Collector may be optionally used to forward both the OpenTelemetry and Prometheus metrics. It can also be used to conveniently retrieve the OpenTelemetry metrics locally.
+You can run an OpenTelemetry Collector to forward both the OpenTelemetry and Prometheus metrics, or to retrieve the OpenTelemetry metrics locally.
 
 For example, Docker Compose can be used to run the model and an OpenTelemetry Collector ...
 
@@ -147,7 +147,7 @@ service:
 
 #### Histogram tuning
 
-Metrics that emit histogram data utilize pre-configured bucket boundaries. The Rime engine prescribes its own defaults for some metrics. These may also be configurable/tunable through the use of `HISTOGRAM_BUCKETS_*` environment variables.
+Metrics that emit histogram data use pre-configured bucket boundaries. The Rime engine prescribes its own defaults for some metrics. These may also be configurable/tunable through the use of `HISTOGRAM_BUCKETS_*` environment variables.
 
 To separate differently-tuned sets of data across individual metrics, a suffix may be attached to the original metric name using `HISTOGRAM_SUFFIX_*` environment variables.
 
@@ -201,8 +201,9 @@ curl -X GET "http://localhost:8080/metrics"
 ```
 
 This endpoint provides telemetry data, including:
-- **HTTP request counters:** Detailed breakdown of requests by endpoint, status code, and HTTP method
-- **Error tracking:** Counts of HTTP errors by type and status code
+
+- **HTTP request counters:** requests broken down by endpoint, status code, and HTTP method
+- **Error tracking:** counts of HTTP errors by type and status code
 
 Example metrics include:
 ```json
@@ -216,4 +217,4 @@ http_requests_total{endpoint="/invocations",http_status="500",method="POST"} 38.
 # TYPE http_errors_total counter
 http_errors_total{endpoint="/invocations",error_message="cannot access local variable '_var_var_6' where it is not associated with a value",http_status="500",method="POST"} 38.0
 ```
-These metrics can be integrated with Prometheus monitoring systems to create dashboards and alerts for your Rime deployment.
+Scrape these metrics with Prometheus to build dashboards and alerts for your deployment.

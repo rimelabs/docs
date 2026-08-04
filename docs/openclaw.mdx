@@ -25,7 +25,7 @@ To follow this guide, you need:
 
 ## Step 1: Create a Telegram bot and connect it to OpenClaw
 
-This guide uses Telegram as the primary interface with OpenClaw, but you could easily adapt it to use your preferred messaging service.
+This guide uses Telegram as the interface to OpenClaw. You can adapt it to another messaging service.
 
 First, create a new bot using Telegram's **BotFather**:
 
@@ -75,7 +75,7 @@ RIME_API_KEY=...
 
 ## Step 3: Disable OpenClaw's built-in TTS
 
-OpenClaw has a built-in TTS system that the assistant uses by default. We need to disable the built-in TTS so that OpenClaw instead uses the new Rime skill we are adding.
+OpenClaw has a built-in TTS system that the assistant uses by default. Disable it so OpenClaw uses the Rime skill you add in Step 4 instead.
 
 Update your `openclaw.json` file as follows:
 
@@ -95,7 +95,7 @@ Update your `openclaw.json` file as follows:
 }
 ```
 
-This code:
+This configuration:
 
 1. **Turns off auto-TTS** so the built-in pipeline doesn't generate audio automatically
 2. **Disables Edge TTS** so it can't be used as a fallback
@@ -135,7 +135,7 @@ All three arguments share the same synthesis and encoding pipeline.
 
 #### Chunking
 
-In verbatim and summary mode, `rime.py` uses **chunking** to break long text into sentence-aligned chunks of roughly 400 characters each. This ensures that no single API call is too large.
+In verbatim and summary mode, `rime.py` breaks long text into sentence-aligned chunks of roughly 400 characters so that no single API call is too large.
 
 ```python
 def chunk_text(text: str, size: int = CHUNK_SIZE) -> list:
@@ -161,7 +161,7 @@ def chunk_text(text: str, size: int = CHUNK_SIZE) -> list:
 
 #### Synthesis
 
-The script then sends the chunks to the Rime API, which **synthesizes** them and returns raw audio bytes.
+The script then sends the chunks to the Rime API, which synthesizes them and returns raw audio bytes.
 
 ```python
 def synthesize(text, voice, speed, lang, api_key, model="arcana"):
@@ -188,7 +188,7 @@ def synthesize(text, voice, speed, lang, api_key, model="arcana"):
 
 #### Stitching
 
-The script concatenates the bytes from each chunk and generates silences between them, **stitching** them all into a single `bytearray`.
+The script concatenates the bytes from each chunk into a single `bytearray` and generates silence between the chunks.
 
 You can specify a voice for each segment in podcast mode:
 
@@ -239,7 +239,7 @@ Enable the skill in `~/.openclaw/openclaw.json`:
 
 The `~/.openclaw/workspace/SOUL.md` file configures OpenClaw's agent personality. The LLM reads the file at the start of every session.
 
-Add the following **Document Reading** section below to your `SOUL.md` file. Without it, the bot skips the `rime-reader` skill and generates audio using whichever TTS model it finds first. Since we've disabled the default TTS model, it would fail to generate any audio and fall back to replying in text.
+Add the **Document Reading** section below to your `SOUL.md` file. Without it, the bot skips the `rime-reader` skill and generates audio using whichever TTS model it finds first. Since you disabled the default TTS model in Step 3, it would fail to generate any audio and fall back to replying in text.
 
 ```markdown
 ## Document Reading
@@ -282,33 +282,25 @@ path.
 
 ## Step 6: Test the flow
 
-Restart the gateway, so that you can test the document reading flow:
+Restart the gateway before testing the document reading flow:
 
 ```bash
 openclaw gateway restart
 ```
 
-In Telegram, start a fresh session by sending `/new` to your bot.
-
-Then send a document or paste text in the chat and ask the bot to read it.
-
-The bot should ask you to choose from the three delivery modes: verbatim, summary, or podcast.
-
-Choose the verbatim mode.
-
-Next, it should prompt you to pick a voice.
-
-Once you've selected a voice, you should receive a voice note of your text.
+1. In Telegram, start a fresh session by sending `/new` to your bot.
+2. Send a document or paste text in the chat and ask the bot to read it.
+3. The bot asks you to choose a delivery mode: verbatim, summary, or podcast. Choose verbatim.
+4. The bot prompts you to pick a voice.
+5. After you pick a voice, the bot returns a voice note of your text.
 
 ## Tuning
 
-The bot's behavior is driven by `SOUL.md`, which means you can reshape it. Just edit the file or tell the bot, directly in your Telegram chat, to update it for you.
-
-Consider how you can tweak various aspects of your OpenClaw assistant:
+`SOUL.md` drives the bot's behavior. Edit the file directly, or tell the bot in your Telegram chat to update it for you.
 
 ### Voice
 
-You can select a default voice for your OpenClaw assistant by editing `SOUL.md` or sending a Telegram message telling the bot to, _**"Use Transom next time."**_
+Set a default voice for your assistant by editing `SOUL.md`, or by sending the bot a Telegram message: "Use Transom next time."
 
 You can use any of the available Arcana voices: `atrium`, `lyra`, `transom`, `parapet`, `fern`, `thalassa`, `truss`, `sirius`, `eliphas`, `lintel`, or one of the many others listed on Rime's [Voices](./voices.mdx) page.
 
@@ -322,7 +314,7 @@ one host is deadpan and skeptical, the other is wildly enthusiastic. Keep it
 punchy: no segment longer than two sentences.
 ```
 
-Alternatively, skip editing `SOUL.md` entirely and just tell the bot to, _**"Make the podcast hosts argue like an old married couple."**_ The LLM will adapt the script on the fly.
+Alternatively, skip editing `SOUL.md` entirely and tell the bot: "Make the podcast hosts argue like an old married couple." The LLM will adapt the script on the fly.
 
 ### Skip the prompts
 

@@ -2,7 +2,7 @@
 title: Prometheus integration
 description: "Scrape Rime on-prem metrics with Prometheus."
 ---
-Prometheus is an adaptable system for tracking and alerting, commonly used to scrape and review numerous operating metrics. This document details how to incorporate Prometheus into a privately hosted setup for Rime.
+Prometheus is a monitoring and alerting system commonly used to scrape and review operational metrics.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ scrape_configs:
 
 Replace `instance_ip` with the relevant hostname or IP address, then save the file.
 
-### Step 2: Use the following command to pull and run Prometheus in a container
+### Step 2: Run Prometheus in a container
 
 ```shell
 docker run -d \
@@ -41,9 +41,9 @@ docker run -d \
 ```
 ### Step 3: Validate the setup
 
-Access the Prometheus UI (commonly at http://localhost:9090), navigate to **Status → Targets**, and look for the model-rime-tts job. Its status should be UP, confirming Prometheus is successfully collecting metrics.
+Access the Prometheus UI (commonly at http://localhost:9090), navigate to **Status → Targets**, and look for the model-rime-tts job. Its status should be UP. That confirms Prometheus is collecting metrics.
 
 ## Exploring metrics
 
-With Prometheus integrated, you can retrieve metrics through its web interface or API. Many users combine Prometheus with platforms like Grafana to build dashboards and set up alerts.
+Query the collected metrics from the Prometheus web interface or its API. Grafana and similar dashboarding tools can read from Prometheus to build dashboards and alerts.
 

@@ -3,12 +3,12 @@ title: Load balancing
 description: "Load-balance Rime on-prem deployments using the ORCA cost-header signal."
 ---
 
-To ensure real-time streaming, it is often necessary to limit the number of
-inference requests that a model is processing concurrently.
+Real-time streaming often requires limiting how many inference requests a model
+processes concurrently.
 
-To support this, Rime's Arcana model images return a [Open Request Cost
-Aggregation (ORCA) header](https://github.com/envoyproxy/envoy/issues/6614) to
-inform a load balancer based on the number of concurrent requests.
+Rime's Arcana model images return an [Open Request Cost
+Aggregation (ORCA) header](https://github.com/envoyproxy/envoy/issues/6614) that
+reports concurrent request load to your load balancer.
 
 <Note>The full set of ORCA headers is returned by Arcana model containers
 since the `20260115` release.</Note>

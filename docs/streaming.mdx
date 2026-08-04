@@ -6,7 +6,7 @@ icon: wave-sine
 
 ## tl;dr: All Rime models stream.
 
-Rime's TTS API streams audio as it is generated rather than waiting for the full utterance. Every Rime model (Coda, Arcana, and Mist) supports streaming over HTTP and WebSockets, with sub-200ms end-to-end latency standard via the cloud API. For real-time voice agents, streaming is the default mode of operation, not an add-on.
+Rime's TTS API streams audio as it is generated rather than waiting for the full utterance. Coda, Arcana, and Mist all stream over HTTP and WebSockets, with sub-200ms end-to-end latency standard via the cloud API. For real-time voice agents, streaming is the default mode of operation.
 
 ## Choosing a transport
 
@@ -74,7 +74,7 @@ Endpoint references: [Coda](/api-reference/coda/http) · [Arcana](/api-reference
 
 ## WebSocket streaming
 
-Rime's WebSocket API (`wss://users-ws.rime.ai/ws3`) holds a persistent connection: send text messages as your application produces them, and receive structured JSON events back; base64 audio chunks, word-level timestamps, and a `done` event per synthesis batch.
+Rime's WebSocket API (`wss://users-ws.rime.ai/ws3`) holds a persistent connection: send text messages as your application produces them and receive structured JSON events back, including base64 audio chunks, word-level timestamps, and a `done` event per synthesis batch.
 
 ```python Python
 import asyncio, base64, json, os
@@ -101,7 +101,7 @@ async def main():
 asyncio.run(main())
 ```
 
-The server emits four event types: `chunk` (base64 audio), `timestamps` (word-level timing), `done` (synthesis batch complete), and `error`. Text buffering and synthesis triggering are controlled by the `segment` parameter. See [Segmentation & behavior settings](/docs/websockets-segment).
+The server emits four event types: `chunk` (base64 audio), `timestamps` (word-level timing), `done` (synthesis batch complete), and `error`. The `segment` parameter controls text buffering and when synthesis starts. See [Segmentation & behavior settings](/docs/websockets-segment).
 
 <Card title="WebSocket API overview" icon="plug" href="/docs/websockets">
   Choosing between /ws3, /ws2, and /ws, the full event schema, context IDs, and interruption handling.
@@ -124,7 +124,7 @@ Telephony and voice-agent platform guides: [LiveKit](/docs/livekit) · [Vapi](/d
 
 ## Latency
 
-Streaming is the biggest lever on perceived responsiveness because listeners experience time to first audio, not total synthesis time. Rime's cloud API delivers sub-200ms end-to-end latency as standard. With `mistv3`, typical time to first byte is well below 100ms. Coda achieves sub-100ms model latency on the GPU engine when self-hosted or on-prem.
+Listeners experience time to first audio, not total synthesis time, so streaming has the largest effect on perceived responsiveness. Rime's cloud API delivers sub-200ms end-to-end latency as standard. With `mistv3`, typical time to first byte is well below 100ms. Coda achieves sub-100ms model latency on the GPU engine when self-hosted or on-prem.
 
 <Card title="Latency" icon="gauge-simple-max" href="/docs/latency">
   Measured benchmarks per model, what affects response time, and how to reduce it; regional endpoints, payload sizing, and text normalization.

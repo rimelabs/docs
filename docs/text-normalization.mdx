@@ -6,7 +6,7 @@ description: "Rime normalizes numbers, dates, currency, phone numbers, and measu
 When you send text to Rime's TTS models, a normalization layer runs first. It expands numbers, dates, currency, phone numbers, measurements, and other non-standard words into their spoken form before the model synthesizes audio.
 
 <Note>
-  **Rime handles text normalization automatically.** Most common formats, currency with symbols, dates with years, clock times, phone numbers, and standard measurements, expand correctly without any preprocessing. Just write naturally. If something sounds wrong, [debug it with `/textnorm`](#debugging-with-the-textnorm-endpoint) before adding a pre-processing layer to your application.
+  **Rime handles text normalization automatically.** Most common formats (currency with symbols, dates with years, clock times, phone numbers, and standard measurements) expand correctly without any preprocessing. Just write naturally. If something sounds wrong, [debug it with `/textnorm`](#debugging-with-the-textnorm-endpoint) before adding a pre-processing layer to your application.
 </Note>
 
 ## Handled at a glance
@@ -64,7 +64,7 @@ For flows that need precise pause durations (legal disclaimers, regulated read-b
 
 The fastest way to spot-check normalization without writing code is the [Generate page in the Rime web app](https://app.rime.ai/generate/): paste any input string and it shows you the normalized version Rime will synthesize from.
 
-For programmatic debugging, Rime also exposes a `/textnorm` endpoint that returns the normalized form of an input string, exactly what the TTS model receives before synthesis. It's the fastest way to separate normalization issues from synthesis issues in scripts and pipelines.
+For programmatic debugging, Rime also exposes a `/textnorm` endpoint that returns the normalized form of an input string, exactly what the TTS model receives before synthesis. In scripts and pipelines, use it to separate normalization issues from synthesis issues.
 
 ```bash
 curl -X POST https://optimize.rime.ai/textnorm \

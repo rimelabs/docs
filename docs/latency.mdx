@@ -11,7 +11,7 @@ import NetworkRttTable from "/snippets/network-rtt-table.mdx";
 
 Rime's cloud API delivers sub-200ms end-to-end latency under typical conditions. Coda reaches **sub-100ms model latency on the GPU engine** when self-hosted or on-prem, while Mist v3 has the lowest measured time to first audio.
 
-Via the cloud API, the total time you measure also includes network round-trip; typically 25–50ms from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints). [Contact us](mailto:support@rime.ai) to optimize further.
+Via the cloud API, the total time you measure also includes network round-trip: typically 25–50ms from most of the continental US when you pick the closest [regional endpoint](/docs/regional-endpoints). [Contact us](mailto:support@rime.ai) to optimize further.
 
 ## Real-time performance benchmarks
 
@@ -39,8 +39,6 @@ Via the cloud API, the total time you measure also includes network round-trip; 
 
 ## What affects latency
 
-End-to-end latency combines server processing, response size, and network distance.
-
 ### Factors that affect API response time
 
 1. **Server processing:** Model inference, text preprocessing, and audio postprocessing all contribute to the first response byte.
@@ -64,7 +62,7 @@ curl -X POST https://users.rime.ai/v1/rime-tts \
   -d '{"text": "I love the book that she gave me. And I was so happy that she gave it to me.", "speaker": "cove",  "modelId": "mistv3"}'
 ```
 
-To actually consume a streaming response in Python, iterate over the response body as it arrives instead of buffering the whole thing:
+To consume a streaming response in Python, iterate over the response body as it arrives instead of buffering the whole thing:
 
 ```python Python
 import requests

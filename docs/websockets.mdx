@@ -20,7 +20,7 @@ All WebSocket endpoints (`/ws`, `/ws2`, `/ws3`) use the same bearer token as the
 
 ## Choosing an endpoint
 
-Rime offers three WebSocket endpoints. Here's how they compare:
+Rime offers three WebSocket endpoints.
 
 | | `/ws3` | `/ws2` | `/ws` |
 |---|---|---|---|
@@ -133,13 +133,13 @@ In addition to sending text, your client can send structured operation messages 
 
 ### `flush`
 
-Forces the current text buffer to be synthesized immediately and the resulting audio to be sent.
+Synthesizes the current text buffer immediately and sends the resulting audio.
 
 ```json
 { "operation": "flush" }
 ```
 
-This is used explicitly when running in `segment=never` mode. See the [Segmentation guide](/docs/websockets-segment) for details.
+Use `flush` explicitly in `segment=never` mode. See the [Segmentation guide](/docs/websockets-segment) for details.
 
 ### `clear`
 

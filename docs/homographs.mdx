@@ -5,11 +5,11 @@ description: "Disambiguate same-spelling-different-pronunciation words on Mist v
 
 <Note>Homograph disambiguation is supported by **Mist v2** only.</Note>
 
-English's written form, like many languages', contains homographs. A homograph is a word that shares the same written form as a word but has one or both of: a different meaning, or a different pronunciation. 
+English's written form, like many languages', contains homographs. A homograph is a word that shares its written form with another word but differs in meaning, in pronunciation, or in both.
 
-For the purpose of the Rime text-to-speech (TTS) API, we are only concerned with the latter. For example, the words _sow_ (verb, to plant seed) and _sow_ (noun, a female pig) are spelled identically but pronounced differently. This poses a problem for any speech synthesis technology, but Rime leverages both contextual syntactic analysis and frequency information to generate likely predictions.
+For Rime's TTS API, only the pronunciation difference matters. For example, the words _sow_ (verb, to plant seed) and _sow_ (noun, a female pig) are spelled identically but pronounced differently. This poses a problem for any speech synthesis technology. Rime uses both contextual syntactic analysis and frequency information to predict which pronunciation is intended.
 
-In the unlikely event that Rime's predicted pronunciation is incorrect, we also provide a straightforward way of overriding these pronunciations:
+If Rime's predicted pronunciation is wrong, you can override it:
 
 
 ```python Homograph specification example
@@ -19,7 +19,7 @@ text = "I like fresh produce_nou."
 text = "They produce_vrb a wide array of home goods for decorations."
 ```
 
-A complete list of the homographs for which you can specify a disambiguated variant can be found in the table below.
+The table below lists every homograph for which you can specify a disambiguated variant.
 
 ## List of homographs
 

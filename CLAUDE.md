@@ -18,7 +18,11 @@ snippets/       # Reusable MDX snippets
 Write for a developer who needs to make a decision or complete a task.
 
 - Lead with the result, recommendation, constraint, or irreversible consequence. Put background and rationale afterward.
-- Never use an em dash (`U+2014`) in documentation. Rewrite the sentence or use a period, colon, comma, semicolon, or parentheses as grammar requires.
+- Never use an em dash (`U+2014`) in documentation. Rewrite the sentence or use a period, colon, comma, semicolon, or parentheses as grammar requires. An en dash (`U+2013`) is correct inside a numeric range (`18–30`, `5–25 ms`); spell out ranges in prose ("25 to 50ms"). Use straight quotes and apostrophes, never curly. Published changelog entries are exempt from retroactive style edits.
+- No sentence may sit between a heading and its first substantive claim unless it states a prerequisite, a constraint, a number, or a consequence. Delete anything that only restates the heading.
+- Name the actor in any sentence about credentials, ports, credits, or outbound network calls. "The API service serves the JSON WebSocket endpoint on port 8003," not "the endpoint will be served at port 8003."
+- Use "flagship" for models only, meaning the current best offering ("Coda, Rime's flagship model"). Call voices "featured voices" in prose, and name the catalog field literally as `"flagship": true` when that is what you mean. Never use "flagship" in a sentence stating a constraint: it reads as a restriction to the flagged subset, and Coda has 184 voices of which 16 are flagged.
+- `✅` and `❌` are fine as comparison-table notation. Keep their meaning consistent within a table; do not let one column mean "not applicable" while another means "not supported."
 - Use specific, confident language. Remove throat-clearing such as “This guide will,” “In today's world,” and “Whether you are.”
 - Prefer verifiable technical facts over promotional adjectives. Do not call a feature seamless, powerful, lifelike, enterprise-grade, or state-of-the-art without evidence that belongs on the page.
 - State prerequisites, credential boundaries, unsupported configurations, and security consequences before the steps they affect.

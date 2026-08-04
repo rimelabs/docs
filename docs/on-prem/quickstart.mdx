@@ -15,7 +15,7 @@ Run Rime on your own NVIDIA host as a paired API service and TTS model service. 
 
 The API service handles HTTP and WebSocket requests and verifies the license. The TTS service performs model inference.
 
-On-prem keeps all audio and text within your own network; nothing is sent to Rime's cloud. This supports data-residency requirements and compliance with data privacy and protection regulations.
+On-prem keeps all audio and text within your own network; nothing is sent to Rime's cloud. That supports data-residency requirements and compliance with data privacy and protection regulations.
 
 ## Published latency figures
 
@@ -83,7 +83,7 @@ The code snippets below assume that you can run `docker` as the current login.
 
 Follow https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html to install the NVIDIA Container Toolkit.
 
-Note that you should follow both the **Installation** and the **Configuration** sections.
+Follow both the **Installation** and the **Configuration** sections.
 
 #### Verification
 
@@ -113,7 +113,7 @@ Create a Rime API key in the [dashboard](https://app.rime.ai). Rime supplies the
 
 # Deployment
 
-The following sections select the model and API images, configure the service pair, and start it with Docker Compose.
+Select the model and API images, configure the service pair, then start it with Docker Compose.
 
 ## Artifact Registry login
 
@@ -169,9 +169,7 @@ The latest image version is:
 
 ## Docker Compose configuration
 
-A simple way of deploying on a machine is to use Docker Compose.
-
-Create a `compose.yml` file with your editor of choice to define the services and their configurations:
+Create a `compose.yml` file that defines the services and their configurations:
 
 ```yaml compose.yml
 version: '3.8'
@@ -286,7 +284,7 @@ services:
       - /run/secrets/rime_api_key:/secrets/rime_api_key:ro
 ```
 
-When neither is provided, the per-request `Authorization` header pathway remains active as normal.
+If you set neither, callers keep passing their API key in the per-request `Authorization` header.
 
 #### Alternate API key header (`API_KEY_HEADER`)
 
@@ -306,7 +304,7 @@ curl -H "x-my-platform-rime-api-key: <your-rime-api-key>" ...
 
 #### Platform API key (`PLATFORM_API_KEY`)
 
-On platforms that require authenticated inter-container requests, set `PLATFORM_API_KEY` so the API service can reach the model backend. It can also be mounted as a secret at `/secrets/platform_api_key`:
+On platforms that require authenticated inter-container requests, set `PLATFORM_API_KEY` so the API service can reach the model backend. You can also mount it as a secret at `/secrets/platform_api_key`:
 
 ```yaml compose.yml
 environment:
@@ -403,12 +401,12 @@ Sample response file: [`result.pcm`](https://drive.google.com/file/d/1pwkGW9jCe1
 ### WebSocket endpoints
 
 #### JSON websockets
-The JSON WebSocket endpoint compatible with `coda`, `arcana`, and `mist` models will be served at port `8003`. For example, `ws://localhost:8003`, which is equivalent to our [cloud JSON WebSocket API](/docs/websockets).
+The API service serves the JSON WebSocket endpoint for `coda`, `arcana`, and `mist` models on port `8003`. For example, `ws://localhost:8003`, which is equivalent to our [cloud JSON WebSocket API](/docs/websockets).
 See the [Coda JSON WebSocket docs](/api-reference/coda/websockets-json), [Arcana JSON WebSocket docs](/api-reference/arcana/websockets-json), and [Mist JSON WebSocket docs](/api-reference/mistv2/websockets-json) depending
 on which model backend you have configured.
 
 #### Non-JSON websockets
-The non-JSON WebSocket endpoint will be served at port `8002`. For example, `ws://localhost:8002`, which is equivalent to our [cloud WebSocket API](/docs/websockets).
+The API service serves the non-JSON WebSocket endpoint on port `8002`. For example, `ws://localhost:8002`, which is equivalent to our [cloud WebSocket API](/docs/websockets).
 
-#### Deprecated
-A **deprecated** WebSocket endpoint is served on port `8001`. It is **only** compatible with the Mist model family; use the [current WebSocket endpoints](/docs/websockets) for new integrations.
+#### Deprecated Mist endpoint (port 8001)
+The API service also serves a deprecated WebSocket endpoint on port `8001`. It is compatible only with the Mist model family. Use the [current WebSocket endpoints](/docs/websockets) for new integrations.

@@ -29,7 +29,7 @@ All production models are available through the cloud API and on-premises, and a
 
 | Attribute | Coda | Arcana | Mist |
 | :---- | :----: | :----: | :----: |
-| Number of voices | 184 | 94 | 94 |
+| Number of voices | 184 | 266 | 78 (v3), 138 (v2) |
 | Multilingual | ✅ | ✅ | ✅ |
 | [Text normalization](/docs/text-normalization) | ✅ | ✅ | ✅ |
 | [`spell()` function](/docs/spell) | ✅ | ✅ | ✅ |
@@ -57,7 +57,7 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 
 **Arcana**, released April 2025, is Rime's previous flagship model.
 
-- 94 voices spanning age groups, regional accents, cultural backgrounds, and speaking styles
+- 266 voices spanning age groups, regional accents, cultural backgrounds, and speaking styles, 64 of them flagship voices
 - Fine-grained control over prosody, pacing, and tone
 - Supports [`spell()`](/docs/spell) for spelling sequences letter by letter or number by number
 - Sinhala remains on Arcana after the sunset; all other Arcana languages migrate to Coda
@@ -70,7 +70,7 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 - Typical time to first byte is well below 100ms
 - Supports English, French, German, and Spanish
 - Supports inline [pronunciation control](/platform/pronunciation-control) and [custom pauses](/docs/custom-pauses)
-- Includes the most popular Mist speakers from the [voice catalog](/api-reference/data/voices)
+- 78 voices, drawn from the most popular Mist speakers plus flagship speakers ported from Arcana; see the [voice catalog](/api-reference/data/voices)
 - [`speedAlpha`](/docs/speed) values above 1.0 produce faster speech, the modern direction
 - Uses `modelId: mistv3`
 
@@ -83,7 +83,7 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 - Supports English, French, German, and Spanish
 - Inline pronunciation control and custom pauses, also available in Mist v3
 - Approximately 70ms on-prem latency in Rime's benchmark
-- 94 voices across accents, demographics, and speaking styles
+- 138 voices across accents, demographics, and speaking styles
 - Uses `modelId: mistv2`
 
 ## Mist legacy

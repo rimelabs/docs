@@ -86,6 +86,10 @@
             "group": "Voices & models",
             "pages": [
               "docs/voices",
+              "docs/voices-coda",
+              "docs/voices-arcana",
+              "docs/voices-mist-v3",
+              "docs/voices-mist-v2",
               "docs/models",
               "platform/voice-cloning",
               {

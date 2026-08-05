@@ -92,44 +92,52 @@ for model, path, title, label in MODELS:
         jump = " · ".join(f"[{LANGNAME.get(l,l)}](#{LANGNAME.get(l,l).lower()})" for l in order)
         out.append(f"**Jump to:** {jump}")
         out.append("")
-    for l in order:
-        recs_l = langs[l]
-        name = LANGNAME.get(l, l)
-        n_feat = sum(1 for r in recs_l if r.get("flagship"))
-        # A Featured column only earns its place where the flag discriminates.
-        # All-blank or all-checked columns are noise, so state the fact in prose
-        # instead and drop the column.
-        show_featured = 0 < n_feat < len(recs_l)
-        if show_featured:
-            recs_l = sorted(recs_l, key=lambda r: (not r.get("flagship"), r["speaker"].lower()))
-        else:
-            recs_l = sorted(recs_l, key=lambda r: r["speaker"].lower())
-        out.append(f"## {name}")
-        out.append("")
-        if show_featured:
-            intro = (f"{len(recs_l)} voices, {n_feat} of them featured. Featured voices come first, "
-                     f"then the rest alphabetically.")
-        elif n_feat:
-            intro = f"{len(recs_l)} voices, listed alphabetically. All of them are featured voices."
-        else:
-            intro = f"{len(recs_l)} voices, listed alphabetically."
-        out.append(f"{intro} Set `lang` to `{l}` for this language.")
-        out.append("")
-        head = [h for _, h in cols] + (["Featured"] if show_featured else []) + (["Description"] if show_desc else [])
+    def emit_table(recs_t):
+        """One table for a list of records. There is no Featured column: the
+        flag is expressed by which table a voice appears in, which keeps the
+        table narrow enough that Description stays on screen."""
+        head = [h for _, h in cols] + (["Description"] if show_desc else [])
         out.append("| " + " | ".join(head) + " |")
         out.append("|" + "|".join(["---"] * len(head)) + "|")
-        for r in recs_l:
+        for r in sorted(recs_t, key=lambda x: x["speaker"].lower()):
             cells = []
             for f, _ in cols:
                 v = esc(r.get(f))
                 cells.append(f"`{v}`" if f == "speaker" else v)
-            if show_featured: cells.append("✅" if r.get("flagship") else "")
             if show_desc:
                 key = (r["speaker"].lower(), model, (r.get("lang") or "").strip())
                 cells.append("Withheld pending a catalog correction."
                              if key in SUPPRESS_DESCRIPTION else esc(r.get("description")))
             out.append("| " + " | ".join(cells) + " |")
         out.append("")
+
+    for l in order:
+        recs_l = langs[l]
+        name = LANGNAME.get(l, l)
+        feat = [r for r in recs_l if r.get("flagship")]
+        rest = [r for r in recs_l if not r.get("flagship")]
+        out.append(f"## {name}")
+        out.append("")
+        if feat and rest:
+            out.append(f"{len(recs_l)} voices. The {len(feat)} featured voices are in the first table, "
+                       f"the remaining {len(rest)} in the second, each alphabetical. Set `lang` to "
+                       f"`{l}` for this language.")
+            out.append("")
+            out.append(f"**Featured {name} voices**")
+            out.append("")
+            emit_table(feat)
+            out.append(f"**All other {name} voices**")
+            out.append("")
+            emit_table(rest)
+        else:
+            if feat:
+                intro = (f"{len(recs_l)} voices, listed alphabetically. All of them are featured "
+                         f"voices.")
+            else:
+                intro = f"{len(recs_l)} voices, listed alphabetically."
+            out.append(f"{intro} Set `lang` to `{l}` for this language.")
+            out.append("")
+            emit_table(recs_l)
     p = OUTDIR / path
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text("\n".join(out) + "\n", encoding="utf-8")

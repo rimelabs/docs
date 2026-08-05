@@ -1,0 +1,111 @@
+---
+title: "Migrate from Arcana to Coda"
+description: "Arcana retires August 15, 2026. The request shape does not change; your voice, its language, and its sound do."
+icon: "arrow-right-arrow-left"
+---
+
+import CompareTwoVoices from "/snippets/compare-two-voices.mdx";
+
+Arcana retires August 15, 2026. Traffic sent with `modelId: arcana`, `arcanav2`, or `arcanav3` needs to move to [Coda](/docs/models#coda) before then.
+
+<Warning>**204 of Arcana's 266 voices have no Coda counterpart.** For most Arcana users this is a voice change, not a parameter change, so it needs listening and sign-off rather than a config edit. Start with [step 2](#step-2-check-every-voice-you-use) and budget time for choosing replacements.</Warning>
+
+<Note>Rime has not published the exact cutoff instant or its timezone, only the date. If you operate outside the Americas, or need to know what happens to a request already in flight at the boundary, contact [support@rime.ai](mailto:support@rime.ai) before scheduling a cutover on August 15 itself. Move earlier if you can.</Note>
+
+## The request does not change
+
+Coda and Arcana share the same endpoints, parameters, and transports. Nothing about the shape of your request needs to change:
+
+| | Arcana | Coda |
+| :--- | :--- | :--- |
+| HTTP | `POST https://users.rime.ai/v1/rime-tts` | identical |
+| WebSocket, JSON framing | `wss://users-ws.rime.ai/ws3` | identical |
+| WebSocket, raw audio | `wss://users-ws.rime.ai/ws` | identical |
+| Request parameters | `text`, `speaker`, `modelId`, `lang`, `samplingRate`, `timeScaleFactor` | identical |
+| Word timestamps | English and Spanish only | identical |
+| Text normalization, `spell()`, speed adjustment | ✅ | ✅ |
+| Pronunciation control, custom pauses | ❌ | ❌ |
+
+`speedAlpha` also behaves the same on both: above 1.0 is faster. Only Mist v2 inverts it, so that caveat does not apply here. See [Speed](/docs/speed).
+
+So the only edit to your request body is the value of `modelId`, and possibly `speaker` and `lang`. Three things change, and all three are about the voice.
+
+## What changes
+
+**Your speaker may not exist.** Only 62 of Arcana's 266 voice names are also served by Coda. The other 204 are not available under any `modelId`, so keeping the name is not an option.
+
+**`lang` must match the voice you choose.** Every Coda voice serves exactly one language, and none crosses between them. Coda covers eight languages, but a Coda voice does not, so picking a language narrows which voices you can use. See [the language note on Voices](/docs/voices#languages).
+
+**Audio differs even where the name matches.** Coda and Arcana are trained separately, so a shared name is a starting point rather than a guarantee. Compare before you switch.
+
+## Step 1: find everywhere you set a model
+
+Three identifiers resolve to Arcana and all three are affected: `arcana`, `arcanav2`, and `arcanav3`. Search your code, configuration files, environment variables, and per-environment deploys for all three.
+
+Requests that omit `modelId` resolve to Mist v3 and are unaffected. This is a common false alarm, so confirm which of your call sites actually set the parameter before treating them as work.
+
+<Warning>**No response header names the model that served a request, and the API returns no request or correlation ID.** You cannot confirm from a response that a call stopped using Arcana. Coverage is established by inventory and configuration review across every environment, language, and transport you use, not by inspecting a reply. Record which environments you checked, because that record is the only evidence you will have.</Warning>
+
+## Step 2: check every voice you use
+
+Look up each Arcana speaker in [voice availability on Coda and Mist v3](/docs/voices-availability). Two outcomes:
+
+**The name is listed on Coda.** Keep it and go to [step 4](#step-4-hear-the-difference-before-you-switch). The name survives; the sound still changes.
+
+**The name is not listed.** That applies to 204 of 266 voices. Choose a replacement from the [Coda catalog](/docs/voices-coda) in the same language, matching on the attributes the catalog publishes for every voice: gender, age, and country. Then compare candidates on your own text.
+
+The catalog's `dialect`, `demographic`, `genre`, and `styles` fields are populated for roughly a third to a half of Coda voices, so they cannot be relied on to narrow a search. To hear candidates rather than read about them, use the [Rime dashboard](https://app.rime.ai) or ask an assistant connected to the [hosted MCP server](/docs/mcp) to synthesize a line with each.
+
+## Step 3: check your language has a destination
+
+Every Arcana language except Hebrew is served by Coda. Voice counts change, so a language that survives may still offer you fewer options:
+
+| Language | Arcana voices | Coda voices |
+| :--- | ---: | ---: |
+| English | 230 | 121 |
+| Spanish | 10 | 25 |
+| German | 6 | 7 |
+| Portuguese | 6 | 8 |
+| French | 5 | 5 |
+| Arabic | 4 | 6 |
+| Japanese | 3 | 10 |
+| Hindi | 3 | 2 |
+| Hebrew | 2 | none |
+
+English and Hindi shrink, so plan for a narrower shortlist there. No Hindi voice name carries over: Arcana serves `anaya`, `anil`, and `arya`, while Coda serves `nadi` and `taru`.
+
+<Warning>**Hebrew has no Coda destination.** Coda serves no Hebrew voices, so `aviva` and `ori` have nowhere to move under the current catalog. If you synthesize Hebrew, contact [support@rime.ai](mailto:support@rime.ai) now rather than at the deadline. Rime's documentation states that Hebrew and Sinhala remain on Arcana after the sunset while also stating that all cloud Arcana traffic routes to Coda. Those cannot both hold, and the mechanism has not been published, so do not plan a Hebrew or Sinhala cutover on the basis of either statement.</Warning>
+
+## Step 4: hear the difference before you switch
+
+<CompareTwoVoices />
+
+## Step 5: stage the cutover
+
+Move a slice of traffic rather than all of it. Put the `modelId` value behind a flag or an environment variable so it can be changed and reverted without a deploy, then raise the share of Coda traffic while watching whatever quality signal you already collect: call completion, transfer or escalation rate, replay complaints, or your own evaluation set.
+
+Do one environment at a time and keep the previous value revertible until the deadline. Because no response identifies the serving model, your flag state is the record of what is live.
+
+## Step 6: verify before the deadline
+
+Confirm, per environment:
+
+1. No call site sets `arcana`, `arcanav2`, or `arcanav3`, including configuration and environment variables.
+2. Every `speaker` you now send is listed on Coda for the `lang` you send with it.
+3. Each language you use was exercised at least once, since behavior and voice availability differ by language.
+4. Each transport you use was exercised, since HTTP and the two WebSocket endpoints are separate paths.
+
+One request does not establish coverage across languages and transports. Treat the matrix of language times transport as the unit of verification.
+
+## After August 15
+
+Rime has not published what a request naming a retired `modelId` returns after the cutoff. An unrecognized `modelId` currently resolves to Mist v3 silently rather than returning an error, so a missed call site may keep working while producing a different voice than you intended. That failure is quiet, which is why step 6 checks configuration rather than waiting for errors.
+
+If you are not finished, contact [support@rime.ai](mailto:support@rime.ai) before the date rather than after.
+
+## Related
+
+- [Voice availability on Coda and Mist v3](/docs/voices-availability): whether each voice you use survives, and what the retirements cost in each language.
+- [Coda voices](/docs/voices-coda): the full catalog to choose replacements from, grouped by language.
+- [Models](/docs/models#coda): what Coda supports, and the retirement status of every model.
+- [Speed](/docs/speed): `timeScaleFactor` is the parameter Rime recommends going forward for Coda.

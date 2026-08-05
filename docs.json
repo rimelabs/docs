@@ -96,6 +96,7 @@
                 ]
               },
               "docs/models",
+              "docs/migrate-arcana-to-coda",
               "platform/voice-cloning",
               {
                 "group": "Pronunciation",

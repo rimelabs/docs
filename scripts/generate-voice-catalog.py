@@ -32,11 +32,20 @@ for r in rows:
 # than published, because generating from the catalog would republish the error.
 # Remove an entry here once the catalog record is corrected.
 SUPPRESS_DESCRIPTION = {
-    ("alfhild", "coda",   "eng"),  # described as German, recorded as English/US
-    ("solana",  "coda",   "eng"),  # described as bilingual English/Portuguese, only an English record exists
-    ("yukiko",  "coda",   "eng"),  # described as Japanese, recorded as English/US
-    ("lucia",   "mistv2", "spa"),  # described as Brazilian Portuguese, recorded as Spanish
-    ("pola",    "arcana", "eng"),  # English record carries a Spanish description; the spa record is correct
+    # Records whose `description` names a language the record is not filed under,
+    # or claims the voice is bilingual when only one language record exists.
+    # Reported to the modeling team 2026-08-05. The description is withheld rather
+    # than published, because generating from the catalog would republish the error.
+    # Remove an entry once the catalog record is corrected.
+    ("alfhild",  "coda",   "eng"),  # "adult German female voice", filed English/US
+    ("yukiko",   "coda",   "eng"),  # "Japanese female voice with a Kansai lilt", filed English/US
+    ("pola",     "coda",   "eng"),  # "Dominican Spanish female voice", filed English
+    ("pola",     "mistv3", "eng"),  # same description, filed English
+    ("pola",     "arcana", "eng"),  # same; the arcana `spa` record is correct and keeps it
+    ("lucia",    "mistv2", "spa"),  # "Brazilian Portuguese voice", filed Spanish
+    ("lucia",    "mistv3", "spa"),  # same; the coda `por` record is correct and keeps it
+    ("solana",   "coda",   "eng"),  # "bilingual across English and Brazilian Portuguese", only eng exists
+    ("potrero",  "coda",   "eng"),  # "bilingual American male voice", only eng exists, second language unnamed
 }
 
 def esc(s):
@@ -85,6 +94,13 @@ for model, path, title, label in MODELS:
         out.append(f"{multi} of these voices serve more than one language and appear in more than one "
                    f"section below. The rest serve exactly one, so pairing a voice with a different "
                    f"`lang` is not a supported combination.")
+    out.append("")
+    out.append(f"**To hear a voice, do not rely on the descriptions here.** Play it in the "
+               f"[Rime dashboard](https://app.rime.ai), or ask an assistant connected to the "
+               f"[hosted MCP server](/docs/mcp) to browse and synthesize a line for you: "
+               f"[`list_voices`](/mcp-reference/list-voices) needs no API key, and "
+               f"[`synthesize_speech`](/mcp-reference/synthesize-speech) uses yours. This page is a "
+               f"reference index for looking up what exists and what it works with.")
     out.append("")
     out.append(f"Use your browser's find command to search by voice name, country, or description. "
                f"For the machine-readable source, see [the voice details endpoint](/api-reference/data/voice-details).")

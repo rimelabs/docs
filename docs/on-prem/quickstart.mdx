@@ -125,22 +125,29 @@ cat KEY-FILE | docker login -u _json_key --password-stdin https://us-docker.pkg.
 
 ## Container images
 
+### Image tags
+
+<Warning>
+All model images and the API image are published together under a single `YYYYMMDD` tag. Deploy the **same tag** across every container; mixing tags pairs components that were never released or tested together.
+
+The current release tag is `20260801`.
+</Warning>
+
+Substitute that tag for `<tag>` in the image references below, and update all containers together when you upgrade.
+
 ### TTS service
 
 #### Arcana
 
 The Arcana images can be found at `us-docker.pkg.dev/rime-labs/arcana/v2/<language>:<tag>`.
 
-* The support languages are: `en`, `es`, `fr`, `de`, `si`.
-* The latest version is `20260420`.
-
+* The supported languages are: `en`, `es`, `fr`, `de`, `ar`, `hi`, `si`.
 
 #### Arcana v3 (multilingual)
 
 The Arcana v3 images can be found at `us-docker.pkg.dev/rime-labs/arcana/v3/ennea:<tag>`.
 
-* The support languages are: `en`, `es`, `fr`, `pt`, `de`, `ja`, `ta`, `si`, `he`.
-* The latest version is `20260420`.
+* The supported languages are: `en`, `es`, `fr`, `pt`, `de`, `ja`, `si`, `he`.
 
 For Arcana only, you can also load the engine and data packages from different containers:
 
@@ -151,21 +158,19 @@ For Arcana only, you can also load the engine and data packages from different c
 
 The Coda v1 images can be found at `us-docker.pkg.dev/rime-labs/coda/v1/coda:<tag>`.
 
-* The support languages are: `en`, `es`, `fr`, `pt`, `de`, `ja`.
-* The latest version is `20260517`.
+* The supported languages are: `en`, `es`, `fr`, `pt`, `de`, `ja`, `ar`.
 
 #### Mist v3 (multilingual)
 
 The Mist v3 images can be found at `us-docker.pkg.dev/rime-labs/mist/v3/omni:<tag>`
 
-* The support languages are: `de`, `en`, `es`, `fr`.
-* The latest version is `20260420`.
+* The supported languages are: `de`, `en`, `es`, `fr`.
 
 ### API service
 
-The latest image version is:
+* `us-docker.pkg.dev/rime-labs/api/service:<tag>`
 
-* `us-docker.pkg.dev/rime-labs/api/service:20260424`
+Use the same `YYYYMMDD` tag as the model images.
 
 ## Docker Compose configuration
 
@@ -402,6 +407,9 @@ Sample response file: [`result.pcm`](https://drive.google.com/file/d/1pwkGW9jCe1
 
 #### JSON websockets
 The API service serves the JSON WebSocket endpoint for `coda`, `arcana`, and `mist` models on port `8003`. For example, `ws://localhost:8003`, which is equivalent to our [cloud JSON WebSocket API](/docs/websockets).
+
+<Warning>**Spanish is not accepted on the on-prem JSON WebSocket ports.** Sending `lang=spa` to port 8003 (or 8001) returns HTTP 400, for every model, including Coda and Arcana deployments that serve Spanish voices. This restriction does not exist on the cloud endpoint. For Spanish on-prem, use the binary WebSocket endpoint or the HTTP endpoint, which lose word timestamps and context IDs.</Warning>
+
 See the [Coda JSON WebSocket docs](/api-reference/coda/websockets-json), [Arcana JSON WebSocket docs](/api-reference/arcana/websockets-json), and [Mist JSON WebSocket docs](/api-reference/mistv2/websockets-json) depending
 on which model backend you have configured.
 

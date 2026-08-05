@@ -181,24 +181,24 @@ To separate differently-tuned sets of data across individual metrics, a suffix m
 
 ### Healthcheck
 
-To check if the model is running properly, you can perform a liveness probe using the `/ping` endpoint:
+To check if the model is running properly, use the `/livez` and `/readyz` probes on the engine HTTP port:
 
 ```bash
-curl -X GET "http://localhost:8080/ping"
+curl -X GET "http://localhost:8080/livez"
+curl -X GET "http://localhost:8080/readyz"
 ```
 
-A typical response looks like this:
-```json
-pong
-```
+<Note>Current Mist images do not serve `/ping`. Use `/livez` for liveness and `/readyz` for readiness.</Note>
 
 ### Metrics
 
-For more detailed operational insights, the model service exposes Prometheus-compatible metrics at the /metrics endpoint:
+Prometheus-compatible metrics are served by the generator, not on the engine HTTP port. Pin the port with `GENERATOR_SERVICE_PORT` on the model container and scrape it there:
 
 ```bash
-curl -X GET "http://localhost:8080/metrics"
+curl -X GET "http://localhost:30000/metrics"
 ```
+
+See [Prometheus](/docs/on-prem/prometheus) for a complete scrape configuration.
 
 This endpoint provides telemetry data, including:
 

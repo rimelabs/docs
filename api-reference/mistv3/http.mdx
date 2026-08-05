@@ -52,7 +52,7 @@ Still accepted for backwards compatibility; new code should use the RFC types ab
 </ParamField>
 
 <ParamField body="timeScaleFactor" type="number" default="1.0">
-  The time scaling factor.
+  The time scaling factor. Accepted range is 0.4 to 2.5; values outside it are clamped without an error.
 
   A value above 1.0 slows down the audio, a value below 1.0 speeds up the audio.
 </ParamField>

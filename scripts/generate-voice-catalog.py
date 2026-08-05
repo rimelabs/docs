@@ -51,7 +51,6 @@ for model, path, title, label in MODELS:
     cols = [("speaker","Voice")]
     for f, h in (("gender","Gender"), ("age","Age"), ("country","Country")):
         if complete(f): cols.append((f,h))
-    show_featured = any(r.get("flagship") for r in recs)
     show_desc = any((r.get("description") or "").strip() for r in recs)
 
     langs = collections.defaultdict(list)
@@ -94,11 +93,27 @@ for model, path, title, label in MODELS:
         out.append(f"**Jump to:** {jump}")
         out.append("")
     for l in order:
-        recs_l = sorted(langs[l], key=lambda r: r["speaker"].lower())
+        recs_l = langs[l]
         name = LANGNAME.get(l, l)
+        n_feat = sum(1 for r in recs_l if r.get("flagship"))
+        # A Featured column only earns its place where the flag discriminates.
+        # All-blank or all-checked columns are noise, so state the fact in prose
+        # instead and drop the column.
+        show_featured = 0 < n_feat < len(recs_l)
+        if show_featured:
+            recs_l = sorted(recs_l, key=lambda r: (not r.get("flagship"), r["speaker"].lower()))
+        else:
+            recs_l = sorted(recs_l, key=lambda r: r["speaker"].lower())
         out.append(f"## {name}")
         out.append("")
-        out.append(f"{len(recs_l)} voices. Set `lang` to `{l}` for this language.")
+        if show_featured:
+            intro = (f"{len(recs_l)} voices, {n_feat} of them featured. Featured voices come first, "
+                     f"then the rest alphabetically.")
+        elif n_feat:
+            intro = f"{len(recs_l)} voices, listed alphabetically. All of them are featured voices."
+        else:
+            intro = f"{len(recs_l)} voices, listed alphabetically."
+        out.append(f"{intro} Set `lang` to `{l}` for this language.")
         out.append("")
         head = [h for _, h in cols] + (["Featured"] if show_featured else []) + (["Description"] if show_desc else [])
         out.append("| " + " | ".join(head) + " |")

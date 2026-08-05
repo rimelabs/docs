@@ -10,11 +10,12 @@ import json, sys, collections, pathlib
 
 SNAP = sys.argv[1]
 OUTDIR = pathlib.Path(sys.argv[2])
+# Only the two models that outlive the retirements get a catalog page. Arcana
+# retires 2026-08-15 and Mist v2 is superseded, so browsing their catalogs to
+# choose a voice would point developers at a dead end.
 MODELS = [
     ("coda",   "docs/voices-coda.mdx",    "Coda voices",    "Coda"),
-    ("arcana", "docs/voices-arcana.mdx",  "Arcana voices",  "Arcana"),
     ("mistv3", "docs/voices-mist-v3.mdx", "Mist v3 voices", "Mist v3"),
-    ("mistv2", "docs/voices-mist-v2.mdx", "Mist v2 voices", "Mist v2"),
 ]
 LANGNAME = {"eng":"English","spa":"Spanish","ger":"German","fra":"French","por":"Portuguese",
             "jpn":"Japanese","ara":"Arabic","hin":"Hindi","heb":"Hebrew"}

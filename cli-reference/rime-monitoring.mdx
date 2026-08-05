@@ -6,7 +6,7 @@ icon: "chart-line"
 
 ## `rime speedtest`
 
-Measure time-to-first-byte (TTFB) for configured environments. Sends a TTS request to each endpoint and reports latency.
+Measure time-to-first-byte (TTFB) for configured environments. The command sends a TTS request to each endpoint and reports the latency.
 
 ```bash
 rime speedtest
@@ -28,9 +28,8 @@ rime speedtest
 ### Behavior
 
 - No flags: tests all configured environments
-- `--url` alone: tests only the specified URLs (config envs are skipped)
+- `--url` alone: tests only the specified URLs and skips the config environments
 - `--env` + `--url`: tests both the named envs and the extra URLs
-- When using `--url`, your configured API credentials are forwarded to those URLs (a warning is printed)
 - After the test completes, if the fastest environment differs from the current default, the CLI prompts you to switch. Use `--yes` to skip the prompt and switch automatically.
 
 ### Example output (single run)
@@ -90,7 +89,7 @@ Also supports the global `--json` flag.
 
 ## `rime uninstall`
 
-Remove the Rime CLI binary, configuration, and shell PATH entries. Detects whether the CLI was installed via Homebrew or the shell script and provides appropriate instructions.
+Remove the Rime CLI binary, configuration, and shell PATH entries. The command detects whether you installed the CLI via Homebrew or the shell script and prints instructions for that install method.
 
 ```bash
 rime uninstall

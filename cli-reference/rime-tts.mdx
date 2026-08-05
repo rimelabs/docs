@@ -4,7 +4,7 @@ description: "Synthesize text to speech from the command line using the Rime CLI
 icon: "waveform"
 ---
 
-Synthesize text to speech. Supports WAV and MP3 formats. The format is automatically selected based on the model: `mist` and `mistv2` output MP3, while `coda`, `mistv3`, `arcana`, and `arcanav2` default to WAV. Use `--format` to override.
+Synthesize text to speech in WAV or MP3. The CLI picks the format from the model: `mist` and `mistv2` output MP3, while `coda`, `mistv3`, `arcana`, and `arcanav2` default to WAV. Use `--format` to override.
 
 ```bash
 rime tts TEXT --speaker VOICE --model-id MODEL
@@ -46,7 +46,7 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 
 ## mist/mistv2 flags
 
-These flags are supported by `mist` and `mistv2` only. They are not supported by `mistv3`.
+Only `mist` and `mistv2` support these flags; `mistv3` does not.
 
 | Flag | Description |
 | ---- | ----------- |

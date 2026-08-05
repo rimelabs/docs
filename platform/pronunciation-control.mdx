@@ -3,7 +3,7 @@ title: Pronunciation control
 description: "Check dictionary coverage, specify custom pronunciations, and request dictionary additions to control exactly how Rime speaks your words."
 ---
 
-Rime's models power the voice of your product, and pronunciation control makes sure brand names, product names, and domain-specific words sound right before they reach your users.
+Pronunciation control makes sure brand names, product names, and domain-specific words sound right before they reach your users.
 
 There are three ways to control pronunciation:
 
@@ -29,7 +29,7 @@ See [Custom pronunciation](/docs/custom-pronunciation) for the full reference.
 
 ### Generate the phonetic string from audio
 
-You can write phonetic strings by hand from the alphabet reference, or let Rime generate one for you: record the word (or synthesize it) and post the raw audio to the [Phonemize API](/api-reference/other/phonemize).
+Record the word (or synthesize it) and post the raw audio to the [Phonemize API](/api-reference/other/phonemize).
 
 ```bash
 curl -X POST https://optimize.rime.ai/phonemize \
@@ -50,7 +50,7 @@ The response contains the phonetic transcription of the audio:
 
 Drop any trailing punctuation token, then paste the string into your TTS request inside curly brackets with `phonemizeBetweenBrackets: true`. For example: `{h0El1o}`.
 
-For brand or product names on Mist v3, Coda, or Arcana, request a dictionary addition or respell the word in plain English, accepting that respelling is approximate.
+For brand or product names on Mist v3, Coda, or Arcana, request a dictionary addition or respell the word in plain English. Respelling is approximate.
 
 ## Request a dictionary addition
 
@@ -58,8 +58,8 @@ If a word is mispronounced and you'd like it fixed at the dictionary level, reac
 
 ---
 
-## Tips
+## What to check first
 
-- Check coverage regularly when working with new or domain-specific content.
 - Brand names, technical terms, and made-up words are the most common sources of mispronunciation; verify these first.
+- Re-check coverage whenever you add new or domain-specific content.
 - For flows where pronunciation control matters most, use Mist v1/v2 so you can correct pronunciations inline.

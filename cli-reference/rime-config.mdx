@@ -32,7 +32,7 @@ api_url = "https://users-east.rime.ai/v1/rime-tts"
 api_key = "your_api_key_here"
 ```
 
-Both standard Rime endpoints are pre-configured as named environments. The `default_env` field designates which one is active by default.
+`rime config init` pre-configures both standard Rime endpoints as named environments. The `default_env` field names the active one.
 
 <Note>Older config files without `default_env` continue to work: the top-level `api_url` and `api_key` fields are still respected as the fallback default.</Note>
 

@@ -8,7 +8,7 @@ icon: "volume-high"
 
 ## 1. Inline player
 
-Hosts that support MCP Apps (such as Claude) render an audio player directly in the conversation. The MP3 travels outside the model's context, so playback is free of token overhead. This is the default experience and requires no configuration.
+Hosts that support MCP Apps (such as Claude) render an audio player directly in the conversation. The MP3 travels outside the model's context, so playback costs no tokens. This is the default and needs no configuration.
 
 ## 2. Play URL
 
@@ -27,4 +27,4 @@ Pass `include_audio: true` to also receive a standard MCP `audio` content block 
 
 ## Hosts without audio support
 
-Hosts that render none of these still get a text summary and the structured result, so the tool never fails outright; you just won't hear the sample.
+Hosts that render none of these still get a text summary and the structured result, so the call succeeds; you won't hear the sample.

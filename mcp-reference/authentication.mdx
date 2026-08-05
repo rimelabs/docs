@@ -4,7 +4,7 @@ description: "How Rime's MCP server resolves API keys: accepted headers, per-req
 icon: "key"
 ---
 
-The MCP server is stateless and never stores your credentials; your API key is read from each request and forwarded to the Rime API. Get a key from the [API Tokens page](https://app.rime.ai/tokens); it's the same key you use for the [REST API](/docs/api-authentication).
+The MCP server is stateless and never stores your credentials; it reads your API key from each request and forwards it to the Rime API. Get a key from the [API Tokens page](https://app.rime.ai/tokens); it's the same key you use for the [REST API](/docs/api-authentication).
 
 ## Accepted headers
 
@@ -26,6 +26,6 @@ Two headers are accepted, checked in this order:
 | [`normalize_text`](/mcp-reference/normalize-text) | Required |
 | [`synthesize_speech`](/mcp-reference/synthesize-speech) | Required |
 
-If a key-gated tool is called without a key, it responds with a pointer to [sign up](https://app.rime.ai/signup/) rather than an error. A keyless connection is still useful for exploring the catalog and generating integration code.
+Calling a key-gated tool without a key returns a pointer to [sign up](https://app.rime.ai/signup/) rather than an error. Without a key you can still explore the catalog and generate integration code.
 
 <Note>[`synthesize_speech`](/mcp-reference/synthesize-speech) calls the Rime API with your key, so generated samples consume credits like any other API request.</Note>

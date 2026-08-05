@@ -5,6 +5,9 @@ api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
+import ParamInlineSpeedAlpha from "/snippets/param-inline-speed-alpha.mdx";
+import ParamSpeaker from "/snippets/param-speaker.mdx";
+import ParamText from "/snippets/param-text.mdx";
 import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
 
 <ApiAuthBearer />
@@ -36,13 +39,9 @@ Still accepted for backwards compatibility; new code should use the RFC types ab
 
 ## Variable parameters
 
-<ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
-</ParamField>
+<ParamSpeaker />
 
-<ParamField body="text" type="string" required>
-  The text you'd like spoken. Character limit per request is 1,000 via the API and in the dashboard UI.
-</ParamField>
+<ParamText />
 
 <ParamField body="modelId" type="string">
   Set to `mistv3`.
@@ -67,10 +66,7 @@ Still accepted for backwards compatibility; new code should use the RFC types ab
   Example: `Hi. <200> I'd love to have a conversation with you.` adds a 200ms pause. Learn more about [custom pauses](/docs/custom-pauses).
 </ParamField>
 
-<ParamField body="inlineSpeedAlpha" type="string">
-  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
-  Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
-</ParamField>
+<ParamInlineSpeedAlpha />
 
 <RequestExample>
 

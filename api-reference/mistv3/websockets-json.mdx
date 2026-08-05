@@ -5,6 +5,11 @@ api: 'GET wss://users-ws.rime.ai/ws3'
 authMethod: "bearer"
 ---
 
+import ParamInlineSpeedAlpha from "/snippets/param-inline-speed-alpha.mdx";
+import ParamLang from "/snippets/param-lang.mdx";
+import ParamSamplingRate from "/snippets/param-sampling-rate.mdx";
+import ParamSpeaker from "/snippets/param-speaker.mdx";
+import WsFlushBuffer from "/snippets/ws-flush-buffer.mdx";
 import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
 
 <ApiAuthBearer />
@@ -57,7 +62,7 @@ Your client can clear out the accumulated buffer, which is useful in the case of
 
 #### Flush
 
-This forces whatever buffer exists, if any, to be synthesized, and the generated audio to be sent over.
+<WsFlushBuffer />
 
 ```json
 { "operation": "flush" }
@@ -149,9 +154,7 @@ type ErrorEvent = {
 
 ## Variable parameters
 
-<ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
-</ParamField>
+<ParamSpeaker />
 
 <ParamField body="modelId" type="string" default="mistv3">
   Set to `mistv3`.
@@ -161,23 +164,16 @@ type ErrorEvent = {
   One of `pcm`, `mulaw`, or `mp3`
 </ParamField>
 
-<ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
-</ParamField>
+<ParamLang />
 
 <ParamField body="pauseBetweenBrackets" type="bool" default="false">
   When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds.
   Example: `Hi. <200> I'd love to have a conversation with you.` adds a 200ms pause. Learn more about [custom pauses](/docs/custom-pauses).
 </ParamField>
 
-<ParamField body="samplingRate" type="int">
-  The value, if provided, must be between 4000 and 44100. Default: 22050
-</ParamField>
+<ParamSamplingRate />
 
-<ParamField body="inlineSpeedAlpha" type="string">
-  Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
-  Example: "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
-</ParamField>
+<ParamInlineSpeedAlpha />
 
 <ParamField body="speedAlpha" type="float" default="1.0">
   Adjusts the speed of speech. Higher than 1.0 is faster and lower than 1.0 is slower.

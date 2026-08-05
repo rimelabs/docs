@@ -5,6 +5,9 @@ api: 'GET wss://users-ws.rime.ai/ws'
 authMethod: "bearer"
 ---
 
+import ParamSegment from "/snippets/param-segment.mdx";
+import ParamText from "/snippets/param-text.mdx";
+import WsFlushBuffer from "/snippets/ws-flush-buffer.mdx";
 import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
 
 <ApiAuthBearer />
@@ -45,7 +48,7 @@ This clears the current buffer. Used in the event of interruptions.
 
 ### `<FLUSH>`
 
-This forces whatever buffer exists, if any, to be synthesized, and the generated audio to be sent over.
+<WsFlushBuffer />
 
 ### `<EOS>`
 
@@ -58,9 +61,7 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
   Must be one of the voices <a href="/docs/voices">listed in our documentation</a> for `coda`.
 </ParamField>
 
-<ParamField body="text" type="string" required>
-  The text you'd like spoken. Character limit per request is 1,000 via the API and in the dashboard UI.
-</ParamField>
+<ParamText />
 
 <ParamField body="modelId" type="string" default="mistv3">
   Set this to `coda`. It is not strictly required, but if you omit it the server defaults to the Mist v3 backend, and speakers outside the Mist v3 catalog fail with a "Speaker not found" error.
@@ -95,14 +96,7 @@ This forces whatever buffer exists, if any, to be synthesized, and for the serve
 </ParamField>
 
 
-<ParamField body="segment" type="string" default="bySentence">
-  Controls how text is segmented for synthesis. Available options:
-  - "immediate" - Synthesizes text immediately without waiting for complete sentences
-  - "never" - Never segments the text, waits for explicit flush or EOS
-  - "bySentence" (default) - Waits for complete sentences before synthesis
-
-Note: For backward compatibility, setting `immediate=true` in query params is equivalent to `segment=immediate`. If a null value is provided, it will default to "bySentence".
-</ParamField>
+<ParamSegment />
 
 <RequestExample>
 

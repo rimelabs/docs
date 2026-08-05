@@ -5,6 +5,15 @@ api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
 
+import ParamLang from "/snippets/param-lang.mdx";
+import ParamModelIdMistV2 from "/snippets/param-model-id-mist-v2.mdx";
+import ParamNoTextNormalization from "/snippets/param-no-text-normalization.mdx";
+import ParamPauseBetweenBrackets from "/snippets/param-pause-between-brackets.mdx";
+import ParamPhonemizeBetweenBrackets from "/snippets/param-phonemize-between-brackets.mdx";
+import ParamSamplingRate from "/snippets/param-sampling-rate.mdx";
+import ParamSpeaker from "/snippets/param-speaker.mdx";
+import ParamSpeedAlphaMistV2 from "/snippets/param-speed-alpha-mist-v2.mdx";
+import ParamText from "/snippets/param-text.mdx";
 import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
 
 <ApiAuthBearer />
@@ -15,50 +24,28 @@ import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
 
 ## Variable parameters
 
-<ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/docs/voices">listed in our documentation</a>.
-</ParamField>
+<ParamSpeaker />
 
-<ParamField body="text" type="string" required>
-  The text you'd like spoken. Character limit per request is 1,000 via the API and in the dashboard UI.
-</ParamField>
+<ParamText />
 
-<ParamField body="modelId" type="string">
-  Set to `mistv2`.
-</ParamField>
+<ParamModelIdMistV2 />
 
-<ParamField body="lang" type="string" default="eng">
-  If provided, the language must match the language spoken by the provided speaker. This can be checked in <a href="/docs/voices">our voices documentation</a>.
-</ParamField>
+<ParamLang />
 
-<ParamField body="pauseBetweenBrackets" type="bool" default="false">
-  When set to true, adds pauses between words enclosed in angle brackets. The number inside the brackets specifies the pause duration in milliseconds. <br/>
-  Example: "Hi. \<200> I'd love to have a conversation with you." adds a 200ms pause between the first and second sentences.
-</ParamField>
+<ParamPauseBetweenBrackets />
 
-<ParamField body="phonemizeBetweenBrackets" type="bool" default="false">
-  When set to true, you can specify the phonemes for a word enclosed in curly brackets. <br/>
-  Example: "\{h'El.o} World" will pronounce "Hello" as expected. Learn more about <a href="/docs/custom-pronunciation">custom pronunciation</a>.
-</ParamField>
+<ParamPhonemizeBetweenBrackets />
 
 <ParamField body="inlineSpeedAlpha" type="string">
   Comma-separated list of speed values applied to words in square brackets. Values < 1.0 speed up speech, > 1.0 slow it down.
   Example: For text "This is [slow] and [fast]", use "3, 0.5" to make "slow" slower and "fast" faster.
 </ParamField>
 
-<ParamField body="samplingRate" type="int">
-  The value, if provided, must be between 4000 and 44100. Default: 22050
-</ParamField>
+<ParamSamplingRate />
 
-<ParamField body="speedAlpha" type="float" default="1.0">
-  Adjusts the speed of speech. Lower than 1.0 is faster and higher than 1.0 is slower.
+<ParamSpeedAlphaMistV2 />
 
-  *Note: this is the legacy Mist v2 convention. Newer models (Coda, Arcana, Mist v3) invert it; for those, higher than 1.0 is faster.*
-</ParamField>
-
-<ParamField body="noTextNormalization" type="bool" default="false">
-  **mist/mistv2 only.** Skips text normalization of the input text prior to synthesizing audio. This will reduce latency at the cost of some possible mispronunciation of digits and abbreviations.
-</ParamField>
+<ParamNoTextNormalization />
 
 <RequestExample>
 ```bash cURL

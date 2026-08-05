@@ -91,7 +91,8 @@
                 "icon": "microphone-lines",
                 "pages": [
                   "docs/voices-coda",
-                  "docs/voices-mist-v3"
+                  "docs/voices-mist-v3",
+                  "docs/voices-availability"
                 ]
               },
               "docs/models",

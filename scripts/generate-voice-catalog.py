@@ -105,6 +105,11 @@ for model, path, title, label in MODELS:
     out.append(f"Use your browser's find command to search by voice name, country, or description. "
                f"For the machine-readable source, see [the voice details endpoint](/api-reference/data/voice-details).")
     out.append("")
+    out.append(f"Switching to {label} from another model? A voice name is not carried by every model, "
+               f"so check [voice availability on Coda and Mist v3](/docs/voices-availability) "
+               f"before you "
+               f"change `modelId`.")
+    out.append("")
     if len(order) > 1:
         jump = " · ".join(f"[{LANGNAME.get(l,l)}](#{LANGNAME.get(l,l).lower()})" for l in order)
         out.append(f"**Jump to:** {jump}")
@@ -159,3 +164,78 @@ for model, path, title, label in MODELS:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text("\n".join(out) + "\n", encoding="utf-8")
     print(f"  {path}: {len(recs)} voices, {len(order)} languages, {len('\n'.join(out))/1024:.1f} KB, cols={[h for _,h in cols]}")
+
+# ---------------------------------------------------------------------------
+# Availability matrix. Columns are only the two models that outlive the
+# retirements, because those are the only destinations worth switching to.
+# Rows are the voices at least one of them serves, so a name that is absent
+# means the voice does not survive: stated explicitly rather than implied by
+# a row of crosses.
+# ---------------------------------------------------------------------------
+
+SURVIVORS = [("coda", "Coda"), ("mistv3", "Mist v3")]
+# Models a developer might be switching away from, with why.
+LEGACY = [("arcana", "Arcana", "retires August 15, 2026"),
+          ("mistv2", "Mist v2", "superseded by Mist v3"),
+          ("mist", "Mist", "superseded by Mist v3")]
+
+def write_availability(rows, out_path):
+    spk = collections.defaultdict(set)
+    for r in rows:
+        if isinstance(r, dict) and r.get("speaker"):
+            spk[r["speaker"].strip().lower()].add((r.get("modelId") or "").strip())
+    on = {m: {k for k, v in spk.items() if m in v} for m, _ in SURVIVORS + [(x[0], x[1]) for x in LEGACY]}
+    surv = on["coda"] | on["mistv3"]
+    o = []
+    o.append("---")
+    o.append('title: "Voice availability on Coda and Mist v3"')
+    o.append('description: "Whether the voice you use today is carried by Coda or Mist v3, the two '
+             'models that outlive the retirements."')
+    o.append("---")
+    o.append("")
+    o.append("{/* Generated from the voice catalog snapshot in data/voices/.")
+    o.append("    Regenerate with scripts/generate-voice-catalog.py; do not hand-edit. */}")
+    o.append("")
+    o.append("Coda and Mist v3 are the two models that outlive the retirements. A voice name is not "
+             "carried by every model, so changing `modelId` while keeping the same `speaker` can "
+             "leave you naming a voice the target does not serve. Check your voice here first.")
+    o.append("")
+    o.append(f"<Warning>**If your voice is not in the table below, neither Coda nor Mist v3 serves "
+             f"it, and you need to choose a different voice rather than change `modelId`.** That "
+             f"applies to {len(spk) - len(surv)} of the {len(spk)} names in the catalog, including "
+             f"{len(on['arcana'] - surv)} of Arcana's {len(on['arcana'])}. A shared name is also no "
+             f"guarantee of identical audio: each model is trained separately, so treat a match as "
+             f"permission to try the switch and compare audio on your own text before moving "
+             f"production traffic.</Warning>")
+    o.append("")
+    o.append("## What survives from the models being retired")
+    o.append("")
+    o.append("| Currently on | Why you are moving | Voices | Also on Coda | Also on Mist v3 | On neither |")
+    o.append("|---|---|---:|---:|---:|---:|")
+    for m, label, why in LEGACY:
+        s = on[m]
+        o.append(f"| {label} | {why} | {len(s)} | {len(s & on['coda'])} | {len(s & on['mistv3'])} "
+                 f"| {len(s - surv)} |")
+    o.append("")
+    o.append(f"Arcana is the hardest move: {len(on['arcana'] - surv)} of its {len(on['arcana'])} "
+             f"voices have no counterpart on either surviving model, so most Arcana users need a "
+             f"voice change rather than a parameter change. Only {len(on['coda'] & on['mistv3'])} "
+             f"names are on both Coda and Mist v3, so switching between the two surviving models is "
+             f"not a drop-in change either.")
+    o.append("")
+    o.append("## Voices Coda or Mist v3 serves")
+    o.append("")
+    o.append(f"{len(surv)} names. A check mark means the model serves that name in at least one "
+             f"language, not in every language. For the languages a given voice serves, see the "
+             f"[Coda](/docs/voices-coda) or [Mist v3](/docs/voices-mist-v3) catalog.")
+    o.append("")
+    o.append("| Voice | " + " | ".join(n for _, n in SURVIVORS) + " |")
+    o.append("|---" + "|:---:" * len(SURVIVORS) + "|")
+    for s in sorted(surv):
+        o.append(f"| `{s}` | " + " | ".join("✅" if s in on[m] else "❌" for m, _ in SURVIVORS) + " |")
+    o.append("")
+    out_path.write_text("\n".join(o) + "\n", encoding="utf-8")
+    print(f"  docs/voices-availability.mdx: {len(surv)} surviving names of {len(spk)}, "
+          f"{len(chr(10).join(o))/1024:.1f} KB")
+
+write_availability(rows, OUTDIR / "docs/voices-availability.mdx")

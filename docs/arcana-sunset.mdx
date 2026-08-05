@@ -1,0 +1,47 @@
+---
+title: Arcana sunset
+description: "Arcana is retired on August 15, 2026. What changes, which model IDs are affected, and where each language goes."
+icon: circle-exclamation
+---
+
+<Warning>
+**Arcana is retired on August 15, 2026.** After that date, cloud requests that specify an Arcana model are served by [Coda](/docs/models#coda). Migrate before then so you can test the change on your own schedule rather than discovering it in production.
+</Warning>
+
+## Does this affect you
+
+You are affected if any request, config file, or environment variable in any environment sets `modelId` to one of these three values:
+
+| Identifier | Notes |
+| :--- | :--- |
+| `arcana` | Routes English to the v2 engine and other languages to v3, so behavior can differ by language |
+| `arcanav2` | |
+| `arcanav3` | |
+
+You are **not** affected by omitting `modelId`. Requests without it are served by Mist v3, which is unchanged.
+
+To check your own usage, search your code and configuration for those three strings, and repeat the search for every deployed environment rather than only your local checkout. There is no response header naming the model that served a request, so confirm by inventory and configuration review, not by inspecting a response.
+
+## Where each language goes
+
+| Arcana language | After August 15 |
+| :--- | :--- |
+| English, Spanish, French, German, Japanese, Portuguese, Arabic, Hindi | Served by Coda. Change `modelId` to `coda` |
+| Hebrew | **No Coda destination.** Coda does not serve Hebrew. Contact [support@rime.ai](mailto:support@rime.ai) before August 15 |
+| Sinhala | Remains on Arcana |
+
+## What changes when you switch to Coda
+
+The API contract is unchanged, so `modelId: coda` is the only edit most integrations need. These differences are not errors and will not appear as failures:
+
+- **Your speaker may not exist on Coda.** Voice availability differs per model. Check yours in the [voice catalog](/docs/voices) before switching
+- **Word timestamps cover English and Spanish only.** If you rely on them for interruption handling in another language, no `timestamps` event arrives and no error is raised
+- **Audio will not be identical.** Coda is a different model, so prosody and pacing differ even for a speaker present on both
+
+## After the cutoff
+
+If you have not migrated, requests naming an Arcana model continue to succeed but are served by Coda. You will not receive an error. The audible difference is the signal that migration happened without you.
+
+## Get help
+
+Contact [support@rime.ai](mailto:support@rime.ai) with your account, the model IDs you use, and the languages you serve.

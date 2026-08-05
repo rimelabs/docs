@@ -87,6 +87,7 @@
             "pages": [
               "docs/voices",
               "docs/models",
+              "docs/arcana-sunset",
               "platform/voice-cloning",
               {
                 "group": "Pronunciation",

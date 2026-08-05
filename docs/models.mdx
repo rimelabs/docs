@@ -34,10 +34,14 @@ All production models are available through the cloud API and on-premises, and a
 | [Text normalization](/docs/text-normalization) | ✅ | ✅ | ✅ |
 | [`spell()` function](/docs/spell) | ✅ | ✅ | ✅ |
 | [Speed adjustment](/docs/speed) | ✅ | ✅ | ✅ |
-| [Pronunciation control](/platform/pronunciation-control) | ❌ | ❌ | ✅ |
+| [Pronunciation control](/platform/pronunciation-control) | ❌ | ❌ | Mist v2 only |
 | [Custom pauses](/docs/custom-pauses) | ❌ | ❌ | ✅ |
 
-The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control and custom pauses, and both serve English, French, German, and Spanish. See the [language matrix](/docs/voices#languages) for coverage per model.
+The Mist column reflects Mist v3 and Mist v2, which both serve English, French, German, and Spanish. See the [language matrix](/docs/voices#languages) for coverage per model.
+
+The two models differ on pronunciation control. Custom pauses work on both, but `phonemizeBetweenBrackets` works on Mist v2 and Mist v1 only, and is not supported on Mist v3, Coda, or Arcana.
+
+<Warning>**Inline pronunciation control has no destination on a current model.** `phonemizeBetweenBrackets` is served only by Mist v2 and Mist v1, and Mist v2 is superseded by Mist v3 for new work. If your application depends on inline phoneme overrides, do not plan a move to Mist v3, Coda, or Arcana expecting to keep them. The documented alternatives are to submit the word to Rime for the pronunciation dictionary, or to respell phonetically in plain English and accept that the result is approximate. See [Custom pronunciation](/docs/custom-pronunciation), and contact [support@rime.ai](mailto:support@rime.ai) if inline overrides are load-bearing for you.</Warning>
 
 ## Coda
 

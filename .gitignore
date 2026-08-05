@@ -1,2 +1,4 @@
 .history/
 .DS_Store
+# claudex loop state (written into whatever directory the hook runs in)
+.claude/claudex/

@@ -77,7 +77,7 @@ Retry a 500 or 502. Do not retry a 400, 401, or 403: the request will fail ident
 
 For a 429, back off and retry the connection rather than the synthesis.
 
-<Warning>**A retried synthesis is billed again.** Rime bills by characters synthesized, and there is no request ID or idempotency key, so Rime cannot detect that two identical requests were meant to be one. If a WebSocket closes partway through a long utterance, restarting it re-bills the whole utterance. Decide deliberately whether to resume from a sentence boundary in your own application or accept the duplicate cost.</Warning>
+<Warning>**Retries are billed as new synthesis.** Rime bills by characters synthesized, and each request is billed independently. If a connection drops partway through a long utterance, resynthesizing the full text incurs its full character count again. For long utterances, synthesize in sentence-aligned chunks and resume from the last chunk you received, so a retry only re-sends what was lost.</Warning>
 
 ## What to send to support
 

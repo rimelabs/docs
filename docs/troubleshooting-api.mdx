@@ -57,7 +57,7 @@ Retry only what can succeed on a second attempt, and know what a retry costs.
 | `1011` close, audio already sent | Only deliberately | See the billing warning below. |
 | Upgrade succeeded, then silence | Reconnect | Do not retry the whole utterance without deciding what to do about the partial audio. |
 
-<Warning>**A retried synthesis is billed again.** Rime bills by characters synthesized and there is no request ID or idempotency key, so two identical requests cannot be recognized as one. Restarting a long utterance after a mid-stream failure re-bills the whole utterance, including the part you already received. Decide deliberately whether to resume from a sentence boundary in your own application or accept the duplicate cost. Rime provides no resume or deduplication mechanism.</Warning>
+<Warning>**Retries are billed as new synthesis.** Rime bills by characters synthesized, and each request is billed independently. If a connection drops partway through a long utterance, resynthesizing the full text incurs its full character count again. For long utterances, synthesize in sentence-aligned chunks and resume from the last chunk you received, so a retry only re-sends what was lost.</Warning>
 
 Rime does not send a `Retry-After` header, so choose your own backoff. Exponential with jitter, capped, is the usual choice.
 

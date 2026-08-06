@@ -86,8 +86,19 @@
             "group": "Voices & models",
             "pages": [
               "docs/voices",
+              {
+                "group": "Voice catalog",
+                "icon": "microphone-lines",
+                "pages": [
+                  "docs/voices-coda",
+                  "docs/voices-mist-v3",
+                  "docs/voices-availability"
+                ]
+              },
               "docs/models",
               "docs/arcana-sunset",
+              "docs/migrate-arcana-to-coda",
+              "docs/retiring-a-model",
               "platform/voice-cloning",
               {
                 "group": "Pronunciation",
@@ -142,7 +153,9 @@
                   "docs/websockets-segment"
                 ]
               },
-              "docs/latency"
+              "docs/latency",
+              "docs/errors",
+              "docs/troubleshooting-api"
             ]
           },
           {

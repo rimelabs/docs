@@ -1,0 +1,26 @@
+Synthesize the same sentence with both voices and listen before you commit. Set `RIME_API_KEY` in your shell; your key stays on the machine running these commands and is never placed in a URL.
+
+```bash
+export RIME_API_KEY="your-key"
+TEXT="Thanks for calling. Can I get your account number to pull that up?"
+
+# The voice you use today
+curl -sS -X POST https://users.rime.ai/v1/rime-tts \
+  -H "Authorization: Bearer $RIME_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Accept: audio/wav" \
+  -d "$(jq -n --arg t "$TEXT" '{text:$t, speaker:"celeste", modelId:"arcana", lang:"eng"}')" \
+  --output before.wav
+
+# The candidate replacement
+curl -sS -X POST https://users.rime.ai/v1/rime-tts \
+  -H "Authorization: Bearer $RIME_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Accept: audio/wav" \
+  -d "$(jq -n --arg t "$TEXT" '{text:$t, speaker:"celeste", modelId:"coda", lang:"eng"}')" \
+  --output after.wav
+```
+
+Play both and compare. Use text from your own product rather than a generic sentence: the differences that matter usually show up on your domain vocabulary, your numbers, and your longest utterances, not on a greeting.
+
+Both requests must name a supported combination of `speaker`, `modelId`, and `lang`. An unsupported combination does not reliably return an error, so a file that plays does not by itself prove the pairing was valid. Check the voice against the [Coda catalog](/docs/voices-coda) first.

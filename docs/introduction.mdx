@@ -8,6 +8,36 @@ Rime is voice AI **made for human conversation**: natural, low-latency speech fo
 
 Its flagship model, Coda, is trained on full-duplex conversations between real people, not voice actors or audiobook narrators. Coda has top-rated voice quality in human evaluations and streams at sub-100ms model latency. Deploy it in the cloud, your own VPC, or fully on-premises, with 184 Coda voices across 8 languages.
 
+## Start here
+
+Pick the one that matches what you are doing. Each is a complete path, not an overview.
+
+<Columns cols={2}>
+  <Card title="Generate your first audio" icon="rocket" href="/docs/quickstart-five-minute">
+    One HTTP request, a playable file back, in about five minutes. Start here if you are evaluating Rime or adding speech to an existing backend.
+  </Card>
+
+  <Card title="Build a real-time voice agent" icon="messages" href="/docs/voice-agents">
+    A conversational agent that listens and speaks. Complete LiveKit tutorial, or direct WebSocket starters for Next.js, Vite, Express, Node, and FastAPI.
+  </Card>
+
+  <Card title="Try Rime from the terminal" icon="terminal" href="/docs/quickstart-cli">
+    Generate and play speech without writing any code. The fastest way to hear a voice and check response speed.
+  </Card>
+
+  <Card title="Run Rime on your own infrastructure" icon="server" href="/docs/on-prem/quickstart">
+    Deploy supported models in your VPC or fully on-premises, so audio and text stay inside your network.
+  </Card>
+
+  <Card title="Migrate off Arcana" icon="arrow-right-arrow-left" href="/docs/migrate-arcana-to-coda">
+    Arcana retires August 15, 2026. The request shape does not change, but 204 of its 266 voices have no Coda counterpart, so most migrations need a voice change.
+  </Card>
+
+  <Card title="Diagnose a failing request" icon="triangle-exclamation" href="/docs/errors">
+    What each status code and WebSocket close code means, what the client observes per transport, and what to capture for support.
+  </Card>
+</Columns>
+
 ## Rime at a glance
 
 Rime is a text-to-speech platform for real-time voice: conversational agents, IVR, telephony, and any product that needs to speak.
@@ -27,13 +57,9 @@ Rime is a text-to-speech platform for real-time voice: conversational agents, IV
 
 ## Start with Coda
 
-Coda is the default model for new projects and the recommended destination for Arcana traffic. Existing Arcana integrations can switch by setting `modelId: coda`; the rest of the API contract stays the same. Arcana is being sunset on August 15, 2026; see [Models](/docs/models) for migration details.
+Coda is the default model for new projects and the recommended destination for Arcana traffic. Existing Arcana integrations can switch by setting `modelId: coda`; the rest of the API contract stays the same. Arcana is being sunset on August 15, 2026; see [Migrate from Arcana to Coda](/docs/migrate-arcana-to-coda) for the cutover procedure and what changes.
 
-Coda pairs an LLM backbone with a dedicated speech inference engine trained on full-duplex conversations between real people, and it uses one voice lineup across English, Spanish, French, Portuguese, German, and Japanese.
-
-<Card title="Generate your first audio with Coda" icon="rocket" href="/docs/quickstart-five-minute">
-  Send one request with `modelId: coda` and get natural speech back in under five minutes.
-</Card>
+Coda pairs an LLM backbone with a dedicated speech inference engine trained on full-duplex conversations between real people, and serves eight languages: English, Arabic, French, German, Hindi, Japanese, Portuguese, and Spanish. Each voice serves one of them, so the language you need determines which voices are available to you.
 
 ## Speech capabilities
 
@@ -47,7 +73,7 @@ Coda pairs an LLM backbone with a dedicated speech inference engine trained on f
   </Card>
 
   <Card title="Choose voices, models, and languages" icon="microphone-lines" href="/docs/voices">
-    Browse distinct speakers and select the speech model, language, and sound that fit your application.
+    Browse every voice on [Coda](/docs/voices-coda) and [Mist v3](/docs/voices-mist-v3), grouped by language, and check [which voices survive a model change](/docs/voices-availability).
   </Card>
 
   <Card title="Shape how speech sounds" icon="sliders" href="/docs/prompting">
@@ -82,8 +108,8 @@ Coda pairs an LLM backbone with a dedicated speech inference engine trained on f
     Generate complete audio responses, stream audio, receive word timestamps, list voices, and use Rime's language tools.
   </Card>
 
-  <Card title="Application code" icon="code" href="/docs/quickstart-five-minute">
-    Use standard HTTP and WebSocket clients from Python, JavaScript, Go, or any server-side language; no Rime-specific SDK is required.
+  <Card title="Application code" icon="code" href="/docs/api-cheat-sheet">
+    Use standard HTTP and WebSocket clients from Python, JavaScript, Go, or any server-side language; no Rime-specific SDK is required. The cheat sheet is the compact parameter and endpoint reference.
   </Card>
 
   <Card title="CLI" icon="terminal" href="/docs/quickstart-cli">

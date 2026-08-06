@@ -176,6 +176,56 @@ A successful request writes `output.wav` and prints:
 Audio saved to output.wav
 ```
 
+## Confirm it worked
+
+A `200` and a file on disk are not proof of success. Two things produce both without producing audio:
+
+- **cURL writes error bodies to the file.** The example above uses `--output output.wav` without `--fail`, so a rejected request leaves a small text file named `output.wav` containing the error message.
+- **An unrecognized `Accept` header returns JSON rather than audio.** Rime falls back to a `200` response whose body is JSON with an `audioContent` field. The file is not empty and the status is not an error, but no player will open it.
+
+Check the file before you trust it:
+
+```bash
+ls -l output.wav      # expect tens of kilobytes, not a few hundred bytes
+file output.wav       # expect: RIFF (little-endian) data, WAVE audio
+head -c 4 output.wav  # expect: RIFF
+```
+
+Then play it:
+
+<CodeGroup>
+```bash macOS
+afplay output.wav
+```
+
+```bash Linux
+aplay output.wav
+```
+
+```bash Windows
+start output.wav
+```
+</CodeGroup>
+
+Hearing speech is the success condition. If `head -c 4` prints `{` you received JSON, so check your `Accept` header. If it prints readable English, you received an error message, so open the file and match it below.
+
+## If it did not work
+
+Everything here fails before any audio is produced. For the complete list of statuses and messages, see the [error reference](/docs/errors).
+
+| What you see | Cause | Fix |
+| :--- | :--- | :--- |
+| File contains `invalid api key` | The key is not recognized | Recopy it from the [API Tokens page](https://app.rime.ai/tokens/). The header is `Authorization: Bearer <key>` |
+| File contains `empty apikey` | The header was sent with an empty value | Your shell variable did not expand. Echo it and confirm it is set |
+| File contains `Missing Authorization header` | No `Authorization` header reached the API | Check for a typo in the header name |
+| File contains `invalid subscription` | The key is valid but the account has no active subscription | Check the account before regenerating the key. A billing problem arrives as a 401 here, not a 402 |
+| File contains `speaker is required` | `speaker` was omitted | Add `speaker`. There is no default voice |
+| File contains `text must not be empty` | `text` was `""` | Send at least one character |
+| File contains `text is too long` | `text` exceeded the configured limit | Split the text across requests |
+| File starts with `{"audioContent"` | The `Accept` header was missing or unrecognized | Set `Accept` to a supported value such as `audio/wav`. See [Streaming formats](/docs/streaming) |
+| File is 0 bytes | The request never completed | Confirm the URL is `https://users.rime.ai/v1/rime-tts` and reachable from your network |
+| Audio plays but the voice is wrong | The `speaker`, `modelId`, and `lang` combination is not one the catalog serves | An unsupported combination is not reliably rejected. Verify the voice against the [Coda catalog](/docs/voices-coda) |
+
 <Accordion title="How the request works">
 
 ### Build the request step by step

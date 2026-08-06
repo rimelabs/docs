@@ -1,6 +1,6 @@
 ---
-title: "OpenClaw document reader with Rime TTS Telegram bot"
-description: "Configure OpenClaw to be your personal reading assistant"
+title: "OpenClaw"
+description: "Pair OpenClaw with Rime TTS to build a Telegram bot that turns text and documents into verbatim readings, spoken summaries, or two-voice podcasts."
 ---
 
 Build a Telegram bot that turns pasted text or attached documents into a verbatim reading, spoken summary, or two-voice podcast. OpenClaw handles the assistant workflow and Rime generates the voice note.
@@ -164,7 +164,7 @@ def chunk_text(text: str, size: int = CHUNK_SIZE) -> list:
 The script then sends the chunks to the Rime API, which synthesizes them and returns raw audio bytes.
 
 ```python
-def synthesize(text, voice, speed, lang, api_key, model="arcana"):
+def synthesize(text, voice, speed, lang, api_key, model="coda"):
     body = {
         "text": text,
         "speaker": voice,
@@ -302,7 +302,7 @@ openclaw gateway restart
 
 Set a default voice for your assistant by editing `SOUL.md`, or by sending the bot a Telegram message: "Use Transom next time."
 
-You can use any of the available Arcana voices: `atrium`, `lyra`, `transom`, `parapet`, `fern`, `thalassa`, `truss`, `sirius`, `eliphas`, `lintel`, or one of the many others listed on Rime's [Voices](./voices.mdx) page.
+You can use any Coda voice: `atrium`, `lyra`, `transom`, `parapet`, `fern`, `thalassa`, `truss`, `sirius`, `eliphas`, `lintel`, or one of the many others listed on Rime's [Voices](./voices.mdx) page.
 
 ### Podcast personality
 

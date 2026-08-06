@@ -4,7 +4,7 @@ description: "Coda and Mist v3 are Rime's current models. Arcana is deprecated a
 icon: cube
 ---
 
-Start with **Coda** for new applications and Arcana migrations. Choose **Mist v3** when the lowest time to first audio matters most, or when you need inline pronunciation control or custom pauses; prefer it over the older Mist v2. **Arcana** is deprecated and will be sunset on August 15, 2026; see the migration notes below.
+Start with **Coda** for new applications and Arcana migrations. Choose **Mist v3** when the lowest time to first audio matters most, or when you need custom pauses; prefer it over the older Mist v2. Inline pronunciation control is the one feature Mist v3 does not carry forward from Mist v2. **Arcana** is deprecated and will be sunset on August 15, 2026; see the migration notes below.
 
 <Warning>
 **Arcana will be sunset on August 15, 2026.** Cloud traffic will route to [Coda](#coda) on that date. Migrate by changing `modelId: arcana` to `modelId: coda`; the API contract is unchanged. Sinhala remains available on Arcana. On-prem Arcana images remain available to pull and run, but will not receive updates or support (including vulnerability patches and text-normalization fixes) after August 15, 2026.
@@ -14,10 +14,10 @@ Start with **Coda** for new applications and Arcana migrations. Choose **Mist v3
 
 | Pick this | When |
 | :--- | :--- |
-| `coda` | **Default for most new apps.** Rime's flagship model, with the highest voice-quality scores in Rime's human evaluations, sub-100ms model latency, and one multilingual voice lineup. |
-| `mistv3` | You need the fastest time to first audio (approximately 37ms P50 in Rime's benchmark), inline pronunciation control, or custom pauses. |
+| `coda` | **Default for most new apps.** Rime's flagship model, with the highest voice-quality scores in Rime's human evaluations, sub-100ms model latency, and eight languages. |
+| `mistv3` | You need the fastest time to first audio (approximately 37ms P50 in Rime's benchmark), or custom pauses. Does not support inline pronunciation control. |
 | `arcana` | **Deprecated, sunset August 15, 2026.** Migrate to Coda. Arcana remains available for Sinhala. |
-| `mistv2` | Earlier low-latency Mist model. Prefer [Mist v3](#mist-v3) for new work; it offers lower latency and the same pronunciation and pause controls. |
+| `mistv2` | Earlier low-latency Mist model, and the only current model with inline pronunciation control. Prefer [Mist v3](#mist-v3) for new work unless you depend on that. |
 
 For benchmark methodology, latency, and throughput numbers, see [Latency](/docs/latency#real-time-performance-benchmarks).
 
@@ -34,10 +34,16 @@ All production models are available through the cloud API and on-premises, and a
 | [Text normalization](/docs/text-normalization) | ✅ | ✅ | ✅ |
 | [`spell()` function](/docs/spell) | ✅ | ✅ | ✅ |
 | [Speed adjustment](/docs/speed) | ✅ | ✅ | ✅ |
-| [Pronunciation control](/platform/pronunciation-control) | ❌ | ❌ | ✅ |
+| [Pronunciation control](/platform/pronunciation-control) | ❌ | ❌ | Mist v2 only |
 | [Custom pauses](/docs/custom-pauses) | ❌ | ❌ | ✅ |
 
-The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control and custom pauses, and both serve English, French, German, and Spanish. See the [language matrix](/docs/voices#languages) for coverage per model.
+The Mist column reflects Mist v3 and Mist v2, which both serve English, French, German, and Spanish. See the [language matrix](/docs/voices#languages) for coverage per model.
+
+The two models differ on pronunciation control. Custom pauses work on both, but `phonemizeBetweenBrackets` works on Mist v2 and Mist v1 only, and is not supported on Mist v3, Coda, or Arcana.
+
+<Warning>**Inline pronunciation control has no destination on a current model.** `phonemizeBetweenBrackets` is served only by Mist v2 and Mist v1, and Mist v2 is superseded by Mist v3 for new work. If your application depends on inline phoneme overrides, do not plan a move to Mist v3, Coda, or Arcana expecting to keep them. The documented alternatives are to submit the word to Rime for the pronunciation dictionary, or to respell phonetically in plain English and accept that the result is approximate. See [Custom pronunciation](/docs/custom-pronunciation), and contact [support@rime.ai](mailto:support@rime.ai) if inline overrides are load-bearing for you.</Warning>
+
+Multilingual describes the model, not the individual voice. Almost every voice serves a single language, so the number of voices you can choose from depends on the language you need: Coda serves 8 languages across 184 voices, but 121 of those voices are English and only 2 are Hindi. Browse the [Coda](/docs/voices-coda) and [Mist v3](/docs/voices-mist-v3) catalogs to see the voices available in a given language.
 
 ## Coda
 
@@ -46,7 +52,7 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 - Received the highest voice-quality scores in Rime's human evaluations for naturalness, prosody, and artifact-free output
 - **Sub-100ms model latency on the GPU engine** when self-hosted or on-prem
   - Cloud API users typically add 25 to 50ms of network round-trip time from most of the continental US when routed to the closest [regional endpoint](/docs/regional-endpoints)
-- One voice lineup across English, Arabic, French, German, Hindi, Japanese, Portuguese, and Spanish
+- Eight languages: English, Arabic, French, German, Hindi, Japanese, Portuguese, and Spanish. Each voice serves one of them
 - Word-level timestamps for text-audio alignment and interruption handling
 - Supports [`spell()`](/docs/spell) for spelling sequences letter by letter or number by number
 - Available with `modelId: coda`
@@ -69,20 +75,20 @@ The Mist column reflects Mist v3 and Mist v2. Both support pronunciation control
 
 - Typical time to first byte is well below 100ms
 - Supports English, French, German, and Spanish
-- Supports inline [pronunciation control](/platform/pronunciation-control) and [custom pauses](/docs/custom-pauses)
+- Supports [custom pauses](/docs/custom-pauses). Does not support inline [pronunciation control](/platform/pronunciation-control), which remains Mist v2 and Mist v1 only
 - 78 voices, drawn from the most popular Mist speakers plus flagship speakers ported from Arcana; see the [voice catalog](/api-reference/data/voices)
 - [`speedAlpha`](/docs/speed) values above 1.0 produce faster speech, the modern direction
 - Uses `modelId: mistv3`
 
 ## Mist v2
 
-<Tip>For new work, prefer [Mist v3](#mist-v3): it offers lower latency and the same inline pronunciation control and custom pauses.</Tip>
+<Tip>For new work, prefer [Mist v3](#mist-v3): it offers lower latency and the same custom pauses. Stay on Mist v2 only if you depend on inline pronunciation control, which Mist v3 does not support.</Tip>
 
 **Mist v2**, released February 2025, is the earlier low-latency Mist model.
 
 - Supports English, French, German, and Spanish
-- Inline pronunciation control and custom pauses, also available in Mist v3
-- Approximately 70ms on-prem latency in Rime's benchmark
+- Inline pronunciation control, which no other current model supports, and custom pauses, which Mist v3 also supports
+- On-prem latency depends on your GPU and text length. Rime measured a 175ms median on A10Gs and similar GPUs with 40 to 50 character sentences; see the [on-prem quickstart](/docs/on-prem/quickstart) for that figure in context and [Latency](/docs/latency) for the benchmark methodology
 - 138 voices across accents, demographics, and speaking styles
 - Uses `modelId: mistv2`
 

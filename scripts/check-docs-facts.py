@@ -149,52 +149,79 @@ def check_examples(speaker_models, caps):
 
 
 def check_feature_matrix(caps):
-    """FEATURE_MATRIX_DRIFT. A table row is structured, so this is safe to assert."""
+    """FEATURE_MATRIX_DRIFT.
+
+    Reads the header row to find which model each column represents, rather than
+    assuming positions. An earlier version hard-coded three columns, so when the
+    Arcana column was removed it silently stopped checking instead of failing,
+    and a matrix claiming Coda supported pronunciation control passed clean.
+    A guard that quietly disables itself is worse than no guard, so a matrix it
+    cannot read is now a finding rather than a skip.
+    """
     rel = "docs/models.mdx"
     path = os.path.join(ROOT, rel)
     if not os.path.exists(path):
         return []
     text = open(path, encoding="utf-8").read()
     findings = []
-    # The Mist column covers v3 and v2, so a feature true on one and false on the
-    # other must not render as a bare check mark.
-    rows = {
-        "Pronunciation control": "pronunciationControl",
-        "Custom pauses": "customPauses",
-    }
-    for label, key in rows.items():
-        m = re.search(r"^\|\s*\[?" + re.escape(label) + r"\]?[^|]*\|(.+)$", text, re.M)
-        if not m:
-            continue
-        cells = [c.strip() for c in m.group(1).split("|") if c.strip() != ""]
-        if len(cells) < 3:
-            continue
-        coda, arcana, mist = cells[0], cells[1], cells[2]
-        want = {
-            "coda": caps["models"]["coda"][key],
-            "arcana": caps["models"]["arcana"][key],
-        }
-        for name, cell in (("coda", coda), ("arcana", arcana)):
-            has = "✅" in cell
-            if has != want[name]:
-                findings.append(Finding(
-                    "FEATURE_MATRIX_DRIFT", rel, line_of(text, m.start()),
-                    f'Matrix says {name} {label} = "{cell}".',
-                    f"capabilities.json says {key} is {want[name]} for {name}.",
-                    "Correct the matrix, or correct data/models/capabilities.json "
-                    "if the capability actually changed.",
-                    excerpt_at(text, m.start()),
-                ))
-        v3, v2 = caps["models"]["mistv3"][key], caps["models"]["mistv2"][key]
-        if v3 != v2 and "✅" in mist:
+
+    header = re.search(r"^\|\s*Attribute\s*\|(.+)$", text, re.M)
+    if not header:
+        return [Finding("FEATURE_MATRIX_DRIFT", rel, 1,
+                        "No feature matrix header was found.",
+                        "The guard locates the table by a row starting with | Attribute |.",
+                        "Restore that header, or update this check if the table moved.")]
+    cols = [c.strip() for c in header.group(1).split("|") if c.strip()]
+    # Map a column label to the capability key lookup it implies.
+    single = {"Coda": "coda", "Arcana": "arcana", "Mist v3": "mistv3", "Mist v2": "mistv2"}
+    if not any(c in single or c == "Mist" for c in cols):
+        return [Finding("FEATURE_MATRIX_DRIFT", rel, line_of(text, header.start()),
+                        f"No column matches a known model: {cols}.",
+                        "Columns should be labelled Coda, Arcana, Mist, Mist v3, or Mist v2.",
+                        "Rename the column, or teach this check the new label.")]
+
+    for label, key in (("Pronunciation control", "pronunciationControl"),
+                       ("Custom pauses", "customPauses")):
+        row = re.search(r"^\|\s*\[?" + re.escape(label) + r"\]?[^|]*\|(.+)$", text, re.M)
+        if not row:
             findings.append(Finding(
-                "FEATURE_MATRIX_DRIFT", rel, line_of(text, m.start()),
-                f'Matrix shows a bare check mark in the shared Mist column for {label}.',
-                f"capabilities.json says mistv3={v3} and mistv2={v2}, so the column "
-                "covers two models that differ.",
-                'Name the model the feature applies to, for example "Mist v2 only".',
-                excerpt_at(text, m.start()),
-            ))
+                "FEATURE_MATRIX_DRIFT", rel, line_of(text, header.start()),
+                f'The matrix has no "{label}" row.',
+                "capabilities.json tracks this capability, so the matrix should state it.",
+                f'Add the "{label}" row, or drop the capability from '
+                "data/models/capabilities.json if it no longer applies."))
+            continue
+        cells = [c.strip() for c in row.group(1).split("|")]
+        cells = (cells + [""] * len(cols))[:len(cols)]
+        at = line_of(text, row.start())
+        for col, cell in zip(cols, cells):
+            if col in single:
+                want = caps["models"][single[col]][key]
+                if ("\u2705" in cell) != want:
+                    findings.append(Finding(
+                        "FEATURE_MATRIX_DRIFT", rel, at,
+                        f'Matrix says {col} {label} = "{cell}".',
+                        f"capabilities.json says {key} is {want} for {single[col]}.",
+                        "Correct the matrix, or correct data/models/capabilities.json "
+                        "if the capability actually changed.",
+                        excerpt_at(text, row.start())))
+            elif col == "Mist":
+                v3, v2 = caps["models"]["mistv3"][key], caps["models"]["mistv2"][key]
+                if v3 != v2 and "\u2705" in cell:
+                    findings.append(Finding(
+                        "FEATURE_MATRIX_DRIFT", rel, at,
+                        f'Matrix shows a bare check mark in the shared Mist column for {label}.',
+                        f"capabilities.json says mistv3={v3} and mistv2={v2}, so the column "
+                        "covers two models that differ.",
+                        'Name the model the feature applies to, for example "Mist v2 only".',
+                        excerpt_at(text, row.start())))
+                elif v3 == v2 and ("\u2705" in cell) != v3:
+                    findings.append(Finding(
+                        "FEATURE_MATRIX_DRIFT", rel, at,
+                        f'Matrix says Mist {label} = "{cell}".',
+                        f"capabilities.json says {key} is {v3} for both Mist v3 and Mist v2.",
+                        "Correct the matrix, or correct data/models/capabilities.json.",
+                        excerpt_at(text, row.start())))
     return findings
 
 

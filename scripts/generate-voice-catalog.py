@@ -10,9 +10,9 @@ import json, sys, collections, pathlib
 
 SNAP = sys.argv[1]
 OUTDIR = pathlib.Path(sys.argv[2])
-# Only the two models that outlive the retirements get a catalog page. Arcana
-# retires 2026-08-15 and Mist v2 is superseded, so browsing their catalogs to
-# choose a voice would point developers at a dead end.
+# Catalog pages are generated for Coda and Mist v3. Arcana is deprecated and
+# retires 2026-08-15, so it gets no page; Mist v2 voices remain available through
+# the live catalog endpoints.
 MODELS = [
     ("coda",   "docs/voices-coda.mdx",    "Coda voices",    "Coda"),
     ("mistv3", "docs/voices-mist-v3.mdx", "Mist v3 voices", "Mist v3"),

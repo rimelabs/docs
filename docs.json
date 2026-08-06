@@ -91,14 +91,12 @@
                 "icon": "microphone-lines",
                 "pages": [
                   "docs/voices-coda",
-                  "docs/voices-mist-v3",
-                  "docs/voices-availability"
+                  "docs/voices-mist-v3"
                 ]
               },
               "docs/models",
               "docs/arcana-sunset",
               "docs/migrate-arcana-to-coda",
-              "docs/retiring-a-model",
               "platform/voice-cloning",
               {
                 "group": "Pronunciation",
@@ -3534,6 +3532,16 @@
     {
       "source": "/docs/on-prem/helmcharts",
       "destination": "/docs/on-prem/quickstart"
+    },
+    {
+      "source": "/docs/retiring-a-model",
+      "destination": "/docs/migrate-arcana-to-coda",
+      "permanent": false
+    },
+    {
+      "source": "/docs/voices-availability",
+      "destination": "/docs/voices-coda",
+      "permanent": false
     }
   ]
 }

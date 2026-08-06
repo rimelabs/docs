@@ -1,12 +1,14 @@
 ---
 title: Arcana sunset
-description: "Arcana is retired on August 15, 2026. What changes, which model IDs are affected, and where each language goes."
+description: "Arcana is retired on August 15, 2026 at 12:00 UTC. What changes, which model IDs are affected, and where each language goes."
 icon: circle-exclamation
 ---
 
 <Warning>
-**Arcana is retired on August 15, 2026.** After that date, cloud requests that specify an Arcana model are served by [Coda](/docs/models#coda). Migrate before then so you can test the change on your own schedule rather than discovering it in production.
+**Arcana is retired on August 15, 2026 at 12:00 UTC.** From that point, cloud requests that specify an Arcana model are served by [Coda](/docs/models#coda). Migrate before then so you can test the change on your own schedule rather than discovering it in production.
 </Warning>
+
+Plan your cutover against 12:00 UTC rather than against a local calendar date. If you operate outside the Americas, the switch lands in the middle of your working day on August 15, not at the end of it.
 
 ## Does this affect you
 
@@ -27,8 +29,8 @@ To check your own usage, search your code and configuration for those three stri
 | Arcana language | After August 15 |
 | :--- | :--- |
 | English, Spanish, French, German, Japanese, Portuguese, Arabic, Hindi | Served by Coda. Change `modelId` to `coda` |
-| Hebrew | **No Coda destination.** Coda does not serve Hebrew. Contact [support@rime.ai](mailto:support@rime.ai) before August 15 |
-| Sinhala | Remains on Arcana |
+| Hebrew | Coda does not serve Hebrew. If you synthesize Hebrew, get in touch before August 15 |
+| Sinhala | Remains on Arcana, on-prem only |
 
 ## What changes when you switch to Coda
 
@@ -44,4 +46,4 @@ If you have not migrated, requests naming an Arcana model continue to succeed bu
 
 ## Get help
 
-Contact [support@rime.ai](mailto:support@rime.ai) with your account, the model IDs you use, and the languages you serve.
+If you have any questions or concerns about migrating, contact [support@rime.ai](mailto:support@rime.ai) before August 15. Include your account, the model IDs you use, and the languages you serve, and someone will work through it with you.

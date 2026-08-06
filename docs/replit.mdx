@@ -34,7 +34,7 @@ To follow this guide, you need:
 
 ## Step 1: Create your app
 
-Paste the following prompt in Replit to build a voiceover studio app. It uses the [Arcana](/docs/models#arcana) model's voice library to generate speech. You can modify this prompt to build your own app idea.
+Paste the following prompt in Replit to build a voiceover studio app. It uses [Coda](/docs/models#coda), Rime's current model, to generate speech. You can modify this prompt to build your own app idea.
 
 ```
 Build an Instant Voiceover Studio, a single-page app where users paste text,
@@ -49,9 +49,9 @@ Inter font. Clean and premium.
 Layout (two-column on desktop, stacked on mobile):
 
 Left Panel:
-1. Text input area with character count (5000 max)
-2. Voice picker with a grid of 16 Arcana voice cards (luna, astra, sirius, estelle,
-   lyra, vespera, walnut, eliphas, arcade, atrium, eucalyptus, fern, stucco, transom,
+1. Text input area with character count (1000 max)
+2. Voice picker with a grid of 16 Coda voice cards (luna, astra, sirius, estelle,
+   lyra, vespera, masonry, eliphas, arcade, atrium, eucalyptus, fern, stucco, transom,
    oculus, moss) with gradient avatars
 3. "Generate Voiceover" button following Rime design language
 4. Audio controls with play and pause, progress bar, and download wav options.
@@ -65,8 +65,8 @@ Right Panel:
 Use Rime TTS
 API: POST https://users.rime.ai/v1/rime-tts
 Header: Authorization: Bearer RIME_API_KEY (stored in Secrets)
-modelId: Arcana
-Docs: https://docs.rime.ai/api-reference/arcana/streaming-wav
+modelId: coda
+Docs: https://docs.rime.ai/api-reference/coda/http
 ```
 
 The Replit agent generates code that reads the `RIME_API_KEY` from your **Secrets** and uses it to authenticate the app with the Rime API.

@@ -10,7 +10,9 @@ Organized by symptom, because Rime's failures are often silent: a request return
 
 ## No audio at all
 
-**The file exists but will not play.** Check what is actually in it before anything else:
+### The file exists but will not play
+
+Check what is actually in it before anything else:
 
 ```bash
 file output.wav       # expect: RIFF (little-endian) data, WAVE audio
@@ -19,29 +21,47 @@ head -c 4 output.wav  # expect: RIFF
 
 If it starts with `{`, you received JSON, which means `Accept` was missing or unrecognized. If it contains readable English, you received an error message written to the file by a client that did not check the status. See [the quickstart's success check](/docs/quickstart-five-minute#confirm-it-worked).
 
-**The file is zero bytes.** The request never completed. Confirm the URL is `https://users.rime.ai/v1/rime-tts` and reachable, and that your client is not silently following a redirect or failing TLS.
+### The file is zero bytes
 
-**A `401` you did not expect.** Five different messages produce a `401`, and they mean different things. `invalid subscription` is a billing state, not a bad key, so regenerating the credential will not help. `empty apikey` almost always means a shell variable did not expand. See [401 in the error reference](/docs/errors#401-authentication-failed).
+The request never completed. Confirm the URL is `https://users.rime.ai/v1/rime-tts` and reachable, and that your client is not silently following a redirect or failing TLS.
+
+### An unexpected `401`
+
+Five different messages produce a `401`, and they mean different things. `invalid subscription` is a billing state, not a bad key, so regenerating the credential will not help. `empty apikey` almost always means a shell variable did not expand. See [401 in the error reference](/docs/errors#401-authentication-failed).
 
 ## Audio arrives but is wrong
 
-**The voice is not the one you asked for.** Most likely the `speaker`, `modelId`, and `lang` combination is not one the catalog serves, and it was not rejected. Verify against the [Coda](/docs/voices-coda) or [Mist v3](/docs/voices-mist-v3) catalog. Remember that every Coda voice serves exactly one language, so the voice determines `lang`.
+### The voice is not the one you asked for
+
+Most likely the `speaker`, `modelId`, and `lang` combination is not one the catalog serves, and it was not rejected. Verify against the [Coda](/docs/voices-coda) or [Mist v3](/docs/voices-mist-v3) catalog. Remember that every Coda voice serves exactly one language, so the voice determines `lang`.
 
 Second possibility: `modelId` contains a typo. An unrecognized value is served by Mist v3 without an error, so `codaa` returns working audio from the wrong model.
 
-**Speed changes are ignored above or below a point.** `timeScaleFactor` is clamped to 0.4 to 2.5 without notice. Also check you are using the right parameter for the model: `speedAlpha` is inverted on Mist v2 relative to every other model. See [Speed](/docs/speed).
+### Speed changes stop taking effect past a point
 
-**Pronunciation overrides do nothing.** `phonemizeBetweenBrackets` is served only by Mist v2 and Mist v1. On Mist v3, Coda, and Arcana it is accepted and ignored. See the model reference.
+`timeScaleFactor` is clamped to 0.4 to 2.5 without notice. Also check you are using the right parameter for the model: `speedAlpha` is inverted on Mist v2 relative to every other model. See [Speed](/docs/speed).
+
+### Pronunciation overrides do nothing
+
+`phonemizeBetweenBrackets` is served only by Mist v2 and Mist v1. On Mist v3, Coda, and Arcana it is accepted and ignored. See the model reference.
 
 ## Streaming and WebSocket problems
 
-**Timestamps never arrive.** They are emitted only for English and Spanish, or when `lang` is omitted. In the other six Coda languages the stream sends `chunk` and `done` with no `timestamps` event and no error, so never block playback waiting for one.
+### Timestamps never arrive
 
-**The connection closes mid-utterance.** A server-side failure closes with `1011` and puts the message in the close reason, often prefixed with an HTTP-equivalent status as in `400: text is too long`. Log the whole reason string; read the prefix when diagnosing, but do not branch on it.
+They are emitted only for English and Spanish, or when `lang` is omitted. In the other six Coda languages the stream sends `chunk` and `done` with no `timestamps` event and no error, so never block playback waiting for one.
 
-**The upgrade fails before a socket opens.** Connection-time failures arrive as an HTTP status on the upgrade, not as a close code. A `429` there means you are opening connections too fast; back off and reuse connections rather than opening one per utterance.
+### The connection closes mid-utterance
 
-**Audio is choppy or late under load.** Check you are calling the nearest [regional endpoint](/docs/regional-endpoints) before investigating anything else, then see [Latency](/docs/latency).
+A server-side failure closes with `1011` and puts the message in the close reason, often prefixed with an HTTP-equivalent status as in `400: text is too long`. Log the whole reason string; read the prefix when diagnosing, but do not branch on it.
+
+### The upgrade fails before a socket opens
+
+Connection-time failures arrive as an HTTP status on the upgrade, not as a close code. A `429` there means you are opening connections too fast; back off and reuse connections rather than opening one per utterance.
+
+### Audio is choppy or late under load
+
+Check you are calling the nearest [regional endpoint](/docs/regional-endpoints) before investigating anything else, then see [Latency](/docs/latency).
 
 ## Retrying safely
 

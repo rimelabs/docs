@@ -30,9 +30,9 @@ To check your own usage, search your code and configuration for those three stri
 
 The API contract is unchanged, so `modelId: coda` is the only edit most integrations need. These differences are not errors and will not appear as failures:
 
-- **Your speaker may not exist on Coda.** Voice availability differs per model. Check yours in the [voice catalog](/docs/voices) before switching
-- **Word timestamps cover English and Spanish only.** If you rely on them for interruption handling in another language, no `timestamps` event arrives and no error is raised
-- **Audio will not be identical.** Coda is a different model, so prosody and pacing differ even for a speaker present on both
+- Your speaker may not exist on Coda, since voice availability differs per model. Check yours in the [voice catalog](/docs/voices) before switching
+- Word timestamps cover English and Spanish only. If you rely on them for interruption handling in another language, no `timestamps` event arrives and no error is raised
+- Audio will not be identical, because Coda is a different model, so prosody and pacing differ even for a speaker present on both
 
 ## After the cutoff
 

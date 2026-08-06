@@ -1,16 +1,16 @@
 ---
 title: "Migrate from Arcana to Coda"
-description: "Arcana retires August 15, 2026. The request shape does not change; your voice, its language, and its sound do."
+description: "Arcana retires August 15, 2026 at 12:00 UTC. The request shape does not change; your voice, its language, and its sound do."
 icon: "arrow-right-arrow-left"
 ---
 
 import CompareTwoVoices from "/snippets/compare-two-voices.mdx";
 
-Arcana retires August 15, 2026. Traffic sent with `modelId: arcana`, `arcanav2`, or `arcanav3` needs to move to [Coda](/docs/models#coda) before then.
+Arcana retires August 15, 2026 at 12:00 UTC. Traffic sent with `modelId: arcana`, `arcanav2`, or `arcanav3` needs to move to [Coda](/docs/models#coda) before then.
 
-<Warning>**204 of Arcana's 266 voices have no Coda counterpart.** For most Arcana users this is a voice change, not a parameter change, so it needs listening and sign-off rather than a config edit. Start with [step 2](#step-2-check-every-voice-you-use) and budget time for choosing replacements.</Warning>
+<Warning>**Check your voices before you plan anything else.** Coda's lineup was selected rather than carried over wholesale: 56 of Arcana's 64 featured voices are served by Coda, against 6 of the other 202. If you use a featured voice you will most likely find it by name. If you use one from further down Arcana's catalog, you are choosing a replacement, which needs listening and sign-off rather than a config edit. Start with [step 2](#step-2-check-every-voice-you-use).</Warning>
 
-<Note>Rime has not published the exact cutoff instant or its timezone, only the date. If you operate outside the Americas, or need to know what happens to a request already in flight at the boundary, contact [support@rime.ai](mailto:support@rime.ai) before scheduling a cutover on August 15 itself. Move earlier if you can.</Note>
+<Note>Plan your cutover against 12:00 UTC rather than against a local calendar date. If you operate outside the Americas, the switch lands in the middle of your working day on August 15, not at the end of it. Moving earlier gives you room to test on your own schedule. See the [sunset notice](/docs/arcana-sunset) for the summary.</Note>
 
 ## The request does not change
 
@@ -32,11 +32,11 @@ So the only edit to your request body is the value of `modelId`, and possibly `s
 
 ## What changes
 
-**Your speaker may not exist.** Only 62 of Arcana's 266 voice names are also served by Coda. The other 204 are not available under any `modelId`, so keeping the name is not an option.
+Your speaker may not exist. Only 62 of Arcana's 266 voice names are also served by Coda, and the other 204 are not available under any `modelId`, so keeping the name is often not an option.
 
-**`lang` must match the voice you choose.** Every Coda voice serves exactly one language, and none crosses between them. Coda covers eight languages, but a Coda voice does not, so picking a language narrows which voices you can use. See [the language note on Voices](/docs/voices#languages).
+Whichever voice you land on determines `lang`. Every Coda voice serves exactly one language and none crosses between them, so Coda covers eight languages but a Coda voice does not. Picking a language narrows which voices you can use; see [the language note on Voices](/docs/voices#languages).
 
-**Audio differs even where the name matches.** Coda and Arcana are trained separately, so a shared name is a starting point rather than a guarantee. Compare before you switch.
+Even where a name survives, the audio differs. Coda and Arcana are trained separately, so a shared name is a starting point rather than a guarantee, and you should compare before you switch.
 
 ## Step 1: find everywhere you set a model
 
@@ -52,7 +52,7 @@ Search the [Coda catalog](/docs/voices-coda) for each Arcana speaker you use. Tw
 
 **The name is there.** Keep it and go to [step 4](#step-4-hear-the-difference-before-you-switch). The name survives; the sound still changes.
 
-**The name is not there.** That applies to 204 of Arcana's 266 voices, so expect it. Choose a replacement from the same language section, matching on the attributes the catalog publishes for every voice: gender, age, and country. Then compare candidates on your own text.
+**The name is not there.** Expect this for voices outside Arcana's featured set, since Coda's catalog was chosen for the styles customers ask for most rather than assembled by porting everything. Choose a replacement from the same language section, matching on the attributes the catalog publishes for every voice: gender, age, and country. Then compare candidates on your own text. Rime's write-up on [how the Coda voices were chosen](https://www.rime.ai/resources/how-we-chose-the-voices-of-coda) explains the four style categories the lineup is organized around.
 
 The catalog's `dialect`, `demographic`, `genre`, and `styles` fields are populated for roughly a third to a half of Coda voices, so they cannot be relied on to narrow a search. To hear candidates rather than read about them, use the [Rime dashboard](https://app.rime.ai) or ask an assistant connected to the [hosted MCP server](/docs/mcp) to synthesize a line with each.
 

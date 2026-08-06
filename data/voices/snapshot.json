@@ -1,0 +1,9 @@
+{
+  "retrieved": "2026-08-04",
+  "sources": {
+    "voice-details.snapshot.json": "https://users.rime.ai/data/voices/voice_details.json",
+    "all-v2.snapshot.json": "https://users.rime.ai/data/voices/all-v2.json"
+  },
+  "note": "Refresh both files together, rerun scripts/generate-voice-catalog.py, and review the regenerated pages as part of the same pull request.",
+  "known_catalog_defects": "See SUPPRESS_DESCRIPTION in scripts/generate-voice-catalog.py. Five records carry a description that contradicts their own lang field; reported to the modeling team 2026-08-04."
+}

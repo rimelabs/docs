@@ -1,0 +1,58 @@
+---
+title: "Moving off a retiring model"
+description: "The checklist behind the Arcana migration, reusable for any Rime model retirement, plus the Mist v2 to Mist v3 path."
+icon: "list-check"
+---
+
+Rime has retired models before and will again. This is the procedure, stated once, so a retirement is a filled-in checklist rather than a new investigation. The [Arcana to Coda guide](/docs/migrate-arcana-to-coda) is its first worked example.
+
+<Note>**The parameter change is never the hard part.** In every Rime retirement so far the request shape stayed the same and the voice lineup did not. Budget your time accordingly: the work is choosing replacement voices and proving they are acceptable, not editing `modelId`.</Note>
+
+## The checklist
+
+**1. Identify every identifier that resolves to the retiring model.** A model family is usually reachable by several `modelId` values. Arcana answered to `arcana`, `arcanav2`, and `arcanav3`. Find all of them before you search your code, or you will miss call sites.
+
+**2. Find your own usage, including the places that are not code.** Search source, configuration files, environment variables, per-environment deploys, and any dashboard-managed integration such as Vapi where the model is set outside your repository.
+
+Confirm what an omitted `modelId` resolves to, so you do not waste time on call sites that were never affected. Today that is Mist v3.
+
+**3. Check voice parity, one voice at a time.** This is where retirements actually cost time. Use [voice availability](/docs/voices-availability) to see whether each voice you use exists on a surviving model. A name that survives is a starting point, not a guarantee: models are trained separately, so a shared name does not sound identical.
+
+**4. Check language parity.** A language can survive while its voice count shrinks, which narrows your shortlist. A language can also have no destination at all, which is a support conversation rather than a migration.
+
+**5. Check feature parity.** Compare the retiring and destination models against the [feature matrix](/docs/models#feature-matrix), not against memory. Features have been lost across retirements: inline pronunciation control exists on Mist v2 and Mist v1 and on no current model.
+
+**6. Compare audio on your own text.** Not a greeting. Use your domain vocabulary, your numbers, and your longest utterances, since that is where differences show. Use the [two-request recipe](/docs/migrate-arcana-to-coda#step-4-hear-the-difference-before-you-switch).
+
+**7. Stage the cutover.** Put `modelId` behind a flag or environment variable so it can be changed and reverted without a deploy, move a slice of traffic, and watch whatever quality signal you already collect.
+
+**8. Verify by configuration, not by response.** No Rime response names the model that served it, and there is no request ID, so you cannot confirm from a reply that a call site stopped using the old model. Treat the matrix of language times transport as the unit of verification, and keep the record of what you checked.
+
+**9. Know the deadline precisely.** A date without a time and timezone is not a cutover window. Ask if it is not published.
+
+## Retirements in progress
+
+| Retiring | Destination | Deadline | Voices without a counterpart |
+| :--- | :--- | :--- | ---: |
+| Arcana | [Coda](/docs/models#coda) | August 15, 2026 | 204 of 266 |
+| Mist v2 | [Mist v3](/docs/models#mist-v3) | Not announced | 63 of 138 |
+| Mist (legacy) | [Mist v3](/docs/models#mist-v3) | Not announced | 64 of 117 |
+
+### Arcana to Coda
+
+Deadline-driven and fully documented. See [Migrate from Arcana to Coda](/docs/migrate-arcana-to-coda).
+
+### Mist v2 to Mist v3
+
+No announced deadline, and Mist v3 is preferred for new work. Two things make this move different from the Arcana one:
+
+**Mist v3 keeps custom pauses but drops inline pronunciation control.** If you use `phonemizeBetweenBrackets`, Mist v3 is not a destination for that behaviour and neither is any other current model. That is the one case in this table where the checklist's step 5 blocks the move rather than informing it.
+
+**63 of 138 Mist v2 voices have no Mist v3 counterpart**, and 7 voices are Mist v3 only. Check each voice in [voice availability](/docs/voices-availability) before you plan the switch.
+
+`speedAlpha` also inverts. On Mist v2, values below 1.0 are faster; on Mist v3 and every other current model, values above 1.0 are faster. A migration that keeps the same number silently reverses the effect. Prefer `timeScaleFactor` going forward, and see [Speed](/docs/speed).
+
+## Related
+
+- [Voice availability on Coda and Mist v3](/docs/voices-availability): which voices survive.
+- [Models](/docs/models): retirement status and the feature matrix.

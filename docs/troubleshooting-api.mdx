@@ -1,0 +1,85 @@
+---
+title: "Troubleshooting the API"
+description: "Diagnose Rime API failures by what you observe, including failures that arrive wrapped by LiveKit, Pipecat, Vapi, or the CLI."
+icon: "stethoscope"
+---
+
+Organized by symptom, because Rime's failures are often silent: a request returns `200` and plausible output while doing something other than what you asked. For the exhaustive list of statuses and messages, see [the error reference](/docs/errors).
+
+<Warning>**Capture evidence before you retry.** No response carries a request ID you can quote, so record the UTC timestamp, the endpoint and region, `modelId`, `speaker`, and `lang` as sent, the status and full body or the WebSocket close code and its complete reason string, and whether any audio had arrived. A reproduction is often the only diagnostic available.</Warning>
+
+## No audio at all
+
+**The file exists but will not play.** Check what is actually in it before anything else:
+
+```bash
+file output.wav       # expect: RIFF (little-endian) data, WAVE audio
+head -c 4 output.wav  # expect: RIFF
+```
+
+If it starts with `{`, you received JSON, which means `Accept` was missing or unrecognized. If it contains readable English, you received an error message written to the file by a client that did not check the status. See [the quickstart's success check](/docs/quickstart-five-minute#confirm-it-worked).
+
+**The file is zero bytes.** The request never completed. Confirm the URL is `https://users.rime.ai/v1/rime-tts` and reachable, and that your client is not silently following a redirect or failing TLS.
+
+**A `401` you did not expect.** Five different messages produce a `401`, and they mean different things. `invalid subscription` is a billing state, not a bad key, so regenerating the credential will not help. `empty apikey` almost always means a shell variable did not expand. See [401 in the error reference](/docs/errors#401-authentication-failed).
+
+## Audio arrives but is wrong
+
+**The voice is not the one you asked for.** Most likely the `speaker`, `modelId`, and `lang` combination is not one the catalog serves, and it was not rejected. Verify against the [Coda](/docs/voices-coda) or [Mist v3](/docs/voices-mist-v3) catalog. Remember that every Coda voice serves exactly one language, so the voice determines `lang`.
+
+Second possibility: `modelId` contains a typo. An unrecognized value is served by Mist v3 without an error, so `codaa` returns working audio from the wrong model.
+
+**Speed changes are ignored above or below a point.** `timeScaleFactor` is clamped to 0.4 to 2.5 without notice. Also check you are using the right parameter for the model: `speedAlpha` is inverted on Mist v2 relative to every other model. See [Speed](/docs/speed).
+
+**Pronunciation overrides do nothing.** `phonemizeBetweenBrackets` is served only by Mist v2 and Mist v1. On Mist v3, Coda, and Arcana it is accepted and ignored. See the model reference.
+
+## Streaming and WebSocket problems
+
+**Timestamps never arrive.** They are emitted only for English and Spanish, or when `lang` is omitted. In the other six Coda languages the stream sends `chunk` and `done` with no `timestamps` event and no error, so never block playback waiting for one.
+
+**The connection closes mid-utterance.** A server-side failure closes with `1011` and puts the message in the close reason, often prefixed with an HTTP-equivalent status as in `400: text is too long`. Log the whole reason string; read the prefix when diagnosing, but do not branch on it.
+
+**The upgrade fails before a socket opens.** Connection-time failures arrive as an HTTP status on the upgrade, not as a close code. A `429` there means you are opening connections too fast; back off and reuse connections rather than opening one per utterance.
+
+**Audio is choppy or late under load.** Check you are calling the nearest [regional endpoint](/docs/regional-endpoints) before investigating anything else, then see [Latency](/docs/latency).
+
+## Retrying safely
+
+Retry only what can succeed on a second attempt, and know what a retry costs.
+
+| What happened | Retry? | Notes |
+| :--- | :--- | :--- |
+| `400` | No | The request is malformed. It will fail identically. |
+| `401`, `403` | No | Fix the credential or the account. Repeated attempts with a bad key are indistinguishable from an attack. |
+| `429` at the upgrade | Yes, after backoff | Retry the connection, not the synthesis. Reduce connection churn. |
+| `500`, `502` | Yes, with backoff | The only failures where an immediate retry is reasonable. |
+| `1011` close, no audio yet | Usually | Read the reason string first. If it describes a malformed request, fix the request instead of retrying. |
+| `1011` close, audio already sent | Only deliberately | See the billing warning below. |
+| Upgrade succeeded, then silence | Reconnect | Do not retry the whole utterance without deciding what to do about the partial audio. |
+
+<Warning>**A retried synthesis is billed again.** Rime bills by characters synthesized and there is no request ID or idempotency key, so two identical requests cannot be recognized as one. Restarting a long utterance after a mid-stream failure re-bills the whole utterance, including the part you already received. Decide deliberately whether to resume from a sentence boundary in your own application or accept the duplicate cost. Rime provides no resume or deduplication mechanism.</Warning>
+
+Rime does not send a `Retry-After` header, so choose your own backoff. Exponential with jitter, capped, is the usual choice.
+
+## Failures that arrive wrapped
+
+Most developers meet the Rime API through an integration rather than directly, and see a framework exception instead of a status code. Map it back before diagnosing.
+
+| Where you are | What you see | How to get the real cause |
+| :--- | :--- | :--- |
+| LiveKit agents | A plugin exception during TTS, often without the HTTP status | Reproduce the same `speaker`, `modelId`, and `lang` with a raw cURL request. Note the LiveKit Rime plugin defaults to Arcana if you do not set the model explicitly, which matters before the sunset. See [LiveKit](/docs/quickstart-livekit). |
+| Pipecat | A service error in the pipeline log | Pipecat defaults to Coda from v1.3.0. Confirm your version, then reproduce with cURL. See [Pipecat](/docs/pipecat). |
+| Vapi | A provider error in the call log | Voice and model are set in the Vapi dashboard rather than in your code, so check there first. See [Vapi](/docs/vapi). |
+| Rime CLI | A command error | Run with the same values through [`rime curl`](/cli-reference/rime-curl) to see the unwrapped response, and see [CLI troubleshooting](/cli-reference/troubleshooting). |
+| MCP server | A tool error in your assistant | `list_voices` needs no key, so if that works and synthesis does not, the problem is the key rather than the connection. See [MCP](/docs/mcp). |
+
+The general method is the same in every row: reduce to one raw HTTP request with the identical `speaker`, `modelId`, `lang`, and `Accept`, and read the plain-text body. If the raw request succeeds, the problem is in the integration or its configuration rather than in the API.
+
+## Still stuck
+
+Contact [support@rime.ai](mailto:support@rime.ai) with the evidence listed at the top of this page. Because no request ID exists, the reproduction and the exact timestamp are what make a report actionable.
+
+## Related
+
+- [Error reference](/docs/errors): every status and message, per transport.
+- [Voices](/docs/voices): verify a voice, model, and language combination.

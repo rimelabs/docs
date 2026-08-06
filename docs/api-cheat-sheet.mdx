@@ -118,7 +118,7 @@ Guide: [Text normalization](/docs/text-normalization) · Reference: [Text Normal
 | `speaker` | See [voices](/docs/voices) | Required. Must match the model and language. |
 | `modelId` | `coda` (flagship), `mistv3` | Set it explicitly. Without one, `/ws3` serves only the Mist v3 voice catalog. |
 | `text` | string | Up to 1,000 characters per request (HTTP returns `400` "text is too long" beyond that). |
-| `language` | `en`/`eng`, `es`/`spa`, `fr`/`fra`, `pt`/`por`, `de`/`deu`, `ja`/`jpn` | Must match the speaker's language. |
+| `lang` | `en`/`eng`, `es`/`spa`, `fr`/`fra`, `pt`/`por`, `de`/`ger`, `ja`/`jpn`, `ar`/`ara`, `hi`/`hin` | Must match the speaker's language. |
 | `audioFormat` (WS) | `mp3`, `mulaw`, `pcm` | HTTP uses the `Accept` header instead. |
 | `segment` (WS) | `bySentence` (default), `immediate`, `never` | When synthesis triggers; see [Segmentation](/docs/websockets-segment). |
 | `samplingRate` | `8000`–`96000`, default `24000` | Values above 24000 are upsampling. |

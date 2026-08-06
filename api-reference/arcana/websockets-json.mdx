@@ -1,6 +1,6 @@
 ---
-title: 'Websockets JSON'
-description: "Arcana JSON WebSocket (/ws3): structured events with base64 audio chunks and word-level timestamps."
+title: 'Arcana WebSockets JSON (deprecated)'
+description: "Deprecated Arcana JSON WebSocket reference. Arcana is retired on August 15, 2026 at 12:00 UTC; migrate cloud integrations to Coda."
 api: 'GET wss://users-ws.rime.ai/ws3'
 authMethod: "bearer"
 ---
@@ -9,7 +9,11 @@ import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
 
 <ApiAuthBearer />
 
-<Warning>Include `modelId=arcana` in the connection query. If you omit it, the server routes the request to Mist v3 and speakers outside the Mist v3 catalog can fail with `Speaker not found`.</Warning>
+<Warning>
+**Arcana is retired on August 15, 2026 at 12:00 UTC.** Do not start a new Arcana integration. After the cutoff, cloud requests that specify an Arcana model are served by Coda. Follow the [Arcana migration guide](/docs/arcana-sunset) before then so you can test the change.
+
+Until the cutoff, include `modelId=arcana` in the connection query. If you omit it, the server routes the request to Mist v3 and speakers outside the Mist v3 catalog can fail with `Speaker not found`.
+</Warning>
 
 ## Overview
 

@@ -58,19 +58,24 @@ The chart uses this request body:
 ```bash
 curl -X POST https://users.rime.ai/v1/rime-tts \
   -H 'Accept: audio/L16' \
-  -H 'Authorization: Bearer $RIME_API_KEY' \
+  -H "Authorization: Bearer $RIME_API_KEY" \
+  -H 'Content-Type: application/json' \
+  --fail \
+  --show-error \
   -d '{"text": "I love the book that she gave me. And I was so happy that she gave it to me.", "speaker": "cove",  "modelId": "mistv3"}'
 ```
 
 To consume a streaming response in Python, iterate over the response body as it arrives instead of buffering the whole thing:
 
 ```python Python
+import os
+
 import requests
 
 with requests.post(
     "https://users.rime.ai/v1/rime-tts",
     headers={
-        "Authorization": f"Bearer {RIME_API_KEY}",
+        "Authorization": f"Bearer {os.environ['RIME_API_KEY']}",
         "Content-Type": "application/json",
         "Accept": "audio/mpeg",
     },

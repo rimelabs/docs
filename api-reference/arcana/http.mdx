@@ -1,6 +1,6 @@
 ---
-title: 'Streaming HTTP'
-description: "Arcana streaming HTTP endpoint: synthesize speech and stream audio back in MP3, WAV, PCM, μ-law, or Opus."
+title: 'Arcana streaming HTTP (deprecated)'
+description: "Deprecated Arcana HTTP reference. Arcana is retired on August 15, 2026 at 12:00 UTC; migrate cloud integrations to Coda."
 api: 'POST https://users.rime.ai/v1/rime-tts'
 authMethod: "bearer"
 ---
@@ -8,6 +8,10 @@ authMethod: "bearer"
 import ApiAuthBearer from "/snippets/api-auth-bearer.mdx";
 
 <ApiAuthBearer />
+
+<Warning>
+**Arcana is retired on August 15, 2026 at 12:00 UTC.** Do not start a new Arcana integration. After the cutoff, cloud requests that specify an Arcana model are served by Coda. Follow the [Arcana migration guide](/docs/arcana-sunset) before then so you can test the change.
+</Warning>
 
 The streaming endpoint returns audio bytes in the format specified by the `Accept` header.
 

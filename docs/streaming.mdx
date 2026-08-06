@@ -34,9 +34,11 @@ A single `POST` to `https://users.rime.ai/v1/rime-tts` returns audio bytes in th
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
   --header 'Accept: audio/mpeg' \
-  --header 'Authorization: Bearer $RIME_API_KEY' \
+  --header "Authorization: Bearer $RIME_API_KEY" \
   --header 'Content-Type: application/json' \
   --output output.mp3 \
+  --fail \
+  --show-error \
   --data '{
   "text": "Streaming audio from Rime, as it is generated.",
   "modelId": "coda",
@@ -70,7 +72,7 @@ with requests.post(
 
 The first audio bytes arrive long before synthesis finishes; consume the body incrementally (as above) rather than buffering the whole response, or you give back most of the latency win. See [Latency](/docs/latency) for measured time-to-first-audio per model.
 
-Endpoint references: [Coda](/api-reference/coda/http) · [Arcana](/api-reference/arcana/http) · [Mist v3](/api-reference/mistv3/http) · [Mist v2](/api-reference/mistv2/http)
+Endpoint references: [Coda](/api-reference/coda/http) · [Mist v3](/api-reference/mistv3/http) · [Mist v2](/api-reference/mistv2/http) · [Arcana (deprecated)](/api-reference/arcana/http)
 
 ## WebSocket streaming
 
@@ -107,7 +109,7 @@ The server emits four event types: `chunk` (base64 audio), `timestamps` (word-le
   Choosing between /ws3, /ws2, and /ws, the full event schema, context IDs, and interruption handling.
 </Card>
 
-Endpoint references: [Coda](/api-reference/coda/websockets-json) · [Arcana](/api-reference/arcana/websockets-json) · [Mist v3](/api-reference/mistv3/websockets-json) · [Mist v2](/api-reference/mistv2/websockets-json)
+Endpoint references: [Coda](/api-reference/coda/websockets-json) · [Mist v3](/api-reference/mistv3/websockets-json) · [Mist v2](/api-reference/mistv2/websockets-json) · [Arcana (deprecated)](/api-reference/arcana/websockets-json)
 
 ## Server-sent events (SSE)
 

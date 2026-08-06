@@ -97,18 +97,19 @@ rime curl "Hello from Rime" -s astra -m coda
 curl --request POST \
   --url 'https://users.rime.ai/v1/rime-tts' \
   --header 'Accept: audio/wav' \
-  --header 'Authorization: Bearer $RIME_CLI_API_KEY' \
+  --header "Authorization: Bearer $(rime key)" \
   --header 'Content-Type: application/json' \
+  --output 'output.wav' \
+  --fail \
   --data '{
   "text": "Hello from Rime",
   "speaker": "astra",
   "modelId": "coda",
   "lang": "eng"
 }'
-# Tip: use --show-key or export RIME_CLI_API_KEY
 ```
 
-Add `--show-key` to include your actual API key in the output, or `--oneline` for easy copy-paste.
+The generated command resolves your saved key at execution time with `rime key`, so it does not print the key. Add `--oneline` for single-line output.
 
 ## CLI and API references
 

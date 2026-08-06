@@ -13,14 +13,18 @@ Most clients should start with **Coda**, Rime's flagship model:
 
 For the cross-model overview of when to use each WebSocket endpoint, see [WebSocket API Overview](/docs/websockets).
 
+<Warning>
+**Arcana is retired on August 15, 2026 at 12:00 UTC.** New integrations should use Coda or Mist v3. The Arcana references below remain available for migrations before the cutoff. See the [Arcana migration guide](/docs/arcana-sunset).
+</Warning>
+
 ## TTS endpoints by model
 
 | Model | Streaming HTTP | WebSocket `/ws` | WebSocket JSON |
 | --- | --- | --- | --- |
 | **Coda** (flagship) | [HTTP](/api-reference/coda/http) | [/ws](/api-reference/coda/websockets) | [/ws3](/api-reference/coda/websockets-json) |
-| **Arcana** | [HTTP](/api-reference/arcana/http) | [/ws](/api-reference/arcana/websockets) | [/ws3](/api-reference/arcana/websockets-json) |
 | **Mist v3** | [HTTP](/api-reference/mistv3/http) | [/ws](/api-reference/mistv3/websockets) | [/ws3](/api-reference/mistv3/websockets-json) |
 | **Mist v2** | [HTTP](/api-reference/mistv2/http) · [SSE](/api-reference/mistv2/sse) | [/ws](/api-reference/mistv2/websockets) | [/ws2](/api-reference/mistv2/websockets-json) |
+| **Arcana** (deprecated) | [HTTP](/api-reference/arcana/http) | [/ws](/api-reference/arcana/websockets) | [/ws3](/api-reference/arcana/websockets-json) |
 
 Mist v2 also exposes non-streaming JSON-wrapped formats: [MP3](/api-reference/mistv2/json-mp3), [WAV](/api-reference/mistv2/json-wav), [Opus/OGG](/api-reference/mistv2/json-ogg), [G.711 μ-law](/api-reference/mistv2/json-mulaw).
 

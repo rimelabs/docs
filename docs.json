@@ -218,19 +218,6 @@
             ]
           },
           {
-            "group": "Arcana API reference",
-            "pages": [
-              "api-reference/arcana/http",
-              {
-                "group": "Websocket",
-                "pages": [
-                  "api-reference/arcana/websockets",
-                  "api-reference/arcana/websockets-json"
-                ]
-              }
-            ]
-          },
-          {
             "group": "Mist v3 API reference",
             "pages": [
               "api-reference/mistv3/http",
@@ -262,6 +249,19 @@
                   "api-reference/mistv2/json-wav",
                   "api-reference/mistv2/json-ogg",
                   "api-reference/mistv2/json-mulaw"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Deprecated: Arcana until August 15",
+            "pages": [
+              "api-reference/arcana/http",
+              {
+                "group": "Websocket",
+                "pages": [
+                  "api-reference/arcana/websockets",
+                  "api-reference/arcana/websockets-json"
                 ]
               }
             ]

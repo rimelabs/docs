@@ -12,13 +12,7 @@ Plan your cutover against 12:00 UTC rather than against a local calendar date. I
 
 ## Does this affect you
 
-You are affected if any request, config file, or environment variable in any environment sets `modelId` to one of these three values:
-
-| Identifier | Notes |
-| :--- | :--- |
-| `arcana` | Routes English to the v2 engine and other languages to v3, so behavior can differ by language |
-| `arcanav2` | |
-| `arcanav3` | |
+You are affected if any request, config file, or environment variable in any environment sets `modelId` to `arcana`, `arcanav2`, or `arcanav3`.
 
 You are **not** affected by omitting `modelId`. Requests without it are served by Mist v3, which is unchanged.
 

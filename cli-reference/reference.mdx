@@ -56,6 +56,8 @@ rime tts "Hello" -s astra -m coda --env staging
 | WAV | `.wav` | `coda`, `arcana`, `arcanav2`, `mistv3` | Uncompressed, higher quality, larger files |
 | MP3 | `.mp3` | `mistv2`, `mist` | Compressed, smaller files |
 
+The CLI retains `arcana` and `arcanav2` for deprecated integrations. Use `coda` or a Mist model for new requests.
+
 ## Metadata embedding
 
 Audio files saved by the CLI include embedded metadata (voice, model, text). This metadata is visible in `rime play` waveform output and in media players like Finder or Preview.

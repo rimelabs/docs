@@ -36,7 +36,8 @@ In your Lovable prompt, explicitly tell it to use Rime as the TTS provider. Incl
 Use Rime TTS
 **API:** POST https://users.rime.ai/v1/rime-tts
 - Header: Authorization: Bearer {API_KEY}
-- Docs: https://docs.rime.ai/api-reference/arcana/streaming-wav
+- Request body: modelId "coda", lang "eng", and a Coda speaker
+- Docs: https://docs.rime.ai/api-reference/coda/http
 Store the API key in Lovable Cloud.
 ```
 
@@ -65,8 +66,8 @@ Inter font. Clean and premium.
 **Layout (two-column on desktop, stacked on mobile):**
 
 **Left Panel:**
-1. Text input area with character count (5000 max)
-2. Voice picker with a grid of 16 Arcana voice cards (luna, astra, sirius, estelle, lyra, vespera, walnut, eliphas, arcade, atrium, eucalyptus, fern, stucco, transom, oculus, moss) with gradient avatars
+1. Text input area with character count (1000 max)
+2. Voice picker with a grid of 16 Coda voice cards (luna, astra, sirius, estelle, lyra, vespera, orion, eliphas, arcade, atrium, eucalyptus, fern, stucco, transom, oculus, moss) with gradient avatars
 3. "Generate Voiceover" button
 4. Audio controls with play/pause, progress bar, download wav
 
@@ -79,7 +80,8 @@ Inter font. Clean and premium.
 Use Rime TTS
 **API:** POST https://users.rime.ai/v1/rime-tts
 - Header: Authorization: Bearer {API_KEY}
-- Docs: https://docs.rime.ai/api-reference/arcana/streaming-wav
+- Request body: modelId "coda", lang "eng", and the selected Coda speaker
+- Docs: https://docs.rime.ai/api-reference/coda/http
 Store the API key in Lovable Cloud.
 ```
 

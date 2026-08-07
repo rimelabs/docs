@@ -223,7 +223,7 @@ Next, add the AI services for transcription, response generation, and speech syn
     )
 ```
 
-These configure OpenAI for STT and LLM responses, and Rime's flagship `coda` model for TTS. `RimeTTSService` works with all current Rime models (`coda`, `arcana`, `mistv3`, `mistv2`).
+These configure OpenAI for STT and LLM responses, and Rime's flagship `coda` model for TTS. `RimeTTSService` works with Rime's current models (`coda`, `mistv3`, `mistv2`).
 
 Add the conversation context:
 
@@ -514,7 +514,7 @@ View Rime's [Pipecat demo agents](https://github.com/rimelabs/rime-pipecat-agent
 
 ### No audio output and other TTS errors
 
-- **Check your TTS service class:** Use `RimeTTSService`. It supports all current Rime models (`coda`, `arcana`, `mistv3`, `mistv2`). The older `RimeNonJsonTTSService` is deprecated and will be removed in Pipecat 2.0.
+- **Check your TTS service class:** Use `RimeTTSService`. It supports Rime's current models (`coda`, `mistv3`, `mistv2`). The older `RimeNonJsonTTSService` is deprecated and will be removed in Pipecat 2.0.
 - **Verify your Rime API key:** Ensure the key is valid and has TTS permissions.
 
 ### Import errors when starting the agent

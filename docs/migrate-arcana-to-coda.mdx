@@ -1,16 +1,18 @@
 ---
 title: "Migrate from Arcana to Coda"
-description: "Arcana retires August 15, 2026 at 12:00 UTC. The request shape does not change; your voice, its language, and its sound do."
+description: "Cloud Arcana requests switch to Coda on August 15, 2026 at 12:00 UTC. The request shape does not change."
 icon: "arrow-right-arrow-left"
 ---
 
 import CompareTwoVoices from "/snippets/compare-two-voices.mdx";
 
-Arcana retires August 15, 2026 at 12:00 UTC. Traffic sent with `modelId: arcana`, `arcanav2`, or `arcanav3` needs to move to [Coda](/docs/models#coda) before then.
+Cloud Arcana requests switch to [Coda](/docs/models#coda) on August 15, 2026 at 12:00 UTC. Before then, update cloud traffic that sets `modelId` to `arcana`, `arcanav2`, or `arcanav3`.
 
-<Warning>**Check your voices before you plan anything else.** Coda's lineup was selected rather than carried over wholesale: 56 of Arcana's 64 featured voices are served by Coda, against 6 of the other 202. If you use a featured voice you will most likely find it by name. If you use one from further down Arcana's catalog, you are choosing a replacement, which needs listening and sign-off rather than a config edit. Start with [step 2](#step-2-check-every-voice-you-use).</Warning>
+<Warning>**Check your voices before you plan anything else.** Coda serves 56 of Arcana's 64 featured voices, or 87%. If your voice is not on Coda, choose a replacement and compare it on your own text before switching. Start with [step 2](#step-2-check-every-voice-you-use). Rime's write-up on [how the Coda voices were chosen](https://www.rime.ai/resources/how-we-chose-the-voices-of-coda) explains how the lineup was curated.</Warning>
 
 <Note>Plan your cutover against 12:00 UTC rather than against a local calendar date. If you operate outside the Americas, the switch lands in the middle of your working day on August 15, not at the end of it. Moving earlier gives you room to test on your own schedule. See the [sunset notice](/docs/arcana-sunset) for the summary.</Note>
+
+<Note>This guide covers cloud API traffic. Existing Arcana on-prem images remain available and are not part of this cutover.</Note>
 
 ## The request does not change
 
@@ -32,7 +34,7 @@ So the only edit to your request body is the value of `modelId`, and possibly `s
 
 ## What changes
 
-Your speaker may not exist. Only 62 of Arcana's 266 voice names are also served by Coda, and the other 204 are not available under any `modelId`, so keeping the name is often not an option.
+Most featured Arcana speakers are also served by Coda. Check every speaker you use in the Coda catalog rather than assuming that a shared model API means a shared voice lineup.
 
 Whichever voice you land on determines `lang`. Every Coda voice serves exactly one language and none crosses between them, so Coda covers eight languages but a Coda voice does not. Picking a language narrows which voices you can use; see [the language note on Voices](/docs/voices#languages).
 
@@ -58,21 +60,20 @@ The catalog's `dialect`, `demographic`, `genre`, and `styles` fields are populat
 
 ## Step 3: check your language has a destination
 
-Every Arcana language except Hebrew is served by Coda. Voice counts change, so a language that survives may still offer you fewer options:
+For cloud migrations, Coda serves the following Arcana languages:
 
-| Language | Arcana voices | Coda voices |
-| :--- | ---: | ---: |
-| English | 230 | 121 |
-| Spanish | 10 | 25 |
-| German | 6 | 7 |
-| Portuguese | 6 | 8 |
-| French | 5 | 5 |
-| Arabic | 4 | 6 |
-| Japanese | 3 | 10 |
-| Hindi | 3 | 2 |
-| Hebrew | 2 | none |
+| Language | Coda voices |
+| :--- | ---: |
+| English | 121 |
+| Spanish | 25 |
+| Japanese | 10 |
+| Portuguese | 8 |
+| German | 7 |
+| Arabic | 6 |
+| French | 5 |
+| Hindi | 2 |
 
-English and Hindi shrink, so plan for a narrower shortlist there. No Hindi voice name carries over: Arcana serves `anaya`, `anil`, and `arya`, while Coda serves `nadi` and `taru`. If you synthesize Hebrew, get in touch before the date so someone can work through the options with you.
+Hindi uses different voice names on Coda. Arcana serves `anaya`, `anil`, and `arya`, while Coda serves `nadi` and `taru`.
 
 ## Step 4: hear the difference before you switch
 
@@ -97,12 +98,12 @@ One request does not establish coverage across languages and transports. Treat t
 
 ## After August 15
 
-An unrecognized `modelId` resolves to Mist v3 rather than returning an error, so a call site you missed may keep working while producing a different voice than you intended. Nothing will alert you, which is why step 6 checks configuration instead of waiting for failures.
+An unrecognized `modelId` resolves to Mist v3 rather than returning an error, so a cloud call site you missed may keep working while producing a different voice than you intended. Nothing will alert you, which is why step 6 checks configuration instead of waiting for failures.
 
 If you are not finished, contact [support@rime.ai](mailto:support@rime.ai) before the date rather than after.
 
 ## Related
 
 - [Coda voices](/docs/voices-coda): the full catalog to choose replacements from, grouped by language.
-- [Models](/docs/models#coda): what Coda supports, and the retirement status of every model.
+- [Models](/docs/models#coda): what Coda supports and how cloud and on-prem availability differ.
 - [Speed](/docs/speed): `timeScaleFactor` is the parameter Rime recommends going forward for Coda.

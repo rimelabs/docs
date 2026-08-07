@@ -4,17 +4,21 @@ icon: key
 description: How to authenticate with the Rime TTS API using a bearer token.
 ---
 
-All requests to the Rime API are authenticated with a **bearer token** in the `Authorization` header.
+Every request to the Rime API requires a **bearer token** in the `Authorization` header.
 
 ## Get an API key
 
-1. Sign in at [app.rime.ai](https://app.rime.ai).
-2. Open the [API Tokens page](https://app.rime.ai/tokens).
-3. Create a new token and copy the value. Treat it like a password; anyone with the token can synthesize speech against your account.
+<Warning>
+  An API key can synthesize speech against your account. Keep it on the server and treat it like a password.
+</Warning>
+
+1. Sign in to the [Rime dashboard](https://app.rime.ai).
+2. In the Rime dashboard, open [**API Tokens**](https://app.rime.ai/tokens).
+3. Create a token and copy its value.
 
 ## Use the token
 
-Set the `Authorization` header on every request:
+This request authenticates with a bearer token and returns MP3 audio:
 
 ```bash
 curl --request POST \
@@ -25,15 +29,15 @@ curl --request POST \
   --data '{"speaker":"astra","text":"hello","modelId":"coda","lang":"en"}'
 ```
 
-The same header is used for the HTTP endpoint, the WebSocket endpoints, and the metadata/utility endpoints.
+Use the same header for the HTTP, WebSocket, metadata, and utility endpoints.
 
 ## CLI authentication
 
-The `rime` CLI manages your key for you. Run [`rime login`](/cli-reference/rime-auth) once and the CLI stores it at `~/.rime/rime.toml`. You can also set it explicitly via the `RIME_CLI_API_KEY` environment variable.
+The `rime` CLI manages the key locally. Run [`rime login`](/cli-reference/rime-auth) once, and the CLI stores the key at `~/.rime/rime.toml`. You can also set it with the `RIME_CLI_API_KEY` environment variable.
 
 ## On-prem authentication
 
-On-prem deployments accept the same `Authorization: Bearer …` header. You can also pre-configure a key at the deployment level using the `RIME_API_KEY` environment variable, so callers don't need to send the header at all. See [the on-prem quickstart](/docs/on-prem/quickstart) for details.
+The on-prem API service accepts the same `Authorization: Bearer …` header. You can also configure `RIME_API_KEY` for the deployment so callers don't need to send the header. See [the on-prem quickstart](/docs/on-prem/quickstart) for details.
 
 ## Common auth errors
 

@@ -22,13 +22,13 @@ To follow this guide, you need:
 
 ## Step 1: Create the assistant
 
-From the [Vapi Dashboard](https://dashboard.vapi.ai), navigate to **Assistants** and click **Create Assistant**.
+In the [Vapi Dashboard](https://dashboard.vapi.ai), open **Assistants** and select **Create Assistant**.
 
 ![Vapi assistants page with Create Assistant button](/images/vapi-create-assistant-button.png)
 
 ### 1.1 Select a template
 
-Give your assistant a name, select **Blank Template**, and click **Create Assistant**.
+Give your assistant a name, select **Blank Template**, and select **Create Assistant**.
 
 ![Create assistant modal](/images/vapi-create-assistant.png)
 
@@ -38,7 +38,7 @@ In the **Model** tab, select your preferred LLM provider. Any option should work
 
 Add a **First Message** to enable your assistant to begin conversations.
 
-Configure a **System Prompt** to define your agent's personality and behavior. The system prompt can be as complex or simple as you like. For example:
+Configure a **System Prompt** to define your agent's personality and behavior. For example:
 
 ```
 You are a helpful voice assistant.
@@ -46,7 +46,7 @@ Keep your responses short and conversational. No more than 2-3 sentences.
 Be friendly and natural.
 ```
 
-Alternatively, use the **Generate** button and get AI help to create a well-structured prompt.
+Alternatively, select **Generate** to draft the prompt.
 
 ![Model tab configuration](/images/vapi-model.png)
 
@@ -64,7 +64,7 @@ Set the **Model** to **Coda**, Rime's current model.
 
 ### 1.4 Configure the transcriber
 
-Finally, in the **Transcriber** tab, select your preferred speech-to-text (STT) **Provider** and click **Publish**.
+In the **Transcriber** tab, select your preferred speech-to-text (STT) **Provider**, then select **Publish**.
 
 ![Transcriber tab configuration](/images/vapi-transcriber.png)
 
@@ -74,11 +74,11 @@ In the publishing popup window, select **Skip and Publish**.
 
 ![Publish popup window](/images/vapi-publish-popup.png)
 
-## Step 2: Add your API keys to Vapi  (optional)
+## Step 2: Add your API keys to Vapi (optional)
 
 Vapi provides API access to all its supported models via its billing plans. However, if you already have a subscription plan for one or more of your assistant's configured providers, you can enable the assistant to access them instead of using integrated Vapi billing:
 
-Under the **Build** heading, click **More** and select **Integrations**. Then, find your providers and add your API keys.
+In the **Build** section, open **More → Integrations**. Find each provider and add its API key.
 
 ![Integrations](/images/vapi-integrations.png)
 
@@ -88,13 +88,13 @@ Vapi stores provider keys under **Integrations** and makes them available to you
 
 ## Step 3: Test your assistant
 
-Click **Talk to Assistant** in the dashboard to start a conversation in your browser.
+In the Vapi Dashboard, select **Talk to Assistant** to start a conversation in your browser.
 
 ![Vapi demo](/images/vapi-demo.gif)
 
 ## Extend the assistant
 
 - **Try different voices:** Audition other voices like `celeste`, `orion`, and `andromeda` at [app.rime.ai](https://app.rime.ai).
-- **Add a phone number:** Provision a contact number in the Vapi dashboard and assign it to your assistant for telephony
+- **Add a phone number:** Provision a contact number in the Vapi Dashboard and assign it to your assistant for telephony.
 - **Create a workflow:** Program your assistant to do complex tasks using [Vapi Workflows](https://dashboard.vapi.ai/workflows).
 - **Customize the personality:** Update the system prompt to match your use case.

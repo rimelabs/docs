@@ -169,7 +169,7 @@ type ErrorEvent = {
 ## Variable parameters
 
 <ParamField body="speaker" type="string" required>
-  Must be one of the voices <a href="/api-reference/voices">listed in our documentation</a> for `arcana`.
+  Must be an `arcana` voice from the <a href="/api-reference/voices">Rime voice catalog</a>.
 </ParamField>
 
 <ParamField body="text" type="string" required>
@@ -186,7 +186,7 @@ type ErrorEvent = {
 
 <ParamField body="lang" type="string" default="eng">
   If provided, the language must match the language spoken by the provided speaker.
-  This can be checked in <a href="/api-reference/voices">our voices documentation</a>.
+  Verify the pairing in the <a href="/api-reference/voices">Rime voice catalog</a>.
 </ParamField>
 
 <ParamField body="samplingRate" type="int" default="24000">

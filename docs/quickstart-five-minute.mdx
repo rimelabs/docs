@@ -23,6 +23,18 @@ Each code block is tabbed by language. Pick the same language in every block.
   These examples call Rime's HTTPS API with a standard library or built-in `fetch`. Rime does not publish an npm or PyPI SDK. Framework-specific starters are available for [Next.js](/docs/voice-agent-nextjs), [Vite](/docs/voice-agent-vite), [Express](/docs/voice-agent-express), [plain Node](/docs/voice-agent-node), and [FastAPI](/docs/voice-agent-fastapi).
 </Info>
 
+Set your API key in the environment before running an example:
+
+<CodeGroup>
+```bash macOS and Linux
+export RIME_API_KEY="your_api_key_here"
+```
+
+```powershell Windows PowerShell
+$env:RIME_API_KEY = "your_api_key_here"
+```
+</CodeGroup>
+
 ## Copy the request
 
 Create a file called `rime_hello_world.py`, `rime_hello_world.js`, or `rime_hello_world.ts` (or run the cURL version directly in your terminal) and paste the full script:
@@ -32,9 +44,11 @@ Create a file called `rime_hello_world.py`, `rime_hello_world.js`, or `rime_hell
 ```bash cURL
 curl --request POST \
   --url https://users.rime.ai/v1/rime-tts \
-  --header 'Authorization: Bearer your_api_key_here' \
+  --header "Authorization: Bearer $RIME_API_KEY" \
   --header 'Content-Type: application/json' \
   --header 'Accept: audio/wav' \
+  --fail \
+  --show-error \
   --output output.wav \
   --data '{
     "text": "Hello! This is Rime speaking.",
@@ -45,9 +59,10 @@ curl --request POST \
 
 ```python Python
 import json
+import os
 import urllib.request
 
-RIME_API_KEY = "your_api_key_here"
+RIME_API_KEY = os.environ["RIME_API_KEY"]
 
 headers = {
     "Accept": "audio/wav",
@@ -80,8 +95,13 @@ print("Audio saved to output.wav")
 
 ```javascript JavaScript
 const fs = require("fs");
+const { Readable } = require("stream");
+const { pipeline } = require("stream/promises");
 
-const RIME_API_KEY = "your_api_key_here";
+const RIME_API_KEY = process.env.RIME_API_KEY;
+if (!RIME_API_KEY) {
+    throw new Error("Set RIME_API_KEY before running this script.");
+}
 
 const headers = {
     "Accept": "audio/wav",
@@ -106,8 +126,14 @@ async function generateSpeech() {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    if (!response.body) {
+        throw new Error("The response did not include an audio body.");
+    }
+
+    await pipeline(
+        Readable.fromWeb(response.body),
+        fs.createWriteStream("output.wav")
+    );
     console.log("Audio saved to output.wav");
 }
 
@@ -116,8 +142,13 @@ generateSpeech();
 
 ```typescript TypeScript
 import * as fs from "fs";
+import { Readable } from "stream";
+import { pipeline } from "stream/promises";
 
-const RIME_API_KEY: string = "your_api_key_here";
+const RIME_API_KEY = process.env.RIME_API_KEY;
+if (!RIME_API_KEY) {
+    throw new Error("Set RIME_API_KEY before running this script.");
+}
 
 const headers: Record<string, string> = {
     "Accept": "audio/wav",
@@ -142,8 +173,14 @@ async function generateSpeech(): Promise<void> {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    if (!response.body) {
+        throw new Error("The response did not include an audio body.");
+    }
+
+    await pipeline(
+        Readable.fromWeb(response.body),
+        fs.createWriteStream("output.wav")
+    );
     console.log("Audio saved to output.wav");
 }
 
@@ -178,10 +215,7 @@ Audio saved to output.wav
 
 ## Confirm it worked
 
-A `200` and a file on disk are not proof of success. Two things produce both without producing audio:
-
-- **cURL writes error bodies to the file.** The example above uses `--output output.wav` without `--fail`, so a rejected request leaves a small text file named `output.wav` containing the error message.
-- **An unrecognized `Accept` header returns JSON rather than audio.** Rime falls back to a `200` response whose body is JSON with an `audioContent` field. The file is not empty and the status is not an error, but no player will open it.
+A `200` and a file on disk are not proof of audio. An unrecognized `Accept` header returns a `200` JSON response with an `audioContent` field. The file is not empty, but no audio player will open it. The cURL example uses `--fail --show-error` so HTTP errors stop the command instead of being saved as `output.wav`.
 
 Check the file before you trust it:
 
@@ -207,7 +241,7 @@ start output.wav
 ```
 </CodeGroup>
 
-Hearing speech is the success condition. If `head -c 4` prints `{` you received JSON, so check your `Accept` header. If it prints readable English, you received an error message, so open the file and match it below.
+Hearing speech is the success condition. If `head -c 4` prints `{` you received JSON, so check your `Accept` header.
 
 ## If it did not work
 
@@ -215,13 +249,9 @@ Everything here fails before any audio is produced. For the complete list of sta
 
 | What you see | Cause | Fix |
 | :--- | :--- | :--- |
-| File contains `invalid api key` | The key is not recognized | Recopy it from the [API Tokens page](https://app.rime.ai/tokens/). The header is `Authorization: Bearer <key>` |
-| File contains `empty apikey` | The header was sent with an empty value | Your shell variable did not expand. Echo it and confirm it is set |
-| File contains `Missing Authorization header` | No `Authorization` header reached the API | Check for a typo in the header name |
-| File contains `invalid subscription` | The key is valid but the account has no active subscription | Check the account before regenerating the key. A billing problem arrives as a 401 here, not a 402 |
-| File contains `speaker is required` | `speaker` was omitted | Add `speaker`. There is no default voice |
-| File contains `text must not be empty` | `text` was `""` | Send at least one character |
-| File contains `text is too long` | `text` exceeded the configured limit | Split the text across requests |
+| The client reports HTTP 401 | The API key is missing or invalid, or the account has no active subscription | Confirm `RIME_API_KEY` is set, recopy it from the [API Tokens page](https://app.rime.ai/tokens/), and check the account |
+| The client reports HTTP 400 | A required field is missing or invalid | Check `speaker`, `text`, `modelId`, and `lang` against the [error reference](/docs/errors) |
+| The client reports that the text is too long | `text` exceeded the configured limit | Split the text across requests |
 | File starts with `{"audioContent"` | The `Accept` header was missing or unrecognized | Set `Accept` to a supported value such as `audio/wav`. See [Streaming formats](/docs/streaming) |
 | File is 0 bytes | The request never completed | Confirm the URL is `https://users.rime.ai/v1/rime-tts` and reachable from your network |
 | Audio plays but the voice is wrong | The `speaker`, `modelId`, and `lang` combination is not one the catalog serves | An unsupported combination is not reliably rejected. Verify the voice against the [Coda catalog](/docs/voices-coda) |
@@ -235,15 +265,20 @@ Create a file called `rime_hello_world.py`, `rime_hello_world.js`, or `rime_hell
 <CodeGroup>
 ```python Python
 import json
+import os
 import urllib.request
 ```
 
 ```javascript JavaScript
 const fs = require("fs");
+const { Readable } = require("stream");
+const { pipeline } = require("stream/promises");
 ```
 
 ```typescript TypeScript
 import * as fs from "fs";
+import { Readable } from "stream";
+import { pipeline } from "stream/promises";
 ```
 </CodeGroup>
 
@@ -251,7 +286,7 @@ Set the request headers with your Rime API key and the expected audio format:
 
 <CodeGroup>
 ```python Python
-RIME_API_KEY = "your_api_key_here"
+RIME_API_KEY = os.environ["RIME_API_KEY"]
 
 headers = {
     "Accept": "audio/wav",
@@ -261,7 +296,10 @@ headers = {
 ```
 
 ```javascript JavaScript
-const RIME_API_KEY = "your_api_key_here";
+const RIME_API_KEY = process.env.RIME_API_KEY;
+if (!RIME_API_KEY) {
+    throw new Error("Set RIME_API_KEY before running this script.");
+}
 
 const headers = {
     "Accept": "audio/wav",
@@ -271,7 +309,10 @@ const headers = {
 ```
 
 ```typescript TypeScript
-const RIME_API_KEY: string = "your_api_key_here";
+const RIME_API_KEY = process.env.RIME_API_KEY;
+if (!RIME_API_KEY) {
+    throw new Error("Set RIME_API_KEY before running this script.");
+}
 
 const headers: Record<string, string> = {
     "Accept": "audio/wav",
@@ -350,8 +391,14 @@ async function generateSpeech() {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    if (!response.body) {
+        throw new Error("The response did not include an audio body.");
+    }
+
+    await pipeline(
+        Readable.fromWeb(response.body),
+        fs.createWriteStream("output.wav")
+    );
     console.log("Audio saved to output.wav");
 }
 
@@ -370,8 +417,14 @@ async function generateSpeech(): Promise<void> {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const buffer = await response.arrayBuffer();
-    fs.writeFileSync("output.wav", Buffer.from(buffer));
+    if (!response.body) {
+        throw new Error("The response did not include an audio body.");
+    }
+
+    await pipeline(
+        Readable.fromWeb(response.body),
+        fs.createWriteStream("output.wav")
+    );
     console.log("Audio saved to output.wav");
 }
 

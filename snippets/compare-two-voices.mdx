@@ -6,6 +6,8 @@ TEXT="Thanks for calling. Can I get your account number to pull that up?"
 
 # The voice you use today
 curl -sS -X POST https://users.rime.ai/v1/rime-tts \
+  --fail \
+  --show-error \
   -H "Authorization: Bearer $RIME_API_KEY" \
   -H "Content-Type: application/json" \
   -H "Accept: audio/wav" \
@@ -14,6 +16,8 @@ curl -sS -X POST https://users.rime.ai/v1/rime-tts \
 
 # The candidate replacement
 curl -sS -X POST https://users.rime.ai/v1/rime-tts \
+  --fail \
+  --show-error \
   -H "Authorization: Bearer $RIME_API_KEY" \
   -H "Content-Type: application/json" \
   -H "Accept: audio/wav" \

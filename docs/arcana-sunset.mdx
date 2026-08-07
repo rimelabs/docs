@@ -1,32 +1,35 @@
 ---
 title: Arcana sunset
-description: "Arcana is retired on August 15, 2026 at 12:00 UTC. What changes, which model IDs are affected, and where each language goes."
+description: "Cloud Arcana requests switch to Coda on August 15, 2026 at 12:00 UTC. What changes and which model IDs are affected."
 icon: circle-exclamation
 ---
 
 <Warning>
-**Arcana is retired on August 15, 2026 at 12:00 UTC.** From that point, cloud requests that specify an Arcana model are served by [Coda](/docs/models#coda). Migrate before then so you can test the change on your own schedule rather than discovering it in production.
+**Cloud Arcana requests switch to Coda on August 15, 2026 at 12:00 UTC.** Migrate before then so you can test the change on your own schedule rather than discovering it in production.
 </Warning>
 
 Plan your cutover against 12:00 UTC rather than against a local calendar date. If you operate outside the Americas, the switch lands in the middle of your working day on August 15, not at the end of it.
 
+<Note>This cutoff applies to the cloud API. Existing Arcana on-prem images remain available and are not automatically routed to Coda.</Note>
+
 ## Does this affect you
 
-You are affected if any request, config file, or environment variable in any environment sets `modelId` to `arcana`, `arcanav2`, or `arcanav3`.
+You are affected if any cloud request, config file, or environment variable sets `modelId` to `arcana`, `arcanav2`, or `arcanav3`.
 
 You are **not** affected by omitting `modelId`. Requests without it are served by Mist v3, which is unchanged.
 
 To check your own usage, search your code and configuration for those three strings, and repeat the search for every deployed environment rather than only your local checkout. There is no response header naming the model that served a request, so confirm by inventory and configuration review, not by inspecting a response.
 
-## Where each language goes
+On-prem Arcana deployments are not part of this cloud cutover. See the [on-prem quickstart](/docs/on-prem/quickstart#tts-service) for the available images and languages.
+
+## Where cloud traffic goes
 
 | Arcana language | After August 15 |
 | :--- | :--- |
 | English, Spanish, French, German, Japanese, Portuguese, Arabic, Hindi | Served by Coda. Change `modelId` to `coda` |
-| Hebrew | Coda does not serve Hebrew. If you synthesize Hebrew, get in touch before August 15 |
 | Sinhala | Remains on Arcana, on-prem only |
 
-## What changes when you switch to Coda
+## What changes when cloud requests switch to Coda
 
 The API contract is unchanged, so `modelId: coda` is the only edit most integrations need. These differences are not errors and will not appear as failures:
 
@@ -36,7 +39,7 @@ The API contract is unchanged, so `modelId: coda` is the only edit most integrat
 
 ## After the cutoff
 
-If you have not migrated, requests naming an Arcana model continue to succeed but are served by Coda. You will not receive an error. The audible difference is the signal that migration happened without you.
+If you have not migrated, cloud requests naming an Arcana model continue to succeed but are served by Coda. You will not receive an error. The audible difference is the signal that migration happened without you.
 
 ## Get help
 

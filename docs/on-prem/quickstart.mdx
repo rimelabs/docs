@@ -19,7 +19,7 @@ On-prem keeps all audio and text inside your own network: no audio or text reach
 
 ## Published latency figures
 
-- **Coda:** Available on-premises. Setup details and performance numbers coming in a follow-up release.
+- **Coda:** This page documents the current image and service-pair setup. Rime has not published Coda on-prem performance numbers.
 - **Mist v2:** Rime measured median latency of **175ms** with randomly generated sentences between 40 and 50 characters on A10Gs and similar GPUs.
 - **Arcana:** See [performance tuning](/docs/on-prem/performance).
 
@@ -30,6 +30,8 @@ On-prem keeps all audio and text inside your own network: no audio or text reach
 - GPU
   - For Mist
     - NVIDIA T4, L4, A10, or higher
+  - For Coda
+    - Confirm GPU requirements with Rime before provisioning
   - For Arcana
     - NVIDIA A100, H100 MIG `3g.40gb`, or higher
 - Storage
@@ -139,6 +141,8 @@ Substitute that tag for `<tag>` in the image references below, and update all co
 
 #### Arcana
 
+<Note>The August 15 Arcana cutoff applies to the cloud API. The Arcana images below remain available for on-prem deployments.</Note>
+
 The Arcana images can be found at `us-docker.pkg.dev/rime-labs/arcana/v2/<language>:<tag>`.
 
 * The supported languages are: `en`, `es`, `fr`, `de`, `ar`, `hi`, `si`.
@@ -159,6 +163,8 @@ For Arcana only, you can also load the engine and data packages from different c
 The Coda v1 images can be found at `us-docker.pkg.dev/rime-labs/coda/v1/coda:<tag>`.
 
 * The supported languages are: `en`, `es`, `fr`, `pt`, `de`, `ja`, `ar`.
+
+<Note>Hindi is available through the cloud Coda API but is not included in the current `20260801` on-prem image.</Note>
 
 #### Mist v3 (multilingual)
 

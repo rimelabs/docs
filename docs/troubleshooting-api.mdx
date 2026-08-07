@@ -87,7 +87,7 @@ Most developers meet the Rime API through an integration rather than directly, a
 
 | Where you are | What you see | How to get the real cause |
 | :--- | :--- | :--- |
-| LiveKit agents | A plugin exception during TTS, often without the HTTP status | Reproduce the same `speaker`, `modelId`, and `lang` with a raw cURL request. Note the LiveKit Rime plugin defaults to Arcana if you do not set the model explicitly, which matters before the sunset. See [LiveKit](/docs/quickstart-livekit). |
+| LiveKit agents | A plugin exception during TTS, often without the HTTP status | Reproduce the same `speaker`, `modelId`, and `lang` with a raw cURL request. Note the LiveKit Rime plugin defaults to Arcana if you do not set the model explicitly, which matters before the cloud cutoff. See [LiveKit](/docs/quickstart-livekit). |
 | Pipecat | A service error in the pipeline log | Pipecat defaults to Coda from v1.3.0. Confirm your version, then reproduce with cURL. See [Pipecat](/docs/pipecat). |
 | Vapi | A provider error in the call log | Voice and model are set in the Vapi dashboard rather than in your code, so check there first. See [Vapi](/docs/vapi). |
 | Rime CLI | A command error | Run with the same values through [`rime curl`](/cli-reference/rime-curl) to see the unwrapped response, and see [CLI troubleshooting](/cli-reference/troubleshooting). |

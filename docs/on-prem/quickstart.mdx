@@ -20,7 +20,7 @@ On-prem keeps all audio and text inside your own network: no audio or text reach
 ## Published latency figures
 
 - **Coda:** Available on-premises. Setup details and performance numbers coming in a follow-up release.
-- **Mist v2:** Our tests have shown median latency of **175ms** with randomly generated sentences between 40 and 50 characters on A10Gs and similar GPUs.
+- **Mist v2:** Rime measured median latency of **175ms** with randomly generated sentences between 40 and 50 characters on A10Gs and similar GPUs.
 - **Arcana:** See [performance tuning](/docs/on-prem/performance).
 
 # Prerequisites
@@ -99,9 +99,9 @@ You should see your GPU listed in the output, alongside the driver version and C
 
 The Rime API service listens on port 8000 for HTTP, port 8002 for binary WebSockets, and port 8003 for JSON WebSockets.
 
-You will also need to allow the following outbound traffic in your firewall rules:
+Allow the following outbound traffic in your firewall rules:
 
-- `https://optimize.rime.ai/usage`: registers on-prem usage with our servers.
+- `https://optimize.rime.ai/usage`: registers on-prem usage with Rime's usage service.
 - `https://optimize.rime.ai/license`: verifies that your on-prem license is active.
 - `us-docker.pkg.dev` on port 443: container image registry.
 
@@ -109,7 +109,7 @@ You will also need to allow the following outbound traffic in your firewall rule
 
 ## Generate an API key
 
-Create a Rime API key in the [dashboard](https://app.rime.ai). Rime supplies the Artifact Registry key and license access separately.
+In the Rime dashboard, create an API key on the [**API Tokens**](https://app.rime.ai/tokens/) page. Rime supplies the Artifact Registry key and license access separately.
 
 # Deployment
 
@@ -406,7 +406,7 @@ Sample response file: [`result.pcm`](https://drive.google.com/file/d/1pwkGW9jCe1
 ### WebSocket endpoints
 
 #### JSON websockets
-The API service serves the JSON WebSocket endpoint for `coda`, `arcana`, and `mist` models on port `8003`. For example, `ws://localhost:8003`, which is equivalent to our [cloud JSON WebSocket API](/docs/websockets).
+The API service serves the JSON WebSocket endpoint for `coda`, `arcana`, and `mist` models on port `8003`. For example, `ws://localhost:8003` is equivalent to [Rime's cloud JSON WebSocket API](/docs/websockets).
 
 <Warning>**Spanish is not accepted on the on-prem JSON WebSocket ports.** Sending `lang=spa` to port 8003 (or 8001) returns HTTP 400, for every model, including Coda and Arcana deployments that serve Spanish voices. This restriction does not exist on the cloud endpoint. For Spanish on-prem, use the binary WebSocket endpoint or the HTTP endpoint, which lose word timestamps and context IDs.</Warning>
 
@@ -414,7 +414,7 @@ See the [Coda JSON WebSocket docs](/api-reference/coda/websockets-json), [Arcana
 on which model backend you have configured.
 
 #### Non-JSON websockets
-The API service serves the non-JSON WebSocket endpoint on port `8002`. For example, `ws://localhost:8002`, which is equivalent to our [cloud WebSocket API](/docs/websockets).
+The API service serves the non-JSON WebSocket endpoint on port `8002`. For example, `ws://localhost:8002` is equivalent to [Rime's cloud WebSocket API](/docs/websockets).
 
 #### Deprecated Mist endpoint (port 8001)
 The API service also serves a deprecated WebSocket endpoint on port `8001`. It is compatible only with the Mist model family. Use the [current WebSocket endpoints](/docs/websockets) for new integrations.

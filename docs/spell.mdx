@@ -8,24 +8,24 @@ icon: 'font'
 
 Use `spell()` when you need a letter or number sequence spelled out, one unit at a time.
 
-Using `spell()` natively introduces naturalistic pauses within the sequence. In particular, it groups numbers and letters into groups of three where possible, and two where necessary. For instance, a standard 10-digit telephone number is broken up as follows:
+`spell()` inserts naturalistic pauses within a sequence. It groups numbers and letters in threes where possible and pairs where necessary. For example, it breaks a standard 10-digit telephone number into:
 
 > 4 2 5 `<pause>` 2 5 2 `<pause>` 8 9 `<pause>` 2 9
 
 
-The same holds for spelling sequences, like long words, being broken up as follows:
+The same grouping applies to long words:
 
 > P E N `<pause>` E L O `<pause>` P E
 
 
-We also introduce helpful pauses when transitioning between numbers and letters in mixed alphanumeric sequences, as follows:
+`spell()` also inserts pauses when a mixed sequence transitions between letters and numbers:
 
 > P R M `<pause>` 4 2 3 `<pause>` G D D `<pause>` M L `<pause>` 2 3 `<pause>` 5 4
 
 
-This holds for any number, letter, or alphanumeric string. They will be spelled out in full if included in the parentheses of `spell()`. Spell also works with common symbols like @ (at) or - (dash).
+Any number, letter, or alphanumeric string inside `spell()` is read in full. The function also reads common symbols such as @ (at) and - (dash).
 
-Let's see how this works:
+Use the request examples below to test each type of sequence.
 
 ## `spell()` applied to words
 

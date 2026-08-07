@@ -8,10 +8,12 @@ Start using Rime's TTS API in 60 seconds with the Rime CLI.
 
 ## Prerequisites
 
-- **A Rime account:** [Sign up free](https://app.rime.ai/signup/) (you will log in through the CLI)
+- **A Rime account:** [Sign up free](https://app.rime.ai/signup/) (you'll sign in through the CLI)
 - **macOS or Linux** (the CLI runs on both)
 
 ## Step 1: Install the CLI
+
+Install the CLI with Rime's installation script:
 
 ```bash Shell script
 curl -fsSL https://rime.ai/install-cli.sh | sh
@@ -31,20 +33,24 @@ rime version 0.x.x
 
 ## Step 2: Log in
 
+`rime login` opens the Rime dashboard in your browser. After you authenticate, the CLI saves your API key to `~/.rime/rime.toml`:
+
 ```bash
 rime login
 ```
-
-`rime login` opens your browser to the Rime dashboard. Authenticate there, and the CLI saves your API key to `~/.rime/rime.toml`.
 
 ![Demo of the `rime login` command](/images/cli/login-demo.gif)
 
 
 ## Step 3: Hear your first voice
 
+Run the built-in sample:
+
 ```bash
 rime hello
 ```
+
+Hearing speech confirms that the CLI can authenticate and reach the TTS API.
 
 ![Demo of the `rime hello` command](/images/cli/hello-demo.gif)
 
@@ -92,6 +98,8 @@ To call the API directly, generate a curl command:
 ```bash
 rime curl "Hello from Rime" -s astra -m coda
 ```
+
+The CLI prints a cURL command like this:
 
 ```
 curl --request POST \

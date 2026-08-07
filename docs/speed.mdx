@@ -8,8 +8,8 @@ Speed controls use different parameters and value directions by model. Use this 
 
 | Scope | Models | Parameter | Faster speech | Slower speech |
 | :--- | :--- | :--- | :--- | :--- |
-| Entire response | Coda, Arcana, Mist v3 | `timeScaleFactor` | Below 1.0 | Above 1.0 |
-| Entire response, compatibility | Coda, Arcana, Mist v3 | `speedAlpha` | Above 1.0 | Below 1.0 |
+| Entire response | Coda, Mist v3 | `timeScaleFactor` | Below 1.0 | Above 1.0 |
+| Entire response, compatibility | Coda, Mist v3 | `speedAlpha` | Above 1.0 | Below 1.0 |
 | Entire response | Mist v2 | `speedAlpha` | Below 1.0 | Above 1.0 |
 | Selected words | Mist v2, Mist v3 | `inlineSpeedAlpha` | Below 1.0 | Above 1.0 |
 
@@ -17,7 +17,7 @@ Speed controls use different parameters and value directions by model. Use this 
 
 How you adjust overall speaking speed depends on the model.
 
-### Coda, Arcana, and Mist v3
+### Coda and Mist v3
 
 Use the `timeScaleFactor` parameter. A value **above 1.0 slows the audio**; a value **below 1.0 speeds it up**.
 
@@ -31,7 +31,7 @@ Use the `timeScaleFactor` parameter. A value **above 1.0 slows the audio**; a va
 ```
 
 <Note>
-Coda, Arcana, and Mist v3 also accept `speedAlpha`, but it works in the **opposite direction** from `timeScaleFactor` (higher than 1.0 is faster, lower is slower). Going forward we recommend `timeScaleFactor` for these models; it's the parameter we'll continue to support across future flagship models.
+Coda and Mist v3 also accept `speedAlpha`, but it works in the **opposite direction** from `timeScaleFactor` (higher than 1.0 is faster, lower is slower). Going forward we recommend `timeScaleFactor` for these models; it's the parameter we'll continue to support across future flagship models.
 </Note>
 
 <Note>
@@ -53,7 +53,7 @@ Use the `speedAlpha` parameter. **Lower** than 1.0 is faster; **higher** than 1.
 
 ## Adjusting the speed of individual words
 
-<Note>Per-word speed adjustment via `inlineSpeedAlpha` is a Mist-family feature. Coda and Arcana do not support it.</Note>
+<Note>Per-word speed adjustment via `inlineSpeedAlpha` is a Mist-family feature. Coda does not support it.</Note>
 
 To adjust the speed of individual words or phrases on the Mist family, use the `inlineSpeedAlpha` parameter. It takes a comma-separated list of speed values applied to words in square brackets.
 
@@ -75,4 +75,3 @@ For example: "This sentence is [really] [fast]" with `inlineSpeedAlpha` "0.5, 3"
 ## Evaluate the result
 
 Start near `1.0` and evaluate representative audio before increasing the adjustment. Large changes can reduce naturalness and clarity.
-

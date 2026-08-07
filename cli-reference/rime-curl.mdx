@@ -20,11 +20,13 @@ If you provide text, `--speaker` and `--model-id` are required. With no argument
 | `--model-id` | `-m` | `coda`* | Model ID |
 | `--lang` | `-l` | `eng` | Language code |
 | `--speed-alpha` | -- | `1` | Speed multiplier; must be greater than 0 |
-| `--sampling-rate` | -- | -- | Output sampling rate in Hz. Coda/Arcana: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
+| `--sampling-rate` | -- | -- | Output sampling rate in Hz. Coda and deprecated Arcana identifiers: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
 | `--oneline` | -- | `false` | Output as a single line for easy copy-paste |
 | `--api-url` | -- | -- | API URL override |
 
-## Arcana/arcanav2 flags
+## Deprecated Arcana compatibility flags
+
+These flags remain for existing Arcana integrations. Do not use Arcana for new requests.
 
 | Flag | Default | Description |
 | ---- | ------- | ----------- |

@@ -6,7 +6,7 @@ icon: wave-sine
 
 ## tl;dr: All Rime models stream.
 
-Rime's TTS API streams audio as it is generated rather than waiting for the full utterance. Coda, Arcana, and Mist all stream over HTTP and WebSockets, with sub-200ms end-to-end latency standard via the cloud API. For real-time voice agents, streaming is the default mode of operation.
+Rime's TTS API streams audio as it is generated rather than waiting for the full utterance. Coda and Mist stream over HTTP and WebSockets, with sub-200ms end-to-end latency standard via the cloud API. For real-time voice agents, streaming is the default mode of operation.
 
 ## Choosing a transport
 
@@ -72,7 +72,7 @@ with requests.post(
 
 The first audio bytes arrive long before synthesis finishes; consume the body incrementally (as above) rather than buffering the whole response, or you give back most of the latency win. See [Latency](/docs/latency) for measured time-to-first-audio per model.
 
-Endpoint references: [Coda](/api-reference/coda/http) · [Mist v3](/api-reference/mistv3/http) · [Mist v2](/api-reference/mistv2/http) · [Arcana (deprecated)](/api-reference/arcana/http)
+Endpoint references: [Coda](/api-reference/coda/http) · [Mist v3](/api-reference/mistv3/http) · [Mist v2](/api-reference/mistv2/http)
 
 ## WebSocket streaming
 
@@ -109,7 +109,7 @@ The server emits four event types: `chunk` (base64 audio), `timestamps` (word-le
   Choosing between /ws3, /ws2, and /ws, the full event schema, context IDs, and interruption handling.
 </Card>
 
-Endpoint references: [Coda](/api-reference/coda/websockets-json) · [Mist v3](/api-reference/mistv3/websockets-json) · [Mist v2](/api-reference/mistv2/websockets-json) · [Arcana (deprecated)](/api-reference/arcana/websockets-json)
+Endpoint references: [Coda](/api-reference/coda/websockets-json) · [Mist v3](/api-reference/mistv3/websockets-json) · [Mist v2](/api-reference/mistv2/websockets-json)
 
 ## Server-sent events (SSE)
 

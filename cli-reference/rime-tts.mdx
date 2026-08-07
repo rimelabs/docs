@@ -4,7 +4,7 @@ description: "Synthesize text to speech from the command line using the Rime CLI
 icon: "waveform"
 ---
 
-Synthesize text to speech in WAV or MP3. The CLI picks the format from the model: `mist` and `mistv2` output MP3, while `coda`, `mistv3`, `arcana`, and `arcanav2` default to WAV. Use `--format` to override.
+Synthesize text to speech in WAV or MP3. The CLI picks the format from the model: `mist` and `mistv2` output MP3, while `coda` and `mistv3` default to WAV. Deprecated Arcana identifiers also default to WAV. Use `--format` to override.
 
 ```bash
 rime tts TEXT --speaker VOICE --model-id MODEL
@@ -17,7 +17,7 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | Flag | Short | Description |
 | ---- | ----- | ----------- |
 | `--speaker` | `-s` | Voice speaker to use (e.g., `astra`, `celeste`, `orion`) |
-| `--model-id` | `-m` | Model ID: `coda`, `arcana`, `arcanav2`, `mistv3`, `mistv2`, or `mist` |
+| `--model-id` | `-m` | Model ID. Use `coda`, `mistv3`, `mistv2`, or `mist`. `arcana` and `arcanav2` remain available only for deprecated integrations. |
 
 ## Optional flags
 
@@ -27,11 +27,13 @@ rime tts TEXT --speaker VOICE --model-id MODEL
 | `--play` | `-p` | `false` | Play audio after synthesis (default behavior when no output is specified) |
 | `--lang` | `-l` | `eng` | Language code (e.g., `eng`, `es`, `fra`). Valid codes depend on model |
 | `--format` | `-f` | -- | Audio format: `wav` or `mp3` (overrides model default) |
-| `--speed-alpha` | -- | `1` | Speed multiplier. For `mist`/`mistv2`: lower is faster. For `coda`/`arcana`/`mistv3`: higher is faster |
-| `--sampling-rate` | -- | -- | Output sampling rate in Hz. Coda/Arcana: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
+| `--speed-alpha` | -- | `1` | Speed multiplier. For `mist`/`mistv2`: lower is faster. For `coda`, `mistv3`, and deprecated Arcana identifiers: higher is faster |
+| `--sampling-rate` | -- | -- | Output sampling rate in Hz. Coda and deprecated Arcana identifiers: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`, `96000`. Mist: `4000`–`44100` |
 | `--api-url` | -- | -- | API URL (default: `$RIME_API_URL` or `https://users.rime.ai/v1/rime-tts`) |
 
-## Arcana/arcanav2 flags
+## Deprecated Arcana compatibility flags
+
+These flags remain for existing Arcana integrations. Do not use Arcana for new requests.
 
 | Flag | Default | Description |
 | ---- | ------- | ----------- |
@@ -83,9 +85,9 @@ rime tts "Hello world" -s astra -m coda -o output.wav --json
 | Model | Languages |
 | ----- | --------- |
 | `coda` | `eng`, `spa`, `fra`, `por`, `ger`, `jpn` (and ISO 639-1 equivalents) |
-| `arcana` | `eng`, `spa`, `fra`, `por`, `ger`, `jpn`, `tam`, `sin`, `heb` (and ISO 639-1 equivalents) |
-| `arcanav2` | `eng`, `spa`, `ger`, `fra` (and ISO 639-1 equivalents) |
 | `mistv3` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
 | `mistv2` / `mist` | `eng`, `fra`, `ger`, `spa` (and ISO 639-1 equivalents) |
+| `arcana` (deprecated) | `eng`, `spa`, `fra`, `por`, `ger`, `jpn`, `tam`, `sin`, `heb` (and ISO 639-1 equivalents) |
+| `arcanav2` (deprecated) | `eng`, `spa`, `ger`, `fra` (and ISO 639-1 equivalents) |
 
-<Note>The `mist` and `mistv2` models default to MP3. `coda`, `mistv3`, `arcana`, and `arcanav2` default to WAV. Use `--format` to override.</Note>
+<Note>The `mist` and `mistv2` models default to MP3. `coda`, `mistv3`, and the deprecated Arcana identifiers default to WAV. Use `--format` to override.</Note>
